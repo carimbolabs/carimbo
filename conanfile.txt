@@ -1,0 +1,14 @@
+[requires]
+duktape/2.7.0
+ffmpeg/6.0
+libavif/1.0.1
+libcurl/8.2.1
+mimalloc/2.1.2
+nlohmann_json/3.11.2
+openal/1.22.2
+sdl/2.28.3
+zstd/1.5.5
+
+[generators]
+CMakeDeps
+CMakeToolchain

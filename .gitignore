@@ -1,0 +1,19 @@
+# Conan specific
+conan.lock
+conanbuildinfo.cmake
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
+build/
+
+# CMake
+CMakeUserPresets.json
+
+# Byte-compiled / optimized / DLL files / Cache
+__pycache__/
+**/test_package/__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+tmp/
+.DS_Store

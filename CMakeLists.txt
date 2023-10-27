@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(carimbo)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O2 -flto")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -flto")
+
+set(SDL2_MAIN SDL2::SDL2main)
+
+find_package(duktape CONFIG REQUIRED)
+find_package(ffmpeg CONFIG REQUIRED)
+find_package(libavif CONFIG REQUIRED)
+find_package(CURL CONFIG REQUIRED)
+find_package(mimalloc CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(openal CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(zstd CONFIG REQUIRED)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAME} duktape::duktape)
+target_link_libraries(${PROJECT_NAME} ffmpeg::avcodec)
+target_link_libraries(${PROJECT_NAME} avif)
+target_link_libraries(${PROJECT_NAME} CURL::libcurl)
+target_link_libraries(${PROJECT_NAME} mimalloc-static)
+target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} OpenAL::OpenAL)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2-static)
+target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
+target_link_libraries(${PROJECT_NAME} zstd::libzstd_static)
