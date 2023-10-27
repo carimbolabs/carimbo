@@ -9,6 +9,8 @@
 #include <physfs.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
+#include <unordered_map>
 
 #endif
