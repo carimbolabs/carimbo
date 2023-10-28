@@ -17,6 +17,11 @@ jobs:
         run: where git & where python & where pip
         shell: cmd
 
+      - uses: actions/cache@v3
+        with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -24,4 +29,6 @@ jobs:
         run: pip install conan
 
       - name: Install Dependencies
-        run: conan install . --output-folder=build --build=missing
+        run: |
+          conan profile detect
+          conan install . --output-folder=build --build=missing
