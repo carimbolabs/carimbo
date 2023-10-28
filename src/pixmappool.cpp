@@ -5,10 +5,12 @@ pixmappool::pixmappool(const std::shared_ptr<renderer> renderer) : _renderer(ren
 
 const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
   if (_pool.find(filename) == _pool.end()) {
-    _pool.emplace(filename, std::make_shared<pixmap>(_renderer, filename));
+    const auto p = std::make_shared<pixmap>(_renderer, filename);
+    _pool.emplace(filename, p);
+    return p;
   }
 
-  return _pool.at(filename);
+  return _pool[filename];
 }
 
 void pixmappool::flush() {

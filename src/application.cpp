@@ -13,7 +13,6 @@ int application::run() {
     const auto r = w.create_renderer();
     auto pp = pixmappool(r);
     const auto p = pp.get("image.avif");
-
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;
