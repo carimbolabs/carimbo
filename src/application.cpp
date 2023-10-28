@@ -13,6 +13,25 @@ int application::run() {
     const auto r = w.create_renderer();
     auto pp = pixmappool(r);
     const auto p = pp.get("image.avif");
+
+    bool quit = false;
+    SDL_Event e;
+    while (!quit) {
+      while (SDL_PollEvent(&e) != 0) {
+        if (e.type == SDL_QUIT) {
+          quit = true;
+        }
+      }
+
+      SDL_RenderClear(*r);
+
+      p->draw(0, 0);
+
+      SDL_RenderPresent(*r);
+
+      SDL_Delay(1000 / 60);
+    }
+
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

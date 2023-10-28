@@ -12,7 +12,7 @@ public:
   explicit renderer(SDL_Window *window);
   ~renderer() = default;
 
-  operator const SDL_Renderer *() const;
+  operator SDL_Renderer *();
 
 private:
   renderer_ptr _renderer;

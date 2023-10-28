@@ -11,6 +11,6 @@ renderer::renderer(SDL_Window *window) : _renderer(SDL_CreateRenderer(window, -1
 //   SDL_RenderPresent(renderer);
 // }
 
-renderer::operator const SDL_Renderer *() const {
+renderer::operator SDL_Renderer *() {
   return _renderer.get();
 }
