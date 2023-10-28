@@ -6,7 +6,7 @@ struct SDL_SurfaceDeleter {
   }
 };
 
-pixmap::pixmap(const std::shared_ptr<renderer> &renderer, const std::string &filename) {
+pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &filename) {
   const auto buffer = file::read(filename);
   const auto decoder = avifDecoderCreate();
   avifRGBImage rgb{};
