@@ -29,6 +29,8 @@ jobs:
         run: pip install conan
 
       - name: Install Dependencies
+        env:
+          CONAN_PROFILE: vs-2022-release
         run: |
           conan profile detect
           conan install . --output-folder=build --build=missing
