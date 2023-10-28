@@ -23,8 +23,5 @@ jobs:
       - name: Install Conan
         run: pip install conan
 
-      - name: Set Conan Folder
-        run: conan config set storage.path=${{ github.workspace }}\packages
-
       - name: Install Dependencies
         run: conan install . --output-folder=build --build=missing
