@@ -3,26 +3,35 @@
 pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &filename) : _renderer(renderer) {
   const auto buffer = file::read(filename);
   const auto decoder = avifDecoderCreate();
+  auto result = avifResult{};
 
-  if (avifDecoderSetIOMemory(decoder, reinterpret_cast<const uint8_t *>(&buffer[0]), buffer.size()) != AVIF_RESULT_OK) {
+  result = avifDecoderSetIOMemory(decoder, reinterpret_cast<const uint8_t *>(&buffer[0]), buffer.size());
+  if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderSetIOMemory] Error while setting IO on avifDecoder: {}", filename));
+    throw std::runtime_error(fmt::format("[avifDecoderSetIOMemory] Error while setting IO on avifDecoder: {}, error: {}", filename, avifResultToString(result)));
   }
 
-  if (avifDecoderParse(decoder) != AVIF_RESULT_OK) {
+  result = avifDecoderParse(decoder);
+  if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderParse] Error while parsing avifDecoder: {}", filename));
+    throw std::runtime_error(fmt::format("[avifDecoderParse] Error while parsing avifDecoder: {}, error: {}", filename, avifResultToString(result)));
   }
 
-  if (avifDecoderNextImage(decoder) != AVIF_RESULT_OK) {
+  result = avifDecoderNextImage(decoder);
+  if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderNextImage] Error while decoding avifDecoder: {}", filename));
+    throw std::runtime_error(fmt::format("[avifDecoderNextImage] Error while decoding avifDecoder: {}, error: {}", filename, avifResultToString(result)));
   }
 
   _width = decoder->image->width;
   _height = decoder->image->height;
 
   const auto surface = SDL_CreateRGBSurfaceWithFormat(0, _width, _height, 0, SDL_PIXELFORMAT_ARGB8888);
+
+  if (surface == nullptr) {
+    avifDecoderDestroy(decoder);
+    throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] Error while creating surface with format: {}, error {}", filename, SDL_GetError()));
+  }
 
   avifRGBImage rgb{};
   rgb.width = surface->w;
