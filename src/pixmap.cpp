@@ -6,7 +6,7 @@ struct SDL_SurfaceDeleter {
   }
 };
 
-pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &filename) {
+pixmap::pixmap(const std::shared_ptr<renderer> r, const std::string &filename) {
   const auto buffer = file::read(filename);
   const auto decoder = avifDecoderCreate();
   avifRGBImage rgb{};
@@ -34,27 +34,28 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &file
       throw std::runtime_error(fmt::format("[avifImageYUVToRGB] Error while converting YUV to RGB on avifImage: {}", filename));
     }
 
-    SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32)
+    const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32);
+    const auto texture = SDL_CreateTextureFromSurface(*r, surface);
 
-        // const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32);
+    // const auto surface = SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32);
 
-        // std::shared_ptr<SDL_Surface, SDL_SurfaceDeleter> surface{SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32)};
-        /*
-        std::unique_ptr<SDL_Surface, SDLSurfaceDeleter> surf{SDL_CreateRGBSurfaceWithFormatFrom(
-          const_cast<uint8_t*>(image.data.data()),
-          image.width,
-          image.height,
-          SDL_BITSPERPIXEL(sdlformat), // depth
-          image.width * SDL_BYTESPERPIXEL(sdlformat), // pitch
-          sdlformat)};
-        assert(surf);
-      */
-        // const auto surface = std::make_shared<SDL_Surface>(SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32), SDL_FreeSurface);
-        //  const auto texture = SDL_CreateTextureFromSurface(renderer.get(), surface);
-        //  const auto texture = renderer.get()->create_texture_from_surface(surface);
+    // std::shared_ptr<SDL_Surface, SDL_SurfaceDeleter> surface{SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32)};
+    /*
+    std::unique_ptr<SDL_Surface, SDLSurfaceDeleter> surf{SDL_CreateRGBSurfaceWithFormatFrom(
+      const_cast<uint8_t*>(image.data.data()),
+      image.width,
+      image.height,
+      SDL_BITSPERPIXEL(sdlformat), // depth
+      image.width * SDL_BYTESPERPIXEL(sdlformat), // pitch
+      sdlformat)};
+    assert(surf);
+  */
+    // const auto surface = std::make_shared<SDL_Surface>(SDL_CreateRGBSurfaceWithFormatFrom(rgb.pixels, rgb.width, rgb.height, 32, rgb.rowBytes, SDL_PIXELFORMAT_RGBA32), SDL_FreeSurface);
+    //  const auto texture = SDL_CreateTextureFromSurface(renderer.get(), surface);
+    //  const auto texture = renderer.get()->create_texture_from_surface(surface);
 
-        // SDL_FreeSurface(surface);
-        avifRGBImageFreePixels(&rgb);
+    // SDL_FreeSurface(surface);
+    avifRGBImageFreePixels(&rgb);
     avifDecoderDestroy(decoder);
 
     // if (FAILED(rwops = PHYSFSRWOPS_openRead(filename.c_str()))) {

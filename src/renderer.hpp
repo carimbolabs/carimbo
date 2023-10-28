@@ -9,10 +9,10 @@ typedef std::unique_ptr<SDL_Renderer, SDL_Deleter> renderer_ptr;
 
 class renderer {
 public:
-  renderer(SDL_Window *window);
-  ~renderer();
+  explicit renderer(SDL_Window *window);
+  ~renderer() = default;
 
-  void render();
+  operator const SDL_Renderer *() const;
 
 private:
   renderer_ptr _renderer;

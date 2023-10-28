@@ -6,7 +6,7 @@
 
 class pixmappool {
 public:
-  pixmappool(const std::shared_ptr<renderer> renderer);
+  explicit pixmappool(const std::shared_ptr<renderer> renderer);
   ~pixmappool() = default;
 
   const std::shared_ptr<pixmap> get(const std::string &filename);
