@@ -2,7 +2,7 @@
 #ifndef _pixmap_hpp
 #define _pixmap_hpp
 
-#include "deleter.hpp"
+#include "deleters.hpp"
 #include "file.hpp"
 #include "internal.hpp"
 #include "renderer.hpp"
