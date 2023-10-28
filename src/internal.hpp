@@ -8,11 +8,11 @@
 #include <fmt/core.h>
 #include <physfs.h>
 
+#include <cassert>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>
-
 // using std::exception;
 // using std::make_shared;
 // using std::runtime_error;
