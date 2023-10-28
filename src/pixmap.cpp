@@ -8,19 +8,19 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &file
   result = avifDecoderSetIOMemory(decoder, reinterpret_cast<const uint8_t *>(&buffer[0]), buffer.size());
   if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderSetIOMemory] Error while setting IO on avifDecoder: {}, error: {}", filename, avifResultToString(result)));
+    throw std::runtime_error(fmt::format("[avifDecoderSetIOMemory] Error while setting IO on AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
   result = avifDecoderParse(decoder);
   if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderParse] Error while parsing avifDecoder: {}, error: {}", filename, avifResultToString(result)));
+    throw std::runtime_error(fmt::format("[avifDecoderParse] Error while parsing AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
   result = avifDecoderNextImage(decoder);
   if (result != AVIF_RESULT_OK) {
     avifDecoderDestroy(decoder);
-    throw std::runtime_error(fmt::format("[avifDecoderNextImage] Error while decoding avifDecoder: {}, error: {}", filename, avifResultToString(result)));
+    throw std::runtime_error(fmt::format("[avifDecoderNextImage] Error while decoding AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
   _width = decoder->image->width;

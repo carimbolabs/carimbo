@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check Installed Software
+        run: where git & where python & where pip
+        shell: cmd
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Conan
+        uses: conan-io/conan-setup-python@v2
+        with:
+          python-version: 3.12
+          conan-version: 2.0.13
+
+      - name: Set Conan Folder
+        run: conan config set storage.path=${{ github.workspace }}\packages
+
+      - name: Install Dependencies
+        run: conan install . -if build

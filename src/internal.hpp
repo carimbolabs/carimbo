@@ -7,6 +7,7 @@
 #include <curl/curl.h>
 #include <fmt/core.h>
 #include <physfs.h>
+#include <sol/sol.hpp>
 
 #include <cassert>
 #include <iostream>

@@ -6,7 +6,7 @@
 
 class filesystem {
 public:
-  static void mount(const std::string &filename, const std::string &mountpoint);
+  static void mount(const std::string_view &filename, const std::string_view &mountpoint);
 
 private:
   filesystem() = default;

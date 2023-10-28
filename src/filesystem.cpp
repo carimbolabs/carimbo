@@ -1,7 +1,8 @@
 #include "filesystem.hpp"
 
-void filesystem::mount(const std::string &filename, const std::string &mountpoint) {
-  if (PHYSFS_mount(filename.c_str(), mountpoint.c_str(), true) == 0) {
-    throw std::runtime_error(fmt::format("[PHYSFS_mount] Failed to mount {} to {}", filename, mountpoint));
+void filesystem::mount(const std::string_view &filename, const std::string_view &mountpoint) {
+  if (PHYSFS_mount(filename.data(), mountpoint.data(), true) == 0) {
+    throw std::runtime_error(fmt::format(
+        "[PHYSFS_mount] Failed to mount '{}' to '{}'. Reason: '{}'", filename, mountpoint, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 }
