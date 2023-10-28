@@ -32,5 +32,5 @@ jobs:
         env:
           CONAN_PROFILE: vs-2022-release
         run: |
-          conan profile new --detect
+          conan profile detect
           conan install . --output-folder=build --build=missing
