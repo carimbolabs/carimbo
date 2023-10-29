@@ -10,8 +10,17 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
-
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        config:
+          - name: macOS 13
+            os: macos-13-large
+          - name: Ubuntu Debug
+            os: ubuntu-latest
+          - name: Windows 2022
+            os: windows-2022
     steps:
       - name: Check Installed Software
         run: where git & where python & where pip
@@ -31,7 +40,4 @@ jobs:
       - name: Install Dependencies
         run: |
           conan profile detect
-          conan profile update settings.compiler="Visual Studio" default
-          conan profile update settings.compiler.version=17 default
-          conan profile update settings.compiler.cppstd=20 default
           conan install . --output-folder=build --build=missing
