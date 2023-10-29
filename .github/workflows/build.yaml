@@ -18,8 +18,8 @@ jobs:
           - name: macOS 13
             # os: macos-13-large
             os: macos-latest
-          # - name: Ubuntu
-          #   os: ubuntu-latest
+          - name: Ubuntu
+            os: ubuntu-latest
           # - name: Windows 2022
           #   os: windows-2022
     steps:
