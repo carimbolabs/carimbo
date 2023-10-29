@@ -33,8 +33,8 @@ jobs:
       - name: Install Dependencies
         run: |
           conan profile detect
-          conan install . --output-folder=build --build=missing --settings compiler.cppstd=17 --conf tools.system.package_manager:mode=install
+          conan install . --output-folder=build --build=missing --settings compiler.cppstd=20 --conf tools.system.package_manager:mode=install
 
       - name: Build
         run: |
-          conan build . --build-folder=build
+          conan build . --output-folder=build
