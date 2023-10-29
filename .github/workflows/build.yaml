@@ -27,7 +27,6 @@ jobs:
 
     defaults:
       run:
-        working-directory: build
         shell: ${{ matrix.config.shell }}
 
     steps:
@@ -61,15 +60,15 @@ jobs:
 
       - name: Install Dependencies
         run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 # --conf tools.system.package_manager:mode=install
-        #working-directory: build
+        working-directory: build
 
       # - name: Activate Dependencies
       #   if: matrix.config.name == 'Windows'
       #   run: call activate.bat
       - name: Configure
         run: cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
-        #working-directory: build
+        working-directory: build
 
       - name: Build
         run: cmake --build .
-        #working-directory: build
+        working-directory: build
