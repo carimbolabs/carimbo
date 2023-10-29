@@ -38,5 +38,5 @@ jobs:
       - name: Build
         run: |
           cd build
-          cmake -B build -S ..
-          ls
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
+          cmake --build .
