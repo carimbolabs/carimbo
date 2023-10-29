@@ -37,4 +37,5 @@ jobs:
       - name: Install Dependencies
         run: |
           conan profile detect
-          conan install . --output-folder=build --build=missing --conf tools.system.package_manager:mode=install
+          conan profile update settings.compiler.cppstd=20 default
+          sudo conan install . --output-folder=build --build=missing --conf tools.system.package_manager:mode=install
