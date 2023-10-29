@@ -51,6 +51,8 @@ jobs:
       - name: Install Dependencies
         working-directory: build
         run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 --conf tools.system.package_manager:mode=install
+        env:
+          CONAN_SYSREQUIRES_SUDO: 0
 
       - name: Configure
         working-directory: build
