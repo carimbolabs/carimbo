@@ -45,7 +45,7 @@ jobs:
         run: pip install conan
 
       - name: Detect Conan profile
-        run: conan profile detect
+        run: conan profile detect --force
 
       - name: Install Ubuntu Dependencies
         if: matrix.config.name == 'Ubuntu'
