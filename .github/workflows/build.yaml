@@ -16,18 +16,11 @@ jobs:
       matrix:
         config:
           - name: macOS 13
-            shell: zsh
             os: macos-latest
           - name: Ubuntu
-            shell: bash
             os: ubuntu-latest
           - name: Windows 2022
-            shell: pwsh
             os: windows-2022
-
-    defaults:
-      run:
-        shell: ${{ matrix.config.shell }}
 
     steps:
       - name: Checkout
@@ -66,7 +59,7 @@ jobs:
       #   if: matrix.config.name == 'Windows'
       #   run: call activate.bat
       - name: Configure
-        run: cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+        run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
         working-directory: build
 
       - name: Build
