@@ -29,8 +29,8 @@ jobs:
         run: pip install conan
 
       - name: Install Dependencies
-        env:
-          CONAN_PROFILE: vs-2022-release
         run: |
           conan profile detect
+          conan profile update settings.compiler="Visual Studio" default
+          conan profile update settings.compiler.version=17 default
           conan install . --output-folder=build --build=missing
