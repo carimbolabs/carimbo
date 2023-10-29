@@ -55,11 +55,16 @@ jobs:
         working-directory: build
         run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 # --conf tools.system.package_manager:mode=install
 
+      - name: Activate Dependencies
+        if: matrix.config.name == 'Windows'
+        run: call activate.bat
+
       - name: Configure
         working-directory: build
-        run: cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+        run: cmake .. -DCMAKE_BUILD_TYPE=Release
+        #run: cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 
       # -DCMAKE_TOOLCHAIN_FILE="build/${{matrix.build_type}}/generators/conan_toolchain.cmake"
-      # - name: Build
-      #   working-directory: build
-      #   run: cmake --build . -j $(nproc)
+      - name: Build
+        working-directory: build
+        run: cmake --build . -j $(nproc)
