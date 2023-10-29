@@ -12,9 +12,9 @@ int application::run() {
     window w("Carimbo", 640, 480);
     const auto r = w.create_renderer();
     auto pp = pixmappool(r);
-    const auto p1 = pp.get("image.avif");
+    // const auto p1 = pp.get("image.avif");
     const auto p2 = pp.get("logo.avif");
-    const auto p3 = pp.get("image.avif");
+    // const auto p3 = pp.get("image.avif");
 
     bool quit = false;
     SDL_Event e;
@@ -25,14 +25,12 @@ int application::run() {
         }
       }
 
-      SDL_RenderClear(*r);
+      r->begin_draw();
 
-      p1->draw(0, 0);
+      // p1->draw(0, 0);
       p2->draw(0, 0);
 
-      SDL_RenderPresent(*r);
-
-      SDL_Delay(1000 / 60);
+      r->end_draw();
     }
 
   } catch (const std::exception &e) {

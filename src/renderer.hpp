@@ -14,8 +14,14 @@ public:
 
   operator SDL_Renderer *();
 
+  void begin_draw();
+
+  void end_draw();
+
 private:
   renderer_ptr _renderer;
+
+  uint32_t _time;
 };
 
 #endif
