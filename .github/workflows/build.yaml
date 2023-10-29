@@ -40,4 +40,4 @@ jobs:
           cd build
           ls
           cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -G "Visual Studio 17 2022"
-          conanbuild.bat
+          start conanbuild.bat
