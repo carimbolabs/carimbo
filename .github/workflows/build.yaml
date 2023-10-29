@@ -48,6 +48,10 @@ jobs:
       - name: Detect Conan profile
         run: conan profile detect
 
+      - name: Install Ubuntu Dependencies
+        if: matrix.config.name == 'Ubuntu'
+        run: sudo apt-get install -y libegl-dev
+
       - name: Install Dependencies
         working-directory: build
         run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 # --conf tools.system.package_manager:mode=install
