@@ -9,7 +9,7 @@ nlohmann_json/3.11.2
 #openal/1.22.2
 physfs/3.0.2
 sdl/2.28.3
-# sol2/3.3.1
+sol2/3.3.1
 sqlite3/3.43.2
 zeromq/4.3.4
 zstd/1.5.5
