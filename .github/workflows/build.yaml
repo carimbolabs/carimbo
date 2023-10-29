@@ -64,4 +64,4 @@ jobs:
 
       - name: Build
         working-directory: build
-        run: cmake --jobs $(nproc) --config Release  --build .
+        run: cmake --jobs $(nproc) --build .
