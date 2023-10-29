@@ -23,4 +23,6 @@ void renderer::end_draw() {
   if (delta < DELAY_MS) {
     SDL_Delay(DELAY_MS - delta);
   }
+
+  SDL_SetWindowTitle(SDL_GetWindowFromID(SDL_GetRendererOutputSizeID(*this)), std::to_string(1000.0 / (double)delta).c_str());
 }
