@@ -35,8 +35,12 @@ jobs:
           conan profile detect
           conan install . --output-folder=build --build=missing --settings compiler.cppstd=20 --conf tools.system.package_manager:mode=install
 
-      - name: Build
+      - name: Configure
+        working-directory: build
         run: |
-          cd build
-          cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain
-          cmake --build .
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        working-directory: build
+        run: |
+          cmake --build . -j $(nproc)
