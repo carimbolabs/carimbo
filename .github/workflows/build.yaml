@@ -38,5 +38,6 @@ jobs:
       - name: Build
         run: |
           cd build
+          ls -la
           cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
           cmake --build . --config Release
