@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ${{ matrix.config.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false # true
       matrix:
         config:
           - name: macOS 13
