@@ -19,8 +19,8 @@ jobs:
             os: macos-latest
           - name: Ubuntu
             os: ubuntu-latest
-          - name: Windows 2022
-            os: windows-2022
+          - name: Windows
+            os: windows-latest
 
     steps:
       - name: Checkout
@@ -63,12 +63,8 @@ jobs:
         run: cmake --build . --config Release
         working-directory: build
 
-      - name: Build
-        run: ls
-        working-directory: build
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.config.name }}
-          path: build/carimbo*
+          path: build
