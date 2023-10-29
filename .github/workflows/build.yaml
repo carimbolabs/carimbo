@@ -33,4 +33,5 @@ jobs:
           conan profile detect
           conan profile update settings.compiler="Visual Studio" default
           conan profile update settings.compiler.version=17 default
+          conan profile update settings.compiler.cppstd=20 default
           conan install . --output-folder=build --build=missing
