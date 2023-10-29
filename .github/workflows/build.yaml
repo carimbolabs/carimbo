@@ -15,11 +15,14 @@ jobs:
       fail-fast: true
       matrix:
         config:
-          - name: macOS 13
+          - name: macOS
+            binary: build/carimbo
             os: macos-latest
           - name: Ubuntu
+            binary: build/carimbo
             os: ubuntu-latest
           - name: Windows
+            binary: build/Release/carimbo.exe
             os: windows-latest
 
     steps:
@@ -65,14 +68,7 @@ jobs:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
-        if: matrix.config.name == 'Windows'
         with:
           name: ${{ matrix.config.name }}
-          path: build/Release/carimbo.exe
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        if: matrix.config.name != 'Windows'
-        with:
-          name: ${{ matrix.config.name }}
-          path: build/carimbo
+          path: ${{ matrix.config.binary }}
+          if-no-files-found: error
