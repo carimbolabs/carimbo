@@ -26,12 +26,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Conan
-        run: |
-          pip install conan
-
       - name: Prepare Build Directory
         run: mkdir build
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Conan
+        run: pip install conan
 
       - name: Detect Conan profile
         run: conan profile detect
