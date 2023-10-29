@@ -38,5 +38,5 @@ jobs:
       - name: Build
         run: |
           cd build
-          call conanbuild.bat
+          invoke-item conanbuild.bat
           ls
