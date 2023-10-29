@@ -27,7 +27,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Conan
-        run: pip install conan
+        run: |
+          pip install conan
 
       - name: Install Dependencies
         run: |
