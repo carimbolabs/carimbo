@@ -2,7 +2,7 @@
 #ifndef _file_hpp
 #define _file_hpp
 
-#include "internal.hpp"
+#include "common.hpp"
 
 class file {
 public:

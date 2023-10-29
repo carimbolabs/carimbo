@@ -2,9 +2,9 @@
 #ifndef _pixmap_hpp
 #define _pixmap_hpp
 
+#include "common.hpp"
 #include "deleters.hpp"
 #include "file.hpp"
-#include "internal.hpp"
 #include "renderer.hpp"
 
 typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;

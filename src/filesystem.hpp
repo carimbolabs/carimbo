@@ -2,7 +2,7 @@
 #ifndef _filesystem_hpp
 #define _filesystem_hpp
 
-#include "internal.hpp"
+#include "common.hpp"
 
 class filesystem {
 public:

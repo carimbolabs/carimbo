@@ -2,7 +2,7 @@
 #ifndef _deleters_hpp
 #define _deleters_hpp
 
-#include "internal.hpp"
+#include "common.hpp"
 
 struct SDL_Deleter {
   inline void operator()(SDL_Surface *ptr) {

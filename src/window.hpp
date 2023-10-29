@@ -2,7 +2,7 @@
 #ifndef _window_hpp
 #define _window_hpp
 
-#include "internal.hpp"
+#include "common.hpp"
 
 class window {
 public:

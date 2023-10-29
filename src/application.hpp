@@ -2,8 +2,8 @@
 #ifndef _application_hpp
 #define _application_hpp
 
+#include "common.hpp"
 #include "filesystem.hpp"
-#include "internal.hpp"
 #include "pixmappool.hpp"
 #include "window.hpp"
 
