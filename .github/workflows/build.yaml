@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ${{ matrix.config.os }}
     strategy:
-      fail-fast: false # true
+      fail-fast: true
       matrix:
         config:
           - name: macOS 13
@@ -55,9 +55,6 @@ jobs:
         run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 --settings build_type=Release
         working-directory: build
 
-      # - name: Activate Dependencies
-      #   if: matrix.config.name == 'Windows'
-      #   run: call activate.bat
       - name: Configure
         run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
         working-directory: build
@@ -65,3 +62,9 @@ jobs:
       - name: Build
         run: cmake --build . --config Release
         working-directory: build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.config.name }}
+          path: build/carimbo*
