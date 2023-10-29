@@ -65,6 +65,14 @@ jobs:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
+        if: matrix.config.name == 'Windows'
         with:
           name: ${{ matrix.config.name }}
-          path: build
+          path: build/Release/carimbo.exe
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        if: matrix.config.name != 'Windows'
+        with:
+          name: ${{ matrix.config.name }}
+          path: build/carimbo
