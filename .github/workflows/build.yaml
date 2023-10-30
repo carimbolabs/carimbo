@@ -48,6 +48,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: "cpp"
+          queries: +security-and-quality
+
       - name: Install Conan
         run: pip install conan
 
