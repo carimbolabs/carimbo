@@ -16,11 +16,6 @@ void scriptengine::run() {
 
   const auto script = file::read("scripts/main.lua");
 
-  _lua.script(std::string(script.begin(), script.end()));
-  // const auto script = R"(
-  // local m = motor.new()
-
-  // m:init("Carimbo", 800, 600)
-  // m:run()
-  // )";
+  _lua.script(&script[0])
+  // _lua.script(std::string(script.begin(), script.end()));
 }
