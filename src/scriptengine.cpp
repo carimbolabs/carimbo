@@ -14,7 +14,7 @@ void scriptengine::run() {
                            "init", &motor::init,
                            "run", &motor::run);
 
-  const auto script = file::read("scripts/main.lua");
+  const auto script = io::read("scripts/main.lua");
 
   _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }

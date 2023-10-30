@@ -3,7 +3,7 @@
 #define _pixmap_hpp
 
 #include "common.hpp"
-#include "file.hpp"
+#include "io.hpp"
 #include "renderer.hpp"
 
 typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
