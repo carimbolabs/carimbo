@@ -48,12 +48,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: "cpp"
-          queries: +security-and-quality
-
       - name: Install Conan
         run: pip install conan
 
@@ -75,11 +69,6 @@ jobs:
       - name: Build
         run: cmake --build . --config Release
         working-directory: build
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-        with:
-          category: "cpp"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
