@@ -11,9 +11,9 @@ public:
 
   operator SDL_Renderer *();
 
-  void begin_draw();
+  void begin();
 
-  void end_draw();
+  void end();
 
 private:
   std::unique_ptr<SDL_Renderer, SDL_Deleter> _renderer;

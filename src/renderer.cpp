@@ -10,10 +10,10 @@ renderer::operator SDL_Renderer *() {
   return _renderer.get();
 }
 
-void renderer::begin_draw() {
+void renderer::begin() {
   SDL_RenderClear(*this);
 }
 
-void renderer::end_draw() {
+void renderer::end() {
   SDL_RenderPresent(*this);
 }

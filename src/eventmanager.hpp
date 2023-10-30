@@ -5,10 +5,12 @@
 #include "common.hpp"
 #include "noncopyable.hpp"
 
-class event_manager : private noncopyable {
+class eventmanager : private noncopyable {
 public:
-  event_manager() = default;
-  ~event_manager() = default;
+  eventmanager() = default;
+  ~eventmanager() = default;
+
+  void update();
 
   // void add_listener(std::shared_pre<eventlistener> listener);
   // void remove_listener(std::function<eventlistener> listener);

@@ -3,6 +3,7 @@
 #define _engine_hpp
 
 #include "common.hpp"
+#include "eventmanager.hpp"
 #include "framerate.hpp"
 #include "loopable.hpp"
 #include "noncopyable.hpp"
@@ -26,6 +27,7 @@ private:
   std::list<std::shared_ptr<loopable>> _loopables;
   std::shared_ptr<window> _window;
   std::shared_ptr<renderer> _renderer;
+  std::shared_ptr<eventmanager> _eventmanager;
 };
 
 #endif

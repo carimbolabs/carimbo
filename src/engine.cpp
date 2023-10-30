@@ -1,13 +1,14 @@
 #include "engine.hpp"
 
-engine::engine() : _running(false) {
+engine::engine() : _running(true) {
 }
 
 void engine::create(std::string_view title, int32_t width, int32_t height, bool fullscreen) {
   _window = std::make_shared<window>(title, width, height, fullscreen);
   _renderer = _window->create_renderer();
+  _eventmanager = std::make_shared<eventmanager>();
 
-  _loopables.emplace_back(std::make_shared<framerate>());
+  add_loopable(std::make_shared<framerate>());
 }
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {
@@ -15,29 +16,23 @@ void engine::add_loopable(std::shared_ptr<loopable> loopable) {
 }
 
 void engine::run() {
-  _running = true;
-
-  SDL_Event event;
   while (_running) {
     const auto now = SDL_GetTicks();
-    while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT) {
-        _running = false;
-      }
-    }
 
-    _renderer->begin_draw();
+    _eventmanager->update();
+    _renderer->begin();
+    // scenegraph->render();
+    _renderer->end();
 
-    //
+    const auto delta = SDL_GetTicks() - now;
 
-    _renderer->end_draw();
+    std::cout << delta << std::endl;
 
     std::for_each(_loopables.begin(), _loopables.end(),
                   std::bind(&loopable::loop, std::placeholders::_1, delta));
 
-    const auto delta = SDL_GetTicks() - now;
     if (delta < DELAY_MS) {
-      SDL_Delay(DELAY_MS - delta);
+      // SDL_Delay(DELAY_MS - delta);
     }
   }
 }
