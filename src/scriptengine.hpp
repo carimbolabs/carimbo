@@ -3,6 +3,7 @@
 #define _scriptengine_hpp
 
 #include "common.hpp"
+#include "file.hpp"
 #include "motor.hpp"
 #include "noncopyable.hpp"
 

@@ -14,6 +14,8 @@ void scriptengine::run() {
                            "init", &motor::init,
                            "run", &motor::run);
 
+  const script = file::load("scripts/main.lua");
+
   const auto script = R"(
     local m = motor.new()
 
