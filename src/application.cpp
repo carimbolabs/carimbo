@@ -9,12 +9,8 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     filesystem::mount("bundle.zip", "/");
-
     auto ss = scriptengine();
-    ss.run();
-    // const auto engine = engine::create();
-    // engine->init("Carimbo", 640, 480, false);
-    // engine->run();
+    ss.exec();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

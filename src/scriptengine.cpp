@@ -1,6 +1,6 @@
 #include "scriptengine.hpp"
 
-void scriptengine::run() {
+void scriptengine::exec() {
   _lua.open_libraries(
       sol::lib::base,
       sol::lib::package,
@@ -16,6 +16,5 @@ void scriptengine::run() {
 
   const auto script = file::read("scripts/main.lua");
 
-  _lua.script(&script[0])
-  // _lua.script(std::string(script.begin(), script.end()));
+  _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }
