@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  cpp-linter:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
