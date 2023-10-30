@@ -10,9 +10,8 @@ public:
   event_manager() = default;
   ~event_manager() = default;
 
-  void add_listener(std::shared_pre<eventlistener> listener);
-
-  void remove_listener(std::function<eventlistener> listener);
-}
+  // void add_listener(std::shared_pre<eventlistener> listener);
+  // void remove_listener(std::function<eventlistener> listener);
+};
 
 #endif

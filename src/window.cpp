@@ -6,7 +6,9 @@ window::window(std::string_view title, int32_t width, int32_t height, bool fulls
   }
 }
 
-window::operator SDL_Window *() { return _window.get(); }
+window::operator SDL_Window *() {
+  return _window.get();
+}
 
 const std::shared_ptr<renderer> window::create_renderer() const {
   return std::make_shared<renderer>(&*_window);
