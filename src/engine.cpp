@@ -32,12 +32,12 @@ void engine::run() {
 
     _renderer->end_draw();
 
+    std::for_each(_loopables.begin(), _loopables.end(),
+                  std::bind(&loopable::loop, std::placeholders::_1, delta));
+
     const auto delta = SDL_GetTicks() - now;
     if (delta < DELAY_MS) {
       SDL_Delay(DELAY_MS - delta);
     }
-
-    std::for_each(_loopables.begin(), _loopables.end(),
-                  std::bind(&loopable::loop, std::placeholders::_1, delta));
   }
 }
