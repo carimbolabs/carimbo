@@ -7,7 +7,7 @@
 
 class window {
 public:
-  window(std::string_view title, uint64_t width, uint64_t height);
+  window(std::string_view title, int32_t width, int32_t height, bool fullscreen);
   ~window() = default;
 
   operator SDL_Window *();

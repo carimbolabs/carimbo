@@ -5,8 +5,8 @@ on:
     branches: main
   pull_request:
     branches: main
-  schedule:
-    - cron: "0 0 * * *"
+  # schedule:
+  #   - cron: "0 0 * * *"
 
 jobs:
   analyze:
@@ -26,14 +26,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.conan2/p
+
+      - name: Set up Python
+        if: matrix.language == 'cpp'
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+      - name: Conan build
+        if: matrix.language == 'cpp'
+        run: |
+          pip install -U conan
+          conan profile detect --force
+          mkdir build && cd build
+          conan build .. -s compiler.cppstd=20 -c user.build:all=True -b missing
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

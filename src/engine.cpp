@@ -3,8 +3,8 @@
 engine::engine() : _running(false) {
 }
 
-void engine::create_window(std::string_view title, const uint32_t width, const uint32_t height) {
-  _window = std::make_shared<window>(title, width, height);
+void engine::create_window(std::string_view title, int32_t width, int32_t height, bool fullscreen) {
+  _window = std::make_shared<window>(title, width, height, fullscreen);
   _renderer = _window->create_renderer();
 }
 

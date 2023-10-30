@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.conan2
+            ~/.conan2/p
           key: ${{ runner.os }}
 
       - name: Prepare Build Directory

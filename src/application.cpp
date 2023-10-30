@@ -10,7 +10,7 @@ int application::run() {
   try {
     filesystem::mount("bundle.zip", "/");
     engine engine;
-    engine.create_window("Carimbo", 640, 480);
+    engine.create_window("Carimbo", 640, 480, true);
     engine.run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;

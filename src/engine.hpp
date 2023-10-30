@@ -12,7 +12,7 @@ public:
   engine();
   ~engine() = default;
 
-  void create_window(std::string_view title, const uint32_t width, const uint32_t height);
+  void create_window(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
 
   void add_loopable(const loopable &loopable, const uint64_t priority);
 
