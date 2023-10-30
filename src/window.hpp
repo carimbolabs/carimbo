@@ -3,16 +3,19 @@
 #define _window_hpp
 
 #include "common.hpp"
+#include "renderer.hpp"
 
 class window {
 public:
-  window(const std::string &title, uint64_t width, uint64_t height);
-  ~window();
+  window(std::string_view title, uint64_t width, uint64_t height);
+  ~window() = default;
+
+  operator SDL_Window *();
 
   const std::shared_ptr<renderer> create_renderer() const;
 
 private:
-  SDL_Window *_window;
+  std::unique_ptr<SDL_Window, SDL_Deleter> _window;
 };
 
 #endif

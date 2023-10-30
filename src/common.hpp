@@ -15,4 +15,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "constants.hpp"
+#include "deleters.hpp"
+#include "types.hpp"
+
 #endif

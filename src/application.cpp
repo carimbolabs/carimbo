@@ -9,30 +9,9 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     filesystem::mount("bundle.zip", "/");
-    window w("Carimbo", 640, 480);
-    const auto r = w.create_renderer();
-    auto pp = pixmappool(r);
-    // const auto p1 = pp.get("image.avif");
-    const auto p2 = pp.get("logo.avif");
-    // const auto p3 = pp.get("image.avif");
-
-    bool quit = false;
-    SDL_Event e;
-    while (!quit) {
-      while (SDL_PollEvent(&e) != 0) {
-        if (e.type == SDL_QUIT) {
-          quit = true;
-        }
-      }
-
-      r->begin_draw();
-
-      // p1->draw(0, 0);
-      p2->draw(0, 0);
-
-      r->end_draw();
-    }
-
+    engine engine;
+    engine.create_window("Carimbo", 640, 480);
+    engine.run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

@@ -3,9 +3,6 @@
 #define _renderer_hpp
 
 #include "common.hpp"
-#include "deleters.hpp"
-
-typedef std::unique_ptr<SDL_Renderer, SDL_Deleter> renderer_ptr;
 
 class renderer {
 public:
@@ -19,7 +16,7 @@ public:
   void end_draw();
 
 private:
-  renderer_ptr _renderer;
+  std::unique_ptr<SDL_Renderer, SDL_Deleter> _renderer;
 
   uint32_t _time;
 };

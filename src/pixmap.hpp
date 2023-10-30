@@ -3,7 +3,6 @@
 #define _pixmap_hpp
 
 #include "common.hpp"
-#include "deleters.hpp"
 #include "file.hpp"
 #include "renderer.hpp"
 
