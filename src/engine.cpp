@@ -19,8 +19,7 @@ void engine::run() {
 
   SDL_Event event;
   while (_running) {
-    _time = SDL_GetTicks();
-
+    const auto now = SDL_GetTicks();
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
         _running = false;
@@ -33,7 +32,7 @@ void engine::run() {
 
     _renderer->end_draw();
 
-    const auto delta = SDL_GetTicks() - _time;
+    const auto delta = SDL_GetTicks() - now;
     if (delta < DELAY_MS) {
       SDL_Delay(DELAY_MS - delta);
     }

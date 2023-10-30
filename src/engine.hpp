@@ -23,8 +23,6 @@ public:
 private:
   bool _running;
 
-  uint32_t _time;
-
   std::list<std::shared_ptr<loopable>> _loopables;
   std::shared_ptr<window> _window;
   std::shared_ptr<renderer> _renderer;
