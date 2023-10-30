@@ -14,14 +14,13 @@ void scriptengine::run() {
                            "init", &motor::init,
                            "run", &motor::run);
 
-  const script = file::load("scripts/main.lua");
+  const auto script = file::read("scripts/main.lua");
 
-  const auto script = R"(
-    local m = motor.new()
+  _lua.script(std::string(script.begin(), script.end()));
+  // const auto script = R"(
+  // local m = motor.new()
 
-    m:init("Carimbo", 800, 600)
-    m:run()
-  )";
-
-  _lua.script(script);
+  // m:init("Carimbo", 800, 600)
+  // m:run()
+  // )";
 }
