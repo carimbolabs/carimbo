@@ -2,14 +2,21 @@
 
 void eventmanager::update() {
   SDL_Event event;
+
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
     case SDL_QUIT:
-      exit(0);
+      std::for_each(_receivers.begin(), _receivers.end(),
+                    std::bind(&eventreceiver::on_quit, std::placeholders::_1));
       break;
     }
-    // if (event.type == SDL_QUIT) {
-    //   _running = false;
-    // }
   }
+}
+
+void eventmanager::add_receiver(std::shared_ptr<eventreceiver> receiver) {
+  _receivers.emplace_back(receiver);
+}
+
+void eventmanager::remove_receiver(std::shared_ptr<eventreceiver> receiver) {
+  _receivers.remove(receiver);
 }

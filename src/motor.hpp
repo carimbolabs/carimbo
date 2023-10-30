@@ -4,24 +4,31 @@
 
 #include "common.hpp"
 #include "eventmanager.hpp"
+#include "eventreceiver.hpp"
 #include "framerate.hpp"
 #include "loopable.hpp"
 #include "noncopyable.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
-class engine : private noncopyable {
+class motor : public eventreceiver, public std::enable_shared_from_this<motor> {
 public:
-  engine();
-  ~engine() = default;
+  virtual ~motor() = default;
 
-  void create(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
+  static std::shared_ptr<motor> make();
+
+  void init(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
 
   void add_loopable(std::shared_ptr<loopable> loopable);
 
   void run();
 
+protected:
+  virtual void on_quit() override;
+
 private:
+  motor() = default;
+
   bool _running;
 
   std::list<std::shared_ptr<loopable>> _loopables;

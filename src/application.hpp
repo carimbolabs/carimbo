@@ -3,10 +3,10 @@
 #define _application_hpp
 
 #include "common.hpp"
-#include "engine.hpp"
 #include "filesystem.hpp"
 #include "noncopyable.hpp"
 #include "pixmappool.hpp"
+#include "scriptengine.hpp"
 
 class application : private noncopyable {
 public:
