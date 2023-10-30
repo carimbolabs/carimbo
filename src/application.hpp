@@ -5,14 +5,15 @@
 #include "common.hpp"
 #include "engine.hpp"
 #include "filesystem.hpp"
+#include "noncopyable.hpp"
 #include "pixmappool.hpp"
 
-class application {
+class application : private noncopyable {
 public:
   application(int argc, char **argv);
-  ~application();
+  virtual ~application();
 
-  int run();
+  auto run() -> int;
 };
 
 #endif

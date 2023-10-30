@@ -6,7 +6,7 @@ application::application(int argc, char **argv) {
   PHYSFS_init(argv[0]);
 }
 
-int application::run() {
+auto application::run() -> int {
   try {
     filesystem::mount("bundle.zip", "/");
     engine engine;
