@@ -9,8 +9,8 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     filesystem::mount("bundle.zip", "/");
-    auto ss = scriptengine();
-    ss.exec();
+    auto se = scriptengine();
+    se.exec();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;
