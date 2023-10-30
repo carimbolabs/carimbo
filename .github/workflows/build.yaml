@@ -1,0 +1,78 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: true
+
+      matrix:
+        config:
+          - name: macOS
+            binary: build/carimbo
+            os: macos-latest
+          - name: Ubuntu
+            binary: build/carimbo
+            os: ubuntu-latest
+          - name: Windows
+            binary: build/Release/carimbo.exe
+            os: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.conan2/p
+            ~\.conan/p
+          key: ${{ runner.os }}
+
+      - name: Prepare Build Directory
+        run: mkdir build
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Conan
+        run: pip install conan
+
+      - name: Detect Conan profile
+        run: conan profile detect --force
+
+      - name: Install Ubuntu Dependencies
+        if: matrix.config.name == 'Ubuntu'
+        run: sudo apt-get install -y libegl-dev libegl1-mesa-dev libva-dev libvdpau-dev libx11-xcb-dev libfontenc-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxfixes-dev libxi-dev libxinerama-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxres-dev libxss-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-dri3-dev libxcb-cursor-dev libxcb-util-dev
+
+      - name: Install Dependencies
+        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=20 --settings build_type=Release
+        working-directory: build
+
+      - name: Configure
+        run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
+        working-directory: build
+
+      - name: Build
+        run: cmake --build . --config Release
+        working-directory: build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.config.name }}
+          path: ${{ matrix.config.binary }}
+          if-no-files-found: error
