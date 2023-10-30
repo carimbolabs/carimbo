@@ -3,7 +3,7 @@
 const std::vector<uint8_t> file::read(const std::string &filename) {
   const auto fp = PHYSFS_openRead(filename.c_str());
   if (fp == nullptr) {
-    throw std::runtime_error(fmt::format("[PHYSFS_openRead] Error while opening file: '{}', error: '{}'", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+    throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
   PHYSFS_sint64 length = PHYSFS_fileLength(fp);

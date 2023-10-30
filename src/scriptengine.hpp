@@ -12,7 +12,7 @@ public:
   scriptengine() = default;
   virtual ~scriptengine() = default;
 
-  void exec();
+  void run();
 
 private:
   sol::state _lua;

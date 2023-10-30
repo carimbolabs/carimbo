@@ -1,6 +1,6 @@
 #include "scriptengine.hpp"
 
-void scriptengine::exec() {
+void scriptengine::run() {
   _lua.open_libraries(
       sol::lib::base,
       sol::lib::package,
