@@ -11,16 +11,9 @@ renderer::operator SDL_Renderer *() {
 }
 
 void renderer::begin_draw() {
-  _time = SDL_GetTicks();
-
   SDL_RenderClear(*this);
 }
 
 void renderer::end_draw() {
   SDL_RenderPresent(*this);
-
-  const auto delta = SDL_GetTicks() - _time;
-  if (delta < DELAY_MS) {
-    SDL_Delay(DELAY_MS - delta);
-  }
 }
