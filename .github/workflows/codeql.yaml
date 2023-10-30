@@ -28,8 +28,8 @@ jobs:
 
       - name: Cache Dependencies
         uses: actions/cache@v3
-        key: ${{ runner.os }}
         with:
+          key: ${{ runner.os }}
           path: |
             ~/.conan2/p
 
