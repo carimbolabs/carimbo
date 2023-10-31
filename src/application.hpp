@@ -7,7 +7,6 @@
 #include "noncopyable.hpp"
 #include "pixmappool.hpp"
 #include "scriptengine.hpp"
-#include "timer.hpp"
 
 class application : private noncopyable {
 public:

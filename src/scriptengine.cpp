@@ -14,7 +14,16 @@ void scriptengine::run() {
                            "init", &motor::init,
                            "run", &motor::run);
 
-  const auto script = io::read("scripts/main.lua");
+  _lua.set_function("set", &timermanager::set, &_timermanager);
 
-  _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+  const auto script = R"(
+    local motor = motor.new()
+    motor:init("Carimbo", 800, 600)
+    motor:run()
+  )";
+
+  // const auto script = io::read("scripts/main.lua");
+  // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+
+  _lua.script(script);
 }

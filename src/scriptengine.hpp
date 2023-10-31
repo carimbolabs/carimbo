@@ -6,6 +6,7 @@
 #include "io.hpp"
 #include "motor.hpp"
 #include "noncopyable.hpp"
+#include "timermanager.hpp"
 
 class scriptengine : private noncopyable {
 public:
@@ -16,6 +17,8 @@ public:
 
 private:
   sol::state _lua;
+
+  timermanager _timermanager;
 };
 
 #endif

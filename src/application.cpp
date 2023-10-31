@@ -8,12 +8,7 @@ application::application(int argc, char **argv) {
 
 int application::run() {
   try {
-    timer t;
-    t.set(1000, []() {
-      std::cout << "ping" << std::endl;
-    });
-
-    filesystem::mount("bundle.zip", "/");
+    // filesystem::mount("bundle.zip", "/");
     auto se = scriptengine();
     se.run();
   } catch (const std::exception &e) {
