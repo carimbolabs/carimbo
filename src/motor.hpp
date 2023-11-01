@@ -15,6 +15,7 @@
 class motor : public eventreceiver, public singleton<motor> {
 public:
   virtual ~motor() = default;
+  motor();
 
   // static std::shared_ptr<motor> instance();
 

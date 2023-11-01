@@ -24,7 +24,7 @@ void scriptengine::run() {
   _lua.set_function("is_keydown", &statemanager::is_keydown, sm);
 
   const auto m = motor::instance();
-  // m->get_eventmanager()->add_receiver(sm);
+  m->get_eventmanager()->add_receiver(sm);
 
   _lua.new_usertype<motor>("motor",
                            "new", sol::factories(&motor::instance),
@@ -39,8 +39,6 @@ void scriptengine::run() {
   const auto script = R"(
     local motor = motor.new()
     motor:init("Carimbo", 800, 600, false)
-
-    print(is_keydown(keyevent.a))
 
     motor:run()
   )";

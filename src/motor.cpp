@@ -1,17 +1,13 @@
 #include "motor.hpp"
 
-// std::shared_ptr<motor> motor::instance() {
-//   static std::shared_ptr<motor> instance(new motor());
-
-//   return instance;
-// }
+motor::motor() : _eventmanager(std::make_shared<eventmanager>()) {
+}
 
 void motor::init(std::string_view title, int32_t width, int32_t height, bool fullscreen) {
   _running = true;
   _window = std::make_shared<window>(title, width, height, fullscreen);
   _renderer = _window->create_renderer();
 
-  _eventmanager = std::make_shared<eventmanager>();
   _eventmanager->add_receiver(instance());
 
   add_loopable(std::make_shared<framerate>());
