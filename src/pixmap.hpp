@@ -10,7 +10,7 @@ typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
 
 class pixmap {
 public:
-  pixmap(const std::shared_ptr<renderer> renderer, const std::string &filename);
+  pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename);
   ~pixmap() = default;
 
   void draw(const int x, const int y) const;

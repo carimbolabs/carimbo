@@ -2,11 +2,13 @@
 #ifndef _application_hpp
 #define _application_hpp
 
+#include "audiomanager.hpp"
 #include "common.hpp"
 #include "filesystem.hpp"
 #include "noncopyable.hpp"
 #include "pixmappool.hpp"
 #include "scriptengine.hpp"
+#include "timermanager.hpp"
 
 class application : private noncopyable {
 public:

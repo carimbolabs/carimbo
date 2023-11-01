@@ -1,6 +1,6 @@
 #include "pixmap.hpp"
 
-pixmap::pixmap(const std::shared_ptr<renderer> renderer, const std::string &filename) : _renderer(renderer) {
+pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename) : _renderer(renderer) {
   const auto buffer = io::read(filename);
   const auto decoder = avifDecoderCreate();
   auto result = avifResult{};

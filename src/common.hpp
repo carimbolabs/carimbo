@@ -2,18 +2,24 @@
 #ifndef _common_hpp
 #define _common_hpp
 
+// #define SOL_ALL_SAFETIES_ON 1
+
+extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>
-#include <fmt/core.h>
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
 #include <physfs.h>
-#include <sol/sol.hpp>
+}
 
-#include <cassert>
+#include <fmt/core.h>
 #include <iostream>
 #include <list>
 #include <map>
 #include <memory>
+#include <mutex>
+#include <sol/sol.hpp>
 #include <string>
 #include <unordered_map>
 

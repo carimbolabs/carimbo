@@ -9,6 +9,9 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     // filesystem::mount("bundle.zip", "/");
+    // audiomanager am;
+    // am.play("music.aac");
+
     auto se = scriptengine();
     se.run();
   } catch (const std::exception &e) {

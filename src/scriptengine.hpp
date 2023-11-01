@@ -3,10 +3,11 @@
 #define _scriptengine_hpp
 
 #include "common.hpp"
+#include "eventreceiver.hpp"
 #include "io.hpp"
 #include "motor.hpp"
 #include "noncopyable.hpp"
-#include "timermanager.hpp"
+#include "statemanager.hpp"
 
 class scriptengine : private noncopyable {
 public:
@@ -17,8 +18,6 @@ public:
 
 private:
   sol::state _lua;
-
-  timermanager _timermanager;
 };
 
 #endif

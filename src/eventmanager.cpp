@@ -9,6 +9,12 @@ void eventmanager::update() {
       std::for_each(_receivers.begin(), _receivers.end(),
                     std::bind(&eventreceiver::on_quit, std::placeholders::_1));
       break;
+    case SDL_KEYDOWN:
+      // keyevent e(event.key.keysym.sym);
+
+      std::for_each(_receivers.begin(), _receivers.end(),
+                    std::bind(&eventreceiver::on_keydown, std::placeholders::_1, keyevent(event.key.keysym.sym)));
+      break;
     }
   }
 }

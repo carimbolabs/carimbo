@@ -3,6 +3,7 @@
 #define _eventmanager_hpp_
 
 #include "common.hpp"
+#include "event.hpp"
 #include "eventreceiver.hpp"
 #include "noncopyable.hpp"
 
