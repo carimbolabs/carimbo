@@ -3,9 +3,10 @@
 #define _scriptengine_hpp
 
 #include "common.hpp"
+#include "engine.hpp"
+#include "enginefactory.hpp"
 #include "eventreceiver.hpp"
 #include "io.hpp"
-#include "motor.hpp"
 #include "noncopyable.hpp"
 #include "statemanager.hpp"
 
@@ -15,9 +16,6 @@ public:
   virtual ~scriptengine() = default;
 
   void run();
-
-private:
-  sol::state _lua;
 };
 
 #endif

@@ -14,6 +14,11 @@ int application::run() {
 
     auto se = scriptengine();
     se.run();
+
+    // auto factory = enginefactory().set_title("Carimbo").set_width(800).set_height(600).set_fullscreen(false);
+
+    // auto e = factory.create();
+    // e->run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

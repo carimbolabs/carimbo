@@ -12,16 +12,20 @@
 #include "singleton.hpp"
 #include "window.hpp"
 
-class motor : public eventreceiver, public singleton<motor> {
+class engine : public eventreceiver, public singleton<engine> {
 public:
-  virtual ~motor() = default;
-  motor();
+  virtual ~engine() = default;
+
+  static std::shared_ptr<engine> create(const std::string &title, int32_t width, int32_t height, bool fullscreen);
+  // engine();
 
   // static std::shared_ptr<motor> instance();
 
-  void init(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
+  // void ignite(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
 
   void add_loopable(std::shared_ptr<loopable> loopable);
+
+  void set_eventmanager(std::shared_ptr<eventmanager> eventmanager);
 
   const std::shared_ptr<eventmanager> get_eventmanager() const;
 
@@ -33,6 +37,10 @@ protected:
   virtual void on_keydown(const keyevent &event) override;
 
 private:
+  friend class enginefactory;
+
+  engine(std::string_view title, int32_t width, int32_t height, bool fullscreen = false);
+
   bool _running;
 
   std::list<std::shared_ptr<loopable>> _loopables;

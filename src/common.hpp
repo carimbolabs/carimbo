@@ -19,7 +19,7 @@ extern "C" {
 #include <map>
 #include <memory>
 #include <mutex>
-#include <sol/sol.hpp>
+#include <pybind11/embed.h>
 #include <string>
 #include <unordered_map>
 

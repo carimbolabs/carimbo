@@ -1,50 +1,83 @@
 #include "scriptengine.hpp"
 
+namespace py = pybind11;
+
+// class Person {
+// public:
+//   virtual void say() = 0;
+//   virtual ~Person() = default;
+// };
+
+// class PyPerson : public Person {
+// public:
+//   using Person::Person;
+
+//   virtual void say() override {
+//     PYBIND11_OVERRIDE_PURE(
+//         void,
+//         Person,
+//         say);
+//   }
+// };
+
+// class World {
+// public:
+//   void add(std::shared_ptr<Person> person) {
+//     people.push_back(person);
+//   }
+
+//   void all() {
+//     for (const auto &person : people) {
+//       person->say();
+//     }
+//   }
+
+// private:
+//   std::list<std::shared_ptr<Person>> people;
+// };
+
+// PYBIND11_EMBEDDED_MODULE(carimbo, m) {
+//   py::class_<Person, PyPerson, std::shared_ptr<Person>>(m, "Person")
+//       .def(py::init<>())
+//       .def("say", &Person::say);
+
+//   py::class_<World>(m, "World")
+//       .def(py::init<>())
+//       .def("add", &World::add)
+//       .def("all", &World::all);
+// }
+
+PYBIND11_EMBEDDED_MODULE(carimbo, module) {
+  py::class_<engine, std::shared_ptr<engine>>(module, "Engine")
+      .def("run", &engine::run);
+
+  py::class_<enginefactory>(module, "EngineFactory")
+      .def(py::init<>())
+      .def("set_title", &enginefactory::set_title, py::return_value_policy::reference)
+      .def("set_width", &enginefactory::set_width, py::return_value_policy::reference)
+      .def("set_height", &enginefactory::set_height, py::return_value_policy::reference)
+      .def("set_fullscreen", &enginefactory::set_fullscreen, py::return_value_policy::reference)
+      .def("create", &enginefactory::create);
+}
+
 void scriptengine::run() {
-  _lua.open_libraries(
-      sol::lib::base,
-      sol::lib::package,
-      sol::lib::string,
-      sol::lib::math,
-      sol::lib::table,
-      sol::lib::debug);
+  py::scoped_interpreter guard{};
 
-  _lua.new_enum("keyevent",
-                "a", keyevent::a,
-                "d", keyevent::d,
-                "s", keyevent::s,
-                "w", keyevent::w);
+  py::exec(R"(
+    from carimbo import *
 
-  // const auto m = motor::make();
+    engine = (
+        EngineFactory()
+        .set_title("Carimbo")
+        .set_width(800)
+        .set_height(600)
+        .set_fullscreen(False)
+        .create()
+    )
 
-  // m->get_eventmanager()->add_receiver(sm);
+    engine.run()
+  )");
 
-  const auto sm = std::shared_ptr<statemanager>(new statemanager());
-
-  _lua.set_function("is_keydown", &statemanager::is_keydown, sm);
-
-  const auto m = motor::instance();
-  m->get_eventmanager()->add_receiver(sm);
-
-  _lua.new_usertype<motor>("motor",
-                           "new", sol::factories(&motor::instance),
-                           "add_loopable", &motor::add_loopable,
-                           "init", &motor::init,
-                           "run", &motor::run);
-
-  // _lua.new_usertype<eventreceiver>("eventreceiver",
-  //                                  "on_quit", &eventreceiver::on_quit,
-  //                                  "on_keydown", &eventreceiver::on_keydown);
-
-  const auto script = R"(
-    local motor = motor.new()
-    motor:init("Carimbo", 800, 600, false)
-
-    motor:run()
-  )";
-
-  // const auto script = io::read("scripts/main.lua");
   // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
-
-  _lua.script(script);
+  // _lua.script(script);
 }
