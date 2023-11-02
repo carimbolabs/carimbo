@@ -2,8 +2,6 @@
 #ifndef _common_hpp
 #define _common_hpp
 
-// #define SOL_ALL_SAFETIES_ON 1
-
 extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
@@ -13,15 +11,17 @@ extern "C" {
 #include <physfs.h>
 }
 
-#include <fmt/core.h>
+#include <algorithm>
 #include <iostream>
 #include <list>
 #include <map>
 #include <memory>
 #include <mutex>
-#include <pybind11/embed.h>
 #include <string>
 #include <unordered_map>
+
+#include <fmt/core.h>
+#include <pybind11/embed.h>
 
 #include "constants.hpp"
 #include "deleters.hpp"
