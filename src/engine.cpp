@@ -1,33 +1,7 @@
 #include "engine.hpp"
 
-// engine::engine() : _eventmanager(std::make_shared<eventmanager>()) {
-// }
-
-engine::engine(std::string_view title, int32_t width, int32_t height, bool fullscreen) : _running(true) {
-  _window = std::make_shared<window>(title, width, height, fullscreen);
-  _renderer = _window->create_renderer();
-
-  //
-
+engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
-}
-
-std::shared_ptr<engine> engine::create(const std::string &title, int32_t width, int32_t height, bool fullscreen) {
-  return std::shared_ptr<engine>(new engine(title, width, height, fullscreen));
-}
-
-// void engine::ignite(std::string_view title, int32_t width, int32_t height, bool fullscreen) {
-//   _running = true;
-//   _window = std::make_shared<window>(title, width, height, fullscreen);
-//   _renderer = _window->create_renderer();
-
-//   // _eventmanager->add_receiver(instance());
-
-//   add_loopable(std::make_shared<framerate>());
-// }
-
-void engine::add_loopable(std::shared_ptr<loopable> loopable) {
-  _loopables.emplace_back(loopable);
 }
 
 void engine::run() {
@@ -46,13 +20,32 @@ void engine::run() {
   }
 }
 
+void engine::set_window(std::shared_ptr<window> window) {
+  _window = window;
+}
+
+const std::shared_ptr<window> engine::get_window() const {
+  return _window;
+}
+
+void engine::set_renderer(std::shared_ptr<renderer> renderer) {
+  _renderer = renderer;
+}
+
+const std::shared_ptr<renderer> engine::get_renderer() const {
+  return _renderer;
+}
+
 void engine::set_eventmanager(std::shared_ptr<eventmanager> eventmanager) {
   _eventmanager = eventmanager;
-  // _eventmanager->add_receiver(std::make_shared<engine>(*this));
 }
 
 const std::shared_ptr<eventmanager> engine::get_eventmanager() const {
   return _eventmanager;
+}
+
+void engine::add_loopable(std::shared_ptr<loopable> loopable) {
+  _loopables.emplace_back(loopable);
 }
 
 void engine::on_quit() {
@@ -62,5 +55,4 @@ void engine::on_quit() {
 void engine::on_keydown(const keyevent &event) {
   std::cout << "on_keydown: " << static_cast<int32_t>(event) << std::endl;
   std::cout << "is_equal: " << (event == keyevent::a) << std::endl;
-  // std::cout << "event.key: " << event.key << std::endl;
 }

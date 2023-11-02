@@ -21,9 +21,16 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
+  const auto w = std::make_shared<window>(_title, _width, _height, _fullscreen);
+  const auto r = w->create_renderer();
   const auto em = std::make_shared<eventmanager>();
-  const auto e = engine::create(_title, _width, _height, _fullscreen);
+
+  const auto e = std::make_shared<engine>();
+
+  e->set_window(w);
+  e->set_renderer(r);
   e->set_eventmanager(em);
+
   em->add_receiver(e);
 
   return e;
