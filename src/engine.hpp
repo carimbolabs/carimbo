@@ -3,6 +3,7 @@
 #define _engine_hpp
 
 #include "common.hpp"
+#include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "eventreceiver.hpp"
 #include "framerate.hpp"
@@ -25,6 +26,12 @@ public:
 
   const std::shared_ptr<renderer> get_renderer() const;
 
+  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
+
+  const std::shared_ptr<entitymanager> get_entitymanager() const;
+
+  const std::shared_ptr<entity> spawn();
+
   void set_eventmanager(std::shared_ptr<eventmanager> eventmanager);
 
   const std::shared_ptr<eventmanager> get_eventmanager() const;
@@ -44,6 +51,7 @@ private:
   std::list<std::shared_ptr<loopable>> _loopables;
   std::shared_ptr<window> _window;
   std::shared_ptr<renderer> _renderer;
+  std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<eventmanager> _eventmanager;
 };
 

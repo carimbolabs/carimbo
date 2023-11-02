@@ -1,6 +1,6 @@
 #include "entitymanager.hpp"
 
-std::shared_ptr<entity> entitymanager::spwan() {
+std::shared_ptr<entity> entitymanager::spawn() {
   const auto id = "TODO"; //
   const auto e = std::make_shared<entity>();
   _entities.emplace_back(e);

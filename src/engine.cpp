@@ -9,7 +9,9 @@ void engine::run() {
     const auto now = SDL_GetTicks();
 
     _eventmanager->update();
+    _entitymanager->update();
     _renderer->begin();
+    _entitymanager->draw();
     // _scenegraph->render();
     _renderer->end();
 
@@ -42,6 +44,18 @@ void engine::set_eventmanager(std::shared_ptr<eventmanager> eventmanager) {
 
 const std::shared_ptr<eventmanager> engine::get_eventmanager() const {
   return _eventmanager;
+}
+
+void engine::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
+  _entitymanager = entitymanager;
+}
+
+const std::shared_ptr<entitymanager> engine::get_entitymanager() const {
+  return _entitymanager;
+}
+
+const std::shared_ptr<entity> engine::spawn() {
+  return _entitymanager->spawn();
 }
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {

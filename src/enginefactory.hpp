@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 #include "engine.hpp"
+#include "entitymanager.hpp"
 #include "eventmanager.hpp"
 
 class enginefactory {

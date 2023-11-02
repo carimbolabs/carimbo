@@ -10,7 +10,7 @@ public:
   entitymanager() = default;
   ~entitymanager() = default;
 
-  std::shared_ptr<entity> spwan();
+  std::shared_ptr<entity> spawn();
 
   void destroy(std::shared_ptr<entity> entity);
 

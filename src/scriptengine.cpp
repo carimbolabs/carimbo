@@ -93,9 +93,10 @@ void scriptengine::run() {
   //     "add_person", &World::add_person,
   //     "say", &World::say);
 
-  /* sol::usertype<engine> engine_type = */ lua.new_usertype<engine>(
+  lua.new_usertype<engine>(
       "Engine",
-      "run", &engine::run);
+      "run", &engine::run,
+      "spawn", &engine::spawn);
 
   lua.new_usertype<enginefactory>(
       "EngineFactory",
@@ -105,6 +106,11 @@ void scriptengine::run() {
       "set_height", &enginefactory::set_height,
       "set_fullscreen", &enginefactory::set_fullscreen,
       "create", &enginefactory::create);
+
+  lua.new_usertype<entity>(
+      "Entity",
+      "on_update", &entity::set_fn);
+  //"set_id", &entity::set_id);
 
   lua.script(R"(
     local world = World.new()
@@ -133,7 +139,14 @@ void scriptengine::run() {
       :set_fullscreen(false)
       :create()
 
-    engine:run()  
+    local entity = engine:spawn()
+    entity:on_update(function(self)
+      print("update")
+    end)
+
+    print(entity)
+
+    engine:run()
   )");
 
   /*

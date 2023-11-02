@@ -15,10 +15,11 @@ public:
 
   std::string get_id() const { return _id; }
 
-  void set_id(const std::string &id) { _id = id; }
+  void set_fn(const std::function<void(std::shared_ptr<entity>)> &fn);
 
 private:
   std::string _id;
+  std::function<void(std::shared_ptr<entity>)> _fn;
 };
 
 #endif
