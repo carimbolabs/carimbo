@@ -22,6 +22,7 @@ extern "C" {
 
 #include <fmt/core.h>
 #include <pybind11/embed.h>
+#include <sol/sol.hpp>
 
 #include "constants.hpp"
 #include "deleters.hpp"

@@ -61,21 +61,56 @@ PYBIND11_EMBEDDED_MODULE(carimbo, module) {
 }
 
 void scriptengine::run() {
-  py::scoped_interpreter guard{};
+  // py::scoped_interpreter guard{};
 
-  py::exec(R"(
-    from carimbo import *
+  // py::exec(R"(
+  //   from carimbo import *
 
-    engine = (
-        EngineFactory()
-        .set_title("Carimbo")
-        .set_width(800)
-        .set_height(600)
-        .set_fullscreen(False)
-        .create()
-    )
+  //   engine = (
+  //       EngineFactory()
+  //       .set_title("Carimbo")
+  //       .set_width(800)
+  //       .set_height(600)
+  //       .set_fullscreen(False)
+  //       .create()
+  //   )
 
-    engine.run()
+  //   engine.run()
+  // )");
+
+  sol::state lua;
+
+  // lua.open_libraries(
+  //     sol::lib::base,
+  //     sol::lib::package,
+  //     sol::lib::string,
+  //     sol::lib::math,
+  //     sol::lib::table,
+  //     sol::metatable);
+
+  lua.open_libraries(sol::lib::base);
+
+  sol::usertype<engine> engine_type = lua.new_usertype<engine>(
+      "Engine",
+      "run", &engine::run);
+
+  sol::usertype<enginefactory> enginefactory_type = lua.new_usertype<enginefactory>(
+      "EngineFactory",
+      sol::constructors<enginefactory()>(),
+      "set_title", &enginefactory::set_title,
+      "set_width", &enginefactory::set_width,
+      "set_height", &enginefactory::set_height,
+      "set_fullscreen", &enginefactory::set_fullscreen,
+      "create", &enginefactory::create);
+
+  lua.script(R"(
+    factory = EngineFactory.new()
+    factory:set_title("Carimbo")
+    factory:set_width(800)
+    factory:set_height(600)
+    factory:set_fullscreen(false)
+    engine = factory:create()
+    engine:run()
   )");
 
   // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
