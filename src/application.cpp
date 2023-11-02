@@ -9,16 +9,8 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     // filesystem::mount("bundle.zip", "/");
-    // audiomanager am;
-    // am.play("music.aac");
-
     auto se = scriptengine();
     se.run();
-
-    // auto factory = enginefactory().set_title("Carimbo").set_width(800).set_height(600).set_fullscreen(false);
-
-    // auto e = factory.create();
-    // e->run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

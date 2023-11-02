@@ -4,7 +4,7 @@ class Person : public std::enable_shared_from_this<Person> {
 public:
   Person(std::string name) : name(name) {}
 
-  void set_sayfn(std::function<void(std::shared_ptr<Person>, std::string)> on_say) {
+  void set_sayfn(const std::function<void(std::shared_ptr<Person>, std::string)> &on_say) {
     on_say_ = on_say;
   }
 
