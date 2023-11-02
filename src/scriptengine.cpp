@@ -136,7 +136,6 @@ void scriptengine::run() {
       :set_title("Carimbo")
       :set_width(800)
       :set_height(600)
-      :set_fullscreen(false)
       :create()
 
     local entity = engine:spawn()

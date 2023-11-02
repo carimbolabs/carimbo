@@ -10,6 +10,7 @@
 #include "loopable.hpp"
 #include "noncopyable.hpp"
 #include "renderer.hpp"
+#include "resourcemanager.hpp"
 #include "singleton.hpp"
 #include "window.hpp"
 

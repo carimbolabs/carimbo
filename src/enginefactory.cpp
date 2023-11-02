@@ -25,7 +25,7 @@ std::shared_ptr<engine> enginefactory::create() {
   const auto r = w->create_renderer();
   const auto em1 = std::make_shared<eventmanager>();
   const auto em2 = std::make_shared<entitymanager>();
-  const auto rm = std::make_shared<resourcemanager>();
+  const auto rm = std::make_shared<resourcemanager>(r);
 
   const auto e = std::make_shared<engine>();
 
