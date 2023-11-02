@@ -164,12 +164,12 @@ void scriptengine::run() {
   lua.script(R"(
     local world = World.new()
 
-    local person = Person.new("Person 1")
+    local person = Person.new("Person 11")
     person:set_on_say(function(name)
       print("Person 1: " .. name)
     end)
 
-    local person2 = Person.new("Person 2")
+    local person2 = Person.new("Person 22")
     person2:set_on_say(function(name)
       print("Person 2: " .. name)
     end)
@@ -177,6 +177,15 @@ void scriptengine::run() {
     world:add_person(person)
     world:add_person(person2)
     world:say()
+
+    local engine = EngineFactory.new()
+      :set_title("Carimbo")
+      :set_width(800)
+      :set_height(600)
+      :set_fullscreen(false)
+      :create()
+
+    engine:run()  
   )");
 
   /*
