@@ -141,7 +141,7 @@ void scriptengine::run() {
 
     local entity = engine:spawn()
     entity:on_update(function(self)
-      print("update")
+      -- print("update")
     end)
 
     print(entity)

@@ -7,7 +7,10 @@
 class entity : public std::enable_shared_from_this<entity> {
 public:
   entity() = default;
-  ~entity() = default;
+  // ~entity() = default;
+  virtual ~entity() {
+    std::cout << "entity::~entity()" << std::endl;
+  }
 
   virtual void update();
 
