@@ -2,6 +2,8 @@
 #ifndef _common_hpp
 #define _common_hpp
 
+#define SOL_ALL_SAFETIES_ON 1
+
 extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
