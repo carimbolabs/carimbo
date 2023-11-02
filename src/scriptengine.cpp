@@ -1,86 +1,29 @@
 #include "scriptengine.hpp"
 
-// class Person {
-// public:
-//   virtual ~Person() = default;
-
-//   virtual void say() = 0;
-// };
-
-// class PersonWrapper : public Person {
-// public:
-//   PersonWrapper() = default;
-//   virtual ~PersonWrapper() = default;
-
-//   virtual void say() override {}
-// };
-
-// class World {
-// public:
-//   virtual ~World() = default;
-
-//   void add_person(std::shared_ptr<PersonWrapper> person) {
-//     _people.emplace_back(person);
-//   }
-
-//   void say() {
-//     std::for_each(_people.begin(), _people.end(), [](const auto &person) {
-//       person->say();
-//     });
-//   }
-
-// private:
-//   std::list<std::shared_ptr<PersonWrapper>> _people;
-//   // std::list<Person> _people;
-// };
-
-// class Humano {
-// public:
-//   Humano(std::string name) : name(name) {}
-//   virtual std::string getName() { return name; }
-
-// private:
-//   std::string name;
-// };
-
-// class Person : public Humano {
-// public:
-//   Person(std::string name) : Humano(name) {}
-//   std::string getName() override { return "Person: " + Humano::getName(); }
-// };
-
-// class PersonManager {
-// public:
-//   void add(std::shared_ptr<Humano> humano) {
-//     humanos.push_back(humano);
-//   }
-
-//   void printAllNames() {
-//     for (auto &humano : humanos) {
-//       std::cout << humano->getName() << std::endl;
-//     }
-//   }
-
-// private:
-//   std::vector<std::shared_ptr<Humano>> humanos;
-// };
-
 class Person : public std::enable_shared_from_this<Person> {
 public:
   Person(std::string name) : name(name) {}
 
-  void set_sayfn(std::function<void(std::string, std::shared_ptr<Person> self)> on_say) {
+  void set_sayfn(std::function<void(std::shared_ptr<Person>, std::string)> on_say) {
     on_say_ = on_say;
+  }
+
+  void doit() {
+    std::cout << "Do!" << std::endl;
+  }
+
+  std::string get_name() const {
+    return name;
   }
 
   void say() {
     if (on_say_) {
-      on_say_(name, shared_from_this());
+      on_say_(shared_from_this(), name);
     }
   }
 
   std::string name;
-  std::function<void(std::string, std::shared_ptr<Person>)> on_say_;
+  std::function<void(std::shared_ptr<Person>, std::string)> on_say_;
 };
 
 class World {
@@ -109,6 +52,8 @@ void scriptengine::run() {
                              return std::make_shared<Person>(name);
                            }),
                            "set_sayfn", &Person::set_sayfn,
+                           "doit", &Person::doit,
+                           "get_name", &Person::get_name,
                            "on_say", &Person::on_say_);
 
   lua.new_usertype<World>("World",
@@ -164,12 +109,21 @@ void scriptengine::run() {
   lua.script(R"(
     local world = World.new()
 
-    local person = Person.new("Person 11")
-    person:set_sayfn(function(name, self)
+    local person = Person.new("P1")
+    person:set_sayfn(function(self, name)
+      person:doit()
       print("Person 1: " .. name)
     end)
 
+
+    local person2 = Person.new("P2")
+
+    person2:set_sayfn(function(self, name)
+      print(self:get_name() .. " -> ".. "Person 2: " .. name)
+    end)
+
     world:add_person(person)
+    world:add_person(person2)
     world:say()
 
     local engine = EngineFactory.new()
