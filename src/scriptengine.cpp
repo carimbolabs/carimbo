@@ -114,6 +114,6 @@ void scriptengine::run() {
     engine:run()
   )");
 
+  // const script = file::read("scripts/main.lua");
   // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
-  // _lua.script(script);
 }
