@@ -1,10 +1,7 @@
 #include "entitymanager.hpp"
 
 std::shared_ptr<entity> entitymanager::spwan() {
-  const auto id = uuids::to_string(uuids::uuid_system_generator{}());
-
-  std::cout << "spwaning entity with id: " << id << std::endl;
-
+  const auto id = "TODO"; //
   const auto e = std::make_shared<entity>();
   _entities.emplace_back(e);
   return e;
