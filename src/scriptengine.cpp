@@ -65,23 +65,22 @@
 //   std::vector<std::shared_ptr<Humano>> humanos;
 // };
 
-class Person {
+class Person : public std::enable_shared_from_this<Person> {
 public:
   Person(std::string name) : name(name) {}
 
-  void set_on_say(std::function<void(std::string)> on_say) {
+  void set_sayfn(std::function<void(std::string, std::shared_ptr<Person> self)> on_say) {
     on_say_ = on_say;
   }
 
   void say() {
     if (on_say_) {
-      on_say_(name);
+      on_say_(name, shared_from_this());
     }
   }
 
-private:
   std::string name;
-  std::function<void(std::string)> on_say_;
+  std::function<void(std::string, std::shared_ptr<Person>)> on_say_;
 };
 
 class World {
@@ -109,7 +108,8 @@ void scriptengine::run() {
                            "new", sol::factories([](std::string name) {
                              return std::make_shared<Person>(name);
                            }),
-                           "set_on_say", &Person::set_on_say);
+                           "set_sayfn", &Person::set_sayfn,
+                           "on_say", &Person::on_say_);
 
   lua.new_usertype<World>("World",
                           "new", sol::factories([]() {
@@ -165,17 +165,11 @@ void scriptengine::run() {
     local world = World.new()
 
     local person = Person.new("Person 11")
-    person:set_on_say(function(name)
+    person:set_sayfn(function(name, self)
       print("Person 1: " .. name)
     end)
 
-    local person2 = Person.new("Person 22")
-    person2:set_on_say(function(name)
-      print("Person 2: " .. name)
-    end)
-
     world:add_person(person)
-    world:add_person(person2)
     world:say()
 
     local engine = EngineFactory.new()
