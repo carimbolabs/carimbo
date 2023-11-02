@@ -11,11 +11,13 @@ void pixmappool::preload(const std::vector<std::string> &filenames) {
 
 const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
   if (_pool.find(filename) == _pool.end()) {
+    std::cout << "[pixmappool] cache miss: " << filename << std::endl;
     const auto p = std::make_shared<pixmap>(_renderer, filename);
     _pool.emplace(filename, p);
     return p;
   }
 
+  std::cout << "[pixmappool] cache hit: " << filename << std::endl;
   return _pool[filename];
 }
 
