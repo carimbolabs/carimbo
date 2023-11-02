@@ -18,7 +18,7 @@ public:
 
   std::string get_id() const { return _id; }
 
-  void set_fn(const std::function<void(std::shared_ptr<entity>)> &fn);
+  void set_callback(const std::function<void(std::shared_ptr<entity>)> &fn);
 
 private:
   std::string _id;

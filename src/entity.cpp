@@ -10,6 +10,6 @@ void entity::draw() const {
   // TODO
 }
 
-void entity::set_fn(const std::function<void(std::shared_ptr<entity>)> &fn) {
+void entity::set_callback(const std::function<void(std::shared_ptr<entity>)> &fn) {
   _fn = fn;
 }

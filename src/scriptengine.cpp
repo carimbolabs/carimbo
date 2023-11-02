@@ -109,7 +109,7 @@ void scriptengine::run() {
 
   lua.new_usertype<entity>(
       "Entity",
-      "on_update", &entity::set_fn);
+      "on_update", &entity::set_callback);
   //"set_id", &entity::set_id);
 
   lua.script(R"(
