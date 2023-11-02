@@ -4,6 +4,9 @@
 
 #define SOL_ALL_SAFETIES_ON 1
 
+// #include <mimalloc-new-delete.h>
+// #include <mimalloc-override.h>
+
 extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
