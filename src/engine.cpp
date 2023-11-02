@@ -8,6 +8,7 @@ void engine::run() {
   while (_running) {
     const auto now = SDL_GetTicks();
 
+    _resourcemanager->update();
     _eventmanager->update();
     _entitymanager->update();
     _renderer->begin();
@@ -52,6 +53,14 @@ void engine::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
 
 const std::shared_ptr<entitymanager> engine::get_entitymanager() const {
   return _entitymanager;
+}
+
+void engine::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
+  _resourcemanager = resourcemanager;
+}
+
+const std::shared_ptr<resourcemanager> engine::get_resourcemanager() const {
+  return _resourcemanager;
 }
 
 const std::shared_ptr<entity> engine::spawn() {

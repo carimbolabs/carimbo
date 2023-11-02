@@ -6,6 +6,7 @@
 #include "engine.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
+#include "resourcemanager.hpp"
 
 class enginefactory {
 public:

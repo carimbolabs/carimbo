@@ -36,6 +36,10 @@ public:
 
   const std::shared_ptr<eventmanager> get_eventmanager() const;
 
+  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
+
+  const std::shared_ptr<resourcemanager> get_resourcemanager() const;
+
   void add_loopable(std::shared_ptr<loopable> loopable);
 
   void run();
@@ -53,6 +57,7 @@ private:
   std::shared_ptr<renderer> _renderer;
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<eventmanager> _eventmanager;
+  std::shared_ptr<resourcemanager> _resourcemanager;
 };
 
 #endif
