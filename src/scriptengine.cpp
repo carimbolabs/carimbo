@@ -104,8 +104,7 @@ void scriptengine::run() {
       "create", &enginefactory::create);
 
   lua.script(R"(
-    local factory = EngineFactory.new()
-    local engine = factory
+    local engine = EngineFactory.new()
         :set_title("Carimbo")
         :set_width(800)
         :set_height(600)
