@@ -3,6 +3,7 @@
 #define _common_hpp
 
 #define SOL_ALL_SAFETIES_ON 1
+#define UUID_SYSTEM_GENERATOR 1
 
 extern "C" {
 #include <SDL2/SDL.h>
@@ -24,6 +25,7 @@ extern "C" {
 
 #include <fmt/core.h>
 #include <sol/sol.hpp>
+#include <uuid.h>
 
 #include "constants.hpp"
 #include "deleters.hpp"

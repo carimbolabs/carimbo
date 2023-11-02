@@ -5,6 +5,7 @@
 #include "audiomanager.hpp"
 #include "common.hpp"
 #include "enginefactory.hpp"
+#include "entitymanager.hpp"
 #include "filesystem.hpp"
 #include "noncopyable.hpp"
 #include "pixmappool.hpp"

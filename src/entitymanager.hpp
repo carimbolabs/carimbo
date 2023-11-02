@@ -14,6 +14,8 @@ public:
 
   void destroy(std::shared_ptr<entity> entity);
 
+  std::shared_ptr<entity> find(const std::string &id);
+
   void update();
 
   void draw();

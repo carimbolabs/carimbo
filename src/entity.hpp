@@ -4,7 +4,7 @@
 
 #include "common.hpp"
 
-class entity {
+class entity : public std::enable_shared_from_this<entity> {
 public:
   entity() = default;
   ~entity() = default;
@@ -12,6 +12,13 @@ public:
   virtual void update();
 
   virtual void draw() const;
+
+  std::string get_id() const { return _id; }
+
+  void set_id(const std::string &id) { _id = id; }
+
+private:
+  std::string _id;
 };
 
 #endif
