@@ -5,6 +5,7 @@
 #include "common.hpp"
 #include "pixmappool.hpp"
 #include "renderer.hpp"
+#include "soundmanager.hpp"
 
 class resourcemanager {
 public:
@@ -15,11 +16,12 @@ public:
 
   void update();
 
-  void empty();
+  bool busy() const;
 
 private:
   std::list<std::string> _filenames;
   std::shared_ptr<pixmappool> _pixmappool;
+  std::shared_ptr<soundmanager> _soundmanager;
 };
 
 #endif

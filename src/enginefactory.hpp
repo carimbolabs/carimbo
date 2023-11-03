@@ -7,6 +7,7 @@
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "resourcemanager.hpp"
+#include "soundmanager.hpp"
 
 class enginefactory {
 public:
