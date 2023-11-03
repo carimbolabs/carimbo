@@ -3,17 +3,8 @@
 #define _engine_hpp
 
 #include "common.hpp"
-#include "entitymanager.hpp"
-#include "eventmanager.hpp"
+
 #include "eventreceiver.hpp"
-#include "framerate.hpp"
-#include "loopable.hpp"
-#include "noncopyable.hpp"
-#include "renderer.hpp"
-#include "resourcemanager.hpp"
-#include "singleton.hpp"
-#include "statemanager.hpp"
-#include "window.hpp"
 
 class engine : public eventreceiver {
 public:

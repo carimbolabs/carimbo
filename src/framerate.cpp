@@ -1,5 +1,7 @@
 #include "framerate.hpp"
 
+#include "loopable.hpp"
+
 uint64_t framerate::per_second() const {
   return _frames;
 }

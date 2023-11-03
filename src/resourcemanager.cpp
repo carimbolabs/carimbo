@@ -1,9 +1,13 @@
 #include "resourcemanager.hpp"
 
+#include "pixmappool.hpp"
+#include "renderer.hpp"
+#include "soundmanager.hpp"
+
 resourcemanager::resourcemanager(const std::shared_ptr<renderer> renderer) : _pixmappool(std::make_shared<pixmappool>(renderer)), _soundmanager(std::make_shared<soundmanager>()) {
 }
 
-void resourcemanager::preload(const std::list<std::string> &filenames) {
+void resourcemanager::prefetch(const std::list<std::string> &filenames) {
   _filenames.insert(_filenames.end(), filenames.begin(), filenames.end());
 }
 

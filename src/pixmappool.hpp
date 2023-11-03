@@ -2,7 +2,7 @@
 #ifndef _pixmappool_hpp
 #define _pixmappool_hpp
 
-#include "pixmap.hpp"
+#include "common.hpp"
 
 class pixmappool {
 public:

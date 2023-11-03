@@ -1,5 +1,7 @@
 #include "pixmappool.hpp"
 
+#include "pixmap.hpp"
+
 pixmappool::pixmappool(const std::shared_ptr<renderer> renderer) : _renderer(renderer) {
 }
 

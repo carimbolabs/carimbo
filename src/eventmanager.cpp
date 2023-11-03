@@ -1,5 +1,8 @@
 #include "eventmanager.hpp"
 
+#include "event.hpp"
+#include "eventreceiver.hpp"
+
 void eventmanager::update() {
   SDL_Event event;
 

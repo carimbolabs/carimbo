@@ -3,7 +3,6 @@
 #define _window_hpp
 
 #include "common.hpp"
-#include "renderer.hpp"
 
 class window {
 public:

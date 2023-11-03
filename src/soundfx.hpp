@@ -3,7 +3,6 @@
 #define _soundfx_hpp
 
 #include "common.hpp"
-#include "io.hpp"
 
 class soundfx {
 public:

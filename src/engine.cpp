@@ -1,5 +1,17 @@
 #include "engine.hpp"
 
+#include "entitymanager.hpp"
+#include "eventmanager.hpp"
+#include "eventreceiver.hpp"
+#include "framerate.hpp"
+#include "loopable.hpp"
+#include "noncopyable.hpp"
+#include "renderer.hpp"
+#include "resourcemanager.hpp"
+#include "singleton.hpp"
+#include "statemanager.hpp"
+#include "window.hpp"
+
 engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }

@@ -3,16 +3,13 @@
 #define _resourcemanager_hpp
 
 #include "common.hpp"
-#include "pixmappool.hpp"
-#include "renderer.hpp"
-#include "soundmanager.hpp"
 
 class resourcemanager {
 public:
   resourcemanager(const std::shared_ptr<renderer> renderer);
   ~resourcemanager() = default;
 
-  void preload(const std::list<std::string> &filenames);
+  void prefetch(const std::list<std::string> &filenames);
 
   void update();
 

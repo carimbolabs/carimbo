@@ -1,5 +1,14 @@
 #include "scriptengine.hpp"
 
+#include "engine.hpp"
+#include "enginefactory.hpp"
+#include "entity.hpp"
+#include "event.hpp"
+#include "eventreceiver.hpp"
+#include "io.hpp"
+#include "noncopyable.hpp"
+#include "statemanager.hpp"
+
 void scriptengine::run() {
   sol::state lua;
 
@@ -38,35 +47,35 @@ void scriptengine::run() {
       "set_pixmap", &entity::set_pixmap);
 
   lua.script(R"(
-    local engine = EngineFactory.new()
-      :set_title("Carimbo")
-      :set_width(800)
-      :set_height(600)
-      :create()
+      local engine = EngineFactory.new()
+        :set_title("Carimbo")
+        :set_width(800)
+        :set_height(600)
+        :create()
 
-    local e = engine:spawn()
+      local e = engine:spawn()
 
-    e:set_pixmap("fox.avif")
+      e:set_pixmap("fox.avif")
 
-    e:on_update(function(self)
-      if engine:is_keydown(KeyEvent.w) then
-        self:set_y(self:y() - 5)
-      end
-      
-      if engine:is_keydown(KeyEvent.a) then
-        self:set_x(self:x() - 5)
-      end
+      e:on_update(function(self)
+        if engine:is_keydown(KeyEvent.w) then
+          self:set_y(self:y() - 5)
+        end
+        
+        if engine:is_keydown(KeyEvent.a) then
+          self:set_x(self:x() - 5)
+        end
 
-      if engine:is_keydown(KeyEvent.s) then
-        self:set_y(self:y() + 5)
-      end
+        if engine:is_keydown(KeyEvent.s) then
+          self:set_y(self:y() + 5)
+        end
 
-      if engine:is_keydown(KeyEvent.d) then
-        self:set_x(self:x() + 5)
-      end
-    end)
+        if engine:is_keydown(KeyEvent.d) then
+          self:set_x(self:x() + 5)
+        end
+      end)
 
-    engine:run()
+      engine:run()
   )");
 
   // const script = file::read("scripts/main.lua");

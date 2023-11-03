@@ -3,6 +3,7 @@
 #define _frames_hpp
 
 #include "common.hpp"
+
 #include "loopable.hpp"
 
 class framerate : public loopable {

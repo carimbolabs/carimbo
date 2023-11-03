@@ -3,6 +3,7 @@
 #define _eventreceiver_hpp
 
 #include "common.hpp"
+
 #include "event.hpp"
 
 class eventreceiver {

@@ -3,8 +3,6 @@
 #define _statemanager_hpp
 
 #include "common.hpp"
-#include "event.hpp"
-#include "eventreceiver.hpp"
 
 class statemanager : public eventreceiver {
 public:

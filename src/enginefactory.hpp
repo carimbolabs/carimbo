@@ -3,11 +3,6 @@
 #define _enginefactory_hpp
 
 #include "common.hpp"
-#include "engine.hpp"
-#include "entitymanager.hpp"
-#include "eventmanager.hpp"
-#include "resourcemanager.hpp"
-#include "soundmanager.hpp"
 
 class enginefactory {
 public:

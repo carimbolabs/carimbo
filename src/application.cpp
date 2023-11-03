@@ -1,5 +1,14 @@
 #include "application.hpp"
 
+#include "common.hpp"
+#include "enginefactory.hpp"
+#include "entitymanager.hpp"
+#include "filesystem.hpp"
+#include "noncopyable.hpp"
+#include "pixmappool.hpp"
+#include "scriptengine.hpp"
+#include "timermanager.hpp"
+
 application::application(int argc, char **argv) {
   curl_global_init(CURL_GLOBAL_ALL);
   SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_TIMER | SDL_INIT_VIDEO);

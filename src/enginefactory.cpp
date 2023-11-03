@@ -1,5 +1,11 @@
 #include "enginefactory.hpp"
 
+#include "engine.hpp"
+#include "entitymanager.hpp"
+#include "eventmanager.hpp"
+#include "resourcemanager.hpp"
+#include "soundmanager.hpp"
+
 enginefactory &enginefactory::set_title(const std::string &title) {
   _title = title;
   return *this;
