@@ -3,12 +3,13 @@
 #define _entitymanager_hpp
 
 #include "common.hpp"
-#include "entity.hpp"
 
 class entitymanager {
 public:
   entitymanager() = default;
   ~entitymanager() = default;
+
+  void set_pixmappool(std::shared_ptr<pixmappool> pixmappool);
 
   std::shared_ptr<entity> spawn();
 
@@ -21,6 +22,7 @@ public:
   void draw();
 
 private:
+  std::shared_ptr<pixmappool> _pixmappool;
   std::list<std::shared_ptr<entity>> _entities;
 };
 

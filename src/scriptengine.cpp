@@ -29,7 +29,13 @@ void scriptengine::run() {
 
   lua.new_usertype<entity>(
       "Entity",
-      "on_update", &entity::set_callback);
+      "set_x", &entity::set_x,
+      "x", &entity::x,
+      "set_y", &entity::set_y,
+      "y", &entity::y,
+      "set_position", &entity::set_position,
+      "on_update", &entity::set_onupdate,
+      "set_pixmap", &entity::set_pixmap);
 
   lua.script(R"(
     local engine = EngineFactory.new()
@@ -38,13 +44,26 @@ void scriptengine::run() {
       :set_height(600)
       :create()
 
-    local entity = engine:spawn()
-    entity:on_update(function(self)
-      print("W " .. tostring(engine:is_keydown(KeyEvent.w)))
-      print("A " .. tostring(engine:is_keydown(KeyEvent.a)))
-      print("S " .. tostring(engine:is_keydown(KeyEvent.s)))
-      print("D " .. tostring(engine:is_keydown(KeyEvent.d)))
-      collectgarbage()
+    local e = engine:spawn()
+
+    e:set_pixmap("fox.avif")
+
+    e:on_update(function(self)
+      if engine:is_keydown(KeyEvent.w) then
+        self:set_y(self:y() - 5)
+      end
+      
+      if engine:is_keydown(KeyEvent.a) then
+        self:set_x(self:x() - 5)
+      end
+
+      if engine:is_keydown(KeyEvent.s) then
+        self:set_y(self:y() + 5)
+      end
+
+      if engine:is_keydown(KeyEvent.d) then
+        self:set_x(self:x() + 5)
+      end
     end)
 
     engine:run()

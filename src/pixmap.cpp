@@ -63,7 +63,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   SDL_FreeSurface(surface);
 }
 
-void pixmap::draw(const int x, const int y) const {
+void pixmap::draw(const int32_t x, const int32_t y) const {
   const SDL_Rect rect{x, y, _width, _height};
 
   SDL_RenderCopy(*_renderer, _texture.get(), nullptr, &rect);

@@ -32,4 +32,27 @@ extern "C" {
 // #include <mimalloc-new-delete.h>
 // #include <mimalloc-override.h>
 
+class application;
+class audiomanager;
+class engine;
+class enginefactory;
+class entity;
+class entitymanager;
+class eventmanager;
+class eventreceiver;
+class filesystem;
+class framerate;
+class io;
+class loopable;
+class pixmap;
+class pixmappool;
+class renderer;
+class resourcemanager;
+class scriptengine;
+class soundfx;
+class soundmanager;
+class statemanager;
+class timermanager;
+class window;
+
 #endif

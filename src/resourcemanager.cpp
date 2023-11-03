@@ -27,3 +27,11 @@ void resourcemanager::update() {
 bool resourcemanager::busy() const {
   return !_filenames.empty();
 }
+
+std::shared_ptr<pixmappool> resourcemanager::get_pixmappool() {
+  return _pixmappool;
+}
+
+std::shared_ptr<soundmanager> resourcemanager::get_soundmanager() {
+  return _soundmanager;
+}
