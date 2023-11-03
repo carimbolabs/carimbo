@@ -15,10 +15,6 @@ public:
 
   virtual ~enginefactory() = default;
 
-  void set_foo(const std::string &foo) {
-    std::cout << "foo: " << foo << std::endl;
-  }
-
   enginefactory &set_title(const std::string &title);
 
   enginefactory &set_width(int32_t width);
