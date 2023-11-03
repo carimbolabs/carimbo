@@ -24,6 +24,7 @@ void scriptengine::run() {
   lua.new_usertype<engine>(
       "Engine",
       "run", &engine::run,
+      "prefetch", &engine::prefetch,
       "spawn", &engine::spawn,
       "is_keydown", &engine::is_keydown);
 
@@ -38,11 +39,8 @@ void scriptengine::run() {
 
   lua.new_usertype<entity>(
       "Entity",
-      "set_x", &entity::set_x,
-      "x", &entity::x,
-      "set_y", &entity::set_y,
-      "y", &entity::y,
-      "set_position", &entity::set_position,
+      "x", sol::property(&entity::x, &entity::set_x),
+      "y", sol::property(&entity::y, &entity::set_y),
       "on_update", &entity::set_onupdate,
       "set_pixmap", &entity::set_pixmap);
 
@@ -53,25 +51,27 @@ void scriptengine::run() {
         :set_height(600)
         :create()
 
+      -- engine:prefetch({"fox.avif"})
+
       local e = engine:spawn()
 
       e:set_pixmap("fox.avif")
 
       e:on_update(function(self)
         if engine:is_keydown(KeyEvent.w) then
-          self:set_y(self:y() - 5)
+          self.y = self.y - 5
         end
         
         if engine:is_keydown(KeyEvent.a) then
-          self:set_x(self:x() - 5)
+          self.x = self.x - 5
         end
 
         if engine:is_keydown(KeyEvent.s) then
-          self:set_y(self:y() + 5)
+          self.y = self.y + 5
         end
 
         if engine:is_keydown(KeyEvent.d) then
-          self:set_x(self:x() + 5)
+          self.x = self.x + 5
         end
       end)
 

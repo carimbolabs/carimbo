@@ -35,11 +35,13 @@ public:
 
   const std::shared_ptr<statemanager> get_statemanager() const;
 
+  void prefetch(const std::list<std::string> &filenames);
+
+  const bool is_keydown(const keyevent &event) const;
+
   const std::shared_ptr<entity> spawn();
 
   void add_loopable(std::shared_ptr<loopable> loopable);
-
-  const bool is_keydown(const keyevent &event) const;
 
   void run();
 
