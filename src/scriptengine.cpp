@@ -5,11 +5,12 @@ void scriptengine::run() {
 
   lua.open_libraries();
 
-  lua.new_enum("KeyEvent",
-               "w", keyevent::w,
-               "a", keyevent::a,
-               "s", keyevent::s,
-               "d", keyevent::d);
+  lua.new_enum(
+      "KeyEvent",
+      "w", keyevent::w,
+      "a", keyevent::a,
+      "s", keyevent::s,
+      "d", keyevent::d);
 
   lua.new_usertype<engine>(
       "Engine",
