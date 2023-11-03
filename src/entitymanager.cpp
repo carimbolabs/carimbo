@@ -26,7 +26,6 @@ std::shared_ptr<entity> entitymanager::find(const std::string &id) {
 void entitymanager::update() {
   for (auto entity : _entities) {
     entity->update();
-    std::cout << "use count: " << entity.use_count() << "\n";
   }
 }
 
