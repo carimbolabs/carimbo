@@ -8,7 +8,7 @@ enum class keyevent : int32_t {
   w = SDLK_w,
   a = SDLK_a,
   s = SDLK_s,
-  d = SDLK_d,
+  d = SDLK_d
 };
 
 enum class mouseevent : int32_t {};

@@ -6,6 +6,7 @@
 #include "engine.hpp"
 #include "enginefactory.hpp"
 #include "entity.hpp"
+#include "event.hpp"
 #include "eventreceiver.hpp"
 #include "io.hpp"
 #include "noncopyable.hpp"

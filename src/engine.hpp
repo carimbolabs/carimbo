@@ -12,6 +12,7 @@
 #include "renderer.hpp"
 #include "resourcemanager.hpp"
 #include "singleton.hpp"
+#include "statemanager.hpp"
 #include "window.hpp"
 
 class engine : public eventreceiver {
@@ -31,8 +32,6 @@ public:
 
   const std::shared_ptr<entitymanager> get_entitymanager() const;
 
-  const std::shared_ptr<entity> spawn();
-
   void set_eventmanager(std::shared_ptr<eventmanager> eventmanager);
 
   const std::shared_ptr<eventmanager> get_eventmanager() const;
@@ -41,14 +40,20 @@ public:
 
   const std::shared_ptr<resourcemanager> get_resourcemanager() const;
 
+  void set_statemanager(std::shared_ptr<statemanager> statemanager);
+
+  const std::shared_ptr<statemanager> get_statemanager() const;
+
+  const std::shared_ptr<entity> spawn();
+
   void add_loopable(std::shared_ptr<loopable> loopable);
+
+  const bool is_keydown(const keyevent &event) const;
 
   void run();
 
 protected:
   virtual void on_quit() override;
-
-  virtual void on_keydown(const keyevent &event) override;
 
 private:
   bool _running;
@@ -59,6 +64,7 @@ private:
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<eventmanager> _eventmanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
+  std::shared_ptr<statemanager> _statemanager;
 };
 
 #endif

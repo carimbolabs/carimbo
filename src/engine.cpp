@@ -63,6 +63,18 @@ const std::shared_ptr<resourcemanager> engine::get_resourcemanager() const {
   return _resourcemanager;
 }
 
+void engine::set_statemanager(std::shared_ptr<statemanager> statemanager) {
+  _statemanager = statemanager;
+}
+
+const std::shared_ptr<statemanager> engine::get_statemanager() const {
+  return _statemanager;
+}
+
+const bool engine::is_keydown(const keyevent &event) const {
+  return _statemanager->is_keydown(event);
+}
+
 const std::shared_ptr<entity> engine::spawn() {
   return _entitymanager->spawn();
 }
@@ -73,9 +85,4 @@ void engine::add_loopable(std::shared_ptr<loopable> loopable) {
 
 void engine::on_quit() {
   _running = false;
-}
-
-void engine::on_keydown(const keyevent &event) {
-  std::cout << "on_keydown: " << static_cast<int32_t>(event) << std::endl;
-  std::cout << "is_equal: " << (event == keyevent::a) << std::endl;
 }
