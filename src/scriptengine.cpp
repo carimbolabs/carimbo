@@ -39,7 +39,11 @@ void scriptengine::run() {
 
     local entity = engine:spawn()
     entity:on_update(function(self)
-      print("A is pressed? " .. tostring(engine:is_keydown(KeyEvent.a)))
+      print("W " .. tostring(engine:is_keydown(KeyEvent.w)))
+      print("A " .. tostring(engine:is_keydown(KeyEvent.a)))
+      print("S " .. tostring(engine:is_keydown(KeyEvent.s)))
+      print("D " .. tostring(engine:is_keydown(KeyEvent.d)))
+      collectgarbage()
     end)
 
     engine:run()
