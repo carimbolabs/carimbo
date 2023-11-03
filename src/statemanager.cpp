@@ -8,3 +8,7 @@ const bool statemanager::is_keydown(const keyevent &event) const {
 void statemanager::on_keydown(const keyevent &event) {
   _keys[event] = true;
 }
+
+void statemanager::on_keyup(const keyevent &event) {
+  _keys[event] = false;
+}

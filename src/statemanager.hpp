@@ -16,6 +16,8 @@ public:
 protected:
   virtual void on_keydown(const keyevent &event);
 
+  virtual void on_keyup(const keyevent &event);
+
 private:
   std::map<keyevent, bool> _keys;
 };

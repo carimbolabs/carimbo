@@ -4,17 +4,6 @@
 
 #include "common.hpp"
 
-enum class eventtype {
-  quit,
-  keydown,
-  keyup,
-  mousemotion,
-  mousebuttondown,
-  mousebuttonup,
-  mousewheel,
-  windowevent,
-};
-
 enum class keyevent : int32_t {
   w = SDLK_w,
   a = SDLK_a,
@@ -22,13 +11,8 @@ enum class keyevent : int32_t {
   d = SDLK_d,
 };
 
-struct event {
-  eventtype type;
-  union {
-    struct {
-      keyevent key;
-    } keyevent;
-  } data;
-};
+enum class mouseevent : int32_t {};
+
+enum class joysticevent {};
 
 #endif
