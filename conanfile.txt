@@ -6,7 +6,7 @@ libavif/1.0.1
 libcurl/8.2.1
 mimalloc/2.1.2
 nlohmann_json/3.11.2
-openal/1.22.2
+openal-soft/1.22.2
 physfs/3.0.2
 sdl/2.28.3
 sol2/3.3.1
