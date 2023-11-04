@@ -1,5 +1,6 @@
 #include "application.hpp"
 
+#include "audiomanager.hpp"
 #include "common.hpp"
 #include "enginefactory.hpp"
 #include "entitymanager.hpp"
@@ -18,6 +19,8 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     // filesystem::mount("bundle.zip", "/");
+    audiomanager am;
+
     filesystem::mount(".", "/");
     auto se = scriptengine();
     se.run();

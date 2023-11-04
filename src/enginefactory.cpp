@@ -46,7 +46,7 @@ std::shared_ptr<engine> enginefactory::create() {
   em1->add_receiver(e);
   em1->add_receiver(em3);
 
-  em2->set_pixmappool(rm->get_pixmappool());
+  em2->set_resourcemanager(rm);
 
   return e;
 }

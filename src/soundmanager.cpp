@@ -1,6 +1,6 @@
 #include "soundmanager.hpp"
 
-void soundmanager::preload(const std::vector<std::string> &filenames) {
+void soundmanager::prefetch(const std::vector<std::string> &filenames) {
   for (const auto &filename : filenames) {
     get(filename);
   }

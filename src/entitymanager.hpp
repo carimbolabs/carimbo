@@ -9,7 +9,7 @@ public:
   entitymanager() = default;
   ~entitymanager() = default;
 
-  void set_pixmappool(std::shared_ptr<pixmappool> pixmappool);
+  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
   std::shared_ptr<entity> spawn();
 
@@ -22,7 +22,7 @@ public:
   void draw();
 
 private:
-  std::shared_ptr<pixmappool> _pixmappool;
+  std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
 };
 

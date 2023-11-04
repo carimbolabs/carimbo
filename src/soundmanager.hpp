@@ -10,7 +10,7 @@ public:
   ~soundmanager() = default;
   soundmanager() = default;
 
-  void preload(const std::vector<std::string> &filenames);
+  void prefetch(const std::vector<std::string> &filenames);
 
   const std::shared_ptr<soundfx> get(const std::string &filename);
 

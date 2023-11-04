@@ -56,6 +56,7 @@ void scriptengine::run() {
       local e = engine:spawn()
 
       e:set_pixmap("fox.avif")
+      e:set_pixmap("fox.avif")
 
       e:on_update(function(self)
         if engine:is_keydown(KeyEvent.w) then

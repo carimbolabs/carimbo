@@ -1,13 +1,16 @@
 #include "entitymanager.hpp"
 
-void entitymanager::set_pixmappool(std::shared_ptr<pixmappool> pixmappool) {
-  _pixmappool = pixmappool;
+#include "entity.hpp"
+#include "resourcemanager.hpp"
+
+void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
+  _resourcemanager = resourcemanager;
 }
 
 std::shared_ptr<entity> entitymanager::spawn() {
   const auto id = "TODO"; //
   const auto e = std::make_shared<entity>(id);
-  e->set_pixmappool(_pixmappool);
+  e->set_resourcemanager(_resourcemanager);
   _entities.emplace_back(e);
   return e;
 }

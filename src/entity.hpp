@@ -10,7 +10,7 @@ class entity : public std::enable_shared_from_this<entity> {
 public:
   explicit entity(const std::string &id);
 
-  virtual ~entity() = default;
+  virtual ~entity();
 
   std::string get_id() const;
 
@@ -28,7 +28,7 @@ public:
 
   void set_position(int32_t x, int32_t y);
 
-  void set_pixmappool(std::shared_ptr<pixmappool> pixmappool);
+  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
 
@@ -41,7 +41,7 @@ private:
   int32_t _y;
 
   std::shared_ptr<engine> _engine;
-  std::shared_ptr<pixmappool> _pixmappool;
+  std::shared_ptr<resourcemanager> _resourcemanager;
 
   std::function<void(std::shared_ptr<entity>)> _fn;
 };
