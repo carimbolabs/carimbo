@@ -21,3 +21,5 @@ private:
   int32_t _x;
   int32_t _y;
 };
+
+#endif

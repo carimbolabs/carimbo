@@ -69,13 +69,15 @@ void scriptengine::run() {
         :set_height(600)
         :create()
 
-      -- engine:prefetch({"fox.avif"})
+      -- engine:prefetch({"ball.avif"})
 
       local e = engine:spawn()
 
-      e:set_pixmap("fox.avif")
+      e:set_pixmap("ball.avif")
 
+      local floor = 800
       local angle = 0
+      local energy = 100
 
       e:on_update(function(self)
         if engine:is_keydown(KeyEvent.w) then
@@ -100,8 +102,8 @@ void scriptengine::run() {
         end
 
         self.angle = angle
+        self.y = self.y + 1
       end)
-
       engine:run()
   )");
 
