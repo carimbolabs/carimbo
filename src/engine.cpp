@@ -1,5 +1,6 @@
 #include "engine.hpp"
 
+#include "entity.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "eventreceiver.hpp"
@@ -92,7 +93,14 @@ const bool engine::is_keydown(const keyevent &event) const {
 }
 
 const std::shared_ptr<entity> engine::spawn() {
-  return _entitymanager->spawn();
+  const auto entity = _entitymanager->spawn();
+  entity->set_entitymanager(_entitymanager);
+  entity->set_resourcemanager(_resourcemanager);
+  return entity;
+}
+
+void engine::destroy(const std::shared_ptr<entity> entity) {
+  _entitymanager->destroy(entity);
 }
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {

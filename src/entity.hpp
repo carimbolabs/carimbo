@@ -8,9 +8,11 @@ class engine;
 
 class entity : public std::enable_shared_from_this<entity> {
 public:
-  explicit entity(const std::string &id);
-
   virtual ~entity();
+
+  static std::shared_ptr<entity> create(const std::string &id);
+
+  static void destroy(const std::shared_ptr<entity> entity);
 
   std::string get_id() const;
 
@@ -26,7 +28,11 @@ public:
 
   int32_t y() const;
 
-  void set_position(int32_t x, int32_t y);
+  void const set_angle(const double angle);
+
+  const double angle() const;
+
+  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
@@ -35,12 +41,15 @@ public:
   void set_pixmap(const std::string &filename);
 
 private:
+  entity(const std::string &id);
+
   std::string _id;
   std::shared_ptr<pixmap> _pixmap;
   int32_t _x;
   int32_t _y;
+  double _angle;
 
-  std::shared_ptr<engine> _engine;
+  std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
 
   std::function<void(std::shared_ptr<entity>)> _fn;

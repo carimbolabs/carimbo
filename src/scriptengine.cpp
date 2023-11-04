@@ -7,6 +7,8 @@
 #include "eventreceiver.hpp"
 #include "io.hpp"
 #include "noncopyable.hpp"
+#include "pixmap.hpp"
+#include "point.hpp"
 #include "statemanager.hpp"
 
 void scriptengine::run() {
@@ -15,11 +17,24 @@ void scriptengine::run() {
   lua.open_libraries();
 
   lua.new_enum(
+      "Flip",
+      "none", flip::none,
+      "horizontal", flip::horizontal,
+      "vertical", flip::vertical,
+      "both", flip::both);
+
+  lua.new_enum(
       "KeyEvent",
       "w", keyevent::w,
       "a", keyevent::a,
       "s", keyevent::s,
       "d", keyevent::d);
+
+  lua.new_usertype<point>(
+      "Point",
+      sol::constructors<point(int32_t, int32_t)>(),
+      "x", sol::property(&point::x, &point::set_x),
+      "y", sol::property(&point::y, &point::set_y));
 
   lua.new_usertype<engine>(
       "Engine",
@@ -41,8 +56,11 @@ void scriptengine::run() {
       "Entity",
       "x", sol::property(&entity::x, &entity::set_x),
       "y", sol::property(&entity::y, &entity::set_y),
+      "angle", sol::property(&entity::angle, &entity::set_angle),
       "on_update", &entity::set_onupdate,
-      "set_pixmap", &entity::set_pixmap);
+      "set_pixmap", &entity::set_pixmap,
+      sol::meta_function::garbage_collect,
+      sol::destructor(&entity::destroy));
 
   lua.script(R"(
       local engine = EngineFactory.new()
@@ -56,7 +74,8 @@ void scriptengine::run() {
       local e = engine:spawn()
 
       e:set_pixmap("fox.avif")
-      e:set_pixmap("fox.avif")
+
+      local angle = 0
 
       e:on_update(function(self)
         if engine:is_keydown(KeyEvent.w) then
@@ -74,6 +93,13 @@ void scriptengine::run() {
         if engine:is_keydown(KeyEvent.d) then
           self.x = self.x + 5
         end
+
+        angle = angle + 1
+        if angle > 360 then
+          angle = 0
+        end
+
+        self.angle = angle
       end)
 
       engine:run()

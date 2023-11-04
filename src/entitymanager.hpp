@@ -13,7 +13,7 @@ public:
 
   std::shared_ptr<entity> spawn();
 
-  void destroy(std::shared_ptr<entity> entity);
+  void destroy(const std::shared_ptr<entity> entity);
 
   std::shared_ptr<entity> find(const std::string &id);
 

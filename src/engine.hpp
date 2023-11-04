@@ -41,6 +41,8 @@ public:
 
   const std::shared_ptr<entity> spawn();
 
+  void destroy(const std::shared_ptr<entity> entity);
+
   void add_loopable(std::shared_ptr<loopable> loopable);
 
   void run();

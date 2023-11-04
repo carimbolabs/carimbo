@@ -9,16 +9,16 @@ void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourc
 
 std::shared_ptr<entity> entitymanager::spawn() {
   const auto id = "TODO"; //
-  const auto e = std::make_shared<entity>(id);
-  e->set_resourcemanager(_resourcemanager);
+  const auto e = entity::create(id);
   _entities.emplace_back(e);
   return e;
 }
 
-void entitymanager::destroy(std::shared_ptr<entity> entity) {
-  // TODO run destroy routine
+void entitymanager::destroy(const std::shared_ptr<entity> entity) {
+
   // entity->on_destroy();
-  // _entities.remove(entity);
+  _entities.remove(entity);
+  entity.~shared_ptr();
 }
 
 std::shared_ptr<entity> entitymanager::find(const std::string &id) {
