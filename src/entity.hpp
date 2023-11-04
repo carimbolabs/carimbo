@@ -8,7 +8,7 @@ class engine;
 
 class entity : public std::enable_shared_from_this<entity> {
 public:
-  virtual ~entity();
+  virtual ~entity() = default;
 
   static std::shared_ptr<entity> create(const std::string &id);
 

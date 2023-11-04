@@ -6,11 +6,6 @@
 #include "resourcemanager.hpp"
 
 entity::entity(const std::string &id) : _id(id), _x(0), _y(0) {
-  std::cout << "[entity] constructor: " << _id << std::endl;
-}
-
-entity::~entity() {
-  std::cout << "[entity] destructor: " << _id << std::endl;
 }
 
 std::shared_ptr<entity> entity::create(const std::string &id) {

@@ -15,10 +15,7 @@ std::shared_ptr<entity> entitymanager::spawn() {
 }
 
 void entitymanager::destroy(const std::shared_ptr<entity> entity) {
-
-  // entity->on_destroy();
   _entities.remove(entity);
-  entity.~shared_ptr();
 }
 
 std::shared_ptr<entity> entitymanager::find(const std::string &id) {

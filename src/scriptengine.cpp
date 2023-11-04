@@ -41,6 +41,8 @@ void scriptengine::run() {
       "run", &engine::run,
       "prefetch", &engine::prefetch,
       "spawn", &engine::spawn,
+      "destroy", &engine::destroy,
+      // "birth", &engine::birth,
       "is_keydown", &engine::is_keydown);
 
   lua.new_usertype<enginefactory>(
@@ -59,6 +61,7 @@ void scriptengine::run() {
       "angle", sol::property(&entity::angle, &entity::set_angle),
       "on_update", &entity::set_onupdate,
       "set_pixmap", &entity::set_pixmap,
+      // "set_body", &entity::set_body,
       sol::meta_function::garbage_collect,
       sol::destructor(&entity::destroy));
 
@@ -104,6 +107,7 @@ void scriptengine::run() {
         self.angle = angle
         self.y = self.y + 1
       end)
+
       engine:run()
   )");
 

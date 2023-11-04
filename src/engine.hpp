@@ -8,8 +8,9 @@
 
 class engine : public eventreceiver {
 public:
-  virtual ~engine() = default;
   engine();
+
+  virtual ~engine() = default;
 
   void set_window(std::shared_ptr<window> window);
 
