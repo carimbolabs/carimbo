@@ -39,11 +39,14 @@ void scriptengine::run() {
   lua.new_usertype<engine>(
       "Engine",
       "run", &engine::run,
-      "prefetch", &engine::prefetch,
-      "spawn", &engine::spawn,
-      "destroy", &engine::destroy,
-      // "birth", &engine::birth,
-      "is_keydown", &engine::is_keydown);
+      "prefetch", [](engine &engine, sol::table table) {
+        std::list<std::string> filenames(table.size());
+        for (auto &item : table) {
+          filenames.push_back(item.second.as<std::string>());
+        }
+        engine.prefetch(filenames);
+      },
+      "spawn", &engine::spawn, "destroy", &engine::destroy, "is_keydown", &engine::is_keydown);
 
   lua.new_usertype<enginefactory>(
       "EngineFactory",
@@ -72,7 +75,7 @@ void scriptengine::run() {
         :set_height(600)
         :create()
 
-      -- engine:prefetch({"ball.avif"})
+      engine:prefetch({"ball.avif"})
 
       local e = engine:spawn()
 
