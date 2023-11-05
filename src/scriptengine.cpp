@@ -39,14 +39,16 @@ void scriptengine::run() {
   lua.new_usertype<engine>(
       "Engine",
       "run", &engine::run,
+      "spawn", &engine::spawn,
+      "destroy", &engine::destroy,
+      "is_keydown", &engine::is_keydown,
       "prefetch", [](engine &engine, sol::table table) {
         std::list<std::string> filenames(table.size());
         for (auto &item : table) {
           filenames.push_back(item.second.as<std::string>());
         }
         engine.prefetch(filenames);
-      },
-      "spawn", &engine::spawn, "destroy", &engine::destroy, "is_keydown", &engine::is_keydown);
+      });
 
   lua.new_usertype<enginefactory>(
       "EngineFactory",
@@ -114,6 +116,6 @@ void scriptengine::run() {
       engine:run()
   )");
 
-  // const script = file::read("scripts/main.lua");
+  // const script = io::read("scripts/main.lua");
   // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }
