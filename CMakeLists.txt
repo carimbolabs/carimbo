@@ -2,11 +2,21 @@ cmake_minimum_required(VERSION 3.20)
 
 project(carimbo)
 
+function(emscripten_embed_file target file destination)
+  get_filename_component(absolute_file ${file} ABSOLUTE)
+  get_target_property(${target}_LINK_FLAGS ${target} LINK_FLAGS)
+  if(NOT ${target}_LINK_FLAGS)
+    set(${target}_LINK_FLAGS )
+  endif()
+  set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
+endfunction()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+#if (MSVC)
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -O2 -flto")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2 -flto")
 
@@ -33,6 +43,10 @@ file(GLOB SOURCE_FILES "src/*.cpp")
 #include_directories(${CMAKE_SOURCE_DIR})
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+  emscripten_embed_file(${PROJECT_NAME} "bundle.zip" "/bundle.zip")
+endif()
 
 target_link_libraries(${PROJECT_NAME} duktape::duktape)
 # target_link_libraries(${PROJECT_NAME} ffmpeg::avcodec)

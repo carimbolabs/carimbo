@@ -28,7 +28,7 @@ engine::engine() : _running(true) {
 
 void engine::run() {
 #ifdef __EMSCRIPTEN__
-  emscripten_set_main_loop_arg(::run<engine>, this, 60, true);
+  emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else
   while (_running) {
     _loop();
