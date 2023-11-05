@@ -50,11 +50,11 @@ int32_t entity::y() const {
   return _y;
 }
 
-void const entity::set_angle(const double angle) {
+void entity::set_angle(const double angle) {
   _angle = angle;
 }
 
-const double entity::angle() const {
+double entity::angle() const {
   return _angle;
 }
 

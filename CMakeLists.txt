@@ -42,15 +42,15 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /Od /Zi)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
   else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g)
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /O2 /GL)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O2 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O2 -flto)
   endif()
 endif()
 

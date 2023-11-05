@@ -38,7 +38,7 @@ public:
 
   void prefetch(const std::list<std::string> &filenames);
 
-  const bool is_keydown(const keyevent &event) const;
+  bool is_keydown(const keyevent &event) const;
 
   const std::shared_ptr<entity> spawn();
 

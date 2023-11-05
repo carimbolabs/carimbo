@@ -103,7 +103,7 @@ void engine::prefetch(const std::list<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
 
-const bool engine::is_keydown(const keyevent &event) const {
+bool engine::is_keydown(const keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
 

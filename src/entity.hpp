@@ -28,9 +28,9 @@ public:
 
   int32_t y() const;
 
-  void const set_angle(const double angle);
+  void set_angle(const double angle);
 
-  const double angle() const;
+  double angle() const;
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 

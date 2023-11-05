@@ -3,7 +3,7 @@
 #include "event.hpp"
 #include "eventreceiver.hpp"
 
-const bool statemanager::is_keydown(const keyevent &event) const {
+bool statemanager::is_keydown(const keyevent &event) const {
   const auto it = _keys.find(event);
   return it != _keys.end() && it->second;
 }

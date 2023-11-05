@@ -9,7 +9,7 @@ public:
   statemanager() = default;
   virtual ~statemanager() = default;
 
-  const bool is_keydown(const keyevent &event) const;
+  bool is_keydown(const keyevent &event) const;
 
 protected:
   virtual void on_keydown(const keyevent &event);
