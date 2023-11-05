@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(carimbo)
 
-function(emscripten_embed_file target file destination)
+function(embed target file destination)
   get_filename_component(absolute_file ${file} ABSOLUTE)
   get_target_property(${target}_LINK_FLAGS ${target} LINK_FLAGS)
   if(NOT ${target}_LINK_FLAGS)
@@ -55,7 +55,7 @@ elseif (CMAKE_BUILD_TYPE MATCHES "Release")
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  emscripten_embed_file(${PROJECT_NAME} "bundle.zip" "/bundle.zip")
+  embed(${PROJECT_NAME} "bundle.zip" "/bundle.zip")
 endif()
 
 target_link_libraries(${PROJECT_NAME} duktape::duktape)

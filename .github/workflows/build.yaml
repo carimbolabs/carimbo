@@ -53,8 +53,26 @@ jobs:
       - name: Install Conan
         run: pip install conan
 
-      - name: Detect Conan profile
+      - name: Detect Conan Profile
+        if: matrix.config.name != 'WebAssembly'
         run: conan profile detect --force
+
+      - name: Detect WebAssembly Conan Profile
+        if: matrix.config.name == 'WebAssembly'
+        run: |
+          conan profile detect --force
+          <<-EOF >file
+          include(default)
+
+          [settings]
+          arch=wasm
+          os=Emscripten
+
+          [tool_requires]
+          *: emsdk/3.1.44
+          EOF
+
+        working-directory: build
 
       - name: Install Ubuntu Dependencies
         if: matrix.config.name == 'Ubuntu'
@@ -67,7 +85,7 @@ jobs:
 
       - name: Install Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=17 --settings build_type=Release --settings os=Emscripten --settings arch=wasm
+        run: conan install ..  --output-folder=. --profile=wasm --build=missing
         working-directory: build
 
       - name: Configure
