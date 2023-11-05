@@ -50,12 +50,12 @@ elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O2 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -O2 -flto)
   endif()
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  embed(${PROJECT_NAME} "bundle.zip" "/bundle.zip")
+  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
 endif()
 
 target_link_libraries(${PROJECT_NAME} duktape::duktape)

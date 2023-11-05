@@ -5,9 +5,6 @@
 #define SOL_ALL_SAFETIES_ON 1
 
 extern "C" {
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>
@@ -25,6 +22,10 @@ extern "C" {
 #include <optional>
 #include <string>
 #include <unordered_map>
+
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 
 #include <fmt/core.h>
 #include <sol/sol.hpp>
