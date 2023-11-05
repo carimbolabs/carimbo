@@ -17,8 +17,8 @@
 #include <emscripten.h>
 
 template <class T>
-void run(void *data) {
-  reinterpret_cast<T *>(data)->_loop();
+void run(void *arg) {
+  reinterpret_cast<T *>(arg)->_loop();
 }
 #endif
 
