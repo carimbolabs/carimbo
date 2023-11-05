@@ -76,7 +76,7 @@ void scriptengine::run() {
 
       local e = engine:spawn()
 
-      e:set_pixmap("ball.avif")
+      -- e:set_pixmap("ball.avif")
 
       local floor = 800
       local angle = 0

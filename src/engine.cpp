@@ -17,7 +17,7 @@
 #include <emscripten.h>
 
 template <class T>
-void run(void *arg) {
+inline void run(void *arg) {
   reinterpret_cast<T *>(arg)->_loop();
 }
 #endif
