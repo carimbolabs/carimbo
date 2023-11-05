@@ -5,6 +5,9 @@
 #define SOL_ALL_SAFETIES_ON 1
 
 extern "C" {
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>

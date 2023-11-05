@@ -14,8 +14,6 @@
 #include "window.hpp"
 
 #ifdef EMSCRIPTEN
-#include <emscripten.h>
-
 template <class T>
 inline void run(void *arg) {
   reinterpret_cast<T *>(arg)->_loop();
@@ -27,7 +25,7 @@ engine::engine() : _running(true) {
 }
 
 void engine::run() {
-#ifdef __EMSCRIPTEN__
+#ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else
   while (_running) {

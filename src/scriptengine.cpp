@@ -70,52 +70,6 @@ void scriptengine::run() {
       sol::meta_function::garbage_collect,
       sol::destructor(&entity::destroy));
 
-  lua.script(R"(
-      local engine = EngineFactory.new()
-        :set_title("Carimbo")
-        :set_width(800)
-        :set_height(600)
-        :create()
-
-      engine:prefetch({"ball.avif"})
-
-      local e = engine:spawn()
-
-      e:set_pixmap("ball.avif")
-
-      local floor = 800
-      local angle = 0
-      local energy = 100
-
-      e:on_update(function(self)
-        if engine:is_keydown(KeyEvent.w) then
-          self.y = self.y - 5
-        end
-        
-        if engine:is_keydown(KeyEvent.a) then
-          self.x = self.x - 5
-        end
-
-        if engine:is_keydown(KeyEvent.s) then
-          self.y = self.y + 5
-        end
-
-        if engine:is_keydown(KeyEvent.d) then
-          self.x = self.x + 5
-        end
-
-        angle = angle + 5
-        if angle > 360 then
-          angle = 0
-        end
-
-        self.angle = angle
-        self.y = self.y + 5
-      end)
-
-      engine:run()
-  )");
-
-  // const script = io::read("scripts/main.lua");
-  // _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+  const script = io::read("scripts/main.lua");
+  _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }

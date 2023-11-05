@@ -16,9 +16,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-#if (MSVC)
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -O2 -flto")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2 -flto")
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+  if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /Od /Zi)
+  else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g)
+  endif()
+elseif (CMAKE_BUILD_TYPE MATCHES "Release")
+  if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX /O2 /GL)
+  else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O2 -flto)
+  endif()
+endif()
 
 set(SDL2_MAIN SDL2::SDL2main)
 
@@ -65,3 +75,9 @@ target_link_libraries(${PROJECT_NAME} sol2::sol2)
 target_link_libraries(${PROJECT_NAME} SQLite::SQLite3)
 # target_link_libraries(${PROJECT_NAME} libzmq-static)
 target_link_libraries(${PROJECT_NAME} zstd::libzstd_static)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_BINARY_DIR}/bundle.zip" "assets/demo"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
