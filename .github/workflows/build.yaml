@@ -61,7 +61,7 @@ jobs:
         if: matrix.config.name == 'WebAssembly'
         run: |
           conan profile detect --force
-          <<-EOF >file
+          <<-EOF >~/.conan2/profiles/wasm
           include(default)
 
           [settings]
