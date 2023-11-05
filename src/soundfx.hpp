@@ -1,4 +1,4 @@
-#pragma soundfx
+#pragma once
 #ifndef _soundfx_hpp
 #define _soundfx_hpp
 
