@@ -48,6 +48,8 @@ public:
 
   void run();
 
+  void _loop();
+
 protected:
   virtual void on_quit() override;
 

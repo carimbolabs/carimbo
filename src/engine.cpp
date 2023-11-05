@@ -13,27 +13,44 @@
 #include "statemanager.hpp"
 #include "window.hpp"
 
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+
+template <class T>
+void run(void *data) {
+  reinterpret_cast<T *>(data)->_loop();
+}
+#endif
+
 engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
 
 void engine::run() {
+#ifdef __EMSCRIPTEN__
+  emscripten_set_main_loop_arg(::run<engine>, this, 60, true);
+#else
   while (_running) {
-    const auto now = SDL_GetTicks();
-
-    _resourcemanager->update();
-    _eventmanager->update();
-    _entitymanager->update();
-    _renderer->begin();
-    _entitymanager->draw();
-    // _scenegraph->render();
-    _renderer->end();
-
-    const auto delta = SDL_GetTicks() - now;
-
-    std::for_each(_loopables.begin(), _loopables.end(),
-                  std::bind(&loopable::loop, std::placeholders::_1, delta));
+    _loop();
   }
+#endif
+}
+
+void engine::_loop() {
+  const auto now = SDL_GetTicks();
+
+  _resourcemanager->update();
+  _eventmanager->update();
+  _entitymanager->update();
+  _renderer->begin();
+  _entitymanager->draw();
+  // _scenegraph->render();
+  _renderer->end();
+
+  const auto delta = SDL_GetTicks() - now;
+
+  std::for_each(_loopables.begin(), _loopables.end(),
+                std::bind(&loopable::loop, std::placeholders::_1, delta));
 }
 
 void engine::set_window(std::shared_ptr<window> window) {

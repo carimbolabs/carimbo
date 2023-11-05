@@ -99,13 +99,13 @@ void scriptengine::run() {
           self.x = self.x + 5
         end
 
-        angle = angle + 1
+        angle = angle + 5
         if angle > 360 then
           angle = 0
         end
 
         self.angle = angle
-        self.y = self.y + 1
+        self.y = self.y + 5
       end)
 
       engine:run()

@@ -8,8 +8,8 @@ extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
+// #include <libavcodec/avcodec.h>
+// #include <libavformat/avformat.h>
 #include <physfs.h>
 }
 
