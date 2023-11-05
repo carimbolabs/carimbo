@@ -70,6 +70,6 @@ void scriptengine::run() {
       sol::meta_function::garbage_collect,
       sol::destructor(&entity::destroy));
 
-  const script = io::read("scripts/main.lua");
-  _lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+  const auto script = io::read("scripts/main.lua");
+  lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }
