@@ -1,6 +1,6 @@
 [requires]
 duktape/2.7.0
-ffmpeg/6.0
+# ffmpeg/6.0
 fmt/10.1.1
 libavif/1.0.1
 libcurl/8.2.1
