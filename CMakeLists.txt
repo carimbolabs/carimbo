@@ -34,9 +34,6 @@ file(GLOB SOURCE_FILES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
-set(EMBEDDED_FILES "ball.avif")
-target_sources(${PROJECT_NAME} PRIVATE ${EMBEDDED_FILES})
-
 target_link_libraries(${PROJECT_NAME} duktape::duktape)
 # target_link_libraries(${PROJECT_NAME} ffmpeg::avcodec)
 # target_link_libraries(${PROJECT_NAME} ffmpeg::avformat)
