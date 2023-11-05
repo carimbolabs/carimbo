@@ -18,9 +18,9 @@ jobs:
 
       matrix:
         config:
-          - name: macOS
-            binary: build/carimbo
-            os: macos-latest
+          #- name: macOS
+          #  binary: build/carimbo
+          #  os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
             os: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
 
       - name: Install Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=17 --settings build_type=Release --settings os=Emscripten --settings architecture=wasm --tool-requires=emsdk
+        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=17 --settings build_type=Release --settings os=Emscripten --settings architecture=wasm
         working-directory: build
 
       - name: Configure
