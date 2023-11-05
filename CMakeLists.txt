@@ -31,7 +31,7 @@ find_package(SDL2 CONFIG REQUIRED)
 find_package(sol2 CONFIG REQUIRED)
 find_package(SQLite3 CONFIG REQUIRED)
 # find_package(zeromq CONFIG REQUIRED)
-find_package(zstd CONFIG REQUIRED)
+# find_package(zstd CONFIG REQUIRED)
 
 file(GLOB HEADER_FILES "src/*.hpp")
 file(GLOB SOURCE_FILES "src/*.cpp")
@@ -74,7 +74,7 @@ target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
 target_link_libraries(${PROJECT_NAME} sol2::sol2)
 target_link_libraries(${PROJECT_NAME} SQLite::SQLite3)
 # target_link_libraries(${PROJECT_NAME} libzmq-static)
-target_link_libraries(${PROJECT_NAME} zstd::libzstd_static)
+# target_link_libraries(${PROJECT_NAME} zstd::libzstd_static)
 
 add_custom_command(TARGET ${PROJECT_NAME}
     POST_BUILD

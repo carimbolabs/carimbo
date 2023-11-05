@@ -12,7 +12,7 @@ sdl/2.28.3
 sol2/3.3.1
 sqlite3/3.43.2
 # zeromq/4.3.4
-zstd/1.5.5
+# zstd/1.5.5
 
 [generators]
 CMakeDeps
