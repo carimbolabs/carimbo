@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _constants_hpp
 #define _constants_hpp
 

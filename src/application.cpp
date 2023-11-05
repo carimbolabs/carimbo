@@ -11,6 +11,9 @@
 #include "timermanager.hpp"
 
 application::application(int argc, char **argv) {
+  UNUSED(argc);
+  UNUSED(argv);
+
   curl_global_init(CURL_GLOBAL_ALL);
   SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | SDL_INIT_TIMER | SDL_INIT_VIDEO);
   PHYSFS_init(argv[0]);

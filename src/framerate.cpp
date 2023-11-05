@@ -7,6 +7,8 @@ uint64_t framerate::per_second() const {
 }
 
 void framerate::loop(uint32_t delta) {
+  UNUSED(delta);
+
   _frames++;
 
   const auto now = SDL_GetTicks();

@@ -31,6 +31,7 @@ extern "C" {
 
 #include "constants.hpp"
 #include "deleters.hpp"
+#include "helpers.hpp"
 #include "types.hpp"
 
 // #include <mimalloc-new-delete.h>
