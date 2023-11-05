@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     strategy:
-      fail-fast: false
+      fail-fast: true
 
       matrix:
         config:
@@ -67,7 +67,7 @@ jobs:
 
       - name: Install Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=17 --settings build_type=Release --settings os=Emscripten --settings architecture=wasm
+        run: conan install ..  --output-folder=. --build=missing --settings compiler.cppstd=17 --settings build_type=Release --settings os=Emscripten --settings arch=wasm
         working-directory: build
 
       - name: Configure
