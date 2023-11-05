@@ -85,7 +85,7 @@ jobs:
 
       - name: Install Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --profile=wasm --build=missing
+        run: conan install ..  --output-folder=. --build=missing --profile=wasm  --settings compiler.cppstd=17 --settings build_type=Release
         working-directory: build
 
       - name: Configure
