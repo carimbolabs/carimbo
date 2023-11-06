@@ -104,9 +104,9 @@ jobs:
         working-directory: build
         run: |
           mkdir _site/
-          cp build/carimbo.{js,wasm} _site/
+          cp carimbo.{js,wasm} _site/
           cp index.html _site/
-          chmod -c -R +rX .
+          chmod -c -R +rX _site/
 
       - name: Upload Pages Artifact
         if: matrix.config.name == 'WebAssembly'
