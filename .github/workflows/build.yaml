@@ -25,7 +25,6 @@ jobs:
           #   binary: build/carimbo
           #   os: ubuntu-latest
           - name: WebAssembly
-            binary: build/carimbo.{js,wasm}
             os: ubuntu-latest
           # - name: Windows
           #   binary: build/Release/carimbo.exe
@@ -92,11 +91,9 @@ jobs:
         run: cmake --build .
         working-directory: build
 
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
+        if: matrix.config.name != 'WebAssembly'
         with:
           name: ${{ matrix.config.name }}
           path: ${{ matrix.config.binary }}
