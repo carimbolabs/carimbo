@@ -54,13 +54,11 @@ jobs:
         run: pip install conan
 
       - name: Detect Conan Profile
-        if: matrix.config.name != 'WebAssembly'
         run: conan profile detect --force
 
       - name: Detect WebAssembly Conan Profile
         if: matrix.config.name == 'WebAssembly'
         run: |
-          conan profile detect --force
           <<-EOF >~/.conan2/profiles/wasm
             include(default)
 

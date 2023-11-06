@@ -8,9 +8,10 @@ extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>
-// #include <libavcodec/avcodec.h>
-// #include <libavformat/avformat.h>
 #include <physfs.h>
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 }
 
 #include <algorithm>
@@ -23,10 +24,6 @@ extern "C" {
 #include <string>
 #include <unordered_map>
 
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
-
 #include <fmt/core.h>
 #include <sol/sol.hpp>
 
@@ -34,9 +31,6 @@ extern "C" {
 #include "deleters.hpp"
 #include "helpers.hpp"
 #include "types.hpp"
-
-// #include <mimalloc-new-delete.h>
-// #include <mimalloc-override.h>
 
 class application;
 class audiomanager;
