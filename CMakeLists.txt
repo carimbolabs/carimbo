@@ -40,19 +40,19 @@ file(GLOB SOURCE_FILES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-  if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
-  else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g) # -Wextra
-  endif()
-elseif (CMAKE_BUILD_TYPE MATCHES "Release")
-  if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /GL) # /O2 /WX
-  else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -O2 -flto) # -Wextra
-  endif()
-endif()
+# if (CMAKE_BUILD_TYPE MATCHES "Debug")
+#   if (MSVC)
+#     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
+#   else()
+#     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g) # -Wextra
+#   endif()
+# elseif (CMAKE_BUILD_TYPE MATCHES "Release")
+#   if (MSVC)
+#     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /GL) # /O2 /WX
+#   else()
+#     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -O2 -flto) # -Wextra
+#   endif()
+# endif()
 
 file(ARCHIVE_CREATE
   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/bundle.zip"
