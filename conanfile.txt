@@ -3,7 +3,7 @@
 # ffmpeg/6.0
 fmt/10.1.1
 libavif/1.0.1
-# libcurl/8.2.1
+libcurl/8.2.1
 # mimalloc/2.1.2
 # nlohmann_json/3.11.2
 # openal-soft/1.22.2

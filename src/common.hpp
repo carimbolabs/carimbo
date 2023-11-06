@@ -7,7 +7,7 @@
 extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
-// #include <curl/curl.h>
+#include <curl/curl.h>
 #include <physfs.h>
 }
 
