@@ -110,8 +110,9 @@ jobs:
 
       - name: Upload Pages Artifact
         if: matrix.config.name == 'WebAssembly'
-        working-directory: build
         uses: actions/upload-pages-artifact@v1
+        with:
+          path: build/_site
 
   deploy:
     environment:
