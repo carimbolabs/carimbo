@@ -48,7 +48,7 @@ jobs:
           path: |
             ~/.conan2/p
             ~\.conan/p
-          key: ${{ runner.os }}-${{ hashFiles('**/conanfile.txt') }}
+          key: ${{ matrix.config.name }}-${{ hashFiles('**/conanfile.txt') }}
 
       - name: Prepare Build Directory
         run: mkdir build
