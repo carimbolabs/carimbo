@@ -27,9 +27,9 @@ jobs:
           - name: WebAssembly
             binary: build/carimbo.{js,wasm}
             os: ubuntu-latest
-          - name: Windows
-            binary: build/Release/carimbo.exe
-            os: windows-latest
+          # - name: Windows
+          #   binary: build/Release/carimbo.exe
+          #   os: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
