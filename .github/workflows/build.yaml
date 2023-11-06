@@ -21,9 +21,9 @@ jobs:
           #- name: macOS
           #  binary: build/carimbo
           #  os: macos-latest
-          - name: Ubuntu
-            binary: build/carimbo
-            os: ubuntu-latest
+          # - name: Ubuntu
+          #   binary: build/carimbo
+          #   os: ubuntu-latest
           - name: WebAssembly
             binary: build/carimbo.{js,wasm}
             os: ubuntu-latest
@@ -91,6 +91,9 @@ jobs:
       - name: Build
         run: cmake --build .
         working-directory: build
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
