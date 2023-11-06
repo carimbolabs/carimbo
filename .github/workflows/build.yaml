@@ -22,13 +22,13 @@ jobs:
           #  binary: build/carimbo
           #  os: macos-latest
           - name: Ubuntu
-            binary: build/carimbo
+            binary: carimbo
             os: ubuntu-latest
           - name: WebAssembly
-            binary: build/carimbo.{js,wasm}
+            binary: carimbo.{js,wasm}
             os: ubuntu-latest
           # - name: Windows
-          #   binary: build/Release/carimbo.exe
+          #   binary: Release/carimbo.exe
           #   os: windows-latest
     steps:
       - name: Checkout
@@ -94,7 +94,33 @@ jobs:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
+        working-directory: build
         with:
           name: ${{ matrix.config.name }}
           path: ${{ matrix.config.binary }}
           if-no-files-found: error
+
+      - name: Prepare Pages Directory
+        if: matrix.config.name == 'WebAssembly'
+        working-directory: build
+        run: |
+          mkdir _site/
+          cp build/carimbo.{js,wasm} _site/
+          cp index.html _site/
+          chmod -c -R +rX .
+
+      - name: Upload Pages Artifact
+        if: matrix.config.name == 'WebAssembly'
+        working-directory: build
+        uses: actions/upload-pages-artifact@v1
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
