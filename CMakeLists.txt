@@ -48,8 +48,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
-    STRING(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /GL) # /O2 /WX
   else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -O2 -flto) # -Wextra
   endif()
