@@ -45,7 +45,7 @@ jobs:
           path: |
             ~/.conan2/p
             ~\.conan/p
-          key: ${{ runner.os }}
+          key: ${{ runner.name }}-conan-${{ hashFiles('**/conanfile.txt') }}
 
       - name: Prepare Build Directory
         run: mkdir build
