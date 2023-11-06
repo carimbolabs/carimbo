@@ -25,14 +25,17 @@ jobs:
         config:
           # - name: macOS
           #   binary: build/carimbo
+          #   bundle: build/bundle.zip
           #   os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
+            bundle: build/bundle.zip
             os: ubuntu-latest
           - name: WebAssembly
             os: ubuntu-latest
           - name: Windows
             binary: build/Release/carimbo.exe
+            bundle: build/bundle.zip
             os: windows-latest
 
     steps:
@@ -101,9 +104,11 @@ jobs:
         uses: actions/upload-artifact@v3
         if: matrix.config.name != 'WebAssembly'
         with:
-          name: ${{ matrix.config.name }}
-          path: ${{ matrix.config.binary }}
           if-no-files-found: error
+          name: ${{ matrix.config.name }}
+          path: |
+            ${{ matrix.config.binary }}
+            ${{ matrix.config.bundle }}
 
       - name: Prepare Pages Directory
         if: matrix.config.name == 'WebAssembly'
