@@ -23,10 +23,10 @@ jobs:
 
       matrix:
         config:
-          # - name: macOS
-          #   binary: build/carimbo
-          #   bundle: build/bundle.zip
-          #   os: macos-latest
+          - name: macOS
+            binary: build/carimbo
+            bundle: build/bundle.zip
+            os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
             bundle: build/bundle.zip
