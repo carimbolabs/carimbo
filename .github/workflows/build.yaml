@@ -84,17 +84,17 @@ jobs:
         run: conan install ..  --output-folder=. --build=missing --profile=wasm  --settings compiler.cppstd=17 --settings build_type=Release
         working-directory: build
 
-      # - name: Configure
-      #   run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
-      #   working-directory: build
+      - name: Configure
+        run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
+        working-directory: build
 
-      # - name: Build
-      #   run: cmake --build . --config Release
-      #   working-directory: build
+      - name: Build
+        run: cmake --build .
+        working-directory: build
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ${{ matrix.config.name }}
-      #     path: ${{ matrix.config.binary }}
-      #     if-no-files-found: error
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.config.name }}
+          path: ${{ matrix.config.binary }}
+          if-no-files-found: error

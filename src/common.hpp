@@ -9,9 +9,6 @@ extern "C" {
 #include <avif/avif.h>
 #include <curl/curl.h>
 #include <physfs.h>
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 }
 
 #include <algorithm>
@@ -26,6 +23,10 @@ extern "C" {
 
 #include <fmt/core.h>
 #include <sol/sol.hpp>
+
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
 
 #include "constants.hpp"
 #include "deleters.hpp"

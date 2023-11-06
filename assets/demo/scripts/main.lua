@@ -4,15 +4,15 @@ local engine = EngineFactory.new()
     :set_height(600)
     :create()
 
-engine:prefetch({ "ball.avif" })
+engine:prefetch({ "blob/matrix.avif" })
 
-local e = engine:spawn()
+local entity = engine:spawn()
 
-e:set_pixmap("ball.avif")
+entity:set_pixmap("blob/matrix.avif")
 
 local angle = 0
 
-e:on_update(function(self)
+entity:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
     self.y = self.y - 1
   end
@@ -35,7 +35,6 @@ e:on_update(function(self)
   end
 
   self.angle = angle
-  self.y = self.y + 1
 end)
 
 engine:run()

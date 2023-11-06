@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 
 project(carimbo)
 
+find_program(ZIP_COMMAND zip)
+
 function(embed target file destination)
   get_filename_component(absolute_file ${file} ABSOLUTE)
   get_target_property(${target}_LINK_FLAGS ${target} LINK_FLAGS)
@@ -10,6 +12,11 @@ function(embed target file destination)
   endif()
   set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
 endfunction()
+
+add_custom_target(bundle ALL
+  COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}/assets/demo ${ZIP_COMMAND} -r ${CMAKE_BINARY_DIR}/bundle.zip .
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -58,6 +65,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
 endif()
 
+add_dependencies(${PROJECT_NAME} bundle)
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
+
 target_link_libraries(${PROJECT_NAME} duktape::duktape)
 # target_link_libraries(${PROJECT_NAME} ffmpeg::avcodec)
 # target_link_libraries(${PROJECT_NAME} ffmpeg::avformat)
@@ -75,9 +86,3 @@ target_link_libraries(${PROJECT_NAME} sol2::sol2)
 target_link_libraries(${PROJECT_NAME} SQLite::SQLite3)
 # target_link_libraries(${PROJECT_NAME} libzmq-static)
 # target_link_libraries(${PROJECT_NAME} zstd::libzstd_static)
-
-add_custom_command(TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E tar "cf" "${CMAKE_BINARY_DIR}/bundle.zip" "assets/demo"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
