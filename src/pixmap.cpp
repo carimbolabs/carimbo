@@ -58,9 +58,10 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   }
 }
 
-void pixmap::draw(const int32_t x, const int32_t y, const double angle) const {
+void pixmap::draw(const int32_t x, const int32_t y, const double angle, const uint8_t alpha) const {
   const SDL_Rect rect{x, y, _width, _height};
 
+  SDL_SetTextureAlphaMod(_texture.get(), alpha);
   SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip::none));
 }
 

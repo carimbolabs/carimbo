@@ -5,7 +5,7 @@
 #include "pixmappool.hpp"
 #include "resourcemanager.hpp"
 
-entity::entity(const std::string &id) : _id(id), _x(0), _y(0) {
+entity::entity(const std::string &id) : _id(id), _x(0), _y(0), _angle(0.0), _alpha(255) {
 }
 
 std::shared_ptr<entity> entity::create(const std::string &id) {
@@ -30,7 +30,7 @@ void entity::update() {
 
 void entity::draw() const {
   if (_pixmap) {
-    _pixmap->draw(_x, _y, _angle);
+    _pixmap->draw(_x, _y, _angle, _alpha);
   }
 }
 
@@ -56,6 +56,14 @@ void entity::set_angle(const double angle) {
 
 double entity::angle() const {
   return _angle;
+}
+
+void entity::set_alpha(const uint8_t alpha) {
+  _alpha = alpha;
+}
+
+uint8_t entity::alpha() const {
+  return _alpha;
 }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {

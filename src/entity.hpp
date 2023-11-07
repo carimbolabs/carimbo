@@ -32,6 +32,10 @@ public:
 
   double angle() const;
 
+  void set_alpha(const uint8_t alpha);
+
+  uint8_t alpha() const;
+
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
@@ -48,6 +52,7 @@ private:
   int32_t _x;
   int32_t _y;
   double _angle;
+  uint8_t _alpha;
 
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;

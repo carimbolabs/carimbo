@@ -18,7 +18,7 @@ public:
   pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename);
   ~pixmap() = default;
 
-  void draw(const int x, const int y, const double angle = 0.0) const;
+  void draw(const int x, const int y, const double angle = 0.0, const uint8_t alpha = 255) const;
 
   int width() const;
 

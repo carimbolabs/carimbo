@@ -12,6 +12,7 @@ local entity = engine:spawn()
 entity:set_pixmap("blob/matrix.avif")
 
 local angle = 0
+local alpha = 0
 
 entity:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
@@ -36,6 +37,13 @@ entity:on_update(function(self)
   end
 
   self.angle = angle
+
+  alpha = alpha + 1
+  if alpha > 255 then
+    alpha = 0
+  end
+
+  self.alpha = alpha
 end)
 
 local gc = engine:spawn()
