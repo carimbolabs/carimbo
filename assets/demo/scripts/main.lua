@@ -2,6 +2,7 @@ local engine = EngineFactory.new()
     :set_title("Carimbo")
     :set_width(800)
     :set_height(600)
+    :set_fullscreen(false)
     :create()
 
 engine:prefetch({ "blob/matrix.avif" })
