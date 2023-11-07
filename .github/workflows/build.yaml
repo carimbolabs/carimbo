@@ -103,7 +103,7 @@ jobs:
         working-directory: build
 
       - name: Build
-        run: cmake --build . --config Release
+        run: cmake --build . --config Release -v
         working-directory: build
 
       - name: Copy Windows Binary
