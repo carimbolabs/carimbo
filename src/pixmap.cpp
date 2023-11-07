@@ -28,7 +28,8 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   _width = decoder->image->width;
   _height = decoder->image->height;
 
-  std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface(SDL_CreateRGBSurfaceWithFormat(0, _width, _height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface);
+  std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface(
+      SDL_CreateRGBSurfaceWithFormat(0, _width, _height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface);
 
   if (surface == nullptr) {
     throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}, error {}", filename, SDL_GetError()));
