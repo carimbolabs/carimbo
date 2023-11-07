@@ -22,6 +22,11 @@ void eventmanager::update() {
       std::for_each(_receivers.begin(), _receivers.end(),
                     std::bind(&eventreceiver::on_keyup, std::placeholders::_1, keyevent(event.key.keysym.sym)));
       break;
+
+    case SDL_JOYAXISMOTION:
+      const auto joy = (SDL_JoyAxisEvent *)&event;
+      std::cout << "which: " << joy->which << "axis: " << joy->axis << "value: " << joy->value << std::endl;
+      break;
     }
   }
 }
