@@ -23,10 +23,10 @@ jobs:
 
       matrix:
         config:
-          - name: macOS
-            binary: build/carimbo
-            bundle: build/bundle.zip
-            os: macos-latest
+          # - name: macOS
+          #   binary: build/carimbo
+          #   bundle: build/bundle.zip
+          #   os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
             bundle: build/bundle.zip
@@ -57,6 +57,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "stable"
 
       - name: Install Conan
         run: pip install conan

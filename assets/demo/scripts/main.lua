@@ -35,6 +35,8 @@ entity:on_update(function(self)
   end
 
   self.angle = angle
+
+  collectgarbage("collect")
 end)
 
 engine:run()
