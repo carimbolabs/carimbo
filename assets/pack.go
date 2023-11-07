@@ -8,11 +8,7 @@ import (
 )
 
 func main() {
-	// path := "build"
 	baseDir := os.Args[1]
-	// _ = os.Mkdir(path, os.ModePerm)
-
-	// file, err := os.Create(filepath.Join(path, "bundle.zip"))
 	file, err := os.Create("bundle.zip")
 	if err != nil {
 		panic(err)

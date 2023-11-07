@@ -11,13 +11,12 @@ function(embed target file destination)
   set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
 endfunction()
 
-execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo OUTPUT_VARIABLE OUTPUT_VAR)
-message("Saída do comando Go: ${OUTPUT_VAR}")
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_SOURCE_DIR}/build/)
 
 set(SDL2_MAIN SDL2::SDL2main)
 
@@ -47,22 +46,20 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g) # -Wextra
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g) # -Werror
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /O2 /WX
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -O2 -flto) # -Wextra
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O2 -flto) # -Werror
   endif()
 endif()
 
-# file(ARCHIVE_CREATE
-#   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/bundle.zip"
-#   PATHS "${CMAKE_CURRENT_SOURCE_DIR}/assets/demo"
-#   FORMAT "zip"
-#   VERBOSE
-# )
+execute_process(
+  COMMAND
+    go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo
+)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
