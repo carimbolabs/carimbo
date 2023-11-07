@@ -24,10 +24,6 @@ void eventmanager::update() {
       break;
     }
   }
-
-  const auto number = SDL_NumJoysticks();
-
-  std::cout << "joysticks: " << number << std::endl;
 }
 
 void eventmanager::add_receiver(std::shared_ptr<eventreceiver> receiver) {
