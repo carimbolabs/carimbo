@@ -41,7 +41,7 @@ elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O2 -flto -fno-omit-frame-pointer -fsanitize=address) # -Werror
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O2 -flto) # -Werror
   endif()
 endif()
 
