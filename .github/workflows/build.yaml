@@ -23,10 +23,10 @@ jobs:
 
       matrix:
         config:
-          - name: macOS
-            binary: build/carimbo
-            bundle: build/bundle.zip
-            os: macos-latest
+          # - name: macOS
+          #   binary: build/carimbo
+          #   bundle: build/bundle.zip
+          #   os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
             bundle: build/bundle.zip
@@ -103,7 +103,7 @@ jobs:
         working-directory: build
 
       - name: Build
-        run: cmake --build . --config Release -v
+        run: cmake --build . --config Release --verbose
         working-directory: build
 
       - name: Copy Windows Binary
