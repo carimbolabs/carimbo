@@ -23,10 +23,10 @@ jobs:
 
       matrix:
         config:
-          # - name: macOS
-          #   binary: build/carimbo
-          #   bundle: build/bundle.zip
-          #   os: macos-latest
+          - name: macOS
+            binary: build/carimbo
+            bundle: build/bundle.zip
+            os: macos-latest
           - name: Ubuntu
             binary: build/carimbo
             bundle: build/bundle.zip
@@ -34,7 +34,7 @@ jobs:
           - name: WebAssembly
             os: ubuntu-latest
           - name: Windows
-            binary: build/Release/carimbo.exe
+            binary: build/carimbo.exe
             bundle: build/bundle.zip
             os: windows-latest
 
@@ -104,6 +104,11 @@ jobs:
 
       - name: Build
         run: cmake --build . --config Release
+        working-directory: build
+
+      - name: Copy Windows Binary
+        if: matrix.config.name == 'Windows'
+        run: cp Release/carimbo.exe .
         working-directory: build
 
       - name: Upload Artifact
