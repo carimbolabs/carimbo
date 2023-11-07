@@ -40,7 +40,7 @@ end)
 local gc = engine:spawn()
 
 gc:on_update(function(self)
-  if collectgarbage("count") / 1024 > 64 then
+  if collectgarbage("count") / 1024 > 16 then
     collectgarbage("collect")
   end
 
