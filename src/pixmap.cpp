@@ -7,7 +7,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   const auto buffer = io::read(filename);
   auto result = avifResult{};
 
-  std::unique_ptr<avifDecoder, void (*)(avifDecoder *)> decoder(
+  std::unique_ptr<avifDecoder, /* void (*)(avifDecoder *) */ decltype(&avifDecoderDestroy)> decoder(
       avifDecoderCreate(), &avifDecoderDestroy);
 
   result = avifDecoderSetIOMemory(decoder.get(), reinterpret_cast<const uint8_t *>(&buffer[0]), buffer.size());
