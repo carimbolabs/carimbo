@@ -18,9 +18,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SDL2_MAIN SDL2::SDL2main)
 
-find_package(fmt CONFIG REQUIRED)
 find_package(libavif CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 find_package(PhysFS CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sol2 CONFIG REQUIRED)
@@ -53,9 +53,9 @@ endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
 
-target_link_libraries(${PROJECT_NAME} fmt::fmt)
 target_link_libraries(${PROJECT_NAME} avif)
 target_link_libraries(${PROJECT_NAME} CURL::libcurl)
+target_link_libraries(${PROJECT_NAME} fmt::fmt)
 target_link_libraries(${PROJECT_NAME} physfs-static)
 target_link_libraries(${PROJECT_NAME} SDL2::SDL2-static)
 target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
