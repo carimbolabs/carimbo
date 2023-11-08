@@ -73,7 +73,7 @@ jobs:
       - name: Detect WebAssembly Conan Profile
         if: matrix.config.name == 'WebAssembly'
         run: |
-          cat > ~/.conan2/profiles/wasm <<EOF
+          cat > ~/.conan2/profiles/webassembly <<EOF
           include(default)
 
           [settings]
@@ -95,7 +95,7 @@ jobs:
 
       - name: Install WebAssembly Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --build=missing --profile=wasm --settings compiler.cppstd=20 --settings build_type=Release
+        run: conan install ..  --output-folder=. --build=missing --profile=webassembly --settings compiler.cppstd=20 --settings build_type=Release
         working-directory: build
 
       - name: Configure
