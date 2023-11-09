@@ -13,7 +13,7 @@ entity:set_pixmap("blob/matrix.avif")
 
 local angle = 0
 local alpha = 0
-local direction = 1
+local direction = 0
 
 entity:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
@@ -39,16 +39,14 @@ entity:on_update(function(self)
 
   self.angle = angle
 
-  if direction == 1 then
-    alpha = alpha + 1
+  if direction == 0 then
+    alpha = alpha - 5
     if alpha > 255 then
-      alpha = 0
-      direction = 0
+      direction = 1
     end
   else
-    alpha = alpha - 1
+    alpha = alpha + 5
     if alpha < 0 then
-      alpha = 255
       direction = 1
     end
   end
@@ -59,7 +57,7 @@ end)
 local gc = engine:spawn()
 
 gc:on_update(function(self)
-  if collectgarbage("count") / 1024 > 16 then
+  if collectgarbage("count") / 1024 > 8 then
     collectgarbage("collect")
   else
     collectgarbage("step", 1)
