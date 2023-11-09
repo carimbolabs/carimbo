@@ -16,12 +16,12 @@ void scriptengine::run() {
 
   lua.open_libraries();
 
-  lua.new_enum(
-      "Flip",
-      "none", flip::none,
-      "horizontal", flip::horizontal,
-      "vertical", flip::vertical,
-      "both", flip::both);
+  // lua.new_enum(
+  //     "Flip",
+  //     "none", flip::none,
+  //     "horizontal", flip::horizontal,
+  //     "vertical", flip::vertical,
+  //     "both", flip::both);
 
   lua.new_enum(
       "KeyEvent",
@@ -30,11 +30,20 @@ void scriptengine::run() {
       "s", keyevent::s,
       "d", keyevent::d);
 
-  lua.new_usertype<point>(
-      "Point",
-      sol::constructors<point(int32_t, int32_t)>(),
-      "x", sol::property(&point::x, &point::set_x),
-      "y", sol::property(&point::y, &point::set_y));
+  // lua.new_usertype<point>(
+  //     "Point",
+  //     sol::constructors<point(int32_t, int32_t)>(),
+  //     "x", sol::property(&point::x, &point::set_x),
+  //     "y", sol::property(&point::y, &point::set_y));
+
+  lua.new_usertype<enginefactory>(
+      "EngineFactory",
+      // sol::constructors<enginefactory()>(),
+      "set_title", &enginefactory::set_title,
+      "set_width", &enginefactory::set_width,
+      "set_height", &enginefactory::set_height,
+      "set_fullscreen", &enginefactory::set_fullscreen,
+      "create", &enginefactory::create);
 
   lua.new_usertype<engine>(
       "Engine",
@@ -50,14 +59,19 @@ void scriptengine::run() {
         engine.prefetch(filenames);
       });
 
-  lua.new_usertype<enginefactory>(
-      "EngineFactory",
-      sol::constructors<enginefactory()>(),
-      "set_title", &enginefactory::set_title,
-      "set_width", &enginefactory::set_width,
-      "set_height", &enginefactory::set_height,
-      "set_fullscreen", &enginefactory::set_fullscreen,
-      "create", &enginefactory::create);
+  // lua.new_usertype<entity>(
+  //     "Entity",
+  //     "x", sol::property(&entity::x, &entity::set_x),
+  //     "y", sol::property(&entity::y, &entity::set_y),
+  //     "width", sol::property(&entity::width),
+  //     "height", sol::property(&entity::height),
+  //     "angle", sol::property(&entity::angle, &entity::set_angle),
+  //     "alpha", sol::property(&entity::alpha, &entity::set_alpha),
+  //     "on_update", &entity::set_onupdate,
+  //     "set_pixmap", &entity::set_pixmap,
+  //     // "set_body", &entity::set_body,
+  //     sol::meta_function::garbage_collect,
+  //     sol::destructor(&entity::destroy));
 
   lua.new_usertype<entity>(
       "Entity",
@@ -68,10 +82,11 @@ void scriptengine::run() {
       "angle", sol::property(&entity::angle, &entity::set_angle),
       "alpha", sol::property(&entity::alpha, &entity::set_alpha),
       "on_update", &entity::set_onupdate,
-      "set_pixmap", &entity::set_pixmap,
-      // "set_body", &entity::set_body,
-      sol::meta_function::garbage_collect,
-      sol::destructor(&entity::destroy));
+      "set_pixmap", &entity::set_pixmap
+      //     // "set_body", &entity::set_body,
+      //     sol::meta_function::garbage_collect,
+      //     sol::destructor(&entity::destroy));
+  );
 
   const auto script = io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));

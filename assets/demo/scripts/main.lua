@@ -1,24 +1,24 @@
+print("Hello from Lua! 9")
+
 local engine = EngineFactory.new()
-    :set_title("Carimbo")
-    :set_width(800)
-    :set_height(600)
-    :set_fullscreen(false)
     :create()
 
+-- local engine = Engine.new()
+--     :set_title("Carimbo")
+--     :set_width(800)
+--     :set_height(600)
+--     :set_fullscreen(false)
+--     :create()
+
 engine:prefetch({ "blob/matrix.avif" })
-
-local entity = engine:spawn()
-
-entity:set_pixmap("blob/matrix.avif")
 
 local angle = 0
 local alpha = 0
 local direction = 0
 
-entity.x = (800 // 2) - (entity.width // 2)
-entity.y = (600 // 2) - (entity.height // 2)
+local me = engine:spawn()
 
-entity:on_update(function(self)
+me:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
     self.y = self.y - 1
   end
@@ -68,5 +68,10 @@ gc:on_update(function(self)
     collectgarbage("step", 1)
   end
 end)
+
+me:set_pixmap("blob/matrix.avif")
+
+me.x = (800 // 2) - (me.width // 2)
+me.y = (600 // 2) - (me.height // 2)
 
 engine:run()
