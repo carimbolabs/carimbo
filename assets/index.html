@@ -32,6 +32,12 @@
   <div class="container">
     <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     <script type='text/javascript'>
+      addEventListener("unhandledrejection", (event) => {
+        console.log(JSON.stringify(event))
+      });
+      onunhandledrejection = (event) => {
+        console.log(JSON.stringify(event))
+      };
       var Module = {
         canvas: (function () { return document.getElementById('canvas'); })()
       };
