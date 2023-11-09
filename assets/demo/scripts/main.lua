@@ -40,13 +40,13 @@ entity:on_update(function(self)
   self.angle = angle
 
   if direction == 0 then
-    alpha = alpha - 5
+    alpha = alpha - 2
     if alpha <= 0 then
       alpha = 0
       direction = 1
     end
   else
-    alpha = alpha + 5
+    alpha = alpha + 2
     if alpha >= 255 then
       alpha = 255
       direction = 0
