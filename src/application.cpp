@@ -25,10 +25,10 @@ int application::run() {
     // filesystem::mount(".", "/");
 
     auto ef = enginefactory()
-                  .set_width(800);
-    .set_height(600)
-        .set_title("Carimbo")
-        .set_fullscreen(false);
+                  .set_width(800)
+                  .set_height(600)
+                  .set_title("Carimbo")
+                  .set_fullscreen(false);
     auto engine = ef.create();
 
     engine->run();
