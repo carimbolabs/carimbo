@@ -15,6 +15,9 @@ local angle = 0
 local alpha = 0
 local direction = 0
 
+entity.x = (800 / 2) - (entity.x / 2)
+entity.y = (600 / 2) - (entity.y / 2)
+
 entity:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
     self.y = self.y - 1
