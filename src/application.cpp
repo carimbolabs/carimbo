@@ -29,7 +29,7 @@ int application::run() {
     .set_height(600)
         .set_title("Carimbo")
         .set_fullscreen(false);
-    const auto engine = ef.create();
+    auto engine = ef.create();
 
     engine.run();
     // auto se = scriptengine();
