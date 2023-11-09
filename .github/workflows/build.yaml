@@ -82,6 +82,16 @@ jobs:
 
           [tool_requires]
           *: emsdk/3.1.44
+
+          [conf]
+          tools.build:cflags=["-fsanitize=address"]
+          tools.build:cxxflags=["-fsanitize=address"]
+          tools.build:exelinkflags=["-fsanitize=address"]
+          tools.build:sharedlinkflags=["-fsanitize=address"]
+          EOF
+
+          cat > ~/.conan2/global.conf <<EOF
+          tools.info.package_id:confs=["tools.build:cflags", "tools.build:cxxflags", "tools.build:exelinkflags", "tools.build:sharedlinkflags"]
           EOF
 
       - name: Install Ubuntu Dependencies
