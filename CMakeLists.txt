@@ -48,13 +48,14 @@ endif()
 execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  # target_link_libraries(${PROJECT_NAME} "--profiling")
+  target_link_libraries(${PROJECT_NAME} "--profiling")
   # target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
-  # target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
-  # target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
+  target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
+  target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
   # target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g)
 
-  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
+  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")  
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
