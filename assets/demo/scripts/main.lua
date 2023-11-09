@@ -1,5 +1,3 @@
-print("Hello from Lua! 9")
-
 local engine = EngineFactory.new()
     :create()
 
