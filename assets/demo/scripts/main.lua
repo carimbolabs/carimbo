@@ -41,13 +41,13 @@ entity:on_update(function(self)
 
   if direction == 0 then
     alpha = alpha - 5
-    if alpha > 255 then
+    if alpha <= 0 then
       direction = 1
     end
   else
     alpha = alpha + 5
-    if alpha < 0 then
-      direction = 1
+    if alpha >= 255 then
+      direction = 0
     end
   end
 
