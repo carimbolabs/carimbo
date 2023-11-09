@@ -2,7 +2,9 @@
 #ifndef _common_hpp
 #define _common_hpp
 
+#ifdef DEBUG
 #define SOL_ALL_SAFETIES_ON 1
+#endif
 
 extern "C" {
 #include <SDL2/SDL.h>
