@@ -48,9 +48,9 @@ endif()
 execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  # target_link_libraries(${PROJECT_NAME} "--profiling")
-  # target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
-  target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=0")
+  target_link_libraries(${PROJECT_NAME} "--profiling")
+  target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
+  target_link_libraries(${PROJECT_NAME} "-sASSERTIONS")
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
 
   embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
