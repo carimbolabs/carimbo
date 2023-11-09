@@ -13,6 +13,7 @@ entity:set_pixmap("blob/matrix.avif")
 
 local angle = 0
 local alpha = 0
+local direction = 1
 
 entity:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
@@ -38,9 +39,18 @@ entity:on_update(function(self)
 
   self.angle = angle
 
-  alpha = alpha + 1
-  if alpha > 255 then
-    alpha = 0
+  if direction == 1 then
+    alpha = alpha + 1
+    if alpha > 255 then
+      alpha = 0
+      direction = 0
+    end
+  else
+    alpha = alpha - 1
+    if alpha < 0 then
+      alpha = 255
+      direction = 1
+    end
   end
 
   self.alpha = alpha
