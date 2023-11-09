@@ -28,6 +28,10 @@ public:
 
   int32_t y() const;
 
+  int32_t width() const;
+
+  int32_t height() const;
+
   void set_angle(const double angle);
 
   double angle() const;

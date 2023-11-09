@@ -50,6 +50,14 @@ int32_t entity::y() const {
   return _y;
 }
 
+int32_t entity::width() const {
+  return _pixmap->width();
+}
+
+int32_t entity::height() const {
+  return _pixmap->height();
+}
+
 void entity::set_angle(const double angle) {
   _angle = angle;
 }

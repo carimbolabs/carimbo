@@ -63,6 +63,8 @@ void scriptengine::run() {
       "Entity",
       "x", sol::property(&entity::x, &entity::set_x),
       "y", sol::property(&entity::y, &entity::set_y),
+      "width", sol::property(&entity::width),
+      "height", sol::property(&entity::height),
       "angle", sol::property(&entity::angle, &entity::set_angle),
       "alpha", sol::property(&entity::alpha, &entity::set_alpha),
       "on_update", &entity::set_onupdate,
