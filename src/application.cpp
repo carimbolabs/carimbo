@@ -31,7 +31,7 @@ int application::run() {
         .set_fullscreen(false);
     auto engine = ef.create();
 
-    engine.run();
+    engine->run();
     // auto se = scriptengine();
     // se.run();
   } catch (const std::exception &e) {
