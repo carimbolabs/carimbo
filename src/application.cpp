@@ -22,18 +22,9 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
     filesystem::mount("bundle.zip", "/");
-    // filesystem::mount(".", "/");
 
-    auto ef = enginefactory()
-                  .set_width(800)
-                  .set_height(600)
-                  .set_title("Carimbo")
-                  .set_fullscreen(false);
-    auto engine = ef.create();
-
-    engine->run();
-    // auto se = scriptengine();
-    // se.run();
+    auto se = scriptengine();
+    se.run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;
