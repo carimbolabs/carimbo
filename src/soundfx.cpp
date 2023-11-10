@@ -119,10 +119,11 @@ soundfx::soundfx(std::string_view filename) {
   } while (offset > 0);
 
   std::cout << "[soundfx] " << filename << " (" << buffer.size() << " bytes)" << std::endl;
+
+  UNUSED(callback);
 }
 
 soundfx::~soundfx() {
-  SDL_CloseAudio();
 }
 
 void soundfx::play() const {
