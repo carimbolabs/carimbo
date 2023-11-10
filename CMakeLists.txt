@@ -54,7 +54,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   # target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
   # target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
   # target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
-  # target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
+  target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
   # target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
   # target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g)
 
