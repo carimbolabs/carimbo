@@ -14,7 +14,7 @@ endfunction()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 set(SDL2_MAIN SDL2::SDL2main)
 
@@ -35,13 +35,13 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /WX /Zi) # /WX
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
   else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O0 -g) # -Werror
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /WX /GL) # /WX
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
   else()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O2 -flto) # -Werror
   endif()
