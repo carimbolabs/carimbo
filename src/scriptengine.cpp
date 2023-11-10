@@ -1,5 +1,6 @@
 #include "scriptengine.hpp"
 
+#include "delay.hpp"
 #include "engine.hpp"
 #include "enginefactory.hpp"
 #include "entity.hpp"
@@ -9,6 +10,7 @@
 #include "noncopyable.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
+#include "soundmanager.hpp"
 #include "statemanager.hpp"
 
 void scriptengine::run() {
@@ -51,13 +53,15 @@ void scriptengine::run() {
       "spawn", &engine::spawn,
       "destroy", &engine::destroy,
       "is_keydown", &engine::is_keydown,
-      "prefetch", [](engine &engine, sol::table table) {
-        std::list<std::string> filenames(table.size());
-        for (auto &item : table) {
-          filenames.push_back(item.second.as<std::string>());
-        }
-        engine.prefetch(filenames);
-      });
+      "prefetch", &engine::prefetch
+      //   "prefetch", [](engine &engine, sol::table table) {
+      //     std::list<std::string> filenames(table.size());
+      //     for (auto &item : table) {
+      //       std::cout << ">>> prefetch " << item.second.as<std::string>() << std::endl;
+      //       filenames.push_back(item.second.as<std::string>());
+      //     }
+      //     engine.prefetch(filenames);
+  );
 
   lua.new_usertype<entity>(
       "Entity",
@@ -67,10 +71,11 @@ void scriptengine::run() {
       "height", sol::property(&entity::height),
       "angle", sol::property(&entity::angle, &entity::set_angle),
       "alpha", sol::property(&entity::alpha, &entity::set_alpha),
-      "on_update", &entity::set_onupdate,
-      "set_pixmap", &entity::set_pixmap,
-      sol::meta_function::garbage_collect,
-      sol::destructor(&entity::destroy));
+      "pixmap", sol::property(&entity::set_pixmap),
+      "play_sound", &entity::play_sound,
+      "on_update", &entity::set_onupdate);
+
+  lua.set_function("sleep", &sleep);
 
   const auto script = io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));

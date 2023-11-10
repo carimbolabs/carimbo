@@ -18,6 +18,10 @@ const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
   return _soundmap[filename];
 }
 
+void soundmanager::play(const std::string &filename) {
+  get(filename)->play();
+}
+
 void soundmanager::flush() {
   auto it = _soundmap.begin();
 

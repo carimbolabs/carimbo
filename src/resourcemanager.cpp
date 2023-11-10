@@ -23,7 +23,7 @@ void resourcemanager::update() {
     _pixmappool->get(filename);
   }
 
-  if (filename.find(".aac") != std::string::npos) {
+  if (filename.find(".ogg") != std::string::npos) {
     _soundmanager->get(filename);
   }
 }

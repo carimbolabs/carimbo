@@ -7,9 +7,11 @@
 class soundfx {
 public:
   soundfx(std::string_view filename);
-  ~soundfx() = default;
+  ~soundfx();
 
   void play() const;
+
+  std::vector<uint8_t> buffer;
 
 private:
 };

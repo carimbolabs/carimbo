@@ -14,6 +14,8 @@ public:
 
   const std::shared_ptr<soundfx> get(const std::string &filename);
 
+  void play(const std::string &filename);
+
   void flush();
 
 private:

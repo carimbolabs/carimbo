@@ -4,18 +4,13 @@
 #include "pixmap.hpp"
 #include "pixmappool.hpp"
 #include "resourcemanager.hpp"
+#include "soundmanager.hpp"
 
 entity::entity(const std::string &id) : _id(id), _x(0), _y(0), _angle(0.0), _alpha(255) {
 }
 
 std::shared_ptr<entity> entity::create(const std::string &id) {
   return std::shared_ptr<entity>(new entity(id));
-}
-
-void entity::destroy(const std::shared_ptr<entity> entity) {
-  std::cout << "[entity] destroy: " << entity->get_id() << std::endl;
-  std::cout << "[entity] destroy use_count: " << entity.use_count() << std::endl;
-  entity.~shared_ptr();
 }
 
 std::string entity::get_id() const {
@@ -88,4 +83,8 @@ void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn
 
 void entity::set_pixmap(const std::string &filename) {
   _pixmap = _resourcemanager->get_pixmappool()->get(filename);
+}
+
+void entity::play_sound(const std::string &filename) {
+  _resourcemanager->get_soundmanager()->play(filename);
 }

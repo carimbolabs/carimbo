@@ -12,8 +12,6 @@ public:
 
   static std::shared_ptr<entity> create(const std::string &id);
 
-  static void destroy(const std::shared_ptr<entity> entity);
-
   std::string get_id() const;
 
   virtual void update();
@@ -47,6 +45,8 @@ public:
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
 
   void set_pixmap(const std::string &filename);
+
+  void play_sound(const std::string &filename);
 
 private:
   entity(const std::string &id);

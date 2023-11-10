@@ -10,7 +10,10 @@ extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
 #include <curl/curl.h>
+#include <ogg/ogg.h>
 #include <physfs.h>
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
 }
 
 #include <algorithm>
