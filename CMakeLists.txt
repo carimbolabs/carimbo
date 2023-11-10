@@ -52,7 +52,7 @@ execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   # target_link_libraries(${PROJECT_NAME} "--profiling")
   # target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
-  # target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
+  target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
   # target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
   # target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
