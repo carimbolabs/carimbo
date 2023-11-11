@@ -8,7 +8,7 @@ static void callback(void *userdata, uint8_t *stream, int length) {
     return;
   }
 
-  const size_t to_copy = std::min(static_cast<size_t>(length), buffer.size());
+  const size_t to_copy = 0; // std::min(static_cast<size_t>(length), buffer.size());
   SDL_memcpy(stream, buffer.data(), to_copy);
   // SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
