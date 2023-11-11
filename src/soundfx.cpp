@@ -1,10 +1,7 @@
 #include "soundfx.hpp"
 
-#include "io.hpp"
-
 static void callback(void *userdata, uint8_t *stream, int length) {
   auto &buffer = static_cast<soundfx *>(userdata)->buffer;
-  // auto blength = static_cast<int>(buffer.size());
 
   if (buffer.empty()) {
     SDL_memset(stream, 0, length);
@@ -89,7 +86,7 @@ const char *ov_strerror(int ret) {
   case OV_ENOSEEK:
     return "File is not seekable";
   default:
-    return "";
+    return "Unknown";
   }
 }
 
