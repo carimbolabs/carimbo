@@ -101,11 +101,10 @@ soundfx::soundfx(std::string_view filename) {
   }
 
   const auto vi = ov_info(vf.get(), -1);
+  UNUSED(vi);
 
-  std::cout << "[soundfx] " << filename << " (" << vi->channels << " channels, " << vi->rate << " Hz)" << std::endl;
-
-  int offset{0};
-  const auto constexpr length = 1024 * 8;
+  int32_t offset{0};
+  const auto constexpr length = 1024 * 4;
   std::array<uint8_t, length> array{0};
 
   do {
