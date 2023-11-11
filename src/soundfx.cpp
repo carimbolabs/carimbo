@@ -104,7 +104,7 @@ soundfx::soundfx(std::string_view filename) {
   UNUSED(vi);
 
   int32_t offset{0};
-  const auto constexpr length = 1024 * 4 * vi->channels;
+  const auto constexpr length = 1024 * 8;
   std::array<uint8_t, length> array{0};
 
   do {
