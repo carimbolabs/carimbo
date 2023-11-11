@@ -2,27 +2,29 @@
 
 #include "io.hpp"
 
-static void callback(void *userdata, uint8_t *stream, int len) {
-  auto buffer = static_cast<soundfx *>(userdata)->buffer;
-  auto audio = reinterpret_cast<uint8_t *>(buffer.data());
-  auto lenght = static_cast<int>(buffer.size());
+static void callback(void *userdata, uint8_t *stream, int length) {
+  auto &buffer = static_cast<soundfx *>(userdata)->buffer;
+  // auto blength = static_cast<int>(buffer.size());
 
-  if (lenght < len) {
-    SDL_memset(stream, 0, lenght);
-  } else {
-    SDL_MixAudio(stream, audio, len, SDL_MIX_MAXVOLUME);
-    buffer.erase(buffer.begin(), buffer.begin() + len);
+  if (buffer.empty()) {
+    SDL_memset(stream, 0, length);
+    return;
   }
+
+  const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
+  SDL_memcpy(stream, buffer.data(), to_copy);
+  // SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
+  buffer.erase(buffer.begin(), buffer.begin() + to_copy);
 }
 
 static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb, void *source) {
   auto file = reinterpret_cast<PHYSFS_file *>(source);
 
-  PHYSFS_sint64 res = PHYSFS_readBytes(file, ptr, static_cast<PHYSFS_uint32>(size) * static_cast<PHYSFS_uint32>(nmemb));
-  if (res <= 0)
+  PHYSFS_sint64 result = PHYSFS_readBytes(file, ptr, static_cast<PHYSFS_uint32>(size) * static_cast<PHYSFS_uint32>(nmemb));
+  if (result <= 0)
     return 0;
 
-  return static_cast<size_t>(res) / size;
+  return static_cast<size_t>(result) / size;
 }
 
 static int ovPHYSFS_seek(void *source, ogg_int64_t offset, int whence) {
@@ -62,6 +64,10 @@ static ov_callbacks PHYSFS_callbacks = {ovPHYSFS_read, ovPHYSFS_seek, ovPHYSFS_c
 
 const char *ov_strerror(int ret) {
   switch (ret) {
+  case OV_FALSE:
+    return "A request for an ov_read() returned 0.";
+  case OV_EOF:
+    return "End of file reached";
   case OV_HOLE:
     return "Missing or corrupt data in the bitstream";
   case OV_EREAD:
@@ -120,6 +126,21 @@ soundfx::soundfx(std::string_view filename) {
   std::cout << "[soundfx] " << filename << " (" << buffer.size() << " bytes)" << std::endl;
 
   UNUSED(callback);
+
+  SDL_AudioSpec spec;
+  SDL_zero(spec);
+  spec.freq = 44100;
+  spec.format = AUDIO_S16SYS;
+  spec.channels = 2;
+  spec.samples = 4096;
+  spec.callback = callback;
+  spec.userdata = this;
+  SDL_AudioDeviceID id = SDL_OpenAudioDevice(nullptr, 0, &spec, nullptr, 0);
+  if (id == 0) {
+    throw std::runtime_error(fmt::format("[SDL_OpenAudioDevice] error while opening audio device: {}", SDL_GetError()));
+  }
+
+  SDL_PauseAudioDevice(id, 0);
 }
 
 soundfx::~soundfx() {
