@@ -6,6 +6,8 @@
 #define SOL_ALL_SAFETIES_ON 1
 #endif
 
+#define NOMINMAX
+
 extern "C" {
 #include <SDL2/SDL.h>
 #include <avif/avif.h>
