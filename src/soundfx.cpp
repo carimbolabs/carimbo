@@ -8,7 +8,7 @@ static void callback(void *userdata, uint8_t *stream, int length) {
     return;
   }
 
-  const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
+  const size_t to_copy = std::min(static_cast<size_t>(length), buffer.size());
   SDL_memcpy(stream, buffer.data(), to_copy);
   // SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
@@ -103,8 +103,7 @@ soundfx::soundfx(std::string_view filename) {
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
-  const auto vi = ov_info(vf.get(), -1);
-  UNUSED(vi);
+  // const auto vi = ov_info(vf.get(), -1);
 
   int32_t offset{0};
   const auto constexpr length = 1024 * 8;
@@ -121,8 +120,6 @@ soundfx::soundfx(std::string_view filename) {
   } while (offset > 0);
 
   std::cout << "[soundfx] " << filename << " (" << buffer.size() << " bytes)" << std::endl;
-
-  UNUSED(callback);
 
   SDL_AudioSpec spec;
   SDL_zero(spec);

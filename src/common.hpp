@@ -17,6 +17,7 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <list>
 #include <map>
