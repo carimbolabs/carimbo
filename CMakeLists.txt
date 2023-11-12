@@ -42,33 +42,26 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O3 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O2 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
   endif()
 endif()
 
 execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  #target_link_libraries(${PROJECT_NAME} "--profiling")
-  #target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
-  #target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
-  target_link_libraries(${PROJECT_NAME} "-USE_ZLIB=1")
+  # target_link_libraries(${PROJECT_NAME} "--profiling")
+  # target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
+  # target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
+  # target_link_libraries(${PROJECT_NAME} "-sNO_DISABLE_EXCEPTION_CATCHING")
 
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
-  #target_link_libraries(${PROJECT_NAME} "-sFORCE_FILESYSTEM=1")
+  target_link_libraries(${PROJECT_NAME} "-sFORCE_FILESYSTEM=1")
   target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
+  target_link_libraries(${PROJECT_NAME} "-sEXPORTED_RUNTIME_METHODS=['callMain']")
 
-  # -s USE_ZLIB=1 -s EXPORTED_RUNTIME_METHODS="['FS', 'callMain']"
-
-  #target_link_libraries(${PROJECT_NAME} "-EXPORTED_RUNTIME_METHODS=['FS', 'callMain']")
-  #target_link_libraries(${PROJECT_NAME} "-sMODULARIZE=1")
-  #target_link_libraries(${PROJECT_NAME} "-sEXPORT_NAME=createModule")
-
-  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
-
-  target_compile_options(${PROJECT_NAME} PRIVATE -Os -flto)
+  # embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
