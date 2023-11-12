@@ -45,15 +45,14 @@
       fetch("/bundle.zip")
         .then((response) => response.arrayBuffer())
         .then((data) => {
-          var uint8View = new Uint8Array(data);
+          const uint8View = new Uint8Array(data);
 
           FS.writeFile("/bundle.zip", uint8View);
-        })
-        .then(() => {
-          var script = document.createElement("script");
+
+          const script = document.createElement("script");
           script.src = "carimbo.js";
           document.body.appendChild(script);
-        });
+        })
     </script>
   </div>
 </body>
