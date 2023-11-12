@@ -3,6 +3,8 @@
 point::point(const int32_t x, const int32_t y) : _x(x), _y(y) {
 }
 
+point::point(const point &other) : _x(other.x()), _y(other.y()) {}
+
 int32_t point::x() const {
   return _x;
 }

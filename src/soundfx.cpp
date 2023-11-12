@@ -103,8 +103,6 @@ soundfx::soundfx(std::string_view filename) {
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
-  // const auto vi = ov_info(vf.get(), -1);
-
   int32_t offset{0};
   const auto constexpr length = 1024 * 8;
   std::array<uint8_t, length> array{0};
@@ -119,22 +117,21 @@ soundfx::soundfx(std::string_view filename) {
     std::copy(array.begin(), array.begin() + offset, std::back_inserter(buffer));
   } while (offset > 0);
 
-  std::cout << "[soundfx] " << filename << " (" << buffer.size() << " bytes)" << std::endl;
+  UNUSED(callback);
+  // SDL_AudioSpec spec{};
+  // // SDL_zero(spec);
+  // spec.freq = 44100;
+  // spec.format = AUDIO_S16SYS;
+  // spec.channels = 2;
+  // spec.samples = 4096;
+  // spec.callback = callback;
+  // spec.userdata = this;
+  // SDL_AudioDeviceID id = SDL_OpenAudioDevice(nullptr, 0, &spec, nullptr, 0);
+  // if (id == 0) {
+  //   throw std::runtime_error(fmt::format("[SDL_OpenAudioDevice] error while opening audio device: {}", SDL_GetError()));
+  // }
 
-  SDL_AudioSpec spec;
-  SDL_zero(spec);
-  spec.freq = 44100;
-  spec.format = AUDIO_S16SYS;
-  spec.channels = 2;
-  spec.samples = 4096;
-  spec.callback = callback;
-  spec.userdata = this;
-  SDL_AudioDeviceID id = SDL_OpenAudioDevice(nullptr, 0, &spec, nullptr, 0);
-  if (id == 0) {
-    throw std::runtime_error(fmt::format("[SDL_OpenAudioDevice] error while opening audio device: {}", SDL_GetError()));
-  }
-
-  SDL_PauseAudioDevice(id, 0);
+  // SDL_PauseAudioDevice(id, 0);
 }
 
 soundfx::~soundfx() {

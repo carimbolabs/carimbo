@@ -24,10 +24,9 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
     throw std::runtime_error(fmt::format("[avifDecoderNextImage] error while decoding AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
-  _width = decoder->image->width;
-  _height = decoder->image->height;
+  _size = size{decoder->image->width, decoder->image->height};
 
-  std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{SDL_CreateRGBSurfaceWithFormat(0, _width, _height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface};
+  std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{SDL_CreateRGBSurfaceWithFormat(0, decoder->image->width, decoder->image->height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface};
 
   if (surface == nullptr) {
     throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}, error {}", filename, SDL_GetError()));
@@ -56,17 +55,13 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   }
 }
 
-void pixmap::draw(const int32_t x, const int32_t y, const double angle, const uint8_t alpha) const {
-  const SDL_Rect rect{x, y, _width, _height};
+void pixmap::draw(const point point, const double angle, const uint8_t alpha) const {
+  const SDL_Rect rect{point.x(), point.y(), static_cast<int>(_size.get_width()), static_cast<int>(_size.get_height())};
 
   SDL_SetTextureAlphaMod(_texture.get(), alpha);
   SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip::none));
 }
 
-int32_t pixmap::width() const {
-  return _width;
-}
-
-int32_t pixmap::height() const {
-  return _height;
+const size pixmap::get_size() const {
+  return _size;
 }

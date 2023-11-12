@@ -20,6 +20,10 @@ public:
 
   const std::shared_ptr<renderer> get_renderer() const;
 
+  void set_audiomanager(std::shared_ptr<audiomanager> audiomanager);
+
+  const std::shared_ptr<audiomanager> get_audiomanager();
+
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
   const std::shared_ptr<entitymanager> get_entitymanager() const;
@@ -59,6 +63,7 @@ private:
   std::list<std::shared_ptr<loopable>> _loopables;
   std::shared_ptr<window> _window;
   std::shared_ptr<renderer> _renderer;
+  std::shared_ptr<audiomanager> _audiomanager;
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<eventmanager> _eventmanager;
   std::shared_ptr<resourcemanager> _resourcemanager;

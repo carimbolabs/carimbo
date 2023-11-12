@@ -4,11 +4,13 @@
 
 #include "common.hpp"
 
+#include "point.hpp"
+
 class engine;
 
 class entity : public std::enable_shared_from_this<entity> {
 public:
-  virtual ~entity() = default;
+  virtual ~entity();
 
   static std::shared_ptr<entity> create(const std::string &id);
 
@@ -20,23 +22,23 @@ public:
 
   void set_x(int32_t x);
 
-  int32_t x() const;
+  int32_t get_x() const;
 
   void set_y(int32_t y);
 
-  int32_t y() const;
+  int32_t get_y() const;
 
-  int32_t width() const;
+  int32_t get_width() const;
 
-  int32_t height() const;
+  int32_t get_height() const;
 
   void set_angle(const double angle);
 
-  double angle() const;
+  double get_angle() const;
 
   void set_alpha(const uint8_t alpha);
 
-  uint8_t alpha() const;
+  uint8_t get_alpha() const;
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
@@ -53,8 +55,7 @@ private:
 
   std::string _id;
   std::shared_ptr<pixmap> _pixmap;
-  int32_t _x;
-  int32_t _y;
+  point _point;
   double _angle;
   uint8_t _alpha;
 

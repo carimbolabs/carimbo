@@ -6,7 +6,9 @@
 
 class point {
 public:
+  point() = default;
   point(const int32_t x, const int32_t y);
+  point(const point &other);
   ~point() = default;
 
   int32_t x() const;

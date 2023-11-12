@@ -6,7 +6,11 @@
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 
-entity::entity(const std::string &id) : _id(id), _x(0), _y(0), _angle(0.0), _alpha(255) {
+entity::entity(const std::string &id) : _id(id), _point(0, 0), _angle(0.0), _alpha(255) {
+}
+
+entity::~entity() {
+  std::cout << "entity::~entity(), id: " << _id << std::endl;
 }
 
 std::shared_ptr<entity> entity::create(const std::string &id) {
@@ -25,39 +29,39 @@ void entity::update() {
 
 void entity::draw() const {
   if (_pixmap) {
-    _pixmap->draw(_x, _y, _angle, _alpha);
+    _pixmap->draw(_point, _angle, _alpha);
   }
 }
 
 void entity::set_x(int32_t x) {
-  _x = x;
+  _point.set_x(x);
 }
 
-int32_t entity::x() const {
-  return _x;
+int32_t entity::get_x() const {
+  return _point.x();
 }
 
 void entity::set_y(int32_t y) {
-  _y = y;
+  _point.set_y(y);
 }
 
-int32_t entity::y() const {
-  return _y;
+int32_t entity::get_y() const {
+  return _point.y();
 }
 
-int32_t entity::width() const {
-  return _pixmap->width();
+int32_t entity::get_width() const {
+  return _pixmap->get_size().get_width();
 }
 
-int32_t entity::height() const {
-  return _pixmap->height();
+int32_t entity::get_height() const {
+  return _pixmap->get_size().get_height();
 }
 
 void entity::set_angle(const double angle) {
   _angle = angle;
 }
 
-double entity::angle() const {
+double entity::get_angle() const {
   return _angle;
 }
 
@@ -65,7 +69,7 @@ void entity::set_alpha(const uint8_t alpha) {
   _alpha = alpha;
 }
 
-uint8_t entity::alpha() const {
+uint8_t entity::get_alpha() const {
   return _alpha;
 }
 

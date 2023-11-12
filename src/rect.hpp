@@ -7,14 +7,13 @@
 class rect {
 public:
   rect() = default;
-  rect(const point &position, const point &size);
-  rect(const point &position, const int &width, const int &height);
+  rect(const point &position, const size &size);
   rect(const rect &other) = default;
   ~rect() = default;
 
 private:
   point _position;
-  point _size;
+  size _size;
 };
 
 #endif

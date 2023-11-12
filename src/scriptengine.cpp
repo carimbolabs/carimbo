@@ -65,12 +65,12 @@ void scriptengine::run() {
 
   lua.new_usertype<entity>(
       "Entity",
-      "x", sol::property(&entity::x, &entity::set_x),
-      "y", sol::property(&entity::y, &entity::set_y),
-      "width", sol::property(&entity::width),
-      "height", sol::property(&entity::height),
-      "angle", sol::property(&entity::angle, &entity::set_angle),
-      "alpha", sol::property(&entity::alpha, &entity::set_alpha),
+      "x", sol::property(&entity::get_x, &entity::set_x),
+      "y", sol::property(&entity::get_y, &entity::set_y),
+      "width", sol::property(&entity::get_width),
+      "height", sol::property(&entity::get_height),
+      "angle", sol::property(&entity::get_angle, &entity::set_angle),
+      "alpha", sol::property(&entity::get_alpha, &entity::set_alpha),
       "pixmap", sol::property(&entity::set_pixmap),
       "play_sound", &entity::play_sound,
       "on_update", &entity::set_onupdate);

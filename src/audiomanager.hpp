@@ -8,6 +8,11 @@ class audiomanager {
 public:
   audiomanager();
   virtual ~audiomanager();
+
+  uint32_t get_device() const;
+
+private:
+  uint32_t _id;
 };
 
 #endif

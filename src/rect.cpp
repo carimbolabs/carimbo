@@ -1,6 +1,6 @@
 #include "rect.hpp"
 
 #include "point.hpp"
+#include "size.hpp"
 
-rect::rect(const point &position, const point &size) : _position(position), _size(size) {}
-rect::rect(const point &position, const int &width, const int &height) : _position(position), _size(width, height) {}
+rect::rect(const point &position, const size &size) : _position(position), _size(size) {}

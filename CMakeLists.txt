@@ -8,7 +8,8 @@ function(embed target file destination)
   if(NOT ${target}_LINK_FLAGS)
     set(${target}_LINK_FLAGS )
   endif()
-  set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
+  # set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
+  set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --preload-file ${absolute_file}@${destination}")
 endfunction()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -35,28 +36,26 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi) # /WX
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O0 -g) # -Werror
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O0 -g)
   endif()
 elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL) # /WX
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O2 -flto) # -Werror
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O2 -flto)
   endif()
 endif()
 
 execute_process(COMMAND go run ${CMAKE_SOURCE_DIR}/assets/pack.go ${CMAKE_SOURCE_DIR}/assets/demo)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  # target_link_libraries(${PROJECT_NAME} "--profiling")
-  # target_link_libraries(${PROJECT_NAME} "--profiling-funcs")
-  target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
-  # target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
+  #target_link_libraries(${PROJECT_NAME} "--profiling")
+  #target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
+  #target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
-  # target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
-  # target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -O0 -g)
+  target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
 
   embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")  
 endif()
