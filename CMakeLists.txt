@@ -54,7 +54,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   # target_link_libraries(${PROJECT_NAME} "--profiling")
   target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
   target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
-  # target_link_libraries(${PROJECT_NAME} "-sNO_DISABLE_EXCEPTION_CATCHING")
+  target_link_libraries(${PROJECT_NAME} "-sNO_DISABLE_EXCEPTION_CATCHING")
 
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
   target_link_libraries(${PROJECT_NAME} "-sFORCE_FILESYSTEM=1")
