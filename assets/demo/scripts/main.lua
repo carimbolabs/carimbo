@@ -58,11 +58,11 @@ me:on_update(function(self)
   self.alpha = alpha
 end)
 
-me:play_sound("blob/alarm.ogg")
+-- me:play_sound("blob/alarm.ogg")
 
-local garbage = engine:spawn()
-engine:destroy(garbage)
-garbage = nil
+-- local garbage = engine:spawn()
+-- engine:destroy(garbage)
+-- garbage = nil
 
 local gc = engine:spawn()
 
