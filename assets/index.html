@@ -35,27 +35,13 @@
 <body>
   <div class="container">
     <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    <script type="text/javascript">
+    <script type="text/javascript" type="module">
       var Module = {
         canvas: (function () {
           return document.getElementById("canvas");
         })(),
       };
-
-      fetch("/bundle.zip")
-        .then((response) => response.arrayBuffer())
-        .then((data) => {
-          const uint8View = new Uint8Array(data);
-
-          FS.writeFile("/bundle.zip", uint8View);
-
-          const script = document.createElement("script");
-          script.src = "carimbo.js";
-          document.body.appendChild(script);
-        })
-        .catch((err) => {
-          alert(err);
-        });
     </script>
+    <script type="text/javascript" src="carimbo.js"></script>
   </div>
 </body>

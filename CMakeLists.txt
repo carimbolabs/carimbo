@@ -8,8 +8,8 @@ function(embed target file destination)
   if(NOT ${target}_LINK_FLAGS)
     set(${target}_LINK_FLAGS )
   endif()
-  # set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
-  set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --preload-file ${absolute_file}@${destination}")
+  set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --embed-file ${absolute_file}@${destination}")
+  # set_target_properties(${target} PROPERTIES LINK_FLAGS "${${target}_LINK_FLAGS} --preload-file ${absolute_file}@${destination}")
 endfunction()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -54,10 +54,19 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   #target_link_libraries(${PROJECT_NAME} "--profiling")
   #target_link_libraries(${PROJECT_NAME} "-sASSERTIONS=2")
   #target_link_libraries(${PROJECT_NAME} "-sRUNTIME_DEBUG")
+  target_link_libraries(${PROJECT_NAME} "-USE_ZLIB=1")
+
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
+  #target_link_libraries(${PROJECT_NAME} "-sFORCE_FILESYSTEM=1")
   target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
 
-  # embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
+  # -s USE_ZLIB=1 -s EXPORTED_RUNTIME_METHODS="['FS', 'callMain']"
+
+  #target_link_libraries(${PROJECT_NAME} "-EXPORTED_RUNTIME_METHODS=['FS', 'callMain']")
+  #target_link_libraries(${PROJECT_NAME} "-sMODULARIZE=1")
+  #target_link_libraries(${PROJECT_NAME} "-sEXPORT_NAME=createModule")
+
+  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
 
   target_compile_options(${PROJECT_NAME} PRIVATE -Os -flto)
 endif()
