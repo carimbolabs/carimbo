@@ -57,7 +57,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   target_link_libraries(${PROJECT_NAME} "-sALLOW_MEMORY_GROWTH=1")
   target_link_libraries(${PROJECT_NAME} "-sINITIAL_MEMORY=134217728")
 
-  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")  
+  embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
+
+  target_compile_options(${PROJECT_NAME} PRIVATE -Os -flto)
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)

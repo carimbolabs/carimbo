@@ -29,14 +29,6 @@
   </style>
 </head>
 <body>
-  <script>
-  window.addEventListener('load', () => {
-    fetch('carimbo.js');
-
-    fetch('carimbo.wasm', { importance: "low" });
-    fetch('bundle.zip', { importance: "low" });
-  });
-  </script>
   <div class="container">
     <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     <script type='text/javascript'>
