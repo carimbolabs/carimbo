@@ -126,7 +126,7 @@ jobs:
         working-directory: build
         run: |
           mkdir _site/
-          cp carimbo.{data,js,wasm} _site/
+          cp carimbo.{js,wasm} _site/
           cp bundle.zip _site/
           cp index.html _site/
           chmod -c -R +rX _site/

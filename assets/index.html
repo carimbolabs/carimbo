@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <style>
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
     }
 
@@ -28,14 +31,29 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    <script type='text/javascript'>
+    <script type="text/javascript">
       var Module = {
-        canvas: (function () { return document.getElementById('canvas'); })()
+        canvas: (function () {
+          return document.getElementById("canvas");
+        })(),
       };
+
+      fetch("/bundle.zip")
+        .then((response) => response.arrayBuffer())
+        .then((data) => {
+          var uint8View = new Uint8Array(data);
+
+          FS.writeFile("/bundle.zip", uint8View);
+        })
+        .then(() => {
+          var script = document.createElement("script");
+          script.src = "carimbo.js";
+          document.body.appendChild(script);
+        });
     </script>
-    <script src="carimbo.js"></script>
   </div>
 </body>
