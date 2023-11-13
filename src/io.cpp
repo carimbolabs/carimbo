@@ -3,6 +3,15 @@
 const std::vector<uint8_t> io::read(std::string_view filename) {
   const auto fp = PHYSFS_openRead(filename.data());
   if (fp == nullptr) {
+    auto files = PHYSFS_enumerateFiles("/");
+
+    if (files != nullptr) {
+      for (auto i = files; *i != nullptr; i++) {
+        std::cout << *i << std::endl;
+      }
+      PHYSFS_freeList(files);
+    }
+
     throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
