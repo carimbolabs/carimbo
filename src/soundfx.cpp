@@ -11,8 +11,8 @@ static void callback(void *userdata, uint8_t *stream, int length) {
   }
 
   const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
-  SDL_memcpy(stream, buffer.data(), to_copy);
-  // SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
+  // SDL_memcpy(stream, buffer.data(), to_copy);
+  SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
 }
 
@@ -120,24 +120,13 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_vie
   } while (offset > 0);
 
   UNUSED(callback);
-  // SDL_AudioSpec spec{};
-  // // SDL_zero(spec);
-  // spec.freq = 44100;
-  // spec.format = AUDIO_S16SYS;
-  // spec.channels = 2;
-  // spec.samples = 4096;
-  // spec.callback = callback;
-  // spec.userdata = this;
-  // SDL_AudioDeviceID id = SDL_OpenAudioDevice(nullptr, 0, &spec, nullptr, 0);
-  // if (id == 0) {
-  //   throw std::runtime_error(fmt::format("[SDL_OpenAudioDevice] error while opening audio device: {}", SDL_GetError()));
-  // }
-
-  // SDL_PauseAudioDevice(id, 0);
 }
 
 soundfx::~soundfx() {
 }
 
 void soundfx::play() const {
+  SDL_ClearQueuedAudio(_audiodevice->id());
+  SDL_PauseAudioDevice(_audiodevice->id(), 0);
+  SDL_QueueAudio(_audiodevice->id(), buffer.data(), buffer.size());
 }

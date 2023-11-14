@@ -32,6 +32,7 @@ me:on_update(function(self)
 
   if engine:is_keydown(KeyEvent.d) then
     self.x = self.x + 1
+    me:play("blob/deitzis.ogg")
   end
 
   angle = angle + 1

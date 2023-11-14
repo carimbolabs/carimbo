@@ -70,7 +70,7 @@ void scriptengine::run() {
       "angle", sol::property(&entity::get_angle, &entity::set_angle),
       "alpha", sol::property(&entity::get_alpha, &entity::set_alpha),
       "pixmap", sol::property(&entity::set_pixmap),
-      "play_sound", &entity::play_sound,
+      "play", &entity::play_sound,
       "on_update", &entity::set_onupdate);
 
   lua.set_function("sleep", &sleep);
