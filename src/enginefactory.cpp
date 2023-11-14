@@ -27,8 +27,7 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  // const auto w = std::make_shared<window>(_title, _width, _height, _fullscreen);
-  const auto w = std::make_shared<window>("Carimbo", 800, 600, _fullscreen);
+  const auto w = std::make_shared<window>(_title, _width, _height, _fullscreen);
   const auto r = w->create_renderer();
   const auto am = std::make_shared<audiomanager>();
   const auto em1 = std::make_shared<eventmanager>();
