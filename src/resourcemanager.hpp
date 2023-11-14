@@ -9,7 +9,7 @@ public:
   resourcemanager(const std::shared_ptr<renderer> renderer);
   ~resourcemanager() = default;
 
-  void prefetch(const std::list<std::string> &filenames);
+  void prefetch(const std::vector<std::string> &filenames);
 
   void update();
 

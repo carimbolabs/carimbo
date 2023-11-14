@@ -40,7 +40,7 @@ public:
 
   const std::shared_ptr<statemanager> get_statemanager() const;
 
-  void prefetch(const std::list<std::string> &filenames);
+  void prefetch(const std::vector<std::string> &filenames);
 
   bool is_keydown(const keyevent &event) const;
 

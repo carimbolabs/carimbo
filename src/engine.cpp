@@ -107,7 +107,7 @@ const std::shared_ptr<statemanager> engine::get_statemanager() const {
   return _statemanager;
 }
 
-void engine::prefetch(const std::list<std::string> &filenames) {
+void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
 
