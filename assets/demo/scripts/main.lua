@@ -1,11 +1,11 @@
 local engine = EngineFactory.new()
     :set_title("Carimbo")
-    :set_width(800)
-    :set_height(600)
+    :set_width(854)
+    :set_height(480)
     :set_fullscreen(false)
     :create()
 
--- engine:prefetch({ "blob/matrix.avif", "blob/alarm.ogg" })
+engine:prefetch({ "blob/matrix.avif", "blob/music.ogg" })
 
 local angle = 0
 local alpha = 0
@@ -14,8 +14,8 @@ local direction = 0
 local me = engine:spawn()
 
 me.pixmap = "blob/matrix.avif"
-me.x = (800 // 2) - (me.width // 2)
-me.y = (600 // 2) - (me.height // 2)
+me.x = (854 // 2) - (me.width // 2)
+me.y = (480 // 2) - (me.height // 2)
 
 me:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then

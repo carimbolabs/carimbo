@@ -53,15 +53,17 @@ void scriptengine::run() {
       "spawn", &engine::spawn,
       "destroy", &engine::destroy,
       "is_keydown", &engine::is_keydown,
-      "prefetch", &engine::prefetch
-      //   "prefetch", [](engine &engine, sol::table table) {
-      //     std::list<std::string> filenames(table.size());
-      //     for (auto &item : table) {
-      //       std::cout << ">>> prefetch " << item.second.as<std::string>() << std::endl;
-      //       filenames.push_back(item.second.as<std::string>());
-      //     }
-      //     engine.prefetch(filenames);
-  );
+      "prefetch", [](engine &engine, sol::table table) {
+        UNUSED(engine);
+        std::list<std::string> filenames{table.size()};
+        std::cout << ">>> size " << table.size() << std::endl;
+        for (auto &item : table) {
+          std::cout << ">>> prefetch " << item.second.as<std::string>() << std::endl;
+          filenames.push_back(item.second.as<std::string>());
+        }
+
+        // engine.prefetch(filenames);
+      });
 
   lua.new_usertype<entity>(
       "Entity",
