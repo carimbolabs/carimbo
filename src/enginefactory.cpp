@@ -1,10 +1,11 @@
 #include "enginefactory.hpp"
 
-#include "audiomanager.hpp"
+#include "audiodevice.hpp"
 #include "engine.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "resourcemanager.hpp"
+#include "window.hpp"
 
 enginefactory &enginefactory::set_title(const std::string &title) {
   _title = title;
@@ -29,17 +30,17 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 std::shared_ptr<engine> enginefactory::create() {
   const auto w = std::make_shared<window>(_title, _width, _height, _fullscreen);
   const auto r = w->create_renderer();
-  const auto am = std::make_shared<audiomanager>();
+  const auto ad = std::make_shared<audiodevice>();
   const auto em1 = std::make_shared<eventmanager>();
   const auto em2 = std::make_shared<entitymanager>();
   const auto em3 = std::make_shared<statemanager>();
-  const auto rm = std::make_shared<resourcemanager>(r);
+  const auto rm = std::make_shared<resourcemanager>(r, ad);
 
   const auto e = std::make_shared<engine>();
 
   e->set_window(w);
   e->set_renderer(r);
-  e->set_audiomanager(am);
+  e->set_audiodevice(ad);
   e->set_eventmanager(em1);
   e->set_entitymanager(em2);
   e->set_statemanager(em3);

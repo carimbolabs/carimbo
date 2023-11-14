@@ -4,7 +4,7 @@
 #include "renderer.hpp"
 #include "soundmanager.hpp"
 
-resourcemanager::resourcemanager(const std::shared_ptr<renderer> renderer) : _pixmappool(std::make_shared<pixmappool>(renderer)), _soundmanager(std::make_shared<soundmanager>()) {
+resourcemanager::resourcemanager(const std::shared_ptr<renderer> renderer, const std::shared_ptr<audiodevice> audiodevice) : _pixmappool(std::make_shared<pixmappool>(renderer)), _soundmanager(std::make_shared<soundmanager>(audiodevice)) {
 }
 
 void resourcemanager::prefetch(const std::vector<std::string> &filenames) {

@@ -1,5 +1,6 @@
 #include "engine.hpp"
 
+#include "audiodevice.hpp"
 #include "entity.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
@@ -67,12 +68,12 @@ const std::shared_ptr<renderer> engine::get_renderer() const {
   return _renderer;
 }
 
-void engine::set_audiomanager(std::shared_ptr<audiomanager> audiomanager) {
-  _audiomanager = audiomanager;
+void engine::set_audiodevice(std::shared_ptr<audiodevice> audiodevice) {
+  _audiodevice = audiodevice;
 }
 
-const std::shared_ptr<audiomanager> engine::get_audiomanager() {
-  return _audiomanager;
+const std::shared_ptr<audiodevice> engine::get_audiodevice() {
+  return _audiodevice;
 }
 
 void engine::set_eventmanager(std::shared_ptr<eventmanager> eventmanager) {

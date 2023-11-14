@@ -7,8 +7,8 @@
 
 class soundmanager {
 public:
+  soundmanager(std::shared_ptr<audiodevice> audiodevice);
   ~soundmanager() = default;
-  soundmanager() = default;
 
   void prefetch(const std::vector<std::string> &filenames);
 
@@ -19,6 +19,7 @@ public:
   void flush();
 
 private:
+  std::shared_ptr<audiodevice> _audiodevice;
   std::unordered_map<std::string, std::shared_ptr<soundfx>, std::hash<std::string>> _soundmap;
 };
 

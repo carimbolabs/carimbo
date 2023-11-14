@@ -6,7 +6,7 @@
 
 class soundfx {
 public:
-  soundfx(std::string_view filename);
+  soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_view filename);
   ~soundfx();
 
   void play() const;
@@ -14,6 +14,7 @@ public:
   std::vector<uint8_t> buffer;
 
 private:
+  std::shared_ptr<audiodevice> _audiodevice;
 };
 
 #endif

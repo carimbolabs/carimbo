@@ -1,6 +1,6 @@
 #include "application.hpp"
 
-#include "audiomanager.hpp"
+#include "audiodevice.hpp"
 #include "common.hpp"
 #include "enginefactory.hpp"
 #include "entitymanager.hpp"

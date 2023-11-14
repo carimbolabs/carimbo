@@ -6,7 +6,7 @@
 
 class resourcemanager {
 public:
-  resourcemanager(const std::shared_ptr<renderer> renderer);
+  resourcemanager(const std::shared_ptr<renderer> renderer, const std::shared_ptr<audiodevice> audiodevice);
   ~resourcemanager() = default;
 
   void prefetch(const std::vector<std::string> &filenames);

@@ -2,8 +2,6 @@
 #ifndef _application_hpp
 #define _application_hpp
 
-#include "audiomanager.hpp"
-
 #include "noncopyable.hpp"
 
 class application : private noncopyable {

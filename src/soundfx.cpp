@@ -1,5 +1,7 @@
 #include "soundfx.hpp"
 
+#include "audiodevice.hpp"
+
 static void callback(void *userdata, uint8_t *stream, int length) {
   auto &buffer = static_cast<soundfx *>(userdata)->buffer;
 
@@ -90,7 +92,7 @@ const char *ov_strerror(int ret) {
   }
 }
 
-soundfx::soundfx(std::string_view filename) {
+soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_view filename) : _audiodevice(audiodevice) {
   std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr, PHYSFS_close};
 
   fp.reset(PHYSFS_openRead(filename.data()));

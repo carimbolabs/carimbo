@@ -1,5 +1,8 @@
 #include "soundmanager.hpp"
 
+soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice) : _audiodevice(audiodevice) {
+}
+
 void soundmanager::prefetch(const std::vector<std::string> &filenames) {
   for (const auto &filename : filenames) {
     get(filename);
@@ -9,7 +12,8 @@ void soundmanager::prefetch(const std::vector<std::string> &filenames) {
 const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
   if (_soundmap.find(filename) == _soundmap.end()) {
     std::cout << "[soundmanager] cache miss: " << filename << std::endl;
-    const auto p = std::make_shared<soundfx>(filename);
+    assert(_audiodevice);
+    const auto p = std::make_shared<soundfx>(_audiodevice, filename);
     _soundmap.emplace(filename, p);
     return p;
   }

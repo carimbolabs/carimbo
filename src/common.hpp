@@ -42,7 +42,7 @@ extern "C" {
 #include "types.hpp"
 
 class application;
-class audiomanager;
+class audiodevice;
 class engine;
 class enginefactory;
 class entity;
