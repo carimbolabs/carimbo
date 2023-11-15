@@ -157,7 +157,6 @@ jobs:
       contents: read
       pull-requests: write
       repository-projects: write
-      releases: write
     steps:
       - name: Create Release
         uses: softprops/action-gh-release@v1
