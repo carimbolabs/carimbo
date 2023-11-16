@@ -157,6 +157,12 @@ jobs:
           path: artifacts
           extract: False
 
+      - name: Compress Artifact
+        run: |
+          tar -czvf Ubuntu.tar.gz artifacts/Ubuntu
+          rm -rf artifacts/Ubuntu
+        working-directory: artifacts
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
