@@ -109,7 +109,6 @@ jobs:
         run: |
           chmod +x carimbo
           tar -czvf macOS.tar.gz --mode='a+rwx' carimbo
-          rm -rf carimbo
           mv macOS.tar.gz ../artifacts
 
       - name: Compress Artifacts
@@ -118,7 +117,6 @@ jobs:
         run: |
           chmod +x carimbo
           tar -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
-          rm -rf carimbo
           mv Ubuntu.tar.gz ../artifacts
 
       - name: Compress Artifacts
@@ -126,16 +124,14 @@ jobs:
         working-directory: build
         run: |
           zip -jr WebAssembly.zip carimbo.wasm carimbo.js
-          rm -rf carimbo.wasm carimbo.js
           mv WebAssembly.zip ../artifacts
 
       - name: Compress Artifacts
         if: matrix.config.name == 'Windows'
         working-directory: build
+        shell: powershell
         run: |
-          zip -jr Windows.zip carimbo.exe
-          rm -rf carimbo.exe
-          mv Windows.zip ../artifacts
+          Compress-Archive -LiteralPath 'carimbo.exe' -DestinationPath "../artifacts/Windows.zip"
 
       - name: Upload Artifacts
         uses: softprops/action-gh-release@v1
