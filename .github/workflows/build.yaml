@@ -158,13 +158,10 @@ jobs:
 
       - name: Compress Artifact
         run: |
-          ls -lah .
-          ls -lah macOS
-
-          zip -jr macOS.zip macOS/carimbo
+          tar -C macOS -czvf macOS.tar.gz --mode='a+rwX' carimbo
           rm -rf macOS
 
-          tar -C Ubuntu -czvf Ubuntu.tar.gz carimbo
+          tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwX' carimbo
           rm -rf Ubuntu
 
           # WebAssembly
