@@ -21,8 +21,8 @@ jobs:
           #   os: macos-latest
           # - name: Ubuntu
           #   os: ubuntu-latest
-          - name: WebAssembly
-            os: ubuntu-latest
+          # - name: WebAssembly
+          #   os: ubuntu-latest
           - name: Windows
             os: windows-latest
 
@@ -131,7 +131,7 @@ jobs:
         working-directory: build
         shell: powershell
         run: |
-          Compress-Archive -LiteralPath 'carimbo.exe' -DestinationPath "../artifacts/Windows.zip"
+          Compress-Archive -LiteralPath 'Release/carimbo.exe' -DestinationPath "../artifacts/Windows.zip"
 
       - name: Upload Artifacts
         uses: softprops/action-gh-release@v1
