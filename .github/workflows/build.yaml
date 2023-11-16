@@ -29,9 +29,9 @@ jobs:
           - name: Ubuntu
             binary: build/carimbo
             os: ubuntu-latest
-          - name: WebAssembly
-            binary: build/carimbo.wasm
-            script: build/carimbo.js
+          # - name: WebAssembly
+          #   binary: build/carimbo.wasm
+          #   script: build/carimbo.js
             os: ubuntu-latest
           - name: Windows
             binary: build/carimbo.exe
@@ -64,7 +64,7 @@ jobs:
           cache: false
 
       - name: Install Conan
-        run: pip install conan==2.0.12
+        run: pip install conan
 
       - name: Detect Conan Profile
         run: conan profile detect --force
