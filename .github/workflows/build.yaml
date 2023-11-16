@@ -32,7 +32,7 @@ jobs:
           # - name: WebAssembly
           #   binary: build/carimbo.wasm
           #   script: build/carimbo.js
-            os: ubuntu-latest
+          #  os: ubuntu-latest
           - name: Windows
             binary: build/carimbo.exe
             os: windows-latest
