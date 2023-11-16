@@ -102,8 +102,8 @@ jobs:
         if: matrix.config.name == 'macOS'
         working-directory: build
         run: |
-          chmod +x carimbo
-          tar -czvf macOS.tar.gz --mode='a+rwx' carimbo
+          chmod -R a+rwx carimbo
+          tar -cpzvf macOS.tar.gz carimbo
           mv macOS.tar.gz ../artifacts
 
       - name: Compress Artifacts
