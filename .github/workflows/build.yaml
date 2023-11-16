@@ -116,8 +116,7 @@ jobs:
         with:
           if-no-files-found: error
           name: ${{ matrix.config.name }}
-          path: |
-            ${{ matrix.config.binary }}
+          path: ${{ matrix.config.binary }}
 
       - name: Upload WebAssembly Artifact
         uses: actions/upload-artifact@v3
@@ -158,10 +157,12 @@ jobs:
 
       - name: Compress Artifact
         run: |
-          tar -C macOS -czvf macOS.tar.gz --mode='a+rwX' carimbo
+          chmod +x macOS/carimbo
+          tar -C macOS -czvf macOS.tar.gz --mode='a+rwx' carimbo
           rm -rf macOS
 
-          tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwX' carimbo
+          chmod +x Ubuntu/carimbo
+          tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
           rm -rf Ubuntu
 
           # WebAssembly
