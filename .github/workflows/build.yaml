@@ -158,11 +158,11 @@ jobs:
 
       - name: Compress Artifact
         run: |
-          ls -lah artifacts
-          ls -lah artifacts/Ubuntu
+          ls -lah .
+          ls -lah Ubuntu
 
-          tar -czvf Ubuntu.tar.gz artifacts/Ubuntu/carimbo
-          rm -rf artifacts/Ubuntu
+          tar -czvf Ubuntu.tar.gz Ubuntu/carimbo
+          rm -rf Ubuntu
         working-directory: artifacts
 
       - name: Create Release
