@@ -29,10 +29,10 @@ jobs:
           - name: Ubuntu
             binary: build/carimbo
             os: ubuntu-latest
-          # - name: WebAssembly
-          #   binary: build/carimbo.wasm
-          #   script: build/carimbo.js
-          #   os: ubuntu-latest
+          - name: WebAssembly
+            binary: build/carimbo.wasm
+            script: build/carimbo.js
+            os: ubuntu-latest
           - name: Windows
             binary: build/carimbo.exe
             os: windows-latest
@@ -128,22 +128,6 @@ jobs:
             ${{ matrix.config.binary }}
             ${{ matrix.config.script }}
 
-      - name: Prepare Pages Directory
-        if: matrix.config.name == 'WebAssembly'
-        working-directory: build
-        run: |
-          mkdir _site/
-          cp carimbo.{js,wasm} _site/
-          cp bundle.zip _site/
-          cp index.html _site/
-          chmod -c -R +rX _site/
-
-      - name: Upload Pages Artifact
-        if: matrix.config.name == 'WebAssembly'
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: build/_site
-
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -165,7 +149,8 @@ jobs:
           tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
           rm -rf Ubuntu
 
-          # WebAssembly
+          zip -jr WebAssembly.zip WebAssembly/carimbo.wasm WebAssembly/carimbo.js
+          rm -rf WebAssembly
 
           zip -jr Windows.zip Windows/carimbo.exe
           rm -rf Windows
