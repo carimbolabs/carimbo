@@ -6,7 +6,7 @@ on:
       - "v*.*.*"
 
 jobs:
-  artifacts:
+  build:
     runs-on: ${{ matrix.config.os }}
 
     strategy:
