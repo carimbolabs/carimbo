@@ -176,7 +176,7 @@ jobs:
           prerelease: ${{ github.events.inputs.prerelease }}
           draft: true
           # body_path: ${{ github.workspace }}/CHANGELOG.md
-          files: artifacts/*/*
+          files: artifacts/*
           # name: ${{ github.event.inputs.releaseName }}
   #   environment:
   #     name: github-pages
