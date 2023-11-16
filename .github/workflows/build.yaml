@@ -165,11 +165,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # tag_name: ${{ github.event.inputs.tagName }}
-          # prerelease: ${{ github.events.inputs.prerelease }}
+          tag_name: ${{ github.event.inputs.tagName }}
+          prerelease: ${{ github.events.inputs.prerelease }}
           draft: true
-          # body_path: ${{ github.workspace }}/GITHUB_CHANGELOG.md
-          files: artifacts/*
+          # body_path: ${{ github.workspace }}/CHANGELOG.md
+          files: artifacts/*/*
           # name: ${{ github.event.inputs.releaseName }}
   #   environment:
   #     name: github-pages
