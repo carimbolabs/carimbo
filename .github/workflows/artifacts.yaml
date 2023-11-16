@@ -6,8 +6,11 @@ on:
       - "v*.*.*"
 
 jobs:
-  build:
+  upload:
     runs-on: ${{ matrix.config.os }}
+
+    permissions:
+      contents: write
 
     strategy:
       fail-fast: true
@@ -96,74 +99,121 @@ jobs:
       #   run: cp Release/carimbo.exe .
       #   working-directory: build
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        if: matrix.config.name == 'macOS' || matrix.config.name == 'Ubuntu'
-        with:
-          if-no-files-found: error
-          name: ${{ matrix.config.name }}
-          path: build/carimbo
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        if: matrix.config.name == 'Windows'
-        with:
-          if-no-files-found: error
-          name: ${{ matrix.config.name }}
-          path: build/Release/carimbo.exe
-
-      - name: Upload WebAssembly Artifact
-        uses: actions/upload-artifact@v3
-        if: matrix.config.name == 'WebAssembly'
-        with:
-          if-no-files-found: error
-          name: ${{ matrix.config.name }}
-          path: |
-            build/carimbo.js
-            build/carimbo.wasm
-
-  upload:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          path: artifacts
+      - name: Create Artifacts Directory
+        working-directory: build
+        run: mkdir artifacts
 
       - name: Compress Artifacts
+        if: matrix.config.name == 'macOS'
+        working-directory: build
         run: |
-          if [ -d macOS ]; then
-            chmod +x macOS/carimbo
-            tar -C macOS -czvf macOS.tar.gz --mode='a+rwx' carimbo
-            rm -rf macOS
-          fi
+          chmod +x carimbo
+          tar -czvf macOS.tar.gz --mode='a+rwx' carimbo
+          rm -rf carimbo
+          mv macOS.tar.gz artifacts
 
-          if [ -d Ubuntu ]; then
-            chmod +x Ubuntu/carimbo
-            tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
-            rm -rf Ubuntu
-          fi
+      - name: Compress Artifacts
+        if: matrix.config.name == 'Ubuntu'
+        working-directory: build
+        run: |
+          chmod +x carimbo
+          tar -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
+          rm -rf carimbo
+          mv Ubuntu.tar.gz artifacts
 
-          if [ -d WebAssembly ]; then
-            zip -jr WebAssembly.zip WebAssembly/carimbo.wasm WebAssembly/carimbo.js
-            rm -rf WebAssembly
-          fi
+      - name: Compress Artifacts
+        if: matrix.config.name == 'WebAssembly'
+        working-directory: build
+        run: |
+          zip -jr WebAssembly.zip carimbo.wasm carimbo.js
+          rm -rf carimbo.wasm carimbo.js
+          mv WebAssembly.zip artifacts
 
-          if [ -d Windows ]; then
-            zip -jr Windows.zip Windows/carimbo.exe
-            rm -rf Windows
-          fi
-        working-directory: artifacts
+      - name: Compress Artifacts
+        if: matrix.config.name == 'Windows'
+        working-directory: build
+        run: |
+          zip -jr Windows.zip carimbo.exe
+          rm -rf carimbo.exe
+          mv Windows.zip artifacts
 
       - name: Upload Artifacts
-        uses: softprops/action-gh-release@v1
+        uses: actions/upload-artifact@v3
         if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: build
         with:
-          tag_name: ${{ github.event.inputs.tagName }}
-          prerelease: ${{ github.events.inputs.prerelease }}
-          files: artifacts/*
+          if-no-files-found: error
+          name: ${{ matrix.config.name }}
+          path: artifacts
+
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v3
+      #   if: matrix.config.name == 'macOS' || matrix.config.name == 'Ubuntu'
+      #   with:
+      #     if-no-files-found: error
+      #     name: ${{ matrix.config.name }}
+      #     path: build/carimbo
+
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v3
+      #   if: matrix.config.name == 'Windows'
+      #   with:
+      #     if-no-files-found: error
+      #     name: ${{ matrix.config.name }}
+      #     path: build/Release/carimbo.exe
+
+      # - name: Upload WebAssembly Artifact
+      #   uses: actions/upload-artifact@v3
+      #   if: matrix.config.name == 'WebAssembly'
+      #   with:
+      #     if-no-files-found: error
+      #     name: ${{ matrix.config.name }}
+      #     path: |
+      #       build/carimbo.js
+      #       build/carimbo.wasm
+
+  # upload:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #   steps:
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         path: artifacts
+
+  #     - name: Compress Artifacts
+  #       run: |
+  #         if [ -d macOS ]; then
+  #           chmod +x macOS/carimbo
+  #           tar -C macOS -czvf macOS.tar.gz --mode='a+rwx' carimbo
+  #           rm -rf macOS
+  #         fi
+
+  #         if [ -d Ubuntu ]; then
+  #           chmod +x Ubuntu/carimbo
+  #           tar -C Ubuntu -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
+  #           rm -rf Ubuntu
+  #         fi
+
+  #         if [ -d WebAssembly ]; then
+  #           zip -jr WebAssembly.zip WebAssembly/carimbo.wasm WebAssembly/carimbo.js
+  #           rm -rf WebAssembly
+  #         fi
+
+  #         if [ -d Windows ]; then
+  #           zip -jr Windows.zip Windows/carimbo.exe
+  #           rm -rf Windows
+  #         fi
+  #       working-directory: artifacts
+
+  #     - name: Upload Artifacts
+  #       uses: softprops/action-gh-release@v1
+  #       if: startsWith(github.ref, 'refs/tags/')
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: ${{ github.event.inputs.tagName }}
+  #         prerelease: ${{ github.events.inputs.prerelease }}
+  #         files: artifacts/*
