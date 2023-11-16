@@ -172,5 +172,4 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.tagName }}
           prerelease: ${{ github.events.inputs.prerelease }}
-          draft: true
           files: artifacts/*
