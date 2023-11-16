@@ -165,7 +165,9 @@ jobs:
 
           # WebAssembly
 
-          zip -jr Windows.zip Windows
+          ls -lah Windows
+
+          zip -jr Windows.zip Windows/carimbo.exe
           rm -rf Windows
         working-directory: artifacts
 
