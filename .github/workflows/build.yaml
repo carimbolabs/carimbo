@@ -19,17 +19,13 @@ jobs:
       matrix:
         config:
           - name: macOS
-            binary: build/carimbo
             os: macos-latest
           - name: Ubuntu
-            binary: build/carimbo
             os: ubuntu-latest
-          # - name: WebAssembly
-          #   binary: build/carimbo.wasm
-          #   script: build/carimbo.js
-          #   os: ubuntu-latest
+          - name: WebAssembly
+            script: build/carimbo.js
+            os: ubuntu-latest
           - name: Windows
-            binary: build/carimbo.exe
             os: windows-latest
 
     steps:

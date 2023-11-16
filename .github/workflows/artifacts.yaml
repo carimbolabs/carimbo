@@ -15,17 +15,12 @@ jobs:
       matrix:
         config:
           - name: macOS
-            binary: build/carimbo
             os: macos-latest
           - name: Ubuntu
-            binary: build/carimbo
             os: ubuntu-latest
           - name: WebAssembly
-            binary: build/carimbo.wasm
-            script: build/carimbo.js
             os: ubuntu-latest
           - name: Windows
-            binary: build/carimbo.exe
             os: windows-latest
 
     steps:
@@ -96,18 +91,26 @@ jobs:
         run: cmake --build . --config Release --verbose
         working-directory: build
 
-      - name: Copy Windows Binary
-        if: matrix.config.name == 'Windows'
-        run: cp Release/carimbo.exe .
-        working-directory: build
+      # - name: Copy Windows Binary
+      #   if: matrix.config.name == 'Windows'
+      #   run: cp Release/carimbo.exe .
+      #   working-directory: build
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
-        if: matrix.config.name != 'WebAssembly'
+        if: matrix.config.name == 'macOS' || matrix.config.name == 'Ubuntu'
         with:
           if-no-files-found: error
           name: ${{ matrix.config.name }}
-          path: ${{ matrix.config.binary }}
+          path: build/carimbo
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        if: matrix.config.name == 'Windows'
+        with:
+          if-no-files-found: error
+          name: ${{ matrix.config.name }}
+          path: build/Release/carimbo.exe
 
       - name: Upload WebAssembly Artifact
         uses: actions/upload-artifact@v3
@@ -116,8 +119,8 @@ jobs:
           if-no-files-found: error
           name: ${{ matrix.config.name }}
           path: |
-            ${{ matrix.config.binary }}
-            ${{ matrix.config.script }}
+            build/carimbo.js
+            build/carimbo.wasm
 
   upload:
     needs: build
