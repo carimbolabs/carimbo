@@ -30,7 +30,8 @@ void scriptengine::run() {
       "w", keyevent::w,
       "a", keyevent::a,
       "s", keyevent::s,
-      "d", keyevent::d);
+      "d", keyevent::d,
+      "space", keyevent::space);
 
   lua.new_usertype<point>(
       "Point",

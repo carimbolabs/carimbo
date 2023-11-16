@@ -32,6 +32,9 @@ me:on_update(function(self)
 
   if engine:is_keydown(KeyEvent.d) then
     self.x = self.x + 1
+  end
+
+  if engine:is_keydown(KeyEvent.space) then
     me:play("blob/deitzis.ogg")
   end
 

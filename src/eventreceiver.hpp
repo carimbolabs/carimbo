@@ -8,7 +8,6 @@
 
 class eventreceiver {
 public:
-  eventreceiver() = default;
   virtual ~eventreceiver() = default;
 
   virtual void on_quit();
@@ -16,9 +15,6 @@ public:
   virtual void on_keydown(const keyevent &event);
 
   virtual void on_keyup(const keyevent &event);
-
-protected:
-  // std::shared_ptr<eventmanager> _eventmanager;
 };
 
 #endif

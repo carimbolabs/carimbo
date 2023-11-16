@@ -17,8 +17,6 @@ public:
 
   void remove_receiver(std::shared_ptr<eventreceiver> receiver);
 
-  // void add_listener(std::shared_pre<eventlistener> listener);
-  // void remove_listener(std::function<eventlistener> listener);
 private:
   std::list<std::shared_ptr<eventreceiver>> _receivers;
 };
