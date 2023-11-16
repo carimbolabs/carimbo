@@ -13,16 +13,16 @@ jobs:
       contents: write
 
     strategy:
-      fail-fast: true
+      fail-fast: false
 
       matrix:
         config:
-          # - name: macOS
-          #   os: macos-latest
-          # - name: Ubuntu
-          #   os: ubuntu-latest
-          # - name: WebAssembly
-          #   os: ubuntu-latest
+          - name: macOS
+            os: macos-latest
+          - name: Ubuntu
+            os: ubuntu-latest
+          - name: WebAssembly
+            os: ubuntu-latest
           - name: Windows
             os: windows-latest
 
@@ -94,11 +94,6 @@ jobs:
       - name: Build
         run: cmake --build . --config Release --verbose
         working-directory: build
-
-      # - name: Copy Windows Binary
-      #   if: matrix.config.name == 'Windows'
-      #   run: cp Release/carimbo.exe .
-      #   working-directory: build
 
       - name: Create Artifacts Directory
         run: mkdir artifacts
