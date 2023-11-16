@@ -155,9 +155,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: artifacts
-      - name: LS
-        run: |
-          ls -lah artifacts/Ubuntu/
+          extract: False
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -168,7 +167,7 @@ jobs:
           prerelease: ${{ github.events.inputs.prerelease }}
           draft: true
           # body_path: ${{ github.workspace }}/CHANGELOG.md
-          files: artifacts/Ubuntu/*
+          files: artifacts/*/*
           # name: ${{ github.event.inputs.releaseName }}
   #   environment:
   #     name: github-pages
