@@ -33,9 +33,9 @@ jobs:
           #   binary: build/carimbo.wasm
           #   script: build/carimbo.js
           #   os: ubuntu-latest
-          # - name: Windows
-          #   binary: build/carimbo.exe
-          #   os: windows-latest
+          - name: Windows
+            binary: build/carimbo.exe
+            os: windows-latest
 
     steps:
       - name: Checkout
@@ -158,12 +158,15 @@ jobs:
 
       - name: Compress Artifact
         run: |
-          ls -lah .
-          ls -lah Ubuntu
+          # macOS
 
           tar -C Ubuntu -czvf Ubuntu.tar.gz carimbo
           rm -rf Ubuntu
-          ls -lah .
+
+          # WebAssembly
+
+          zip -jr Windows.zip Windows
+          rm -rf Windows
         working-directory: artifacts
 
       - name: Create Release
@@ -175,19 +178,4 @@ jobs:
           tag_name: ${{ github.event.inputs.tagName }}
           prerelease: ${{ github.events.inputs.prerelease }}
           draft: true
-          # body_path: ${{ github.workspace }}/CHANGELOG.md
           files: artifacts/*
-          # name: ${{ github.event.inputs.releaseName }}
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  # #   runs-on: ubuntu-latest
-  #     permissions:
-  #     contents: read
-  #     pages: write
-  #     id-token: write
-  # #   needs: build
-  #   steps:
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v2
