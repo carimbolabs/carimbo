@@ -155,10 +155,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: artifacts
-          extract: False
 
       - name: Compress Artifact
         run: |
+          ls -lah artifacts
+          ls -lah artifacts/Ubuntu
+
           tar -czvf Ubuntu.tar.gz artifacts/Ubuntu/carimbo
           rm -rf artifacts/Ubuntu
         working-directory: artifacts
