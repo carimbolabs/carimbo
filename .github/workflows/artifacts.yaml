@@ -17,10 +17,10 @@ jobs:
 
       matrix:
         config:
-          - name: macOS
-            os: macos-latest
-          - name: Ubuntu
-            os: ubuntu-latest
+          # - name: macOS
+          #   os: macos-latest
+          # - name: Ubuntu
+          #   os: ubuntu-latest
           - name: WebAssembly
             os: ubuntu-latest
           - name: Windows
@@ -100,7 +100,6 @@ jobs:
       #   working-directory: build
 
       - name: Create Artifacts Directory
-        working-directory: build
         run: mkdir artifacts
 
       - name: Compress Artifacts
@@ -110,7 +109,7 @@ jobs:
           chmod +x carimbo
           tar -czvf macOS.tar.gz --mode='a+rwx' carimbo
           rm -rf carimbo
-          mv macOS.tar.gz artifacts
+          mv macOS.tar.gz ../artifacts
 
       - name: Compress Artifacts
         if: matrix.config.name == 'Ubuntu'
@@ -119,7 +118,7 @@ jobs:
           chmod +x carimbo
           tar -czvf Ubuntu.tar.gz --mode='a+rwx' carimbo
           rm -rf carimbo
-          mv Ubuntu.tar.gz artifacts
+          mv Ubuntu.tar.gz ../artifacts
 
       - name: Compress Artifacts
         if: matrix.config.name == 'WebAssembly'
@@ -127,7 +126,7 @@ jobs:
         run: |
           zip -jr WebAssembly.zip carimbo.wasm carimbo.js
           rm -rf carimbo.wasm carimbo.js
-          mv WebAssembly.zip artifacts
+          mv WebAssembly.zip ../artifacts
 
       - name: Compress Artifacts
         if: matrix.config.name == 'Windows'
@@ -135,15 +134,17 @@ jobs:
         run: |
           zip -jr Windows.zip carimbo.exe
           rm -rf carimbo.exe
-          mv Windows.zip artifacts
+          mv Windows.zip ../artifacts
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          if-no-files-found: error
-          name: ${{ matrix.config.name }}
-          path: build/artifacts
+          tag_name: ${{ github.event.inputs.tagName }}
+          prerelease: ${{ github.events.inputs.prerelease }}
+          files: artifacts/*
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v3
