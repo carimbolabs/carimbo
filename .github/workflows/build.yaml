@@ -159,7 +159,7 @@ jobs:
 
       - name: Compress Artifact
         run: |
-          tar -czvf Ubuntu.tar.gz artifacts/Ubuntu
+          tar -czvf Ubuntu.tar.gz artifacts/Ubuntu/carimbo
           rm -rf artifacts/Ubuntu
         working-directory: artifacts
 
