@@ -39,6 +39,9 @@ jobs:
             ~/.conan2/p
             ~\.conan/p
           key: ${{ matrix.config.name }}-${{ hashFiles('**/conanfile.txt') }}
+          restore-keys: |
+            ${{ matrix.config.name }}-${{ hashFiles('**/conanfile.txt') }}
+            ${{ matrix.config.name }}-
 
       - name: Prepare Build Directory
         run: mkdir build
