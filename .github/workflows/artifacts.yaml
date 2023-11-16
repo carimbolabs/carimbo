@@ -140,11 +140,10 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         if: startsWith(github.ref, 'refs/tags/')
-        working-directory: build
         with:
           if-no-files-found: error
           name: ${{ matrix.config.name }}
-          path: artifacts
+          path: build/artifacts
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v3
