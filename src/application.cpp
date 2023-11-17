@@ -21,7 +21,7 @@ application::application(int argc, char **argv) {
 
 int application::run() {
   try {
-    filesystem::mount("bundle.zip", "/");
+    filesystem::mount("bundle.7z", "/");
 
     auto se = scriptengine();
     se.run();
