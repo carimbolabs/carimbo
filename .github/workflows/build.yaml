@@ -51,12 +51,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: "stable"
-          cache: false
-
       - name: Install Conan
         run: pip install conan
 
