@@ -4,6 +4,6 @@
 
 #include "common.hpp"
 
-static inline uint32_t get_ticks();
+uint32_t get_ticks();
 
 #endif
