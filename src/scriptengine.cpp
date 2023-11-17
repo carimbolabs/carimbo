@@ -12,6 +12,7 @@
 #include "point.hpp"
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
+#include "ticks.hpp"
 
 void scriptengine::run() {
   sol::state lua;
@@ -76,6 +77,8 @@ void scriptengine::run() {
       "on_update", &entity::set_onupdate);
 
   lua.set_function("sleep", &sleep);
+
+  lua.set_function("get_ticks", &get_ticks);
 
   const auto script = io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
