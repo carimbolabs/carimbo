@@ -54,6 +54,7 @@ void scriptengine::run() {
       "run", &engine::run,
       "spawn", &engine::spawn,
       "destroy", &engine::destroy,
+      "ticks", &ticks,
       "is_keydown", &engine::is_keydown,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames{table.size()};
@@ -77,8 +78,6 @@ void scriptengine::run() {
       "on_update", &entity::set_onupdate);
 
   lua.set_function("sleep", &sleep);
-
-  lua.set_function("get_ticks", &get_ticks);
 
   const auto script = io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
