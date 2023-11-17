@@ -18,15 +18,15 @@ jobs:
 
       matrix:
         config:
-          - name: macOS
-            os: macos-latest
-          - name: Ubuntu
-            os: ubuntu-latest
+          # - name: macOS
+          #   os: macos-latest
+          # - name: Ubuntu
+          #   os: ubuntu-latest
           - name: WebAssembly
             script: build/carimbo.js
             os: ubuntu-latest
-          - name: Windows
-            os: windows-latest
+          # - name: Windows
+          #   os: windows-latest
 
     steps:
       - name: Checkout
