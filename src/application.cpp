@@ -22,7 +22,8 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
 #if SANDBOX
-    filesystem::mount("../assets/sandbox", "/");
+    // filesystem::mount("../assets/sandbox", "/");
+    filesystem::mount("/opt/workspace/carimbolabs/snake", "/");
 #else
     filesystem::mount("bundle.7z", "/");
 #endif

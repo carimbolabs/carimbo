@@ -68,6 +68,14 @@ end)
 -- engine:destroy(garbage)
 -- garbage = nil
 
+for i = 1, 1000 do
+  local garbage = engine:spawn()
+  garbage.x = math.random(0, 854)
+  garbage.y = math.random(0, 480)
+  garbage.pixmap = "blob/matrix.avif"
+  garbage.angle = math.random(0, 360)
+end
+
 local gc = engine:spawn()
 
 gc:on_update(function(self)

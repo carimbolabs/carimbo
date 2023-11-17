@@ -49,6 +49,11 @@ int32_t entity::get_y() const {
   return _point.y();
 }
 
+void entity::move(int32_t x, int32_t y) {
+  _point.set_x(_point.x() + x);
+  _point.set_y(_point.y() + y);
+}
+
 int32_t entity::get_width() const {
   return _pixmap->get_size().get_width();
 }

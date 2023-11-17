@@ -28,6 +28,8 @@ public:
 
   int32_t get_y() const;
 
+  void move(int32_t x, int32_t y);
+
   int32_t get_width() const;
 
   int32_t get_height() const;
