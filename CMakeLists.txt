@@ -33,6 +33,12 @@ file(GLOB SOURCE_FILES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 
+option(SANDBOX "Use sandbox" OFF)
+
+if(SANDBOX)
+  add_definitions(-DSANDBOX)
+endif()
+
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
