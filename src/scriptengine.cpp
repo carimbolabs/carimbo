@@ -61,8 +61,9 @@ void scriptengine::run() {
 
   lua.new_usertype<entity>(
       "Entity",
-      "x", sol::property(&entity::get_x, &entity::set_x),
-      "y", sol::property(&entity::get_y, &entity::set_y),
+      "id", sol::property(&entity::id),
+      "x", sol::property(&entity::x, &entity::set_x),
+      "y", sol::property(&entity::y, &entity::set_y),
       "width", sol::property(&entity::width),
       "height", sol::property(&entity::height),
       "move", &entity::move,

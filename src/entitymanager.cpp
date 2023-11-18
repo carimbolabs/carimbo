@@ -28,7 +28,7 @@ std::shared_ptr<entity> entitymanager::spawn() {
   }
 
   const auto e = entity::create({buffer.begin(), buffer.end()});
-  std::cout << "Spawned entity: " << e->id() << std::endl;
+  std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
   _entities.emplace_back(e);
   return e;
 }
