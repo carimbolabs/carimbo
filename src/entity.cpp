@@ -6,7 +6,8 @@
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 
-entity::entity(const std::string &id) : _id(id), _point(0, 0), _angle(0.0), _alpha(255) {
+entity::entity(const std::string &id)
+    : _id(id), _point(0, 0), _angle(0.0), _alpha(255), _fn(nullptr) {
 }
 
 entity::~entity() {
