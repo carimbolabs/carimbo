@@ -62,6 +62,10 @@ int32_t entity::get_height() const {
   return _pixmap->get_size().get_height();
 }
 
+void entity::scale(double factor) {
+  _pixmap->set_size({static_cast<uint32_t>(std::llround(_pixmap->get_size().get_width() * factor)), static_cast<uint32_t>(std::llround(_pixmap->get_size().get_height() * factor))});
+}
+
 void entity::set_angle(const double angle) {
   _angle = angle;
 }

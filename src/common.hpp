@@ -19,8 +19,10 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <limits>
 #include <list>
 #include <map>
 #include <memory>

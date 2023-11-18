@@ -34,6 +34,8 @@ public:
 
   int32_t get_height() const;
 
+  void scale(double factor);
+
   void set_angle(const double angle);
 
   double get_angle() const;

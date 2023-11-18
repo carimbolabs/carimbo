@@ -71,6 +71,7 @@ void scriptengine::run() {
       "width", sol::property(&entity::get_width),
       "height", sol::property(&entity::get_height),
       "move", &entity::move,
+      "scale", &entity::scale,
       "angle", sol::property(&entity::get_angle, &entity::set_angle),
       "alpha", sol::property(&entity::get_alpha, &entity::set_alpha),
       "pixmap", sol::property(&entity::set_pixmap),

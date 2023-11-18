@@ -25,6 +25,8 @@ public:
 
   const size get_size() const;
 
+  void set_size(const size &size);
+
 private:
   std::shared_ptr<renderer> _renderer;
 

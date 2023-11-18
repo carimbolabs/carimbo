@@ -8,7 +8,8 @@ class size {
 public:
   size() = default;
   size(uint32_t width, uint32_t height);
-  size(const size &size);
+  size(const size &other);
+  // size(size &&other) noexcept;
   virtual ~size() = default;
 
   void set_width(const uint32_t width);

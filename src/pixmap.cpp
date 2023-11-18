@@ -65,3 +65,7 @@ void pixmap::draw(const point point, const double angle, const uint8_t alpha) co
 const size pixmap::get_size() const {
   return _size;
 }
+
+void pixmap::set_size(const size &size) {
+  _size = size;
+}
