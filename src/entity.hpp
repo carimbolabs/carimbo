@@ -21,11 +21,11 @@ public:
 
   void set_x(int32_t x);
 
-  int32_t get_x() const;
+  int32_t x() const;
 
   void set_y(int32_t y);
 
-  int32_t get_y() const;
+  int32_t y() const;
 
   void move(int32_t x, int32_t y);
 

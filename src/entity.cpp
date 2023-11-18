@@ -40,7 +40,7 @@ void entity::set_x(int32_t x) {
   _point.set_x(x);
 }
 
-int32_t entity::get_x() const {
+int32_t entity::x() const {
   return _point.x();
 }
 
@@ -48,7 +48,7 @@ void entity::set_y(int32_t y) {
   _point.set_y(y);
 }
 
-int32_t entity::get_y() const {
+int32_t entity::y() const {
   return _point.y();
 }
 
