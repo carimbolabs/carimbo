@@ -24,7 +24,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
     throw std::runtime_error(fmt::format("[avifDecoderNextImage] error while decoding AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
-  _size = size{decoder->image->width, decoder->image->height};
+  _size = ::size{decoder->image->width, decoder->image->height};
 
   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{SDL_CreateRGBSurfaceWithFormat(0, decoder->image->width, decoder->image->height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface};
 
@@ -56,16 +56,16 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
 }
 
 void pixmap::draw(const point point, const double angle, const uint8_t alpha) const {
-  const SDL_Rect rect{point.x(), point.y(), static_cast<int>(_size.get_width()), static_cast<int>(_size.get_height())};
+  const SDL_Rect rect{point.x(), point.y(), static_cast<int>(_size.width()), static_cast<int>(_size.height())};
 
   SDL_SetTextureAlphaMod(_texture.get(), alpha);
   SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip::none));
 }
 
-const size pixmap::get_size() const {
+const size pixmap::size() const {
   return _size;
 }
 
-void pixmap::set_size(const size &size) {
+void pixmap::set_size(const ::size &size) {
   _size = size;
 }

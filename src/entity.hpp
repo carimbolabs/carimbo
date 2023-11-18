@@ -30,19 +30,19 @@ public:
 
   void move(int32_t x, int32_t y);
 
-  int32_t get_width() const;
+  int32_t width() const;
 
-  int32_t get_height() const;
+  int32_t height() const;
 
   void scale(double factor);
 
   void set_angle(const double angle);
 
-  double get_angle() const;
+  double angle() const;
 
   void set_alpha(const uint8_t alpha);
 
-  uint8_t get_alpha() const;
+  uint8_t alpha() const;
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 

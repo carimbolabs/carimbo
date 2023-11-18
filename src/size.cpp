@@ -13,7 +13,7 @@ void size::set_width(const uint32_t width) {
   _width = width;
 }
 
-uint32_t size::get_width() const {
+uint32_t size::width() const {
   return _width;
 }
 
@@ -21,6 +21,6 @@ void size::set_height(const uint32_t height) {
   _height = height;
 }
 
-uint32_t size::get_height() const {
+uint32_t size::height() const {
   return _height;
 }

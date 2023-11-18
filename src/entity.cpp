@@ -55,18 +55,18 @@ void entity::move(int32_t x, int32_t y) {
   _point.set_y(_point.y() + y);
 }
 
-int32_t entity::get_width() const {
-  return _pixmap->get_size().get_width();
+int32_t entity::width() const {
+  return _pixmap->size().width();
 }
 
-int32_t entity::get_height() const {
-  return _pixmap->get_size().get_height();
+int32_t entity::height() const {
+  return _pixmap->size().height();
 }
 
 void entity::scale(double factor) {
   _pixmap->set_size({
-      static_cast<uint32_t>(std::llround(_pixmap->get_size().get_width() * factor)),
-      static_cast<uint32_t>(std::llround(_pixmap->get_size().get_height() * factor)),
+      static_cast<uint32_t>(std::llround(_pixmap->size().width() * factor)),
+      static_cast<uint32_t>(std::llround(_pixmap->size().height() * factor)),
   });
 }
 
@@ -74,7 +74,7 @@ void entity::set_angle(const double angle) {
   _angle = angle;
 }
 
-double entity::get_angle() const {
+double entity::angle() const {
   return _angle;
 }
 
@@ -82,7 +82,7 @@ void entity::set_alpha(const uint8_t alpha) {
   _alpha = alpha;
 }
 
-uint8_t entity::get_alpha() const {
+uint8_t entity::alpha() const {
   return _alpha;
 }
 
