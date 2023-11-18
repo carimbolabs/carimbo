@@ -25,21 +25,21 @@ public:
 
   const std::shared_ptr<audio::audiodevice> audiodevice();
 
-  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
+  void set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
 
-  const std::shared_ptr<entitymanager> entitymanager() const;
+  const std::shared_ptr<framework::entitymanager> entitymanager() const;
 
   void set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager);
 
   const std::shared_ptr<input::eventmanager> eventmanager() const;
 
-  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
+  void set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager);
 
-  const std::shared_ptr<resourcemanager> resourcemanager() const;
+  const std::shared_ptr<framework::resourcemanager> resourcemanager() const;
 
-  void set_statemanager(std::shared_ptr<statemanager> statemanager);
+  void set_statemanager(std::shared_ptr<framework::statemanager> statemanager);
 
-  const std::shared_ptr<statemanager> statemanager() const;
+  const std::shared_ptr<framework::statemanager> statemanager() const;
 
   void prefetch(const std::vector<std::string> &filenames);
 
