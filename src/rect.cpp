@@ -15,10 +15,10 @@ const ::point rect::position() const {
   return _position;
 }
 
-void rect::set_size(const ::size &size) {
+void rect::set_size(const geometry::size &size) {
   _size = size;
 }
 
-const ::size rect::size() const {
+const geometry::size rect::size() const {
   return _size;
 }

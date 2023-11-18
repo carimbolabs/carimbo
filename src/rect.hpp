@@ -16,13 +16,13 @@ public:
 
   const point position() const;
 
-  void set_size(const size &size);
+  void set_size(const geometry::size &size);
 
-  const size size() const;
+  const geometry::size size() const;
 
 private:
   point _position;
-  class size _size;
+  geometry::size _size;
 };
 }
 
