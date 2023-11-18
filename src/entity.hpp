@@ -13,7 +13,7 @@ public:
 
   static std::shared_ptr<entity> create(const std::string &id);
 
-  std::string get_id() const;
+  std::string id() const;
 
   virtual void update();
 
