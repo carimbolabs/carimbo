@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace input {
 enum class keyevent : int32_t {
   w = SDLK_w,
   a = SDLK_a,
@@ -15,5 +16,6 @@ enum class keyevent : int32_t {
 enum class mouseevent : int32_t {};
 
 enum class joysticevent {};
+}
 
 #endif

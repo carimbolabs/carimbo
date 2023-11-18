@@ -10,6 +10,8 @@
 #include "scriptengine.hpp"
 #include "timermanager.hpp"
 
+using namespace framework;
+
 application::application(int argc, char **argv) {
   UNUSED(argc);
   UNUSED(argv);
@@ -23,9 +25,9 @@ int application::run() {
   try {
 #if SANDBOX
     // filesystem::mount("../assets/sandbox", "/");
-    filesystem::mount("/opt/workspace/carimbolabs/snake", "/");
+    storage::filesystem::mount("/opt/workspace/carimbolabs/snake", "/");
 #else
-    filesystem::mount("bundle.7z", "/");
+    storage::filesystem::mount("bundle.7z", "/");
 #endif
 
     auto se = scriptengine();

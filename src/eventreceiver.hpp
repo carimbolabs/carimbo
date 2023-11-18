@@ -6,6 +6,7 @@
 
 #include "event.hpp"
 
+namespace input {
 class eventreceiver {
 public:
   virtual ~eventreceiver() = default;
@@ -16,5 +17,6 @@ public:
 
   virtual void on_keyup(const keyevent &event);
 };
+}
 
 #endif

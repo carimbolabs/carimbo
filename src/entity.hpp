@@ -6,8 +6,7 @@
 
 #include "point.hpp"
 
-class engine;
-
+namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
 public:
   virtual ~entity();
@@ -36,9 +35,9 @@ public:
 
   void scale(double factor);
 
-  void set_angle(const double angle);
+  void set_angle(const double_t angle);
 
-  double angle() const;
+  double_t angle() const;
 
   void set_alpha(const uint8_t alpha);
 
@@ -58,9 +57,9 @@ private:
   entity(const std::string &id);
 
   std::string _id;
-  std::shared_ptr<pixmap> _pixmap;
-  point _point;
-  double _angle;
+  std::shared_ptr<graphics::pixmap> _pixmap;
+  geometry::point _point;
+  double_t _angle;
   uint8_t _alpha;
 
   std::shared_ptr<entitymanager> _entitymanager;
@@ -68,5 +67,6 @@ private:
 
   std::function<void(std::shared_ptr<entity>)> _fn;
 };
+}
 
 #endif

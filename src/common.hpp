@@ -19,17 +19,21 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <list>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <random>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include <fmt/core.h>
 #include <sol/sol.hpp>
@@ -43,33 +47,47 @@ extern "C" {
 #include "helpers.hpp"
 #include "types.hpp"
 
-class application;
+namespace audio {
 class audiodevice;
+class soundfx;
+class soundmanager;
+}
+
+namespace framework {
+class application;
 class engine;
 class enginefactory;
 class entity;
 class entitymanager;
-class eventmanager;
-class eventreceiver;
-class filesystem;
 class framerate;
-class io;
 class loopable;
-class pixmap;
-class pixmappool;
-class point;
-class renderer;
 class resourcemanager;
 class scriptengine;
-class soundfx;
-class soundmanager;
 class statemanager;
 class timermanager;
-class window;
+}
+
+namespace storage {
+class filesystem;
+class io;
+}
 
 namespace geometry {
+class point;
 class rect;
 class size;
-} // namespace geometry
+}
+
+namespace graphics {
+class pixmap;
+class pixmappool;
+class renderer;
+class window;
+}
+
+namespace input {
+class eventmanager;
+class eventreceiver;
+}
 
 #endif

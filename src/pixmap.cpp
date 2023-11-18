@@ -3,8 +3,10 @@
 #include "io.hpp"
 #include "renderer.hpp"
 
+using namespace graphics;
+
 pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename) : _renderer(renderer) {
-  const auto buffer = io::read(filename);
+  const auto buffer = storage::io::read(filename);
   auto result = avifResult{};
 
   std::unique_ptr<avifDecoder, decltype(&avifDecoderDestroy)> decoder{avifDecoderCreate(), &avifDecoderDestroy};
@@ -55,7 +57,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
   }
 }
 
-void pixmap::draw(const point point, const double angle, const uint8_t alpha) const {
+void pixmap::draw(const geometry::point &point, const double_t angle, const uint8_t alpha) const {
   const SDL_Rect rect{point.x(), point.y(), static_cast<int>(_size.width()), static_cast<int>(_size.height())};
 
   SDL_SetTextureAlphaMod(_texture.get(), alpha);

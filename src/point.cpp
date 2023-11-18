@@ -1,6 +1,9 @@
 #include "point.hpp"
 
-point::point(const int32_t x, const int32_t y) : _x(x), _y(y) {
+using namespace geometry;
+
+point::point(const int32_t x, const int32_t y)
+    : _x(x), _y(y) {
 }
 
 point::point(const point &other) : _x(other.x()), _y(other.y()) {}

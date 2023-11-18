@@ -12,10 +12,18 @@ public:
   rect(const rect &other) = default;
   ~rect() = default;
 
+  void set_position(const point &position);
+
+  const point position() const;
+
+  void set_size(const size &size);
+
+  const size size() const;
+
 private:
   point _position;
-  size _size;
+  class size _size;
 };
-} // namespace geometry
+}
 
 #endif

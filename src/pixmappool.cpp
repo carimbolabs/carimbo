@@ -2,7 +2,10 @@
 
 #include "pixmap.hpp"
 
-pixmappool::pixmappool(const std::shared_ptr<renderer> renderer) : _renderer(renderer) {
+using namespace graphics;
+
+pixmappool::pixmappool(const std::shared_ptr<renderer> renderer)
+    : _renderer(renderer) {
 }
 
 void pixmappool::preload(const std::vector<std::string> &filenames) {

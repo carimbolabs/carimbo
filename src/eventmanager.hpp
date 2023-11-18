@@ -6,6 +6,7 @@
 
 #include "noncopyable.hpp"
 
+namespace input {
 class eventmanager : private noncopyable {
 public:
   eventmanager() = default;
@@ -20,5 +21,6 @@ public:
 private:
   std::list<std::shared_ptr<eventreceiver>> _receivers;
 };
+}
 
 #endif

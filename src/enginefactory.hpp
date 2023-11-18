@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace framework {
 class enginefactory {
 public:
   enginefactory() = default;
@@ -26,5 +27,6 @@ private:
   int32_t _height;
   bool _fullscreen;
 };
+}
 
 #endif

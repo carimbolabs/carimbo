@@ -1,5 +1,7 @@
 #include "timermanager.hpp"
 
+using namespace framework;
+
 uint32_t wrapper(uint32_t interval, void *param) {
   auto fn = static_cast<std::function<void()> *>(param);
   (*fn)();

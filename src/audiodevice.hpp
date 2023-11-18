@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace audio {
 class audiodevice {
 public:
   audiodevice();
@@ -14,5 +15,6 @@ public:
 private:
   uint32_t _id;
 };
+}
 
 #endif

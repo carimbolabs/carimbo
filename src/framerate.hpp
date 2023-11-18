@@ -6,6 +6,7 @@
 
 #include "loopable.hpp"
 
+namespace framework {
 class framerate : public loopable {
 public:
   framerate() = default;
@@ -20,5 +21,6 @@ private:
   uint32_t _elapsed;
   uint32_t _start;
 };
+}
 
 #endif

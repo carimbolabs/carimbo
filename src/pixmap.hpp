@@ -9,6 +9,7 @@
 
 typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
 
+namespace graphics {
 enum class flip : int32_t {
   none = SDL_FLIP_NONE,
   horizontal = SDL_FLIP_HORIZONTAL,
@@ -21,7 +22,7 @@ public:
   pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename);
   ~pixmap() = default;
 
-  void draw(const point point, const double angle = 0.0, const uint8_t alpha = 255) const;
+  void draw(const geometry::point &point, const double angle = 0.0, const uint8_t alpha = 255) const;
 
   const geometry::size size() const;
 
@@ -33,5 +34,6 @@ private:
   geometry::size _size;
   texture_ptr _texture;
 };
+}
 
 #endif

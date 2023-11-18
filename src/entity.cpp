@@ -6,6 +6,8 @@
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 
+using namespace framework;
+
 entity::entity(const std::string &id)
     : _id(id), _point(0, 0), _angle(0.0), _alpha(255), _fn(nullptr) {
 }
@@ -70,11 +72,11 @@ void entity::scale(double factor) {
   });
 }
 
-void entity::set_angle(const double angle) {
+void entity::set_angle(const double_t angle) {
   _angle = angle;
 }
 
-double entity::angle() const {
+double_t entity::angle() const {
   return _angle;
 }
 
@@ -99,9 +101,9 @@ void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn
 }
 
 void entity::set_pixmap(const std::string &filename) {
-  _pixmap = _resourcemanager->get_pixmappool()->get(filename);
+  _pixmap = _resourcemanager->pixmappool()->get(filename);
 }
 
 void entity::play_sound(const std::string &filename) {
-  _resourcemanager->get_soundmanager()->play(filename);
+  _resourcemanager->soundmanager()->play(filename);
 }

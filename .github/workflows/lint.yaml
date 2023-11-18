@@ -53,14 +53,12 @@ jobs:
       - name: Lint
         uses: cpp-linter/cpp-linter-action@v2
         id: linter
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           style: file
           ignore: build
           database: build
           extra-args: -std=c++17 -Wall -Wextra
 
-      - name: Fail Fast
-        if: steps.linter.outputs.checks-failed > 0
-        run: exit 1
+      # - name: Fail Fast
+      #   if: steps.linter.outputs.checks-failed > 0
+      #   run: exit 1

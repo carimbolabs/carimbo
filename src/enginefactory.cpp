@@ -7,6 +7,8 @@
 #include "resourcemanager.hpp"
 #include "window.hpp"
 
+using namespace framework;
+
 enginefactory &enginefactory::set_title(const std::string &title) {
   _title = title;
   return *this;
@@ -28,15 +30,15 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  const auto w = std::make_shared<window>(_title, _width, _height, _fullscreen);
+  const auto w = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
   const auto r = w->create_renderer();
-  const auto ad = std::make_shared<audiodevice>();
-  const auto em1 = std::make_shared<eventmanager>();
-  const auto em2 = std::make_shared<entitymanager>();
-  const auto em3 = std::make_shared<statemanager>();
-  const auto rm = std::make_shared<resourcemanager>(r, ad);
+  const auto ad = std::make_shared<audio::audiodevice>();
+  const auto em1 = std::make_shared<input::eventmanager>();
+  const auto em2 = std::make_shared<framework::entitymanager>();
+  const auto em3 = std::make_shared<framework::statemanager>();
+  const auto rm = std::make_shared<framework::resourcemanager>(r, ad);
 
-  const auto e = std::make_shared<engine>();
+  const auto e = std::make_shared<framework::engine>();
 
   e->set_window(w);
   e->set_renderer(r);

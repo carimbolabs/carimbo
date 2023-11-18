@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace graphics {
 class renderer {
 public:
   explicit renderer(SDL_Window *window);
@@ -18,5 +19,6 @@ public:
 private:
   std::unique_ptr<SDL_Renderer, SDL_Deleter> _renderer;
 };
+}
 
 #endif

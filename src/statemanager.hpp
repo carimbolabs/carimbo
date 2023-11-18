@@ -4,20 +4,22 @@
 
 #include "common.hpp"
 
-class statemanager : public eventreceiver {
+namespace framework {
+class statemanager : public input::eventreceiver {
 public:
   statemanager() = default;
   virtual ~statemanager() = default;
 
-  bool is_keydown(const keyevent &event) const;
+  bool is_keydown(const input::keyevent &event) const;
 
 protected:
-  virtual void on_keydown(const keyevent &event);
+  virtual void on_keydown(const input::keyevent &event);
 
-  virtual void on_keyup(const keyevent &event);
+  virtual void on_keyup(const input::keyevent &event);
 
 private:
-  std::map<keyevent, bool> _keys;
+  std::map<input::keyevent, bool> _keys;
 };
+}
 
 #endif

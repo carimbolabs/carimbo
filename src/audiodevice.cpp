@@ -1,5 +1,7 @@
 #include "audiodevice.hpp"
 
+using namespace audio;
+
 audiodevice::audiodevice() {
   SDL_AudioSpec spec{};
   spec.format = AUDIO_S16SYS;

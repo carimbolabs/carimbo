@@ -6,43 +6,44 @@
 
 #include "eventreceiver.hpp"
 
-class engine : public eventreceiver {
+namespace framework {
+class engine : public input::eventreceiver {
 public:
   engine();
 
   virtual ~engine() = default;
 
-  void set_window(std::shared_ptr<window> window);
+  void set_window(std::shared_ptr<graphics::window> window);
 
-  const std::shared_ptr<window> get_window() const;
+  const std::shared_ptr<graphics::window> window() const;
 
-  void set_renderer(std::shared_ptr<renderer> renderer);
+  void set_renderer(std::shared_ptr<graphics::renderer> renderer);
 
-  const std::shared_ptr<renderer> get_renderer() const;
+  const std::shared_ptr<graphics::renderer> renderer() const;
 
-  void set_audiodevice(std::shared_ptr<audiodevice> audiodevice);
+  void set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice);
 
-  const std::shared_ptr<audiodevice> get_audiodevice();
+  const std::shared_ptr<audio::audiodevice> audiodevice();
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
-  const std::shared_ptr<entitymanager> get_entitymanager() const;
+  const std::shared_ptr<entitymanager> entitymanager() const;
 
-  void set_eventmanager(std::shared_ptr<eventmanager> eventmanager);
+  void set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager);
 
-  const std::shared_ptr<eventmanager> get_eventmanager() const;
+  const std::shared_ptr<input::eventmanager> eventmanager() const;
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
-  const std::shared_ptr<resourcemanager> get_resourcemanager() const;
+  const std::shared_ptr<resourcemanager> resourcemanager() const;
 
   void set_statemanager(std::shared_ptr<statemanager> statemanager);
 
-  const std::shared_ptr<statemanager> get_statemanager() const;
+  const std::shared_ptr<statemanager> statemanager() const;
 
   void prefetch(const std::vector<std::string> &filenames);
 
-  bool is_keydown(const keyevent &event) const;
+  bool is_keydown(const input::keyevent &event) const;
 
   const std::shared_ptr<entity> spawn();
 
@@ -61,13 +62,14 @@ private:
   bool _running;
 
   std::list<std::shared_ptr<loopable>> _loopables;
-  std::shared_ptr<window> _window;
-  std::shared_ptr<renderer> _renderer;
-  std::shared_ptr<audiodevice> _audiodevice;
-  std::shared_ptr<entitymanager> _entitymanager;
-  std::shared_ptr<eventmanager> _eventmanager;
-  std::shared_ptr<resourcemanager> _resourcemanager;
-  std::shared_ptr<statemanager> _statemanager;
+  std::shared_ptr<graphics::window> _window;
+  std::shared_ptr<graphics::renderer> _renderer;
+  std::shared_ptr<audio::audiodevice> _audiodevice;
+  std::shared_ptr<framework::entitymanager> _entitymanager;
+  std::shared_ptr<input::eventmanager> _eventmanager;
+  std::shared_ptr<framework::resourcemanager> _resourcemanager;
+  std::shared_ptr<framework::statemanager> _statemanager;
 };
+}
 
 #endif

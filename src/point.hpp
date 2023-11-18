@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace geometry {
 class point {
 public:
   point() = default;
@@ -23,5 +24,6 @@ private:
   int32_t _x;
   int32_t _y;
 };
+}
 
 #endif

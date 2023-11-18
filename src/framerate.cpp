@@ -2,6 +2,8 @@
 
 #include "loopable.hpp"
 
+using namespace framework;
+
 uint64_t framerate::per_second() const {
   return _frames;
 }

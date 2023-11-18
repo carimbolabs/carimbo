@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace storage {
 class io {
 public:
   io() = delete;
@@ -11,5 +12,6 @@ public:
 
   static const std::vector<uint8_t> read(std::string_view filename);
 };
+}
 
 #endif

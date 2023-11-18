@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace framework {
 class scriptengine : private noncopyable {
 public:
   scriptengine() = default;
@@ -11,5 +12,6 @@ public:
 
   void run();
 };
+}
 
 #endif

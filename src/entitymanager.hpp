@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace framework {
 class entitymanager {
 public:
   entitymanager() = default;
@@ -25,5 +26,6 @@ private:
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
 };
+}
 
 #endif

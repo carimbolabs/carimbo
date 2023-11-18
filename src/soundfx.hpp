@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace audio {
 class soundfx {
 public:
   soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_view filename);
@@ -16,5 +17,6 @@ public:
 private:
   std::shared_ptr<audiodevice> _audiodevice;
 };
+}
 
 #endif

@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace graphics {
 class pixmappool {
 public:
   explicit pixmappool(const std::shared_ptr<renderer> renderer);
@@ -20,5 +21,6 @@ private:
 
   std::unordered_map<std::string, std::shared_ptr<pixmap>, std::hash<std::string>> _pool;
 };
+}
 
 #endif

@@ -14,31 +14,26 @@
 #include "statemanager.hpp"
 #include "ticks.hpp"
 
+using namespace framework;
+
 void scriptengine::run() {
   sol::state lua;
 
   lua.open_libraries();
 
   lua.new_enum(
-      "Flip",
-      "none", flip::none,
-      "horizontal", flip::horizontal,
-      "vertical", flip::vertical,
-      "both", flip::both);
-
-  lua.new_enum(
       "KeyEvent",
-      "w", keyevent::w,
-      "a", keyevent::a,
-      "s", keyevent::s,
-      "d", keyevent::d,
-      "space", keyevent::space);
+      "w", input::keyevent::w,
+      "a", input::keyevent::a,
+      "s", input::keyevent::s,
+      "d", input::keyevent::d,
+      "space", input::keyevent::space);
 
-  lua.new_usertype<point>(
+  lua.new_usertype<geometry::point>(
       "Point",
-      sol::constructors<point(int32_t, int32_t)>(),
-      "x", sol::property(&point::x, &point::set_x),
-      "y", sol::property(&point::y, &point::set_y));
+      sol::constructors<geometry::point(int32_t, int32_t)>(),
+      "x", sol::property(&geometry::point::x, &geometry::point::set_x),
+      "y", sol::property(&geometry::point::y, &geometry::point::set_y));
 
   lua.new_usertype<enginefactory>(
       "EngineFactory",
@@ -80,6 +75,6 @@ void scriptengine::run() {
 
   lua.set_function("sleep", &sleep);
 
-  const auto script = io::read("scripts/main.lua");
+  const auto script = storage::io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }

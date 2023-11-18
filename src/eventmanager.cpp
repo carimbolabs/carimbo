@@ -3,6 +3,8 @@
 #include "event.hpp"
 #include "eventreceiver.hpp"
 
+using namespace input;
+
 void eventmanager::update() {
   SDL_Event event;
 

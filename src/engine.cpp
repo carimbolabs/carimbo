@@ -21,6 +21,8 @@ inline void run(void *arg) {
 }
 #endif
 
+using namespace framework;
+
 engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
@@ -52,59 +54,59 @@ void engine::_loop() {
                 std::bind(&loopable::loop, std::placeholders::_1, delta));
 }
 
-void engine::set_window(std::shared_ptr<window> window) {
+void engine::set_window(std::shared_ptr<graphics::window> window) {
   _window = window;
 }
 
-const std::shared_ptr<window> engine::get_window() const {
+const std::shared_ptr<graphics::window> engine::window() const {
   return _window;
 }
 
-void engine::set_renderer(std::shared_ptr<renderer> renderer) {
+void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) {
   _renderer = renderer;
 }
 
-const std::shared_ptr<renderer> engine::get_renderer() const {
+const std::shared_ptr<graphics::renderer> engine::renderer() const {
   return _renderer;
 }
 
-void engine::set_audiodevice(std::shared_ptr<audiodevice> audiodevice) {
+void engine::set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice) {
   _audiodevice = audiodevice;
 }
 
-const std::shared_ptr<audiodevice> engine::get_audiodevice() {
+const std::shared_ptr<audio::audiodevice> engine::audiodevice() {
   return _audiodevice;
 }
 
-void engine::set_eventmanager(std::shared_ptr<eventmanager> eventmanager) {
+void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager) {
   _eventmanager = eventmanager;
 }
 
-const std::shared_ptr<eventmanager> engine::get_eventmanager() const {
+const std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
 }
 
-void engine::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
+void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
   _entitymanager = entitymanager;
 }
 
-const std::shared_ptr<entitymanager> engine::get_entitymanager() const {
+const std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
   return _entitymanager;
 }
 
-void engine::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
+void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
-const std::shared_ptr<resourcemanager> engine::get_resourcemanager() const {
+const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
   return _resourcemanager;
 }
 
-void engine::set_statemanager(std::shared_ptr<statemanager> statemanager) {
+void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
   _statemanager = statemanager;
 }
 
-const std::shared_ptr<statemanager> engine::get_statemanager() const {
+const std::shared_ptr<framework::statemanager> engine::statemanager() const {
   return _statemanager;
 }
 
@@ -112,7 +114,7 @@ void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
 
-bool engine::is_keydown(const keyevent &event) const {
+bool engine::is_keydown(const input::keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
 
