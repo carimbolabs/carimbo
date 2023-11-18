@@ -65,8 +65,8 @@ private:
   std::shared_ptr<graphics::window> _window;
   std::shared_ptr<graphics::renderer> _renderer;
   std::shared_ptr<audio::audiodevice> _audiodevice;
-  std::shared_ptr<framework::entitymanager> _entitymanager;
   std::shared_ptr<input::eventmanager> _eventmanager;
+  std::shared_ptr<framework::entitymanager> _entitymanager;
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;
 };
