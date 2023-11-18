@@ -23,14 +23,14 @@ public:
 
   void draw(const point point, const double angle = 0.0, const uint8_t alpha = 255) const;
 
-  const size size() const;
+  const geometry::size size() const;
 
-  void set_size(const ::size &size);
+  void set_size(const geometry::size &size);
 
 private:
   std::shared_ptr<renderer> _renderer;
 
-  ::size _size;
+  geometry::size _size;
   texture_ptr _texture;
 };
 

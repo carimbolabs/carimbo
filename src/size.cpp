@@ -1,5 +1,7 @@
 #include "size.hpp"
 
+using namespace geometry;
+
 size::size(uint32_t width, uint32_t height)
     : _width(width), _height(height) {}
 

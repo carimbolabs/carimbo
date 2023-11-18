@@ -61,11 +61,15 @@ class point;
 class renderer;
 class resourcemanager;
 class scriptengine;
-class size;
 class soundfx;
 class soundmanager;
 class statemanager;
 class timermanager;
 class window;
+
+namespace geometry {
+class rect;
+class size;
+} // namespace geometry
 
 #endif

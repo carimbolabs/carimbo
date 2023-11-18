@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 
+namespace geometry {
 class rect {
 public:
   rect() = default;
@@ -15,5 +16,6 @@ private:
   point _position;
   size _size;
 };
+} // namespace geometry
 
 #endif

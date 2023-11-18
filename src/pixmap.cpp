@@ -24,7 +24,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
     throw std::runtime_error(fmt::format("[avifDecoderNextImage] error while decoding AVIF: {}, error: {}", filename, avifResultToString(result)));
   }
 
-  _size = ::size{decoder->image->width, decoder->image->height};
+  _size = geometry::size{decoder->image->width, decoder->image->height};
 
   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{SDL_CreateRGBSurfaceWithFormat(0, decoder->image->width, decoder->image->height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface};
 
@@ -62,10 +62,10 @@ void pixmap::draw(const point point, const double angle, const uint8_t alpha) co
   SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip::none));
 }
 
-const size pixmap::size() const {
+const geometry::size pixmap::size() const {
   return _size;
 }
 
-void pixmap::set_size(const ::size &size) {
+void pixmap::set_size(const geometry::size &size) {
   _size = size;
 }
