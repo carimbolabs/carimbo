@@ -111,8 +111,14 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_vie
   const auto constexpr length = 1024 * 8;
   std::array<uint8_t, length> array{0};
 
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+  const int bigendian = 0;
+#else
+  const int bigendian = 1;
+#endif
+
   do {
-    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, 0, 2, 1, nullptr);
+    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
 
     if (offset < 0) {
       throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
