@@ -86,27 +86,27 @@ const std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
 }
 
-void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
+void engine::set_entitymanager(std::shared_ptr<::entitymanager> entitymanager) {
   _entitymanager = entitymanager;
 }
 
-const std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
+const std::shared_ptr<entitymanager> engine::entitymanager() const {
   return _entitymanager;
 }
 
-void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) {
+void engine::set_resourcemanager(std::shared_ptr<::resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
-const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
+const std::shared_ptr<resourcemanager> engine::resourcemanager() const {
   return _resourcemanager;
 }
 
-void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
+void engine::set_statemanager(std::shared_ptr<::statemanager> statemanager) {
   _statemanager = statemanager;
 }
 
-const std::shared_ptr<framework::statemanager> engine::statemanager() const {
+const std::shared_ptr<statemanager> engine::statemanager() const {
   return _statemanager;
 }
 
