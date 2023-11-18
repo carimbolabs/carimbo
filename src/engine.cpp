@@ -23,7 +23,8 @@ inline void run(void *arg) {
 
 using namespace framework;
 
-engine::engine() : _running(true) {
+engine::engine()
+    : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
 
