@@ -51,6 +51,8 @@ void scriptengine::run() {
       "destroy", &engine::destroy,
       "ticks", &ticks,
       "is_keydown", &engine::is_keydown,
+      "width", sol::property(&engine::width),
+      "height", sol::property(&engine::height),
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames{table.size()};
         for (auto &item : table) {

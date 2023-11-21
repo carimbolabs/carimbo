@@ -14,45 +14,11 @@
 #include "statemanager.hpp"
 #include "window.hpp"
 
-#ifdef EMSCRIPTEN
-template <class T>
-inline void run(void *arg) {
-  reinterpret_cast<T *>(arg)->_loop();
-}
-#endif
-
 using namespace framework;
 
 engine::engine()
     : _running(true) {
   add_loopable(std::make_shared<framerate>());
-}
-
-void engine::run() {
-#ifdef EMSCRIPTEN
-  emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
-#else
-  while (_running) {
-    _loop();
-  }
-#endif
-}
-
-void engine::_loop() {
-  const auto now = SDL_GetTicks();
-
-  _resourcemanager->update();
-  _eventmanager->update();
-  _entitymanager->update();
-  _renderer->begin();
-  _entitymanager->draw();
-  // _scenegraph->render();
-  _renderer->end();
-
-  const auto delta = SDL_GetTicks() - now;
-
-  std::for_each(_loopables.begin(), _loopables.end(),
-                std::bind(&loopable::loop, std::placeholders::_1, delta));
 }
 
 void engine::set_window(std::shared_ptr<graphics::window> window) {
@@ -132,6 +98,48 @@ void engine::destroy(const std::shared_ptr<entity> entity) {
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {
   _loopables.emplace_back(loopable);
+}
+
+#ifdef EMSCRIPTEN
+template <class T>
+inline void run(void *arg) {
+  reinterpret_cast<T *>(arg)->_loop();
+}
+#endif
+
+void engine::run() {
+#ifdef EMSCRIPTEN
+  emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
+#else
+  while (_running) {
+    _loop();
+  }
+#endif
+}
+
+void engine::_loop() {
+  const auto now = SDL_GetTicks();
+
+  _resourcemanager->update();
+  _eventmanager->update();
+  _entitymanager->update();
+  _renderer->begin();
+  _entitymanager->draw();
+  // _scenegraph->render();
+  _renderer->end();
+
+  const auto delta = SDL_GetTicks() - now;
+
+  std::for_each(_loopables.begin(), _loopables.end(),
+                std::bind(&loopable::loop, std::placeholders::_1, delta));
+}
+
+int32_t engine::width() const {
+  return _window->width();
+}
+
+int32_t engine::height() const {
+  return _window->height();
 }
 
 void engine::on_quit() {

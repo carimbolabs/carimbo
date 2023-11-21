@@ -51,6 +51,10 @@ public:
 
   void add_loopable(std::shared_ptr<loopable> loopable);
 
+  int32_t width() const;
+
+  int32_t height() const;
+
   void run();
 
   void _loop();

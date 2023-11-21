@@ -5,7 +5,7 @@ local engine = EngineFactory.new()
     :set_fullscreen(false)
     :create()
 
-engine:prefetch({ "blob/matrix.avif", "blob/deitzis.ogg" })
+engine:prefetch({ "blobs/matrix.avif", "blobs/deitzis.ogg" })
 
 local angle = 0
 local alpha = 0
@@ -13,9 +13,9 @@ local direction = 0
 
 local me = engine:spawn()
 
-me.pixmap = "blob/matrix.avif"
-me.x = (854 // 2) - (me.width // 2)
-me.y = (480 // 2) - (me.height // 2)
+me.pixmap = "blobs/matrix.avif"
+me.x = (engine.width // 2) - (me.width // 2)
+me.y = (engine.height // 2) - (me.height // 2)
 
 me:on_update(function(self)
   if engine:is_keydown(KeyEvent.w) then
@@ -35,7 +35,7 @@ me:on_update(function(self)
   end
 
   if engine:is_keydown(KeyEvent.space) then
-    me:play("blob/deitzis.ogg")
+    me:play("blobs/deitzis.ogg")
   end
 
   angle = angle + 1
@@ -62,19 +62,9 @@ me:on_update(function(self)
   self.alpha = alpha
 end)
 
--- me:play_sound("blob/alarm.ogg")
-
--- local garbage = engine:spawn()
--- engine:destroy(garbage)
--- garbage = nil
-
-for i = 1, 1000 do
-  local garbage = engine:spawn()
-  garbage.x = math.random(0, 854)
-  garbage.y = math.random(0, 480)
-  garbage.pixmap = "blob/matrix.avif"
-  garbage.angle = math.random(0, 360)
-end
+local garbage = engine:spawn()
+engine:destroy(garbage)
+garbage = nil
 
 local gc = engine:spawn()
 

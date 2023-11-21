@@ -14,7 +14,14 @@ public:
 
   const std::shared_ptr<renderer> create_renderer() const;
 
+  int32_t width() const;
+
+  int32_t height() const;
+
 private:
+  int32_t _width;
+  int32_t _height;
+
   std::unique_ptr<SDL_Window, SDL_Deleter> _window;
 };
 }
