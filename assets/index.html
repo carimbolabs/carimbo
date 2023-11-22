@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="preload" href="/bundle.zip" as="fetch" type="application/zip" />
+  <link rel="preload" href="/bundle.7z" as="fetch" type="application/zip" />
   <link rel="preload" href="/carimbo.wasm" as="fetch" type="application/wasm" />
   <style>
     *,
@@ -45,11 +45,11 @@
         canvas,
         noInitialRun: true,
         onRuntimeInitialized: () => {
-          fetch("/bundle.zip")
+          fetch("/bundle.7z")
             .then((response) => response.arrayBuffer())
             .then((data) => {
               const uint8View = new Uint8Array(data);
-              FS.writeFile("/bundle.zip", uint8View);
+              FS.writeFile("/bundle.7z", uint8View);
               Module.callMain();
             });
         },
