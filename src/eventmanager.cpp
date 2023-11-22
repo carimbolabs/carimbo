@@ -6,8 +6,6 @@
 using namespace input;
 
 void eventmanager::update() {
-  SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
-
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
