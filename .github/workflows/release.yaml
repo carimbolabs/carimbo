@@ -71,10 +71,10 @@ jobs:
           *: emsdk/3.1.44
 
           [conf]
-          tools.build:cflags=["-fsanitize=address"]
-          tools.build:cxxflags=["-fsanitize=address"]
-          tools.build:exelinkflags=["-fsanitize=address"]
-          tools.build:sharedlinkflags=["-fsanitize=address"]
+          lua:tools.build:cflags=["-fsanitize=address"]
+          lua:tools.build:cxxflags=["-fsanitize=address"]
+          lua:tools.build:exelinkflags=["-fsanitize=address"]
+          lua:tools.build:sharedlinkflags=["-fsanitize=address"]
           EOF
 
       - name: Install Ubuntu Dependencies
@@ -88,7 +88,7 @@ jobs:
 
       - name: Install WebAssembly Dependencies
         if: matrix.config.name == 'WebAssembly'
-        run: conan install ..  --output-folder=. --build=missing --profile=webassembly --settings compiler.cppstd=17 --settings build_type=Debug
+        run: conan install ..  --output-folder=. --build=missing --profile=webassembly --settings compiler.cppstd=17 --settings build_type=Release
         working-directory: build
 
       - name: Configure
