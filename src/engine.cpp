@@ -121,7 +121,7 @@ void engine::_loop() {
   const auto now = SDL_GetTicks();
 
   _resourcemanager->update();
-  _eventmanager->update();
+  // _eventmanager->update();
   _entitymanager->update();
   _renderer->begin();
   _entitymanager->draw();
