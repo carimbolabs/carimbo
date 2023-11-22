@@ -40,7 +40,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   target_link_libraries(${PROJECT_NAME} "-s INITIAL_MEMORY=134217728")
   target_link_libraries(${PROJECT_NAME} "-s EXPORTED_RUNTIME_METHODS=['callMain']")
 
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -Os)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O2 -flto)
 elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
