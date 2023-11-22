@@ -30,8 +30,8 @@ if(SANDBOX)
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  # target_link_libraries(${PROJECT_NAME} "--profiling")
-  # target_link_libraries(${PROJECT_NAME} "-s RUNTIME_DEBUG")
+  target_link_libraries(${PROJECT_NAME} "--profiling")
+  target_link_libraries(${PROJECT_NAME} "-s RUNTIME_DEBUG")
   target_link_libraries(${PROJECT_NAME} "-s ASSERTIONS=1")
   target_link_libraries(${PROJECT_NAME} "-s NO_DISABLE_EXCEPTION_CATCHING")
 
