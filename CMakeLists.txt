@@ -40,10 +40,8 @@ if(SANDBOX)
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -Os)
-
   # target_link_libraries(${PROJECT_NAME} "--profiling")
-  target_link_libraries(${PROJECT_NAME} "-s RUNTIME_DEBUG")
+  # target_link_libraries(${PROJECT_NAME} "-s RUNTIME_DEBUG")
   target_link_libraries(${PROJECT_NAME} "-s ASSERTIONS=1")
   target_link_libraries(${PROJECT_NAME} "-s NO_DISABLE_EXCEPTION_CATCHING")
 
@@ -53,6 +51,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   target_link_libraries(${PROJECT_NAME} "-s EXPORTED_RUNTIME_METHODS=['callMain']")
 
   # embed(${PROJECT_NAME} "${CMAKE_BINARY_DIR}/bundle.zip" "/bundle.zip")
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -Os)
 elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
