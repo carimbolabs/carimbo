@@ -19,7 +19,8 @@ using namespace framework;
 void scriptengine::run() {
   sol::state lua;
 
-  lua.open_libraries();
+  lua.open_libraries(sol::lib::base);
+  // lua.open_libraries();
 
   lua.new_enum(
       "KeyEvent",
@@ -80,4 +81,15 @@ void scriptengine::run() {
 
   const auto script = storage::io::read("scripts/main.lua");
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+
+  // lua.script("print('Hello, world!')");
+
+  // const auto e = enginefactory()
+  //                    .set_title("Snake")
+  //                    .set_width(640)
+  //                    .set_height(480)
+  //                    .set_fullscreen(false)
+  //                    .create();
+
+  // e->run();
 }
