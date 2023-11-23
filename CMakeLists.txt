@@ -30,7 +30,6 @@ if(SANDBOX)
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  target_link_libraries(${PROJECT_NAME} "-s SIMD=1")
   target_link_libraries(${PROJECT_NAME} "-s EVAL_CTORS=1")
   target_link_libraries(${PROJECT_NAME} "-s WASM_BIGINT=1")
   # target_link_libraries(${PROJECT_NAME} "-s DISABLE_EXCEPTION_CATCHING=1")
