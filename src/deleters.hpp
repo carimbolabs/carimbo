@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _deleters_hpp
-#define _deleters_hpp
 
 #include "common.hpp"
 
@@ -25,5 +23,3 @@ struct SDL_Deleter {
     SDL_RWclose(ptr);
   }
 };
-
-#endif

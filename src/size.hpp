@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _size_hpp
-#define _size_hpp
 
 #include "common.hpp"
 
@@ -26,5 +24,3 @@ private:
   uint32_t _height;
 };
 }
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _eventreceiver_hpp
-#define _eventreceiver_hpp
 
 #include "common.hpp"
 
@@ -18,5 +16,3 @@ public:
   virtual void on_keyup(const keyevent &event);
 };
 }
-
-#endif

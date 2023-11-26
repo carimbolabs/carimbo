@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _resourcemanager_hpp
-#define _resourcemanager_hpp
 
 #include "common.hpp"
 
@@ -26,5 +24,3 @@ private:
   std::shared_ptr<audio::soundmanager> _soundmanager;
 };
 }
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _soundmanager_hpp
-#define _soundmanager_hpp
 
 #include "common.hpp"
 #include "soundfx.hpp"
@@ -24,5 +22,3 @@ private:
   std::unordered_map<std::string, std::shared_ptr<soundfx>, std::hash<std::string>> _soundmap;
 };
 }
-
-#endif

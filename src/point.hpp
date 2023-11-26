@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _point_hpp
-#define _point_hpp
 
 #include "common.hpp"
 
@@ -25,5 +23,3 @@ private:
   int32_t _y;
 };
 }
-
-#endif

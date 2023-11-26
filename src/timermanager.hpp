@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _timer_hpp
-#define _timer_hpp
 
 #include "common.hpp"
 
@@ -18,5 +16,3 @@ private:
   std::map<int32_t, std::function<void()>> _timers;
 };
 }
-
-#endif

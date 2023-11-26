@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _filesystem_hpp
-#define _filesystem_hpp
 
 #include "common.hpp"
 
@@ -14,5 +12,3 @@ private:
   ~filesystem() noexcept = default;
 };
 }
-
-#endif

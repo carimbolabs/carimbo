@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _scriptengine_hpp
-#define _scriptengine_hpp
 
 #include "common.hpp"
 
@@ -13,5 +11,3 @@ public:
   void run();
 };
 }
-
-#endif

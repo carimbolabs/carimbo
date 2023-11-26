@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _entitymanager_hpp
-#define _entitymanager_hpp
 
 #include "common.hpp"
 
@@ -27,5 +25,3 @@ private:
   std::list<std::shared_ptr<entity>> _entities;
 };
 }
-
-#endif

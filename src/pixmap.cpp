@@ -30,7 +30,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
 
   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{SDL_CreateRGBSurfaceWithFormat(0, decoder->image->width, decoder->image->height, 0, SDL_PIXELFORMAT_ARGB8888), SDL_FreeSurface};
 
-  if (surface == nullptr) {
+  if (!surface) {
     throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}, error {}", filename, SDL_GetError()));
   }
 
@@ -52,7 +52,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
 
   _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
 
-  if (_texture == nullptr) {
+  if (!_texture) {
     throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture from surface: {}", filename));
   }
 }

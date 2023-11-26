@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _noncopyable_hpp_
-#define _noncopyable_hpp_
 
 class noncopyable {
 public:
@@ -12,5 +10,3 @@ public:
   noncopyable(noncopyable &&) = default;
   noncopyable &operator=(noncopyable &&) = default;
 };
-
-#endif

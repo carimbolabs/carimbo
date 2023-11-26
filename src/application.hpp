@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _application_hpp
-#define _application_hpp
 
 #include "noncopyable.hpp"
 
@@ -13,5 +11,3 @@ public:
   int run();
 };
 }
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _audiodevice_hpp
-#define _audiodevice_hpp
 
 #include "common.hpp"
 
@@ -16,5 +14,3 @@ private:
   uint32_t _id;
 };
 }
-
-#endif

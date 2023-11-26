@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _statemanager_hpp
-#define _statemanager_hpp
 
 #include "common.hpp"
 
@@ -21,5 +19,3 @@ private:
   std::map<input::keyevent, bool> _keys;
 };
 }
-
-#endif

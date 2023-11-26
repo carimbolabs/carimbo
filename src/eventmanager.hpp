@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _eventmanager_hpp_
-#define _eventmanager_hpp_
 
 #include "common.hpp"
 
@@ -22,5 +20,3 @@ private:
   std::list<std::shared_ptr<eventreceiver>> _receivers;
 };
 }
-
-#endif

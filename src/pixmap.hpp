@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _pixmap_hpp
-#define _pixmap_hpp
 
 #include "common.hpp"
 
@@ -35,5 +33,3 @@ private:
   texture_ptr _texture;
 };
 }
-
-#endif

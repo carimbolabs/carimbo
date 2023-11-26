@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _entity_hpp
-#define _entity_hpp
 
 #include "common.hpp"
 
@@ -68,5 +66,3 @@ private:
   std::function<void(std::shared_ptr<entity>)> _fn;
 };
 }
-
-#endif

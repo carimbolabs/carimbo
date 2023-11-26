@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _window_hpp
-#define _window_hpp
 
 #include "common.hpp"
 
@@ -25,5 +23,3 @@ private:
   std::unique_ptr<SDL_Window, SDL_Deleter> _window;
 };
 }
-
-#endif

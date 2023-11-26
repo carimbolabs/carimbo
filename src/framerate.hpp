@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _frames_hpp
-#define _frames_hpp
 
 #include "common.hpp"
 
@@ -22,5 +20,3 @@ private:
   uint32_t _start;
 };
 }
-
-#endif

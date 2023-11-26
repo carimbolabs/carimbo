@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _pixmappool_hpp
-#define _pixmappool_hpp
 
 #include "common.hpp"
 
@@ -22,5 +20,3 @@ private:
   std::unordered_map<std::string, std::shared_ptr<pixmap>, std::hash<std::string>> _pool;
 };
 }
-
-#endif

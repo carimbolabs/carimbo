@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _rect_hpp
-#define _rect_hpp
 
 #include "common.hpp"
 
@@ -25,5 +23,3 @@ private:
   geometry::size _size;
 };
 }
-
-#endif

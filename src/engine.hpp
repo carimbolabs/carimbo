@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _engine_hpp
-#define _engine_hpp
 
 #include "common.hpp"
 
@@ -75,5 +73,3 @@ private:
   std::shared_ptr<framework::statemanager> _statemanager;
 };
 }
-
-#endif

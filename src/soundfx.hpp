@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _soundfx_hpp
-#define _soundfx_hpp
 
 #include "common.hpp"
 
@@ -18,5 +16,3 @@ private:
   std::shared_ptr<audiodevice> _audiodevice;
 };
 }
-
-#endif

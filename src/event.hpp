@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _event_hpp
-#define _event_hpp
 
 #include "common.hpp"
 
@@ -17,5 +15,3 @@ enum class mouseevent : int32_t {};
 
 enum class joysticevent {};
 }
-
-#endif

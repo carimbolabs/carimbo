@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _renderer_hpp
-#define _renderer_hpp
 
 #include "common.hpp"
 
@@ -20,5 +18,3 @@ private:
   std::unique_ptr<SDL_Renderer, SDL_Deleter> _renderer;
 };
 }
-
-#endif

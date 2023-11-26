@@ -1,6 +1,4 @@
 #pragma once
-#ifndef _enginefactory_hpp
-#define _enginefactory_hpp
 
 #include "common.hpp"
 
@@ -28,5 +26,3 @@ private:
   bool _fullscreen;
 };
 }
-
-#endif
