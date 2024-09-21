@@ -21,4 +21,4 @@ private:
                      std::hash<std::string>>
       _pool;
 };
-} // namespace graphics
+}
