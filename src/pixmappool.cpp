@@ -5,8 +5,7 @@
 using namespace graphics;
 
 pixmappool::pixmappool(const std::shared_ptr<renderer> renderer)
-    : _renderer(renderer) {
-}
+    : _renderer(renderer) {}
 
 void pixmappool::preload(const std::vector<std::string> &filenames) {
   for (const auto &filename : filenames) {
@@ -27,10 +26,10 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
 }
 
 void pixmappool::flush() {
-  auto it = _pool.begin();
+  for (auto it = _pool.begin(); it != _pool.end();) {
 
-  while (it != _pool.end()) {
-    if (it->second.unique()) {
+    const auto unique = it->second.use_count() == 1;
+    if (unique) {
       it = _pool.erase(it);
     } else {
       ++it;

@@ -12,12 +12,15 @@ std::uniform_int_distribution<> distribution(0, 61);
 
 const auto random_char = []() -> uint8_t {
   const auto value = distribution(generator);
-  if (value < 10) return '0' + value;
-  if (value < 36) return 'a' + value - 10;
+  if (value < 10)
+    return '0' + value;
+  if (value < 36)
+    return 'a' + value - 10;
   return 'A' + value - 36;
 };
 
-void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
+void entitymanager::set_resourcemanager(
+    std::shared_ptr<resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
