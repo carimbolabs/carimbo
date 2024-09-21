@@ -1,4 +1,5 @@
 #include "timermanager.hpp"
+#include <memory>
 
 using namespace framework;
 
@@ -14,13 +15,15 @@ timermanager::~timermanager() {
   }
 }
 
-void timermanager::set(int32_t interval, const std::function<void()> &fn) {
-  const auto id = SDL_AddTimer(interval, wrapper, &const_cast<std::function<void()> &>(fn));
+void timermanager::set(int32_t interval,
+                       std::unique_ptr<std::function<void()>> fn) {
+  const auto id = SDL_AddTimer(interval, wrapper, fn.get());
   if (id == 0) {
-    throw std::runtime_error(fmt::format("[SDL_AddTimer] failed to set timer. reason: {}", SDL_GetError()));
+    throw std::runtime_error(fmt::format(
+        "[SDL_AddTimer] failed to set timer. reason: {}", SDL_GetError()));
   }
 
-  _timers[id] = fn;
+  _timers[id] = std::move(fn);
 }
 
 void timermanager::clear(int32_t id) {
