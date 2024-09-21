@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "soundfx.hpp"
+#include <string>
 
 namespace audio {
 class soundmanager {
@@ -9,11 +10,11 @@ public:
   soundmanager(std::shared_ptr<audiodevice> audiodevice);
   ~soundmanager() = default;
 
-  void prefetch(const std::vector<std::string_view> &filenames);
+  void prefetch(const std::vector<std::string> &filenames);
 
-  const std::shared_ptr<soundfx> get(const std::string_view &filename);
+  const std::shared_ptr<soundfx> get(const std::string &filename);
 
-  void play(const std::string_view &filename);
+  void play(const std::string &filename);
 
   void flush();
 

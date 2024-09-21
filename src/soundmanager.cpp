@@ -11,18 +11,17 @@ void soundmanager::prefetch(const std::vector<std::string> &filenames) {
   }
 }
 
-const std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
-  auto it = _soundmap.find(filename);
+const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
+  auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
-  if (it == _soundmap.end()) {
+  if (added) {
     std::cout << "[soundmanager] cache miss: " << filename << std::endl;
     assert(_audiodevice);
-    const auto p = std::make_shared<soundfx>(_audiodevice, std::string(filename)); // Converte string_view para string
-    _soundmap.emplace(filename, p);
-    return p;
+    it->second = std::make_shared<soundfx>(_audiodevice, std::string(filename));
   }
 
   std::cout << "[soundmanager] cache hit: " << filename << std::endl;
+
   return it->second;
 }
 
