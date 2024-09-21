@@ -17,6 +17,8 @@ public:
 private:
   std::shared_ptr<renderer> _renderer;
 
-  std::unordered_map<std::string, std::shared_ptr<pixmap>, std::hash<std::string>> _pool;
+  std::unordered_map<std::string, std::shared_ptr<pixmap>,
+                     std::hash<std::string>>
+      _pool;
 };
-}
+} // namespace graphics
