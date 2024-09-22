@@ -2,4 +2,4 @@
 
 #include "common.hpp"
 
-inline uint32_t ticks();
+uint32_t ticks();
