@@ -12,6 +12,8 @@ void soundmanager::prefetch(const std::vector<std::string> &filenames) {
 }
 
 const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
+  std::lock_guard<std::mutex> lock(_mutex);
+
   auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
   if (added) {
@@ -28,6 +30,8 @@ const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
 void soundmanager::play(const std::string &filename) { get(filename)->play(); }
 
 void soundmanager::flush() {
+  std::lock_guard<std::mutex> lock(_mutex);
+
   for (auto it = _soundmap.begin(); it != _soundmap.end();) {
 
     const auto unique = it->second.use_count() == 1;

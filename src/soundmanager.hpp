@@ -19,7 +19,10 @@ public:
   void flush();
 
 private:
+  std::mutex _mutex;
+
   std::shared_ptr<audiodevice> _audiodevice;
+
   std::unordered_map<std::string_view, std::shared_ptr<soundfx>,
                      std::hash<std::string_view>>
       _soundmap;

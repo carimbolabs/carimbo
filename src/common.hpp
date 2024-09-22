@@ -51,7 +51,7 @@ namespace audio {
 class audiodevice;
 class soundfx;
 class soundmanager;
-}
+} // namespace audio
 
 namespace framework {
 class application;
@@ -65,29 +65,29 @@ class resourcemanager;
 class scriptengine;
 class statemanager;
 class timermanager;
-}
+} // namespace framework
 
 namespace storage {
 class filesystem;
 class io;
-}
+} // namespace storage
 
 namespace geometry {
 class point;
 class rect;
 class size;
-}
+} // namespace geometry
 
 namespace graphics {
 class pixmap;
 class pixmappool;
 class renderer;
 class window;
-}
+} // namespace graphics
 
 namespace input {
 class eventmanager;
 class eventreceiver;
-}
+} // namespace input
 
 #endif
