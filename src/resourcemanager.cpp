@@ -32,13 +32,16 @@ void resourcemanager::update() {
   const auto filename = _filenames.front();
   _filenames.pop_front();
 
-  const auto pos = filename.rfind('.');
-  if (pos != std::string::npos) {
-    const auto extension = filename.substr(pos);
+  const auto position = filename.rfind('.');
+  if (position != std::string::npos) {
+    const auto extension = filename.substr(position);
+
+    const static std::unordered_map<std::string, uint8_t> mapping = {
+        {".avif", resourcetype.avif}, {".jxl", 1}, {".png", 2}};
 
     const auto it = _handlers.find(extension);
     if (it != _handlers.end()) {
-      it->second(filename);
+      it->second(filename, mapping.find(extension)->second);
     }
   }
 }
