@@ -14,8 +14,6 @@ void pixmappool::preload(const std::vector<std::string> &filenames) {
 }
 
 const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
-  std::lock_guard<std::mutex> lock(_mutex);
-
   auto [it, added] = _pool.try_emplace(filename, nullptr);
 
   if (added) {
@@ -29,8 +27,6 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
 }
 
 void pixmappool::flush() {
-  std::lock_guard<std::mutex> lock(_mutex);
-
   for (auto it = _pool.begin(); it != _pool.end();) {
 
     const auto unique = it->second.use_count() == 1;

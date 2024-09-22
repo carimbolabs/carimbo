@@ -16,8 +16,6 @@ public:
   void flush();
 
 private:
-  std::mutex _mutex;
-
   std::shared_ptr<renderer> _renderer;
 
   std::unordered_map<std::string, std::shared_ptr<pixmap>,
