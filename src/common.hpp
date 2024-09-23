@@ -1,4 +1,5 @@
 #pragma once
+#include "resourcetype.h"
 #ifndef _common_hpp
 #define _common_hpp
 
@@ -65,6 +66,7 @@ class resourcemanager;
 class scriptengine;
 class statemanager;
 class timermanager;
+enum resourcetype;
 } // namespace framework
 
 namespace storage {
