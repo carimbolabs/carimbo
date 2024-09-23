@@ -66,7 +66,7 @@ class resourcemanager;
 class scriptengine;
 class statemanager;
 class timermanager;
-enum resourcetype;
+enum class resourcetype;
 } // namespace framework
 
 namespace storage {
