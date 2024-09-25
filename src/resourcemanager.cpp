@@ -37,7 +37,6 @@ void resourcemanager::update() {
     const auto position = filename.rfind('.');
     if (position != std::string::npos) {
       const auto extension = filename.substr(position);
-
       const auto it = _handlers.find(extension);
       if (it != _handlers.end()) {
         it->second(filename);
