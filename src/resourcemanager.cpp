@@ -34,11 +34,10 @@ void resourcemanager::update() {
       !_filenames.empty()) {
     _filenames.pop_front();
 
-    const auto position = filename.rfind('.');
-    if (position != std::string::npos) {
+    if (const auto position = filename.rfind('.');
+        position != std::string::npos) {
       const auto extension = filename.substr(position);
-      const auto it = _handlers.find(extension);
-      if (it != _handlers.end()) {
+      if (const auto it = _handlers.find(extension); it != _handlers.end()) {
         it->second(filename);
       }
     }
