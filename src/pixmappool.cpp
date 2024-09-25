@@ -7,13 +7,13 @@ using namespace graphics;
 pixmappool::pixmappool(const std::shared_ptr<renderer> renderer)
     : _renderer(renderer) {}
 
-void pixmappool::preload(const std::vector<std::string> &filenames) {
+void pixmappool::preload(const std::vector<std::string_view> &filenames) {
   for (const auto &filename : filenames) {
     get(filename);
   }
 }
 
-const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
+const std::shared_ptr<pixmap> pixmappool::get(const std::string_view filename) {
   auto [it, added] = _pool.try_emplace(filename, nullptr);
 
   if (added) {

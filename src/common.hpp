@@ -1,5 +1,4 @@
 #pragma once
-#include "resourcetype.h"
 #ifndef _common_hpp
 #define _common_hpp
 

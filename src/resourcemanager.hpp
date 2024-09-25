@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hpp"
+#include <string_view>
 
 namespace framework {
 class resourcemanager {
@@ -20,7 +21,7 @@ public:
   std::shared_ptr<audio::soundmanager> soundmanager();
 
 private:
-  std::unordered_map<std::string, std::function<void(const std::string &)>>
+  std::unordered_map<std::string, std::function<void(const std::string_view)>>
       _handlers;
 
   std::list<std::string> _filenames;

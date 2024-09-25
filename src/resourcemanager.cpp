@@ -2,6 +2,7 @@
 
 #include "pixmappool.hpp"
 #include "renderer.hpp"
+#include "resourcetype.hpp"
 #include "soundmanager.hpp"
 
 using namespace framework;
@@ -11,11 +12,11 @@ resourcemanager::resourcemanager(
     const std::shared_ptr<audio::audiodevice> audiodevice)
     : _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
       _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
-  _handlers[".avif"] = [this](const std::string &filename) {
+  _handlers[".avif"] = [this](const std::string_view filename) {
     _pixmappool->get(filename);
   };
 
-  _handlers[".ogg"] = [this](const std::string &filename) {
+  _handlers[".ogg"] = [this](const std::string_view filename) {
     _soundmanager->get(filename);
   };
 }
@@ -36,12 +37,9 @@ void resourcemanager::update() {
   if (position != std::string::npos) {
     const auto extension = filename.substr(position);
 
-    const static std::unordered_map<std::string, uint8_t> mapping = {
-        {".avif", resourcetype.avif}, {".jxl", 1}, {".png", 2}};
-
     const auto it = _handlers.find(extension);
     if (it != _handlers.end()) {
-      it->second(filename, mapping.find(extension)->second);
+      it->second(filename);
     }
   }
 }
