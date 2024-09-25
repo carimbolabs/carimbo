@@ -30,16 +30,18 @@ void resourcemanager::update() {
     return;
   }
 
-  const auto filename = _filenames.front();
-  _filenames.pop_front();
+  if (const auto filename = std::move(_filenames.front());
+      !_filenames.empty()) {
+    _filenames.pop_front();
 
-  const auto position = filename.rfind('.');
-  if (position != std::string::npos) {
-    const auto extension = filename.substr(position);
+    const auto position = filename.rfind('.');
+    if (position != std::string::npos) {
+      const auto extension = filename.substr(position);
 
-    const auto it = _handlers.find(extension);
-    if (it != _handlers.end()) {
-      it->second(filename);
+      const auto it = _handlers.find(extension);
+      if (it != _handlers.end()) {
+        it->second(filename);
+      }
     }
   }
 }
