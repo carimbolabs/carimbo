@@ -14,6 +14,7 @@ extern "C" {
 #include <curl/curl.h>
 #include <ogg/ogg.h>
 #include <physfs.h>
+#include <spng.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 }
@@ -65,7 +66,6 @@ class resourcemanager;
 class scriptengine;
 class statemanager;
 class timermanager;
-enum class resourcetype;
 } // namespace framework
 
 namespace storage {

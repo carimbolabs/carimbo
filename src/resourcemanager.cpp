@@ -2,7 +2,6 @@
 
 #include "pixmappool.hpp"
 #include "renderer.hpp"
-#include "resourcetype.hpp"
 #include "soundmanager.hpp"
 
 using namespace framework;
@@ -12,7 +11,7 @@ resourcemanager::resourcemanager(
     const std::shared_ptr<audio::audiodevice> audiodevice)
     : _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
       _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
-  _handlers[".avif"] = [this](const std::string_view filename) {
+  _handlers[".png"] = [this](const std::string_view filename) {
     _pixmappool->get(filename);
   };
 

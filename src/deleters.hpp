@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 
-struct SDL_Deleter {
+struct Deleter {
   inline void operator()(SDL_Surface *ptr) {
     if (ptr) {
       SDL_FreeSurface(ptr);
@@ -37,5 +37,11 @@ struct SDL_Deleter {
     if (ptr) {
       SDL_GameControllerClose(ptr);
     }
-  };
+  }
+
+  inline void operator()(spng_ctx *ptr) {
+    if (ptr) {
+      spng_ctx_free(ptr);
+    }
+  }
 };

@@ -1,10 +1,11 @@
 [requires]
-fmt/10.1.1
+fmt/11.0.2
 libavif/1.0.1
-libcurl/8.4.0
+libcurl/8.10.1
+libspng/0.7.4
 ogg/1.3.5
-physfs/3.0.2
-sdl/2.28.5
+physfs/3.2.0
+sdl/2.30.7
 sol2/3.3.1
 vorbis/1.3.7
 
