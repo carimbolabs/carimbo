@@ -13,7 +13,7 @@ jobs:
       contents: write
 
     strategy:
-      fail-fast: false
+      fail-fast: true
 
       matrix:
         config:
