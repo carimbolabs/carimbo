@@ -51,10 +51,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      # - name: Install Build Dependencies
-      #   if: matrix.config.name == 'Ubuntu'
-      #   run: sudo apt-get --yes install build-essential cmake
-
       - name: Install Conan
         run: pip install conan
 
