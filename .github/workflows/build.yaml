@@ -88,6 +88,11 @@ jobs:
         if: matrix.config.name == 'WebAssembly'
         run: conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=17 --settings build_type=Release
 
+      - name: Debug
+        run: |
+          ls -lah
+          ls -lah build
+
       - name: Configure
         run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
         working-directory: build
