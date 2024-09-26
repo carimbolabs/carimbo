@@ -79,14 +79,14 @@ jobs:
         if: matrix.config.name == 'Windows' || matrix.config.name == 'macOS'
         run: conan install . --output-folder=build --build=missing --settings compiler.cppstd=17 --settings build_type=Release
 
-      - name: Install WebAssembly Dependencies
-        if: matrix.config.name == 'WebAssembly'
-        run: conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=17 --settings build_type=Release
-
       - name: Install Ubuntu Dependencies
         if: matrix.config.name == 'Ubuntu'
         run: conan install .. --output-folder=build --build=missing --settings compiler.cppstd=17 --settings build_type=Release --conf "tools.system.package_manager:mode=install" --conf "tools.system.package_manager:sudo=True"
         working-directory: build
+
+      - name: Install WebAssembly Dependencies
+        if: matrix.config.name == 'WebAssembly'
+        run: conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=17 --settings build_type=Release
 
       - name: Configure
         run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
