@@ -64,15 +64,6 @@ void eventmanager::update() {
       const auto id = SDL_JoystickInstanceID(joystick);
 
       _controllers[id] = gamecontroller_ptr(controller);
-
-      std::cout << "Controller added: " << id << std::endl;
-
-      // const auto controller = SDL_GameControllerOpen(event.cdevice.which);
-      // if (controller == nullptr) {
-      //   throw std::runtime_error(fmt::format(
-      //       "[SDL_GameControllerOpen] could not open game controller: {}",
-      //       SDL_GetError()));
-      // }
     } break;
 
     case SDL_CONTROLLERDEVICEREMOVED: {
