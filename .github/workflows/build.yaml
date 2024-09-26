@@ -77,15 +77,8 @@ jobs:
 
       - name: Install Dependencies
         if: matrix.config.name != 'WebAssembly'
-        run: |
-          conan install .. \
-            --output-folder="build" \
-            --build=missing \
-            --settings compiler.cppstd=17 \
-            --settings build_type=Release \
-            --conf "tools.system.package_manager:mode=install" \
-            --conf "tools.system.package_manager:sudo=True"
-        working-directory: build
+        run: conan install . --output-folder=build --build=missing --settings compiler.cppstd=17 --settings build_type=Release
+        #working-directory: build
 
       - name: Install WebAssembly Dependencies
         if: matrix.config.name == 'WebAssembly'
