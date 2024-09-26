@@ -63,6 +63,6 @@ jobs:
           database: build
           extra-args: -std=c++17 -Wall -Wextra
 
-      # - name: Fail Fast
-      #   if: steps.linter.outputs.checks-failed > 0
-      #   run: exit 1
+      - name: Fail Fast
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
