@@ -75,8 +75,8 @@ void eventmanager::update() {
     } break;
 
     case SDL_CONTROLLERBUTTONDOWN: {
-      const auto it = mapping.find(event.cbutton.button);
-      if (it != mapping.end()) {
+      if (const auto it = mapping.find(event.cbutton.button);
+          it != mapping.end()) {
         std::for_each(_receivers.begin(), _receivers.end(),
                       [&it](std::shared_ptr<eventreceiver> receiver) {
                         receiver->on_keydown(keyevent(it->second));
@@ -85,8 +85,8 @@ void eventmanager::update() {
     } break;
 
     case SDL_CONTROLLERBUTTONUP: {
-      const auto it = mapping.find(event.cbutton.button);
-      if (it != mapping.end()) {
+      if (const auto it = mapping.find(event.cbutton.button);
+          it != mapping.end()) {
         std::for_each(_receivers.begin(), _receivers.end(),
                       [&it](std::shared_ptr<eventreceiver> receiver) {
                         receiver->on_keyup(keyevent(it->second));
