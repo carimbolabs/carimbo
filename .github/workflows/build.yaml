@@ -79,7 +79,7 @@ jobs:
         if: matrix.config.name != 'WebAssembly'
         run: |
           conan install .. \
-            --output-folder=build \
+            --output-folder="build" \
             --build=missing \
             --settings compiler.cppstd=17 \
             --settings build_type=Release \
