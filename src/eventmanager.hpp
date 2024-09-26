@@ -4,10 +4,12 @@
 
 #include "noncopyable.hpp"
 
+typedef std::unique_ptr<SDL_GameController, SDL_Deleter> gamecontroller_ptr;
+
 namespace input {
 class eventmanager : private noncopyable {
 public:
-  eventmanager() = default;
+  eventmanager();
   virtual ~eventmanager() = default;
 
   void update();
@@ -18,5 +20,7 @@ public:
 
 private:
   std::list<std::shared_ptr<eventreceiver>> _receivers;
+
+  std::unordered_map<SDL_JoystickID, gamecontroller_ptr> _controllers;
 };
-}
+} // namespace input

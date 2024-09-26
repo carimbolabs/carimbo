@@ -21,7 +21,7 @@ soundmanager::get(const std::string_view filename) {
     it->second = std::make_shared<soundfx>(_audiodevice, std::string(filename));
   }
 
-  std::cout << "[soundmanager] cache hit: " << filename << std::endl;
+  // std::cout << "[soundmanager] cache hit: " << filename << std::endl;
 
   return it->second;
 }

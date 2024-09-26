@@ -21,7 +21,7 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string_view filename) {
     it->second = std::make_shared<pixmap>(_renderer, filename);
   }
 
-  std::cout << "[pixmappool] cache hit: " << filename << std::endl;
+  // std::cout << "[pixmappool] cache hit: " << filename << std::endl;
 
   return it->second;
 }

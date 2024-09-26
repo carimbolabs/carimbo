@@ -13,5 +13,10 @@ enum class keyevent : int32_t {
 
 enum class mouseevent : int32_t {};
 
-enum class joysticevent {};
-}
+enum class joysticevent : int32_t {
+  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
+  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+};
+} // namespace input
