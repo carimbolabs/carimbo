@@ -5,8 +5,7 @@
 namespace graphics {
 class window {
 public:
-  window(std::string_view title, int32_t width, int32_t height,
-         bool fullscreen);
+  window(std::string_view title, int32_t width, int32_t height, bool fullscreen);
   ~window() = default;
 
   operator SDL_Window *();
@@ -23,4 +22,4 @@ private:
 
   std::unique_ptr<SDL_Window, SDL_Deleter> _window;
 };
-} // namespace graphics
+}
