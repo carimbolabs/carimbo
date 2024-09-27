@@ -91,8 +91,7 @@ void pixmap::draw(const geometry::point &point, const double_t angle, flip flip,
       static_cast<int>(_size.height())};
 
   SDL_SetTextureAlphaMod(_texture.get(), alpha);
-  SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr,
-                   static_cast<SDL_RendererFlip>(flip));
+  SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip));
 }
 
 const geometry::size pixmap::size() const { return _size; }
