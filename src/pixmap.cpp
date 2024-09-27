@@ -66,8 +66,8 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer,
 
   std::memcpy(surface->pixels, output.data(), length);
   ctx.reset();
-  _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
 
+  _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
   if (!_texture) {
     throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture from surface: {}", filename));
   }
