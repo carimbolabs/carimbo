@@ -11,10 +11,12 @@ eventmanager::eventmanager() {
     if (!SDL_IsGameController(id)) {
       continue;
     }
+
     const auto controller = SDL_GameControllerOpen(id);
     if (!controller) {
       continue;
     }
+
     _controllers[id] = gamecontroller_ptr(controller);
   }
 }
@@ -30,24 +32,30 @@ void eventmanager::update() {
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
     case SDL_QUIT:
-      std::for_each(_receivers.begin(), _receivers.end(),
-                    [](const std::shared_ptr<eventreceiver> receiver) {
-                      receiver->on_quit();
-                    });
+      std::for_each(
+          _receivers.begin(),
+          _receivers.end(),
+          [](const std::shared_ptr<eventreceiver> receiver) {
+            receiver->on_quit();
+          });
       break;
 
     case SDL_KEYDOWN:
-      std::for_each(_receivers.begin(), _receivers.end(),
-                    [&event](const std::shared_ptr<eventreceiver> receiver) {
-                      receiver->on_keydown(keyevent(event.key.keysym.sym));
-                    });
+      std::for_each(
+          _receivers.begin(),
+          _receivers.end(),
+          [&event](const std::shared_ptr<eventreceiver> receiver) {
+            receiver->on_keydown(keyevent(event.key.keysym.sym));
+          });
       break;
 
     case SDL_KEYUP:
-      std::for_each(_receivers.begin(), _receivers.end(),
-                    [&event](const std::shared_ptr<eventreceiver> receiver) {
-                      receiver->on_keyup(keyevent(event.key.keysym.sym));
-                    });
+      std::for_each(
+          _receivers.begin(),
+          _receivers.end(),
+          [&event](const std::shared_ptr<eventreceiver> receiver) {
+            receiver->on_keyup(keyevent(event.key.keysym.sym));
+          });
       break;
 
     case SDL_CONTROLLERDEVICEADDED: {
@@ -75,22 +83,24 @@ void eventmanager::update() {
     } break;
 
     case SDL_CONTROLLERBUTTONDOWN: {
-      if (const auto it = mapping.find(event.cbutton.button);
-          it != mapping.end()) {
-        std::for_each(_receivers.begin(), _receivers.end(),
-                      [&it](std::shared_ptr<eventreceiver> receiver) {
-                        receiver->on_keydown(keyevent(it->second));
-                      });
+      if (const auto it = mapping.find(event.cbutton.button); it != mapping.end()) {
+        std::for_each(
+            _receivers.begin(),
+            _receivers.end(),
+            [&it](std::shared_ptr<eventreceiver> receiver) {
+              receiver->on_keydown(keyevent(it->second));
+            });
       }
     } break;
 
     case SDL_CONTROLLERBUTTONUP: {
-      if (const auto it = mapping.find(event.cbutton.button);
-          it != mapping.end()) {
-        std::for_each(_receivers.begin(), _receivers.end(),
-                      [&it](std::shared_ptr<eventreceiver> receiver) {
-                        receiver->on_keyup(keyevent(it->second));
-                      });
+      if (const auto it = mapping.find(event.cbutton.button); it != mapping.end()) {
+        std::for_each(
+            _receivers.begin(),
+            _receivers.end(),
+            [&it](std::shared_ptr<eventreceiver> receiver) {
+              receiver->on_keyup(keyevent(it->second));
+            });
       }
     } break;
     }

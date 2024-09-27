@@ -74,4 +74,4 @@ private:
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;
 };
-} // namespace framework
+}

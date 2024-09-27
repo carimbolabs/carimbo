@@ -13,4 +13,4 @@ public:
 private:
   uint32_t _id;
 };
-} // namespace audio
+}

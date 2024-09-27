@@ -10,4 +10,4 @@ public:
 
   void run();
 };
-} // namespace framework
+}

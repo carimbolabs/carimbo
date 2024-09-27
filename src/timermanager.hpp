@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include <memory>
 
 namespace framework {
 class timermanager {
@@ -16,4 +15,4 @@ public:
 private:
   std::map<int32_t, std::unique_ptr<std::function<void()>>> _timers;
 };
-} // namespace framework
+}

@@ -61,12 +61,14 @@ static int ovPHYSFS_close(void *source) {
 }
 
 static long ovPHYSFS_tell(void *source) {
-  return static_cast<long>(
-      PHYSFS_tell(reinterpret_cast<PHYSFS_file *>(source)));
+  return static_cast<long>(PHYSFS_tell(reinterpret_cast<PHYSFS_file *>(source)));
 }
 
-static ov_callbacks PHYSFS_callbacks = {ovPHYSFS_read, ovPHYSFS_seek,
-                                        ovPHYSFS_close, ovPHYSFS_tell};
+static ov_callbacks PHYSFS_callbacks = {
+    ovPHYSFS_read,
+    ovPHYSFS_seek,
+    ovPHYSFS_close,
+    ovPHYSFS_tell};
 
 const char *ov_strerror(int ret) {
   switch (ret) {
@@ -105,21 +107,21 @@ const char *ov_strerror(int ret) {
 soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
                  std::string_view filename)
     : _audiodevice(audiodevice) {
-  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr,
-                                                           PHYSFS_close};
+  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr, PHYSFS_close};
 
   fp.reset(PHYSFS_openRead(filename.data()));
   if (!fp) {
-    throw std::runtime_error(fmt::format(
-        "[PHYSFS_openRead] error while opening file: {}, error: {}", filename,
-        PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+    throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
   std::unique_ptr<OggVorbis_File, decltype(&ov_clear)> vf{new OggVorbis_File,
                                                           ov_clear};
   if (ov_open_callbacks(
           const_cast<void *>(reinterpret_cast<const void *>(fp.get())),
-          vf.get(), nullptr, 0, PHYSFS_callbacks) < 0) {
+          vf.get(),
+          nullptr,
+          0,
+          PHYSFS_callbacks) < 0) {
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
@@ -134,17 +136,13 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
 #endif
 
   do {
-    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length,
-                     bigendian, 2, 1, nullptr);
+    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
 
     if (offset < 0) {
-      throw std::runtime_error(
-          fmt::format("[ov_read] error while reading file: {}, error: {}",
-                      filename, ov_strerror(offset)));
+      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
     }
 
-    std::copy(array.begin(), array.begin() + offset,
-              std::back_inserter(buffer));
+    std::copy(array.begin(), array.begin() + offset, std::back_inserter(buffer));
   } while (offset > 0);
 
   UNUSED(callback);

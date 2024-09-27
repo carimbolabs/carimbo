@@ -9,8 +9,12 @@
 using namespace framework;
 
 entity::entity(const std::string &id)
-    : _id(id), _point(0, 0), _angle(0.0), _flip(graphics::flip::none),
-      _alpha(255), _fn(nullptr) {}
+    : _id(id),
+      _point(0, 0),
+      _angle(0.0),
+      _flip(graphics::flip::none),
+      _alpha(255),
+      _fn(nullptr) {}
 
 entity::~entity() {
   std::cout << "entity::~entity(), id: " << _id << std::endl;

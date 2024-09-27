@@ -1,7 +1,6 @@
 #include "statemanager.hpp"
 
 #include "event.hpp"
-#include "eventreceiver.hpp"
 
 using namespace framework;
 

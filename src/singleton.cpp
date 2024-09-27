@@ -1,5 +1,7 @@
 #include "singleton.hpp"
 
+using namespace framework;
+
 template <typename T>
 std::shared_ptr<T> singleton<T>::instance() {
   static std::once_flag flag;

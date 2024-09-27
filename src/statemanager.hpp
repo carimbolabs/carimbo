@@ -18,4 +18,4 @@ protected:
 private:
   std::map<input::keyevent, bool> _keys;
 };
-} // namespace framework
+}

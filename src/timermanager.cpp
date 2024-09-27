@@ -15,8 +15,7 @@ timermanager::~timermanager() {
   }
 }
 
-void timermanager::set(int32_t interval,
-                       std::unique_ptr<std::function<void()>> fn) {
+void timermanager::set(int32_t interval, std::unique_ptr<std::function<void()>> fn) {
   const auto id = SDL_AddTimer(interval, wrapper, fn.get());
   if (id == 0) {
     throw std::runtime_error(fmt::format(

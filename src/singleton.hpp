@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 
+namespace framework {
 template <typename T>
 class singleton {
 public:
@@ -9,3 +10,4 @@ public:
 
   static std::shared_ptr<T> instance();
 };
+}

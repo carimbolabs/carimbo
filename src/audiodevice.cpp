@@ -11,9 +11,8 @@ audiodevice::audiodevice() {
   _id = SDL_OpenAudioDevice(nullptr, 0, &spec, nullptr, 0);
 
   if (_id == 0) {
-    throw std::runtime_error(fmt::format(
-        "[SDL_OpenAudioDevice] error while opening audio device: {}",
-        SDL_GetError()));
+    throw std::runtime_error(
+        fmt::format("[SDL_OpenAudioDevice] error while opening audio device: {}", SDL_GetError()));
   }
 }
 

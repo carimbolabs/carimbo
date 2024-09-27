@@ -7,7 +7,7 @@
 typedef std::unique_ptr<SDL_GameController, SDL_Deleter> gamecontroller_ptr;
 
 namespace input {
-class eventmanager : private noncopyable {
+class eventmanager : private framework::noncopyable {
 public:
   eventmanager();
   virtual ~eventmanager() = default;
@@ -23,4 +23,4 @@ private:
 
   std::unordered_map<SDL_JoystickID, gamecontroller_ptr> _controllers;
 };
-} // namespace input
+}

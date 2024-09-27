@@ -68,7 +68,6 @@ private:
 
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
-
   std::function<void(std::shared_ptr<entity>)> _fn;
 };
-} // namespace framework
+}

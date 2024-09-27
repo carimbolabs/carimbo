@@ -24,4 +24,4 @@ private:
                      std::hash<std::string_view>>
       _soundmap;
 };
-} // namespace audio
+}

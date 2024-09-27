@@ -19,4 +19,4 @@ enum class joysticevent : int32_t {
   dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
   dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
 };
-} // namespace input
+}

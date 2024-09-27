@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include <mutex>
 
 namespace graphics {
 class pixmappool {
@@ -22,4 +21,4 @@ private:
                      std::hash<std::string_view>>
       _pool;
 };
-} // namespace graphics
+}

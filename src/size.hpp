@@ -23,4 +23,4 @@ private:
   uint32_t _width;
   uint32_t _height;
 };
-} // namespace geometry
+}
