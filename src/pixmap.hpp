@@ -5,7 +5,7 @@
 #include "point.hpp"
 #include "size.hpp"
 
-typedef std::unique_ptr<SDL_Texture, Deleter> texture_ptr;
+typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
 
 namespace graphics {
 enum class flip : int32_t {

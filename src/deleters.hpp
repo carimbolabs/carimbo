@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 
-struct Deleter {
+struct SDL_Deleter {
   inline void operator()(SDL_Surface *ptr) {
     if (ptr) {
       SDL_FreeSurface(ptr);

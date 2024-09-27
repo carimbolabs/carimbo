@@ -4,6 +4,8 @@
 #include "io.hpp"
 #include "renderer.hpp"
 #include <cstdint>
+#include <spng.h>
+#include <vector>
 
 using namespace graphics;
 
@@ -23,93 +25,52 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer,
 
   const auto buffer = storage::io::read(filename);
 
-  std::unique_ptr<spng_ctx, decltype(&spng_ctx_free)> decoder{spng_ctx_new(0),
-                                                              &spng_ctx_free};
+  auto ctx = std::unique_ptr<spng_ctx, std::function<void(spng_ctx*)>>(
+      spng_ctx_new(0),
+      [](spng_ctx* ptr) {
+          if (ptr) {
+              spng_ctx_free(ptr);
+          }
+      }
+  );
 
-  if (auto error =
-          spng_set_png_buffer(decoder.get(), buffer.data(), buffer.size());
-      error != SPNG_OK) {
-    throw std::runtime_error(fmt::format(
-        "[spng_set_png_buffer] error while parsing PNG: {}, error: {}",
-        filename, spng_strerror(error)));
+  if (const auto error = spng_set_png_buffer(ctx.get(), buffer.data(), buffer.size()); error != SPNG_OK) {
+    throw std::runtime_error(fmt::format("[spng_set_png_buffer] error while parsing image: {}, error: {}", filename, spng_strerror(error)));
   }
 
-  //   auto result = avifResult{};
+  spng_ihdr ihdr{};
+  if (const auto error = spng_get_ihdr(ctx.get(), &ihdr); error != SPNG_OK) {
+    throw std::runtime_error(fmt::format("[spng_get_ihdr] error while getting image information: {}, error: {}", filename, spng_strerror(error)));
+  }
 
-  //   std::unique_ptr<avifDecoder, decltype(&avifDecoderDestroy)> decoder{
-  //       avifDecoderCreate(), &avifDecoderDestroy};
+  const int format = SPNG_FMT_RGBA8;
+  size_t length = 0;
+  if (const auto error = spng_decoded_image_size(ctx.get(), format, &length); error != SPNG_OK) {
+    throw std::runtime_error(fmt::format("[spng_decoded_image_size] error while getting image size: {}, error: {}", filename, spng_strerror(error)));
+  }
 
-  //   result = avifDecoderSetIOMemory(decoder.get(),
-  //                                   reinterpret_cast<const uint8_t
-  //                                   *>(&buffer[0]), buffer.size());
-  //   if (result != AVIF_RESULT_OK) {
-  //     throw std::runtime_error(fmt::format("[avifDecoderSetIOMemory] error
-  //     while "
-  //                                          "setting IO on AVIF: {}, error:
-  //                                          {}", filename,
-  //                                          avifResultToString(result)));
-  //   }
+  std::vector<uint8_t> output(length);
+  if (const auto error = spng_decode_image(ctx.get(), output.data(), length, format, SPNG_DECODE_TRNS); error != SPNG_OK) {
+    throw std::runtime_error(fmt::format("[spng_decode_image] error while decoding image: {}, error: {}", filename, spng_strerror(error)));
+  }
 
-  //   result = avifDecoderParse(decoder.get());
-  //   if (result != AVIF_RESULT_OK) {
-  //     throw std::runtime_error(fmt::format(
-  //         "[avifDecoderParse] error while parsing AVIF: {}, error: {}",
-  //         filename, avifResultToString(result)));
-  //   }
+  _size = geometry::size{ihdr.width, ihdr.height};
 
-  //   result = avifDecoderNextImage(decoder.get());
-  //   if (result != AVIF_RESULT_OK) {
-  //     throw std::runtime_error(fmt::format(
-  //         "[avifDecoderNextImage] error while decoding AVIF: {}, error: {}",
-  //         filename, avifResultToString(result)));
-  //   }
+  std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{
+    SDL_CreateRGBSurfaceWithFormat(0, _size.width(), _size.height(), 0, SDL_PIXELFORMAT_ABGR8888),
+    SDL_FreeSurface
+  };
+  if (!surface) {
+    throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}, error {}", filename, SDL_GetError()));
+  }
 
-  //   _size = geometry::size{decoder->image->width, decoder->image->height};
+  std::memcpy(surface->pixels, output.data(), length);
+  ctx.reset();
+  _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
 
-  //   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{
-  //       SDL_CreateRGBSurfaceWithFormat(0, decoder->image->width,
-  //                                      decoder->image->height, 0,
-  //                                      SDL_PIXELFORMAT_ARGB8888),
-  //       SDL_FreeSurface};
-
-  //   if (!surface) {
-  //     throw std::runtime_error(
-  //         fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating
-  //         "
-  //                     "surface with format: {}, error {}",
-  //                     filename, SDL_GetError()));
-  //   }
-
-  //   avifRGBImage rgb{};
-  //   rgb.width = surface->w;
-  //   rgb.height = surface->h;
-  //   rgb.depth = 8;
-  // #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-  //   rgb.format = AVIF_RGB_FORMAT_BGRA;
-  // #else
-  //   rgb.format = AVIF_RGB_FORMAT_ARGB;
-  // #endif
-  //   rgb.pixels = (uint8_t *)surface->pixels;
-  //   rgb.rowBytes = (uint32_t)surface->pitch;
-
-  //   if (avifImageYUVToRGB(decoder->image, &rgb) != AVIF_RESULT_OK) {
-  //     throw std::runtime_error(
-  //         fmt::format("[avifImageYUVToRGB] error while converting YUV to RGB
-  //         on "
-  //                     "avifImage: {}",
-  //                     filename));
-  //   }
-
-  //   _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer,
-  //   surface.get()),
-  //                          SDL_Deleter());
-
-  //   if (!_texture) {
-  //     throw std::runtime_error(
-  //         fmt::format("[SDL_CreateTextureFromSurface] error while creating "
-  //                     "texture from surface: {}",
-  //                     filename));
-  //   }
+  if (!_texture) {
+    throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture from surface: {}", filename));
+  }
 }
 
 void pixmap::draw(const geometry::point &point, const double_t angle, flip flip,

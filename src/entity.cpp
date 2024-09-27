@@ -9,7 +9,7 @@
 using namespace framework;
 
 entity::entity(const std::string &id)
-    : _id(id), _point(0, 0), _angle(0.0), _alpha(255), _fn(nullptr) {
+    : _id(id), _point(0, 0), _angle(0.0), _flip(graphics::flip::none), _alpha(255), _fn(nullptr) {
 }
 
 entity::~entity() {
@@ -32,7 +32,7 @@ void entity::update() {
 
 void entity::draw() const {
   if (_pixmap) {
-    _pixmap->draw(_point, _angle, _alpha);
+    _pixmap->draw(_point, _angle, _flip, _alpha);
   }
 }
 
@@ -78,6 +78,14 @@ void entity::set_angle(const double_t angle) {
 
 double_t entity::angle() const {
   return _angle;
+}
+
+void entity::set_flip(graphics::flip flip) {
+  _flip = flip;
+}
+
+graphics::flip entity::get_flip() {
+  return _flip;
 }
 
 void entity::set_alpha(const uint8_t alpha) {

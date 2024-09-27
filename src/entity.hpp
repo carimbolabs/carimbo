@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 
+#include "pixmap.hpp"
 #include "point.hpp"
 
 namespace framework {
@@ -37,6 +38,10 @@ public:
 
   double_t angle() const;
 
+  void set_flip(graphics::flip flip);
+
+  graphics::flip get_flip();
+
   void set_alpha(const uint8_t alpha);
 
   uint8_t alpha() const;
@@ -58,6 +63,7 @@ private:
   std::shared_ptr<graphics::pixmap> _pixmap;
   geometry::point _point;
   double_t _angle;
+  graphics::flip _flip;
   uint8_t _alpha;
 
   std::shared_ptr<entitymanager> _entitymanager;
