@@ -83,8 +83,7 @@ void entity::set_resourcemanager(
   _resourcemanager = resourcemanager;
 }
 
-void entity::set_onupdate(
-    const std::function<void(std::shared_ptr<entity>)> &fn) {
+void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) {
   _fn = fn;
 }
 

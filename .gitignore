@@ -18,5 +18,9 @@ __pycache__/
 tmp/
 .DS_Store
 
+# Python's Virtualenv
+.venv
+
 # Cache
 .cache
+.cpp-linter_cache
