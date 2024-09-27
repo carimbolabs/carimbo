@@ -33,4 +33,4 @@ private:
   geometry::size _size;
   texture_ptr _texture;
 };
-} // namespace graphics
+}
