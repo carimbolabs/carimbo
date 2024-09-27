@@ -11,4 +11,4 @@ private:
   constexpr filesystem() noexcept = default;
   ~filesystem() noexcept = default;
 };
-}
+} // namespace storage

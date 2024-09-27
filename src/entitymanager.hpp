@@ -24,4 +24,4 @@ private:
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
 };
-}
+} // namespace framework

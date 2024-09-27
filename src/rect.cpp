@@ -5,20 +5,13 @@
 
 using namespace geometry;
 
-rect::rect(const ::point &position, const ::size &size) : _position(position), _size(size) {}
+rect::rect(const ::point &position, const ::size &size)
+    : _position(position), _size(size) {}
 
-void rect::set_position(const ::point &position) {
-  _position = position;
-}
+void rect::set_position(const ::point &position) { _position = position; }
 
-const ::point rect::position() const {
-  return _position;
-}
+const ::point rect::position() const { return _position; }
 
-void rect::set_size(const geometry::size &size) {
-  _size = size;
-}
+void rect::set_size(const geometry::size &size) { _size = size; }
 
-const geometry::size rect::size() const {
-  return _size;
-}
+const geometry::size rect::size() const { return _size; }

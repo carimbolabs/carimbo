@@ -71,4 +71,4 @@ private:
 
   std::function<void(std::shared_ptr<entity>)> _fn;
 };
-}
+} // namespace framework

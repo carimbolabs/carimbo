@@ -4,9 +4,7 @@
 
 using namespace framework;
 
-uint64_t framerate::per_second() const {
-  return _frames;
-}
+uint64_t framerate::per_second() const { return _frames; }
 
 void framerate::loop(uint32_t delta) {
   UNUSED(delta);
@@ -18,7 +16,8 @@ void framerate::loop(uint32_t delta) {
   _start = now;
 
   if (_elapsed >= 1000) {
-    std::cout << fmt::format("{:.{}f}", _frames / (_elapsed / 1000.f), 1) << std::endl;
+    std::cout << fmt::format("{:.{}f}", _frames / (_elapsed / 1000.f), 1)
+              << std::endl;
     _elapsed = 0;
     _frames = 0;
   }

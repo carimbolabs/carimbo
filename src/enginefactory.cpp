@@ -30,7 +30,8 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  const auto w = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
+  const auto w =
+      std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
   const auto r = w->create_renderer();
   const auto ad = std::make_shared<audio::audiodevice>();
   const auto em1 = std::make_shared<input::eventmanager>();

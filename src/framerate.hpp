@@ -19,4 +19,4 @@ private:
   uint32_t _elapsed;
   uint32_t _start;
 };
-}
+} // namespace framework

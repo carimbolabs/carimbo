@@ -25,4 +25,4 @@ private:
   int32_t _height;
   bool _fullscreen;
 };
-}
+} // namespace framework

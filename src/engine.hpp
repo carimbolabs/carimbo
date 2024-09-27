@@ -23,7 +23,8 @@ public:
 
   const std::shared_ptr<audio::audiodevice> audiodevice();
 
-  void set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
+  void
+  set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
 
   const std::shared_ptr<framework::entitymanager> entitymanager() const;
 
@@ -31,7 +32,8 @@ public:
 
   const std::shared_ptr<input::eventmanager> eventmanager() const;
 
-  void set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager);
+  void set_resourcemanager(
+      std::shared_ptr<framework::resourcemanager> resourcemanager);
 
   const std::shared_ptr<framework::resourcemanager> resourcemanager() const;
 
@@ -72,4 +74,4 @@ private:
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;
 };
-}
+} // namespace framework

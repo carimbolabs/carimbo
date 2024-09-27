@@ -15,4 +15,4 @@ public:
 
   virtual void on_keyup(const keyevent &event);
 };
-}
+} // namespace input

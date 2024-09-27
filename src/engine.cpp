@@ -16,8 +16,7 @@
 
 using namespace framework;
 
-engine::engine()
-    : _running(true) {
+engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
 
@@ -45,7 +44,8 @@ const std::shared_ptr<audio::audiodevice> engine::audiodevice() {
   return _audiodevice;
 }
 
-void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager) {
+void engine::set_eventmanager(
+    std::shared_ptr<input::eventmanager> eventmanager) {
   _eventmanager = eventmanager;
 }
 
@@ -53,7 +53,8 @@ const std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
 }
 
-void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
+void engine::set_entitymanager(
+    std::shared_ptr<framework::entitymanager> entitymanager) {
   _entitymanager = entitymanager;
 }
 
@@ -61,15 +62,18 @@ const std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
   return _entitymanager;
 }
 
-void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) {
+void engine::set_resourcemanager(
+    std::shared_ptr<framework::resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
-const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
+const std::shared_ptr<framework::resourcemanager>
+engine::resourcemanager() const {
   return _resourcemanager;
 }
 
-void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
+void engine::set_statemanager(
+    std::shared_ptr<framework::statemanager> statemanager) {
   _statemanager = statemanager;
 }
 
@@ -134,14 +138,8 @@ void engine::_loop() {
                 std::bind(&loopable::loop, std::placeholders::_1, delta));
 }
 
-int32_t engine::width() const {
-  return _window->width();
-}
+int32_t engine::width() const { return _window->width(); }
 
-int32_t engine::height() const {
-  return _window->height();
-}
+int32_t engine::height() const { return _window->height(); }
 
-void engine::on_quit() {
-  _running = false;
-}
+void engine::on_quit() { _running = false; }

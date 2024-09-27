@@ -18,10 +18,13 @@ static void callback(void *userdata, uint8_t *stream, int length) {
   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
 }
 
-static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb, void *source) {
+static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb,
+                            void *source) {
   auto file = reinterpret_cast<PHYSFS_file *>(source);
 
-  PHYSFS_sint64 result = PHYSFS_readBytes(file, ptr, static_cast<PHYSFS_uint32>(size) * static_cast<PHYSFS_uint32>(nmemb));
+  PHYSFS_sint64 result = PHYSFS_readBytes(
+      file, ptr,
+      static_cast<PHYSFS_uint32>(size) * static_cast<PHYSFS_uint32>(nmemb));
   if (result <= 0)
     return 0;
 
@@ -58,10 +61,12 @@ static int ovPHYSFS_close(void *source) {
 }
 
 static long ovPHYSFS_tell(void *source) {
-  return static_cast<long>(PHYSFS_tell(reinterpret_cast<PHYSFS_file *>(source)));
+  return static_cast<long>(
+      PHYSFS_tell(reinterpret_cast<PHYSFS_file *>(source)));
 }
 
-static ov_callbacks PHYSFS_callbacks = {ovPHYSFS_read, ovPHYSFS_seek, ovPHYSFS_close, ovPHYSFS_tell};
+static ov_callbacks PHYSFS_callbacks = {ovPHYSFS_read, ovPHYSFS_seek,
+                                        ovPHYSFS_close, ovPHYSFS_tell};
 
 const char *ov_strerror(int ret) {
   switch (ret) {
@@ -74,7 +79,8 @@ const char *ov_strerror(int ret) {
   case OV_EREAD:
     return "Read error while fetching compressed data for decode";
   case OV_EFAULT:
-    return "Internal inconsistency in encode or decode state. Continuing is likely not possible.";
+    return "Internal inconsistency in encode or decode state. Continuing is "
+           "likely not possible.";
   case OV_EIMPL:
     return "Feature not implemented";
   case OV_EINVAL:
@@ -82,11 +88,13 @@ const char *ov_strerror(int ret) {
   case OV_ENOTVORBIS:
     return "The given file was not recognized as Ogg Vorbis data.";
   case OV_EBADHEADER:
-    return "The file is apparently an Ogg Vorbis stream, but contains a corrupted or undecipherable header.";
+    return "The file is apparently an Ogg Vorbis stream, but contains a "
+           "corrupted or undecipherable header.";
   case OV_EVERSION:
     return "The bitstream format revision of the given file is not supported.";
   case OV_EBADLINK:
-    return "The given link exists in the Vorbis data stream, but is not decipherable due to garbage or corruption.";
+    return "The given link exists in the Vorbis data stream, but is not "
+           "decipherable due to garbage or corruption.";
   case OV_ENOSEEK:
     return "File is not seekable";
   default:
@@ -94,16 +102,24 @@ const char *ov_strerror(int ret) {
   }
 }
 
-soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_view filename) : _audiodevice(audiodevice) {
-  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr, PHYSFS_close};
+soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
+                 std::string_view filename)
+    : _audiodevice(audiodevice) {
+  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr,
+                                                           PHYSFS_close};
 
   fp.reset(PHYSFS_openRead(filename.data()));
   if (!fp) {
-    throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+    throw std::runtime_error(fmt::format(
+        "[PHYSFS_openRead] error while opening file: {}, error: {}", filename,
+        PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
-  std::unique_ptr<OggVorbis_File, decltype(&ov_clear)> vf{new OggVorbis_File, ov_clear};
-  if (ov_open_callbacks(const_cast<void *>(reinterpret_cast<const void *>(fp.get())), vf.get(), nullptr, 0, PHYSFS_callbacks) < 0) {
+  std::unique_ptr<OggVorbis_File, decltype(&ov_clear)> vf{new OggVorbis_File,
+                                                          ov_clear};
+  if (ov_open_callbacks(
+          const_cast<void *>(reinterpret_cast<const void *>(fp.get())),
+          vf.get(), nullptr, 0, PHYSFS_callbacks) < 0) {
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
@@ -118,20 +134,23 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_vie
 #endif
 
   do {
-    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
+    offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length,
+                     bigendian, 2, 1, nullptr);
 
     if (offset < 0) {
-      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
+      throw std::runtime_error(
+          fmt::format("[ov_read] error while reading file: {}, error: {}",
+                      filename, ov_strerror(offset)));
     }
 
-    std::copy(array.begin(), array.begin() + offset, std::back_inserter(buffer));
+    std::copy(array.begin(), array.begin() + offset,
+              std::back_inserter(buffer));
   } while (offset > 0);
 
   UNUSED(callback);
 }
 
-soundfx::~soundfx() {
-}
+soundfx::~soundfx() {}
 
 void soundfx::play() const {
   SDL_ClearQueuedAudio(_audiodevice->id());

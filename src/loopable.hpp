@@ -7,4 +7,4 @@ public:
 
   virtual void loop(uint32_t delta) = 0;
 };
-}
+} // namespace framework

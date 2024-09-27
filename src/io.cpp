@@ -3,12 +3,15 @@
 using namespace storage;
 
 const std::vector<uint8_t> io::read(std::string_view filename) {
-  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr, PHYSFS_close};
+  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr,
+                                                           PHYSFS_close};
 
   fp.reset(PHYSFS_openRead(filename.data()));
 
   if (!fp) {
-    throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+    throw std::runtime_error(fmt::format(
+        "[PHYSFS_openRead] error while opening file: {}, error: {}", filename,
+        PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
   PHYSFS_sint64 length = PHYSFS_fileLength(fp.get());

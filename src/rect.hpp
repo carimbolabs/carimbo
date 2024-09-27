@@ -22,4 +22,4 @@ private:
   point _position;
   geometry::size _size;
 };
-}
+} // namespace geometry

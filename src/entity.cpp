@@ -9,8 +9,8 @@
 using namespace framework;
 
 entity::entity(const std::string &id)
-    : _id(id), _point(0, 0), _angle(0.0), _flip(graphics::flip::none), _alpha(255), _fn(nullptr) {
-}
+    : _id(id), _point(0, 0), _angle(0.0), _flip(graphics::flip::none),
+      _alpha(255), _fn(nullptr) {}
 
 entity::~entity() {
   std::cout << "entity::~entity(), id: " << _id << std::endl;
@@ -20,9 +20,7 @@ std::shared_ptr<entity> entity::create(const std::string &id) {
   return std::shared_ptr<entity>(new entity(id));
 }
 
-std::string entity::id() const {
-  return _id;
-}
+std::string entity::id() const { return _id; }
 
 void entity::update() {
   if (_fn) {
@@ -36,34 +34,22 @@ void entity::draw() const {
   }
 }
 
-void entity::set_x(int32_t x) {
-  _point.set_x(x);
-}
+void entity::set_x(int32_t x) { _point.set_x(x); }
 
-int32_t entity::x() const {
-  return _point.x();
-}
+int32_t entity::x() const { return _point.x(); }
 
-void entity::set_y(int32_t y) {
-  _point.set_y(y);
-}
+void entity::set_y(int32_t y) { _point.set_y(y); }
 
-int32_t entity::y() const {
-  return _point.y();
-}
+int32_t entity::y() const { return _point.y(); }
 
 void entity::move(int32_t x, int32_t y) {
   _point.set_x(_point.x() + x);
   _point.set_y(_point.y() + y);
 }
 
-int32_t entity::width() const {
-  return _pixmap->size().width();
-}
+int32_t entity::width() const { return _pixmap->size().width(); }
 
-int32_t entity::height() const {
-  return _pixmap->size().height();
-}
+int32_t entity::height() const { return _pixmap->size().height(); }
 
 void entity::scale(double factor) {
   _pixmap->set_size({
@@ -72,39 +58,29 @@ void entity::scale(double factor) {
   });
 }
 
-void entity::set_angle(const double_t angle) {
-  _angle = angle;
-}
+void entity::set_angle(const double_t angle) { _angle = angle; }
 
-double_t entity::angle() const {
-  return _angle;
-}
+double_t entity::angle() const { return _angle; }
 
-void entity::set_flip(graphics::flip flip) {
-  _flip = flip;
-}
+void entity::set_flip(graphics::flip flip) { _flip = flip; }
 
-graphics::flip entity::get_flip() {
-  return _flip;
-}
+graphics::flip entity::get_flip() { return _flip; }
 
-void entity::set_alpha(const uint8_t alpha) {
-  _alpha = alpha;
-}
+void entity::set_alpha(const uint8_t alpha) { _alpha = alpha; }
 
-uint8_t entity::alpha() const {
-  return _alpha;
-}
+uint8_t entity::alpha() const { return _alpha; }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
   _entitymanager = entitymanager;
 }
 
-void entity::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
+void entity::set_resourcemanager(
+    std::shared_ptr<resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
-void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) {
+void entity::set_onupdate(
+    const std::function<void(std::shared_ptr<entity>)> &fn) {
   _fn = fn;
 }
 
