@@ -82,8 +82,11 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer,
   }
 }
 
-void pixmap::draw(const geometry::point &point, const double_t angle, flip flip,
-                  const uint8_t alpha) const {
+void pixmap::draw(
+    const geometry::point &point,
+    const double_t angle,
+    flip flip,
+    const uint8_t alpha) const {
   const SDL_Rect rect{
       point.x(),
       point.y(),
