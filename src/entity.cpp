@@ -8,17 +8,15 @@
 
 using namespace framework;
 
-entity::entity(const std::string_view id)
-    : _id(id),
-      _props{},
-      _fn(nullptr) {}
+entity::entity(const entityprops &&props)
+    : _props(std::move(props)), _fn(nullptr) {}
 
 entity::~entity() {
   std::cout << "entity::~entity(), id: " << _id << std::endl;
 }
 
-std::shared_ptr<entity> entity::create(const std::string &id) {
-  return std::shared_ptr<entity>(new entity(id));
+std::shared_ptr<entity> entity::create(const entityprops &&props) {
+  return std::shared_ptr<entity>(new entity(std::move(props)));
 }
 
 std::string entity::id() const { return _id; }

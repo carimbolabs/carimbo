@@ -9,7 +9,7 @@ class entity : public std::enable_shared_from_this<entity> {
 public:
   virtual ~entity();
 
-  static std::shared_ptr<entity> create(const std::string &id);
+  static std::shared_ptr<entity> create(const entityprops &&props);
 
   std::string id() const;
 
@@ -60,7 +60,7 @@ public:
   void play_sound(const std::string_view filename);
 
 private:
-  entity(const std::string_view id);
+  entity(const entityprops &&props);
 
   // std::string _id;
   // std::shared_ptr<graphics::pixmap> _pixmap;
