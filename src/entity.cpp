@@ -10,7 +10,7 @@ using namespace framework;
 
 entity::entity(const entityprops &&props)
     : _props(std::move(props)), _fn(nullptr) {
-  std::cout << ">>> " << props.frames.at("idle").at(0).duration << std::endl;
+  std::cout << ">>> " << props.animations.at("idle").at(0).duration << std::endl;
 }
 
 entity::~entity() {
