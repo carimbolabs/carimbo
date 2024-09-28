@@ -1,9 +1,16 @@
 #include "entitymanager.hpp"
 
 #include "entity.hpp"
+#include "entityprops.hpp"
 #include "io.hpp"
+#include "pixmap.hpp"
+#include "point.hpp"
+#include "rect.hpp"
 #include "resourcemanager.hpp"
+#include "size.hpp"
+#include <cstdint>
 #include <string_view>
+#include <vector>
 
 using namespace framework;
 
@@ -19,32 +26,42 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
 
-  /*
-  namespace framework {
-  struct keyframe {
-    geometry::rect frame;
-    uint64_t duration;
+  std::map<std::string, std::vector<keyframe>> frames;
+  for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
+    std::vector<keyframe> keyframes;
+    keyframes.reserve(a.size());
 
-    keyframe() = default;
-  };
+    for (const auto &frame_list : a) {
+      for (const auto &f : frame_list) {
+        geometry::point position{f.at("x").get<int32_t>(), f.at("y").get<int32_t>()};
+        geometry::size size{f.at("width").get<uint32_t>(), f.at("height").get<uint32_t>()};
+        geometry::rect rect{position, size};
+        uint64_t duration = f.at("duration").get<uint64_t>();
 
-  struct entityprops {
-  public:
-    std::shared_ptr<graphics::pixmap> spritesheet;
-    std::map<std::string, std::vector<keyframe>> frames;
-    geometry::point position;
-    geometry::point pivot;
-    float_t angle;
-    graphics::flip flip;
-    uint8_t alpha;
-    std::string_view id;
+        keyframes.emplace_back(rect, duration);
+      }
+    }
 
-    entityprops() = default;
-  };
+    frames.emplace(key, std::move(keyframes));
   }
 
-  */
-  const auto e = entity::create("abc");
+  geometry::point position;
+  geometry::point pivot;
+  float_t angle = .0f;
+  graphics::flip flip = graphics::flip::none;
+  uint8_t alpha = 255;
+
+  entityprops props{
+      spritesheet,
+      frames,
+      position,
+      pivot,
+      angle,
+      flip,
+      alpha,
+      id};
+
+  const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
   _entities.emplace_back(e);
   return e;

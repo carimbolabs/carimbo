@@ -12,6 +12,7 @@ struct keyframe {
   uint64_t duration;
 
   keyframe() = default;
+  keyframe(const geometry::rect &rect, uint64_t duration) : frame(rect), duration(duration) {}
 };
 
 struct entityprops {
