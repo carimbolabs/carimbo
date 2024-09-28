@@ -11,8 +11,7 @@ void soundmanager::prefetch(const std::vector<std::string_view> &filenames) {
   }
 }
 
-const std::shared_ptr<soundfx>
-soundmanager::get(const std::string_view filename) {
+const std::shared_ptr<soundfx> soundmanager::get(const std::string_view filename) {
   auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
   if (added) {
