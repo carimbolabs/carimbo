@@ -61,6 +61,7 @@ class entity;
 class entityprops;
 class entitymanager;
 class framerate;
+class garbagecollector;
 class loopable;
 class resourcemanager;
 class scriptengine;

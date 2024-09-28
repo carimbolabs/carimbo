@@ -1,36 +1,22 @@
 #include "entitymanager.hpp"
 
 #include "entity.hpp"
+#include "io.hpp"
 #include "resourcemanager.hpp"
 
 using namespace framework;
 
-std::random_device rd;
-std::mt19937 generator(rd());
-
-std::uniform_int_distribution<> distribution(0, 61);
-
-const auto random_char = []() -> uint8_t {
-  const auto value = distribution(generator);
-  if (value < 10)
-    return '0' + value;
-  if (value < 36)
-    return 'a' + value - 10;
-  return 'A' + value - 36;
-};
+using json = nlohmann::json;
 
 void entitymanager::set_resourcemanager(
     std::shared_ptr<resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
-std::shared_ptr<entity> entitymanager::spawn() {
-  std::vector<uint8_t> buffer(16);
-  for (auto &b : buffer) {
-    b = random_char();
-  }
+std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
+  const auto buffer = storage::io::read(fmt::format("entities/{}.json", id));
 
-  const auto e = entity::create({buffer.begin(), buffer.end()});
+  const auto e = entity::create("abc");
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
   _entities.emplace_back(e);
   return e;

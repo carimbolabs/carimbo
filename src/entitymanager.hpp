@@ -10,7 +10,7 @@ public:
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
-  std::shared_ptr<entity> spawn();
+  std::shared_ptr<entity> spawn(const std::string_view id);
 
   void destroy(const std::shared_ptr<entity> entity);
 

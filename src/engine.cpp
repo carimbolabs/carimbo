@@ -6,6 +6,7 @@
 #include "eventmanager.hpp"
 #include "eventreceiver.hpp"
 #include "framerate.hpp"
+#include "garbagecollector.hpp"
 #include "loopable.hpp"
 #include "noncopyable.hpp"
 #include "renderer.hpp"
@@ -18,6 +19,7 @@ using namespace framework;
 
 engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
+  add_loopable(std::make_shared<garbagecollector>());
 }
 
 void engine::set_window(std::shared_ptr<graphics::window> window) {
@@ -89,8 +91,8 @@ bool engine::is_keydown(const input::keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
 
-const std::shared_ptr<entity> engine::spawn() {
-  const auto entity = _entitymanager->spawn();
+const std::shared_ptr<entity> engine::spawn(const std::string_view id) {
+  const auto entity = _entitymanager->spawn(id);
   entity->set_entitymanager(_entitymanager);
   entity->set_resourcemanager(_resourcemanager);
   return entity;

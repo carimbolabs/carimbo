@@ -45,7 +45,7 @@ public:
 
   bool is_keydown(const input::keyevent &event) const;
 
-  const std::shared_ptr<entity> spawn();
+  const std::shared_ptr<entity> spawn(const std::string_view id);
 
   void destroy(const std::shared_ptr<entity> entity);
 
