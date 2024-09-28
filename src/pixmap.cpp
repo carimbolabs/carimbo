@@ -27,7 +27,8 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
 
   spng_ihdr ihdr{};
   if (const auto error = spng_get_ihdr(ctx.get(), &ihdr); error != SPNG_OK) {
-    throw std::runtime_error(fmt::format("[spng_get_ihdr] error while getting image information: {}, error: {}", filename, spng_strerror(error)));
+    throw std::runtime_error(
+        fmt::format("[spng_get_ihdr] error while getting image information: {}, error: {}", filename, spng_strerror(error)));
   }
 
   const int format = SPNG_FMT_RGBA8;
