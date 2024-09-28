@@ -26,7 +26,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
 
-  std::map<std::string, std::vector<keyframe>> frames;
+  std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
     std::vector<keyframe> keyframes;
     keyframes.reserve(a.size());
@@ -42,7 +42,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
       }
     }
 
-    frames.emplace(key, std::move(keyframes));
+    animations.emplace(key, std::move(keyframes));
   }
 
   geometry::point position;
@@ -53,7 +53,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
 
   entityprops props{
       spritesheet,
-      frames,
+      animations,
       position,
       pivot,
       angle,

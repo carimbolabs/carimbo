@@ -9,12 +9,11 @@
 
 using namespace graphics;
 
-pixmap::pixmap(const std::shared_ptr<renderer> renderer,
-               std::string_view filename)
+pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename)
     : _renderer(renderer) {
   const static std::unordered_map<std::string, uint8_t> mapping = {{".jxl", 0},
                                                                    {".png", 1}};
-  const auto extension = ".avif";
+  const auto extension = ".png";
   const auto it = mapping.find(extension);
   switch (it->second) {
   case 0:
