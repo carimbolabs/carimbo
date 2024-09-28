@@ -3,6 +3,7 @@
 #include "entity.hpp"
 #include "io.hpp"
 #include "resourcemanager.hpp"
+#include <string_view>
 
 using namespace framework;
 
@@ -15,9 +16,9 @@ void entitymanager::set_resourcemanager(
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", id));
-  json j = buffer;
+  const auto j = json::parse(buffer);
+  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
 
-  std::cout << ">>> " << j["spritesheet"] << std::endl;
   /*
   namespace framework {
   struct keyframe {

@@ -19,7 +19,6 @@ using namespace framework;
 
 engine::engine() : _running(true) {
   add_loopable(std::make_shared<framerate>());
-  add_loopable(std::make_shared<garbagecollector>());
 }
 
 void engine::set_window(std::shared_ptr<graphics::window> window) {
@@ -137,7 +136,7 @@ void engine::_loop() {
   const auto delta = SDL_GetTicks() - now;
 
   std::for_each(_loopables.begin(), _loopables.end(),
-                std::bind(&loopable::loop, std::placeholders::_1, delta));
+                [delta](auto &loopable) { loopable->loop(delta); });
 }
 
 int32_t engine::width() const { return _window->width(); }
