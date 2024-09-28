@@ -4,6 +4,7 @@
 #include "engine.hpp"
 #include "enginefactory.hpp"
 #include "entity.hpp"
+#include "entityprops.hpp"
 #include "event.hpp"
 #include "eventreceiver.hpp"
 #include "io.hpp"
@@ -64,16 +65,16 @@ void scriptengine::run() {
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
-      "x", sol::property(&entity::x, &entity::set_x),
-      "y", sol::property(&entity::y, &entity::set_y),
-      "width", sol::property(&entity::width),
-      "height", sol::property(&entity::height),
-      "move", &entity::move,
-      "scale", &entity::scale,
-      "angle", sol::property(&entity::angle, &entity::set_angle),
-      "alpha", sol::property(&entity::alpha, &entity::set_alpha),
-      "pixmap", sol::property(&entity::set_pixmap),
-      "play", &entity::play_sound,
+      // "x", sol::property(&entity::x, &entity::set_x),
+      // "y", sol::property(&entity::y, &entity::set_y),
+      // "width", sol::property(&entity::width),
+      // "height", sol::property(&entity::height),
+      // "move", &entity::move,
+      // "scale", &entity::scale,
+      // "angle", sol::property(&entity::angle, &entity::set_angle),
+      // "alpha", sol::property(&entity::alpha, &entity::set_alpha),
+      // "pixmap", sol::property(&entity::set_pixmap),
+      // "play", &entity::play_sound,
       "on_update", &entity::set_onupdate);
 
   lua.set_function("sleep", &sleep);

@@ -37,6 +37,7 @@ extern "C" {
 #include <vector>
 
 #include <fmt/core.h>
+#include <nlohmann/json.hpp>
 #include <sol/sol.hpp>
 
 #ifdef EMSCRIPTEN
@@ -59,6 +60,7 @@ class application;
 class engine;
 class enginefactory;
 class entity;
+class entityprops;
 class entitymanager;
 class framerate;
 class loopable;

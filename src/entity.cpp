@@ -8,12 +8,9 @@
 
 using namespace framework;
 
-entity::entity(const std::string &id)
+entity::entity(const std::string_view id)
     : _id(id),
-      _point(0, 0),
-      _angle(0.0),
-      _flip(graphics::flip::none),
-      _alpha(255),
+      _props{},
       _fn(nullptr) {}
 
 entity::~entity() {
@@ -26,6 +23,14 @@ std::shared_ptr<entity> entity::create(const std::string &id) {
 
 std::string entity::id() const { return _id; }
 
+const entityprops entity::props() const {
+  return _props;
+}
+
+void entity::set_props(entityprops props) {
+  _props = std::move(props);
+}
+
 void entity::update() {
   if (_fn) {
     _fn(shared_from_this());
@@ -33,46 +38,10 @@ void entity::update() {
 }
 
 void entity::draw() const {
-  if (_pixmap) {
-    _pixmap->draw(_point, _angle, _flip, _alpha);
-  }
+  // if (_pixmap) {
+  //   _pixmap->draw(_point, _angle, _flip, _alpha);
+  // }
 }
-
-void entity::set_x(int32_t x) { _point.set_x(x); }
-
-int32_t entity::x() const { return _point.x(); }
-
-void entity::set_y(int32_t y) { _point.set_y(y); }
-
-int32_t entity::y() const { return _point.y(); }
-
-void entity::move(int32_t x, int32_t y) {
-  _point.set_x(_point.x() + x);
-  _point.set_y(_point.y() + y);
-}
-
-int32_t entity::width() const { return _pixmap->size().width(); }
-
-int32_t entity::height() const { return _pixmap->size().height(); }
-
-void entity::scale(double factor) {
-  _pixmap->set_size({
-      static_cast<uint32_t>(std::llround(_pixmap->size().width() * factor)),
-      static_cast<uint32_t>(std::llround(_pixmap->size().height() * factor)),
-  });
-}
-
-void entity::set_angle(const double_t angle) { _angle = angle; }
-
-double_t entity::angle() const { return _angle; }
-
-void entity::set_flip(graphics::flip flip) { _flip = flip; }
-
-graphics::flip entity::get_flip() { return _flip; }
-
-void entity::set_alpha(const uint8_t alpha) { _alpha = alpha; }
-
-uint8_t entity::alpha() const { return _alpha; }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
   _entitymanager = entitymanager;
@@ -87,10 +56,10 @@ void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn
   _fn = fn;
 }
 
-void entity::set_pixmap(const std::string &filename) {
-  _pixmap = _resourcemanager->pixmappool()->get(filename);
+void entity::set_pixmap(const std::string_view) {
+  // _pixmap = _resourcemanager->pixmappool()->get(filename);
 }
 
-void entity::play_sound(const std::string &filename) {
+void entity::play_sound(const std::string_view filename) {
   _resourcemanager->soundmanager()->play(filename);
 }

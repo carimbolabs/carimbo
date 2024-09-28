@@ -2,8 +2,7 @@
 
 #include "common.hpp"
 
-#include "pixmap.hpp"
-#include "point.hpp"
+#include "entityprops.hpp"
 
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
@@ -18,33 +17,37 @@ public:
 
   virtual void draw() const;
 
-  void set_x(int32_t x);
+  // void set_x(int32_t x);
 
-  int32_t x() const;
+  // int32_t x() const;
 
-  void set_y(int32_t y);
+  // void set_y(int32_t y);
 
-  int32_t y() const;
+  // int32_t y() const;
 
-  void move(int32_t x, int32_t y);
+  // void move(int32_t x, int32_t y);
 
-  int32_t width() const;
+  // int32_t width() const;
 
-  int32_t height() const;
+  // int32_t height() const;
 
-  void scale(double factor);
+  // void scale(double factor);
 
-  void set_angle(const double_t angle);
+  // void set_angle(const double_t angle);
 
-  double_t angle() const;
+  // double_t angle() const;
 
-  void set_flip(graphics::flip flip);
+  // void set_flip(graphics::flip flip);
 
-  graphics::flip get_flip();
+  // graphics::flip get_flip();
 
-  void set_alpha(const uint8_t alpha);
+  // void set_alpha(const uint8_t alpha);
 
-  uint8_t alpha() const;
+  // uint8_t alpha() const;
+
+  const entityprops props() const;
+
+  void set_props(entityprops props);
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
@@ -52,20 +55,22 @@ public:
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
 
-  void set_pixmap(const std::string &filename);
+  void set_pixmap(const std::string_view filename);
 
-  void play_sound(const std::string &filename);
+  void play_sound(const std::string_view filename);
 
 private:
-  entity(const std::string &id);
+  entity(const std::string_view id);
+
+  // std::string _id;
+  // std::shared_ptr<graphics::pixmap> _pixmap;
+  // geometry::point _point;
+  // double_t _angle;
+  // graphics::flip _flip;
+  // uint8_t _alpha;
 
   std::string _id;
-  std::shared_ptr<graphics::pixmap> _pixmap;
-  geometry::point _point;
-  double_t _angle;
-  graphics::flip _flip;
-  uint8_t _alpha;
-
+  entityprops _props;
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::function<void(std::shared_ptr<entity>)> _fn;
