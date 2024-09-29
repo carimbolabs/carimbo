@@ -108,7 +108,7 @@ void eventmanager::update() {
 }
 
 void eventmanager::add_receiver(std::shared_ptr<eventreceiver> receiver) {
-  _receivers.emplace_back(receiver);
+  _receivers.emplace_back(std::move(receiver));
 }
 
 void eventmanager::remove_receiver(std::shared_ptr<eventreceiver> receiver) {

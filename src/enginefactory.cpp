@@ -30,8 +30,7 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  const auto w =
-      std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
+  const auto w = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
   const auto r = w->create_renderer();
   const auto ad = std::make_shared<audio::audiodevice>();
   const auto em1 = std::make_shared<input::eventmanager>();
@@ -41,18 +40,18 @@ std::shared_ptr<engine> enginefactory::create() {
 
   const auto e = std::make_shared<framework::engine>();
 
-  e->set_window(w);
-  e->set_renderer(r);
-  e->set_audiodevice(ad);
-  e->set_eventmanager(em1);
-  e->set_entitymanager(em2);
-  e->set_statemanager(em3);
-  e->set_resourcemanager(rm);
+  e->set_window(std::move(w));
+  e->set_renderer(std::move(r));
+  e->set_audiodevice(std::move(ad));
+  e->set_eventmanager(std::move(em1));
+  e->set_entitymanager(std::move(em2));
+  e->set_statemanager(std::move(em3));
+  e->set_resourcemanager(std::move(rm));
 
-  em1->add_receiver(e);
-  em1->add_receiver(em3);
+  em1->add_receiver(std::move(e));
+  em1->add_receiver(std::move(em3));
 
-  em2->set_resourcemanager(rm);
+  em2->set_resourcemanager(std::move(rm));
 
   return e;
 }

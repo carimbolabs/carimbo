@@ -22,7 +22,7 @@ engine::engine() : _running(true) {
 }
 
 void engine::set_window(std::shared_ptr<graphics::window> window) {
-  _window = window;
+  _window = std::move(window);
 }
 
 const std::shared_ptr<graphics::window> engine::window() const {
@@ -30,7 +30,7 @@ const std::shared_ptr<graphics::window> engine::window() const {
 }
 
 void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) {
-  _renderer = renderer;
+  _renderer = std::move(renderer);
 }
 
 const std::shared_ptr<graphics::renderer> engine::renderer() const {
@@ -38,44 +38,39 @@ const std::shared_ptr<graphics::renderer> engine::renderer() const {
 }
 
 void engine::set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice) {
-  _audiodevice = audiodevice;
+  _audiodevice = std::move(audiodevice);
 }
 
 const std::shared_ptr<audio::audiodevice> engine::audiodevice() {
   return _audiodevice;
 }
 
-void engine::set_eventmanager(
-    std::shared_ptr<input::eventmanager> eventmanager) {
-  _eventmanager = eventmanager;
+void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager) {
+  _eventmanager = std::move(eventmanager);
 }
 
 const std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
 }
 
-void engine::set_entitymanager(
-    std::shared_ptr<framework::entitymanager> entitymanager) {
-  _entitymanager = entitymanager;
+void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
+  _entitymanager = std::move(entitymanager);
 }
 
 const std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
   return _entitymanager;
 }
 
-void engine::set_resourcemanager(
-    std::shared_ptr<framework::resourcemanager> resourcemanager) {
-  _resourcemanager = resourcemanager;
+void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) {
+  _resourcemanager = std::move(resourcemanager);
 }
 
-const std::shared_ptr<framework::resourcemanager>
-engine::resourcemanager() const {
+const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
   return _resourcemanager;
 }
 
-void engine::set_statemanager(
-    std::shared_ptr<framework::statemanager> statemanager) {
-  _statemanager = statemanager;
+void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
+  _statemanager = std::move(statemanager);
 }
 
 const std::shared_ptr<framework::statemanager> engine::statemanager() const {

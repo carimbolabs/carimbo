@@ -8,9 +8,11 @@ public:
   audiodevice();
   virtual ~audiodevice();
 
-  uint32_t id() const;
+  // uint32_t id() const;
 
 private:
-  uint32_t _id;
+  // uint32_t _id;
+  std::unique_ptr<ALCdevice, void (*)(ALCdevice *)> device;
+  std::unique_ptr<ALCcontext, void (*)(ALCcontext *)> context;
 };
 }

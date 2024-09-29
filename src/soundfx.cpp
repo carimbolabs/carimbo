@@ -151,7 +151,7 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
 soundfx::~soundfx() {}
 
 void soundfx::play() const {
-  SDL_ClearQueuedAudio(_audiodevice->id());
-  SDL_PauseAudioDevice(_audiodevice->id(), 0);
-  SDL_QueueAudio(_audiodevice->id(), buffer.data(), buffer.size());
+  // SDL_ClearQueuedAudio(_audiodevice->id());
+  // SDL_PauseAudioDevice(_audiodevice->id(), 0);
+  // SDL_QueueAudio(_audiodevice->id(), buffer.data(), buffer.size());
 }
