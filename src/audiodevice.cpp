@@ -5,13 +5,11 @@ using namespace audio;
 audiodevice::audiodevice() : device(nullptr, [](ALCdevice *device) {
                                if (device) {
                                  alcCloseDevice(device);
-                                 std::cout << "ALC device closed." << std::endl;
                                }
                              }),
                              context(nullptr, [](ALCcontext *context) {
                                if (context) {
                                  alcDestroyContext(context);
-                                 std::cout << "ALC context destroyed." << std::endl;
                                }
                              }) {
 
