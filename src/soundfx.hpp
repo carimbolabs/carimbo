@@ -10,9 +10,15 @@ public:
 
   void play() const;
 
-  std::vector<uint8_t> buffer;
+  // std::vector<uint8_t> buffer;
 
 private:
   std::shared_ptr<audiodevice> _audiodevice;
+
+  // std::vector<uint8_t> data;
+  ALuint buffer{};
+  ALuint source{};
+  ALenum format{};
+  ALsizei frequency{};
 };
 }

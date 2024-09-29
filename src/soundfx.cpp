@@ -4,19 +4,19 @@
 
 using namespace audio;
 
-static void callback(void *userdata, uint8_t *stream, int length) {
-  auto &buffer = static_cast<soundfx *>(userdata)->buffer;
+// static void callback(void *userdata, uint8_t *stream, int length) {
+//   auto &buffer = static_cast<soundfx *>(userdata)->buffer;
 
-  if (buffer.empty()) {
-    SDL_memset(stream, 0, length);
-    return;
-  }
+//   if (buffer.empty()) {
+//     SDL_memset(stream, 0, length);
+//     return;
+//   }
 
-  const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
-  // SDL_memcpy(stream, buffer.data(), to_copy);
-  SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
-  buffer.erase(buffer.begin(), buffer.begin() + to_copy);
-}
+//   const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
+//   // SDL_memcpy(stream, buffer.data(), to_copy);
+//   SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
+//   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
+// }
 
 static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb,
                             void *source) {
@@ -126,8 +126,16 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
   }
 
   int32_t offset{0};
-  const auto constexpr length = 1024 * 8;
+  const auto constexpr length = 1024 * 16;
   std::array<uint8_t, length> array{0};
+
+  const auto info = ov_info(vf.get(), -1);
+  if (!info) {
+    throw std::runtime_error(std::fmt("[ov_info] failed to retrieve OggVorbis info, error: {}", ov_strerror(info)));
+  }
+
+  format = (info->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+  frequency = static_cast<ALsizei>(info->rate);
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
   const int bigendian = 0;
@@ -145,7 +153,7 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
     std::copy(array.begin(), array.begin() + offset, std::back_inserter(buffer));
   } while (offset > 0);
 
-  UNUSED(callback);
+  // UNUSED(callback);
 }
 
 soundfx::~soundfx() {}
