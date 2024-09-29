@@ -69,6 +69,10 @@ const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() cons
   return _resourcemanager;
 }
 
+const std::shared_ptr<audio::soundmanager> engine::soundmanager() const {
+  return _resourcemanager->soundmanager();
+}
+
 void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
   _statemanager = std::move(statemanager);
 }

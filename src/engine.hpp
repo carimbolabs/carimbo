@@ -35,6 +35,8 @@ public:
 
   const std::shared_ptr<framework::resourcemanager> resourcemanager() const;
 
+  const std::shared_ptr<audio::soundmanager> soundmanager() const;
+
   void set_statemanager(std::shared_ptr<framework::statemanager> statemanager);
 
   const std::shared_ptr<framework::statemanager> statemanager() const;
