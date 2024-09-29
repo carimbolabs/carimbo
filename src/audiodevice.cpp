@@ -27,9 +27,5 @@ audiodevice::audiodevice() : device(nullptr, [](ALCdevice *device) {
 }
 
 audiodevice::~audiodevice() {
-  std::cout << ">>> audiodevice::~audiodevice()" << std::endl;
-  if (context) {
-    alcMakeContextCurrent(nullptr);
-    std::cout << "ALC context unset successfully." << std::endl;
-  }
+  alcMakeContextCurrent(nullptr);
 }

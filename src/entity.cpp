@@ -10,7 +10,6 @@ using namespace framework;
 
 entity::entity(const entityprops &&props)
     : _props(std::move(props)), _fn(nullptr) {
-  std::cout << ">>> " << props.animations.at("idle").at(0).duration << std::endl;
 }
 
 entity::~entity() {
@@ -58,8 +57,4 @@ void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn
 
 void entity::set_pixmap(const std::string_view) {
   // _pixmap = _resourcemanager->pixmappool()->get(filename);
-}
-
-void entity::play_sound(const std::string_view filename) {
-  _resourcemanager->soundmanager()->play(filename);
 }

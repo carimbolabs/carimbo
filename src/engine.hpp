@@ -23,8 +23,7 @@ public:
 
   const std::shared_ptr<audio::audiodevice> audiodevice();
 
-  void
-  set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
+  void set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
 
   const std::shared_ptr<framework::entitymanager> entitymanager() const;
 

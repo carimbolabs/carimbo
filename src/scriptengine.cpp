@@ -11,6 +11,7 @@
 #include "noncopyable.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
+#include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
 #include "ticks.hpp"
@@ -54,6 +55,7 @@ void scriptengine::run() {
       "is_keydown", &engine::is_keydown,
       "width", sol::property(&engine::width),
       "height", sol::property(&engine::height),
+      "resourcemanager", &engine::resourcemanager,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames{table.size()};
         for (auto &item : table) {
@@ -61,6 +63,14 @@ void scriptengine::run() {
         }
         engine.prefetch(filenames);
       });
+
+  lua.new_usertype<resourcemanager>(
+      "ResourceManager",
+      "soundmanager", &resourcemanager::soundmanager);
+
+  lua.new_usertype<audio::soundmanager>(
+      "SoundManager",
+      "play", &audio::soundmanager::play);
 
   lua.new_usertype<entity>(
       "Entity",
