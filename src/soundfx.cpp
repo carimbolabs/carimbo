@@ -150,7 +150,7 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
     offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
 
     if (offset < 0) {
-      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(bytes_read)));
+      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
     }
 
     // std::copy(array.begin(), array.begin() + offset, std::back_inserter(data));
