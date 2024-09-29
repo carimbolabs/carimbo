@@ -16,7 +16,6 @@ application::application(int argc, char **argv) {
   UNUSED(argc);
   UNUSED(argv);
 
-  curl_global_init(CURL_GLOBAL_ALL);
   SDL_Init(SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_VIDEO);
   SDL_EventState(SDL_CONTROLLERDEVICEADDED, SDL_ENABLE);
   SDL_EventState(SDL_CONTROLLERDEVICEREMOVED, SDL_ENABLE);
@@ -46,5 +45,4 @@ int application::run() {
 application::~application() {
   PHYSFS_deinit();
   SDL_Quit();
-  curl_global_cleanup();
 }

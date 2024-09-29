@@ -38,10 +38,4 @@ struct SDL_Deleter {
       SDL_GameControllerClose(ptr);
     }
   }
-
-  inline void operator()(spng_ctx *ptr) {
-    if (ptr) {
-      spng_ctx_free(ptr);
-    }
-  }
 };
