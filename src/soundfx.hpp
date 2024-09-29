@@ -15,7 +15,6 @@ public:
 private:
   std::shared_ptr<audiodevice> _audiodevice;
 
-  // std::vector<uint8_t> data;
   ALuint buffer{};
   ALuint source{};
   ALenum format{};

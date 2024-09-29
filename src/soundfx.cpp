@@ -125,17 +125,20 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
-  int32_t offset{0};
-  const auto constexpr length = 1024 * 16;
-  std::array<uint8_t, length> array{0};
-
   const auto info = ov_info(vf.get(), -1);
   if (!info) {
-    throw std::runtime_error(std::fmt("[ov_info] failed to retrieve OggVorbis info, error: {}", ov_strerror(info)));
+    throw std::runtime_error("[ov_info] failed to retrieve OggVorbis info");
   }
 
   format = (info->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
   frequency = static_cast<ALsizei>(info->rate);
+
+  int32_t offset{0};
+  constexpr auto length = 2014 * 8;
+  std::array<uint8_t, length> array{0};
+
+  std::vector<uint8_t> data;
+  data.reserve(static_cast<size_t>(ov_pcm_total(vf.get(), -1)) * info->channels * 2);
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
   const int bigendian = 0;
@@ -147,19 +150,25 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
     offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
 
     if (offset < 0) {
-      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
+      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(bytes_read)));
     }
 
-    std::copy(array.begin(), array.begin() + offset, std::back_inserter(buffer));
+    // std::copy(array.begin(), array.begin() + offset, std::back_inserter(data));
+    data.insert(data.end(), array.begin(), array.begin() + offset);
   } while (offset > 0);
 
-  // UNUSED(callback);
+  alGenBuffers(1, &buffer);
+  alBufferData(buffer, format, data.data(), static_cast<ALsizei>(data.size()), frequency);
+
+  alGenSources(1, &source);
+  alSourcei(source, AL_BUFFER, buffer);
 }
 
-soundfx::~soundfx() {}
+soundfx::~soundfx() {
+  alDeleteSources(1, &source);
+  alDeleteBuffers(1, &buffer);
+}
 
 void soundfx::play() const {
-  // SDL_ClearQueuedAudio(_audiodevice->id());
-  // SDL_PauseAudioDevice(_audiodevice->id(), 0);
-  // SDL_QueueAudio(_audiodevice->id(), buffer.data(), buffer.size());
+  alSourcePlay(source);
 }
