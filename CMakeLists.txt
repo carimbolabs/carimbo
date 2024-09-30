@@ -32,19 +32,19 @@ if(SANDBOX)
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  target_link_libraries(${PROJECT_NAME} "-s EVAL_CTORS=1")
-  target_link_libraries(${PROJECT_NAME} "-s WASM_BIGINT=1")
-  # target_link_libraries(${PROJECT_NAME} "-s DISABLE_EXCEPTION_CATCHING=1")
-  target_link_libraries(${PROJECT_NAME} "-s ALLOW_MEMORY_GROWTH=1")
-  target_link_libraries(${PROJECT_NAME} "-s INITIAL_MEMORY=134217728")
-  target_link_libraries(${PROJECT_NAME} "-s EXPORTED_RUNTIME_METHODS=['callMain']")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s EVAL_CTORS=1")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s WASM_BIGINT=1")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s DISABLE_EXCEPTION_CATCHING=1")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s ALLOW_MEMORY_GROWTH=1")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s INITIAL_MEMORY=134217728")
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-s EXPORTED_RUNTIME_METHODS=['callMain']")
+  # target_link_libraries(${PROJECT_NAME} PRIVATE "-s USE_PTHREADS=1" "-pthread")
 
-  # target_link_libraries(${PROJECT_NAME} "--profiling")
-  # target_link_libraries(${PROJECT_NAME} "-s RUNTIME_DEBUG")
-  # target_link_libraries(${PROJECT_NAME} "-s ASSERTIONS=1")
-  # target_link_libraries(${PROJECT_NAME} "-s NO_DISABLE_EXCEPTION_CATCHING")
-
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O1 -flto)
+  # target_link_libraries(${PROJECT_NAME} PRIVATE "--profiling")
+  # target_link_libraries(${PROJECT_NAME} PRIVATE "-s RUNTIME_DEBUG")
+  # target_link_libraries(${PROJECT_NAME} PRIVATE "-s ASSERTIONS=1")
+  # target_link_libraries(${PROJECT_NAME} PRIVATE "-s NO_DISABLE_EXCEPTION_CATCHING")
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
 elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
@@ -61,14 +61,19 @@ endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/assets/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
 
-target_link_libraries(${PROJECT_NAME} CURL::libcurl)
-target_link_libraries(${PROJECT_NAME} fmt::fmt)
-target_link_libraries(${PROJECT_NAME} Ogg::ogg)
-target_link_libraries(${PROJECT_NAME} OpenAL::OpenAL)
-target_link_libraries(${PROJECT_NAME} physfs-static)
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2-static)
-target_link_libraries(${PROJECT_NAME} SDL2::SDL2main)
-target_link_libraries(${PROJECT_NAME} spng::spng_static)
-target_link_libraries(${PROJECT_NAME} sol2::sol2)
-target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
-target_link_libraries(${PROJECT_NAME} vorbis::vorbis)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+  CURL::libcurl
+  fmt::fmt
+  Ogg::ogg
+  physfs-static
+  SDL2::SDL2-static
+  SDL2::SDL2main
+  spng::spng_static
+  sol2::sol2
+  nlohmann_json::nlohmann_json
+  vorbis::vorbis
+)
+
+if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+  target_link_libraries(${PROJECT_NAME} PRIVATE OpenAL::OpenAL)
+endif()

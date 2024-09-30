@@ -1,7 +1,6 @@
 #include "soundfx.hpp"
 
 #include "audiodevice.hpp"
-#include <al.h>
 
 using namespace audio;
 
