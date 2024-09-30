@@ -45,6 +45,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s ALLOW_MEMORY_GROWTH=1"
     "-s INITIAL_MEMORY=134217728"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
+    # "-s RUNTIME_DEBUG"
+    # "-s ASSERTIONS=1"
+    # "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
 
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
