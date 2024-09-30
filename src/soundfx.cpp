@@ -114,8 +114,8 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_vie
     throw std::runtime_error("[ov_info] failed to retrieve OggVorbis info");
   }
 
-  format = (info->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-  frequency = static_cast<ALsizei>(info->rate);
+  const auto format = (info->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+  const auto frequency = static_cast<ALsizei>(info->rate);
 
   int32_t offset{0};
   constexpr auto length = 2014 * 8;
@@ -140,16 +140,17 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_vie
     data.insert(data.end(), array.begin(), array.begin() + offset);
   } while (offset > 0);
 
+  ALuint buffer;
   alGenBuffers(1, &buffer);
   alBufferData(buffer, format, data.data(), static_cast<ALsizei>(data.size()), frequency);
 
   alGenSources(1, &source);
   alSourcei(source, AL_BUFFER, buffer);
+  alDeleteBuffers(1, &buffer);
 }
 
 soundfx::~soundfx() {
   alDeleteSources(1, &source);
-  alDeleteBuffers(1, &buffer);
 }
 
 void soundfx::play() const {

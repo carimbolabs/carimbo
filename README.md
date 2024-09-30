@@ -26,7 +26,7 @@ CMake build
 ```shell
 cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release -DSANDBOX=ON
-cmake --build .
+cmake --build . --parallel 8
 ```
 
 Run
