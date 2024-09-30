@@ -1,62 +1,58 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="preload" href="/bundle.7z" as="fetch" type="application/zip" />
-  <link rel="preload" href="/carimbo.wasm" as="fetch" type="application/wasm" />
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
+      * {
+        margin: 0;
+      }
 
-    * {
-      margin: 0;
-    }
+      body {
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
 
-    body {
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+      canvas {
+        display: block;
+        max-width: 100%;
+      }
 
-    canvas {
-      display: block;
-      max-width: 100%;
-    }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
 
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
-</head>
+  <body>
+    <div class="container">
+      <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+      <script>
+        const canvas = document.getElementById("canvas");
 
-<body>
-  <div class="container">
-    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    <script>
-      const canvas = document.getElementById("canvas");
-
-      var Module = {
-        canvas,
-        noInitialRun: true,
-        onRuntimeInitialized: () => {
-          fetch("/bundle.7z")
-            .then((response) => response.arrayBuffer())
-            .then((data) => {
-              const uint8View = new Uint8Array(data);
-              FS.writeFile("/bundle.7z", uint8View);
-              Module.callMain();
-            });
-        },
-      };
-    </script>
-    <script src="carimbo.js"></script>
-  </div>
-</body>
-
+        var Module = {
+          canvas,
+          noInitialRun: true,
+          onRuntimeInitialized: () => {
+            fetch("/bundle.7z")
+              .then((response) => response.arrayBuffer())
+              .then((data) => {
+                const uint8View = new Uint8Array(data);
+                FS.writeFile("/bundle.7z", uint8View);
+                Module.callMain();
+              });
+          },
+        };
+      </script>
+      <script src="carimbo.js"></script>
+    </div>
+  </body>
 </html>

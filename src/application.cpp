@@ -27,7 +27,7 @@ int application::run() {
   try {
 #if SANDBOX
     // storage::filesystem::mount("../assets/sandbox", "/");
-    storage::filesystem::mount("/opt/workspace/khromatizo/megarick", "/");
+    storage::filesystem::mount("/opt/workspace/khromatizo/henrique", "/");
 #else
     storage::filesystem::mount("bundle.7z", "/");
 #endif
