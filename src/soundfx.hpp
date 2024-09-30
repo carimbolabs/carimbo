@@ -10,6 +10,8 @@ public:
 
   void play(bool loop) const;
 
+  void stop() const;
+
 private:
   std::shared_ptr<audiodevice> _audiodevice;
 

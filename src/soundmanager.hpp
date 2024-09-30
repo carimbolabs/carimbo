@@ -15,6 +15,8 @@ public:
 
   void play(const std::string_view filename, bool loop);
 
+  void stop(const std::string_view filename);
+
   void flush();
 
 private:

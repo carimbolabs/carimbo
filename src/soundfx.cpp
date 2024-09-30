@@ -1,6 +1,7 @@
 #include "soundfx.hpp"
 
 #include "audiodevice.hpp"
+#include <al.h>
 
 using namespace audio;
 
@@ -159,4 +160,8 @@ void soundfx::play(bool loop = false) const {
   }
 
   alSourcePlay(source);
+}
+
+void soundfx::stop() const {
+  alSourceStop(source);
 }

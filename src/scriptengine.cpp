@@ -66,7 +66,8 @@ void scriptengine::run() {
 
   lua.new_usertype<audio::soundmanager>(
       "SoundManager",
-      "play", &audio::soundmanager::play);
+      "play", &audio::soundmanager::play,
+      "stop", &audio::soundmanager::stop);
 
   lua.new_usertype<entity>(
       "Entity",

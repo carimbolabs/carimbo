@@ -31,6 +31,10 @@ void soundmanager::play(const std::string_view filename, bool loop = false) {
   get(filename)->play(loop);
 }
 
+void soundmanager::stop(const std::string_view filename) {
+  get(filename)->stop();
+}
+
 void soundmanager::flush() {
   for (auto it = _soundmap.begin(); it != _soundmap.end();) {
 
