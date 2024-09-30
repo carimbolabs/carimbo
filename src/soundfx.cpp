@@ -4,22 +4,7 @@
 
 using namespace audio;
 
-// static void callback(void *userdata, uint8_t *stream, int length) {
-//   auto &buffer = static_cast<soundfx *>(userdata)->buffer;
-
-//   if (buffer.empty()) {
-//     SDL_memset(stream, 0, length);
-//     return;
-//   }
-
-//   const auto to_copy = std::min(static_cast<size_t>(length), buffer.size());
-//   // SDL_memcpy(stream, buffer.data(), to_copy);
-//   SDL_MixAudio(stream, buffer.data(), to_copy, SDL_MIX_MAXVOLUME);
-//   buffer.erase(buffer.begin(), buffer.begin() + to_copy);
-// }
-
-static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb,
-                            void *source) {
+static size_t ovPHYSFS_read(void *ptr, size_t size, size_t nmemb, void *source) {
   auto file = reinterpret_cast<PHYSFS_file *>(source);
 
   PHYSFS_sint64 result = PHYSFS_readBytes(
@@ -70,8 +55,8 @@ static ov_callbacks PHYSFS_callbacks = {
     ovPHYSFS_close,
     ovPHYSFS_tell};
 
-const char *ov_strerror(int ret) {
-  switch (ret) {
+const char *ov_strerror(int code) {
+  switch (code) {
   case OV_FALSE:
     return "A request for an ov_read() returned 0.";
   case OV_EOF:
@@ -104,8 +89,7 @@ const char *ov_strerror(int ret) {
   }
 }
 
-soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
-                 std::string_view filename)
+soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice, std::string_view filename)
     : _audiodevice(audiodevice) {
   std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{nullptr, PHYSFS_close};
 
@@ -153,7 +137,6 @@ soundfx::soundfx(const std::shared_ptr<audiodevice> audiodevice,
       throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
     }
 
-    // std::copy(array.begin(), array.begin() + offset, std::back_inserter(data));
     data.insert(data.end(), array.begin(), array.begin() + offset);
   } while (offset > 0);
 
