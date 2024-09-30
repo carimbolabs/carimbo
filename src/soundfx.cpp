@@ -153,6 +153,10 @@ soundfx::~soundfx() {
   alDeleteSources(1, &source);
 }
 
-void soundfx::play() const {
+void soundfx::play(bool loop = false) const {
+  if (loop) {
+    alSourcei(source, AL_LOOPING, AL_TRUE);
+  }
+
   alSourcePlay(source);
 }

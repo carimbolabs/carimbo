@@ -13,7 +13,7 @@ public:
 
   const std::shared_ptr<soundfx> get(const std::string_view filename);
 
-  void play(const std::string_view filename);
+  void play(const std::string_view filename, bool loop);
 
   void flush();
 

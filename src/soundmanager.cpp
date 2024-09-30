@@ -27,8 +27,8 @@ const std::shared_ptr<soundfx> soundmanager::get(const std::string_view filename
   return it->second;
 }
 
-void soundmanager::play(const std::string_view filename) {
-  get(filename)->play();
+void soundmanager::play(const std::string_view filename, bool loop = false) {
+  get(filename)->play(loop);
 }
 
 void soundmanager::flush() {
