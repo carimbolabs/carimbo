@@ -11,7 +11,7 @@ public:
 
   static std::shared_ptr<entity> create(const entityprops &&props);
 
-  std::string id() const;
+  uint64_t id() const;
 
   virtual void update();
 

@@ -20,7 +20,7 @@ std::shared_ptr<entity> entity::create(const entityprops &&props) {
   return std::shared_ptr<entity>(new entity(std::move(props)));
 }
 
-std::string entity::id() const { return _id; }
+uint64_t entity::id() const { return _props.id; }
 
 const entityprops entity::props() const {
   return _props;

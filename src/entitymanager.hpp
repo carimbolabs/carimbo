@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hpp"
+#include <cstdint>
 
 namespace framework {
 class entitymanager {
@@ -10,11 +11,11 @@ public:
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
-  std::shared_ptr<entity> spawn(const std::string_view id);
+  std::shared_ptr<entity> spawn(const std::string &kind);
 
   void destroy(const std::shared_ptr<entity> entity);
 
-  std::shared_ptr<entity> find(const std::string &id);
+  std::shared_ptr<entity> find(uint64_t id) const;
 
   void update();
 
@@ -23,5 +24,6 @@ public:
 private:
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
+  std::atomic<uint64_t> _counter{0};
 };
 }

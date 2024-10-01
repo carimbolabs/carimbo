@@ -17,7 +17,8 @@ struct keyframe {
 
 struct entityprops {
 public:
-  std::string_view id;
+  uint64_t id;
+  std::string kind;
   std::shared_ptr<graphics::pixmap> spritesheet;
   std::map<std::string, std::vector<keyframe>> animations;
   geometry::point position;

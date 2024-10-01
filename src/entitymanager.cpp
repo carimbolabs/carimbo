@@ -21,8 +21,8 @@ void entitymanager::set_resourcemanager(
   _resourcemanager = resourcemanager;
 }
 
-std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
-  const auto buffer = storage::io::read(fmt::format("entities/{}.json", id));
+std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
+  const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
 
@@ -45,6 +45,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
     animations.emplace(key, std::move(keyframes));
   }
 
+  const auto id = _counter++;
   geometry::point position;
   geometry::point pivot;
   float_t angle = .0f;
@@ -53,6 +54,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
 
   entityprops props{
       id,
+      kind,
       spritesheet,
       animations,
       position,
@@ -71,14 +73,13 @@ void entitymanager::destroy(const std::shared_ptr<entity> entity) {
   _entities.remove(entity);
 }
 
-std::shared_ptr<entity> entitymanager::find(const std::string &id) {
-  for (auto entity : _entities) {
-    if (entity->id() == id) {
-      return entity;
-    }
-  }
+std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
+  auto it = std::find_if(_entities.begin(), _entities.end(),
+                         [id](const std::shared_ptr<entity> &entity) {
+                           return entity->id() == id;
+                         });
 
-  return nullptr;
+  return (it != _entities.end()) ? *it : std::shared_ptr<entity>();
 }
 
 void entitymanager::update() {
