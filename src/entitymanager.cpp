@@ -52,14 +52,14 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string_view id) {
   uint8_t alpha = 255;
 
   entityprops props{
+      id,
       spritesheet,
       animations,
       position,
       pivot,
       angle,
       flip,
-      alpha,
-      id};
+      alpha};
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;

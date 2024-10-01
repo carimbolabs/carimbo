@@ -17,6 +17,7 @@ struct keyframe {
 
 struct entityprops {
 public:
+  std::string_view id;
   std::shared_ptr<graphics::pixmap> spritesheet;
   std::map<std::string, std::vector<keyframe>> animations;
   geometry::point position;
@@ -24,7 +25,6 @@ public:
   float_t angle;
   graphics::flip flip;
   uint8_t alpha;
-  std::string_view id;
 
   entityprops() = default;
 };
