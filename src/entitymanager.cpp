@@ -79,7 +79,7 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
                                  return entity->id() == id;
                                });
 
-  return (it != _entities.end()) ? *it : std::shared_ptr<entity>();
+  return (it != _entities.end()) ? *it : nullptr;
 }
 
 void entitymanager::update() {
