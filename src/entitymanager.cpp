@@ -74,10 +74,10 @@ void entitymanager::destroy(const std::shared_ptr<entity> entity) {
 }
 
 std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
-  auto it = std::find_if(_entities.begin(), _entities.end(),
-                         [id](const std::shared_ptr<entity> &entity) {
-                           return entity->id() == id;
-                         });
+  const auto it = std::find_if(_entities.begin(), _entities.end(),
+                               [id](const std::shared_ptr<entity> &entity) {
+                                 return entity->id() == id;
+                               });
 
   return (it != _entities.end()) ? *it : std::shared_ptr<entity>();
 }
