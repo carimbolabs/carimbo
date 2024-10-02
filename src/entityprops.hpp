@@ -24,9 +24,13 @@ public:
   geometry::point position;
   geometry::point pivot;
   float_t angle;
+  double_t scale;
   graphics::flip flip;
   uint8_t alpha;
   bool gravitic;
+  std::string action;
+  uint32_t frame;
+  uint32_t last_frame;
 
   entityprops() = default;
 };

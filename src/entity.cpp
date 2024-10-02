@@ -9,6 +9,8 @@
 
 using namespace framework;
 
+// constexpr double_t GRAVITY = .5;
+
 entity::entity(const entityprops &&props)
     : _props(std::move(props)), _fn(nullptr) {
 }
@@ -32,24 +34,26 @@ void entity::set_props(entityprops props) {
 }
 
 void entity::update() {
+  const auto now = SDL_GetTicks();
+  const auto animation = _props.animations.at(_props.action);
+  if (now - _props.last_frame >= animation[_props.frame].duration) {
+    _props.frame = (_props.frame + 1) % animation.size();
+    _props.last_frame = now;
+  }
+
+  if (_props.gravitic) {
+  }
+
   if (_fn) {
     _fn(shared_from_this());
   }
 }
 
-static int i = 0;
-
 void entity::draw() const {
   if (_props.spritesheet) {
-    const auto source = _props.animations.at("walk")[i].frame;
-    i++;
-    if (i > 2) {
-      i = 0;
-    }
-
-    geometry::point position{10, 10};
-    geometry::rect destination{position, source.size()};
-    destination.scale(4.f);
+    const auto source = _props.animations.at(_props.action)[_props.frame].frame;
+    geometry::rect destination{_props.position, source.size()};
+    destination.scale(_props.scale);
 
     _props.spritesheet->draw(
         source,
