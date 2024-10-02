@@ -25,6 +25,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
+  const auto gravitic = j.value("gravitic", false);
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
@@ -61,7 +62,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       pivot,
       angle,
       flip,
-      alpha};
+      alpha,
+      gravitic};
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;

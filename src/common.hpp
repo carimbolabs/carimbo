@@ -93,3 +93,7 @@ namespace input {
 class eventmanager;
 class eventreceiver;
 }
+
+namespace math {
+class vector2d;
+}

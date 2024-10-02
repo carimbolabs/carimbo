@@ -26,6 +26,7 @@ public:
   float_t angle;
   graphics::flip flip;
   uint8_t alpha;
+  bool gravitic;
 
   entityprops() = default;
 };
