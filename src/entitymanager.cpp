@@ -34,7 +34,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
     for (const auto &frame_list : a) {
       for (const auto &f : frame_list) {
         geometry::point position{f.at("x").get<int32_t>(), f.at("y").get<int32_t>()};
-        geometry::size size{f.at("width").get<uint32_t>(), f.at("height").get<uint32_t>()};
+        geometry::size size{f.at("width").get<int32_t>(), f.at("height").get<int32_t>()};
         geometry::rect rect{position, size};
         uint64_t duration = f.at("duration").get<uint64_t>();
 

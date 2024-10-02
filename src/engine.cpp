@@ -101,7 +101,7 @@ void engine::destroy(const std::shared_ptr<entity> entity) {
 }
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {
-  _loopables.emplace_back(loopable);
+  _loopables.emplace_back(std::move(loopable));
 }
 
 #ifdef EMSCRIPTEN

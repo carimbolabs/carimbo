@@ -8,6 +8,7 @@
 #include "event.hpp"
 #include "eventreceiver.hpp"
 #include "io.hpp"
+#include "loopable.hpp"
 #include "noncopyable.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
@@ -15,13 +16,30 @@
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
 #include "ticks.hpp"
+#include <sol/types.hpp>
 
 using namespace framework;
+
+class loopable_proxy : public loopable {
+public:
+  loopable_proxy(sol::function lua_func) : function(lua_func) {}
+
+  void loop(uint32_t delta) override {
+    if (function.valid()) {
+      function(delta);
+    }
+  }
+
+private:
+  sol::function function;
+};
 
 void scriptengine::run() {
   sol::state lua;
 
   lua.open_libraries();
+  //
+  // lua.open_libraries(sol::lib::base, sol::lib::coroutine, sol::lib::package, sol::lib::string);
 
   lua.new_enum(
       "KeyEvent",
@@ -56,6 +74,7 @@ void scriptengine::run() {
       "width", sol::property(&engine::width),
       "height", sol::property(&engine::height),
       "soundmanager", &engine::soundmanager,
+      "add_loopable", &engine::add_loopable,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames{table.size()};
         for (auto &item : table) {
@@ -84,9 +103,24 @@ void scriptengine::run() {
       // "play", &entity::play_sound,
       "on_update", &entity::set_onupdate);
 
+  // lua.new_usertype<loopable_proxy>("loopable_proxy",
+  //                                  sol::constructors<loopable_proxy(sol::function)>(),
+  //                                  "loop", &loopable_proxy::loop);
+
+  lua.new_usertype<loopable_proxy>("loopable_proxy",
+                                   sol::constructors<loopable_proxy(sol::function)>(),
+                                   "loop", &loopable_proxy::loop);
+
   lua.set_function("sleep", &sleep);
 
   const auto script = storage::io::read("scripts/main.lua");
+
+  sol::object loopable_proxy_obj = lua["loopable_proxy"];
+  if (loopable_proxy_obj.valid() && loopable_proxy_obj.get_type() == sol::type::userdata) {
+    std::cout << "loopable_proxy registrado corretamente como userdata." << std::endl;
+  } else {
+    std::cerr << "Erro: loopable_proxy não está registrado corretamente no Lua." << std::endl;
+  }
 
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }

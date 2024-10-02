@@ -2,6 +2,7 @@
 
 #include "deleters.hpp"
 #include "io.hpp"
+#include "rect.hpp"
 #include "renderer.hpp"
 #include <cstdint>
 #include <spng.h>
@@ -45,7 +46,9 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
         fmt::format("[spng_decode_image] error while decoding image: {}, error: {}", filename, spng_strerror(error)));
   }
 
-  _size = geometry::size{ihdr.width, ihdr.height};
+  _size = geometry::size{
+      static_cast<int32_t>(ihdr.width),
+      static_cast<int32_t>(ihdr.height)};
 
   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{
       SDL_CreateRGBSurfaceWithFormat(
@@ -72,20 +75,19 @@ pixmap::pixmap(const std::shared_ptr<renderer> renderer, std::string_view filena
 }
 
 void pixmap::draw(
-    const geometry::point &point,
+    const geometry::rect &source,
+    const geometry::rect &destination,
     const double_t angle,
     flip flip,
-    const uint8_t alpha) const {
-  const SDL_Rect rect{
-      point.x(),
-      point.y(),
-      static_cast<int>(_size.width()),
-      static_cast<int>(_size.height())};
+    const uint8_t alpha) const noexcept {
+  const SDL_Rect &src = source;
+  const SDL_Rect &dst = destination;
 
   SDL_SetTextureAlphaMod(_texture.get(), alpha);
-  SDL_RenderCopyEx(*_renderer, _texture.get(), nullptr, &rect, angle, nullptr, static_cast<SDL_RendererFlip>(flip));
+  SDL_RenderCopyEx(
+      *_renderer, _texture.get(), &src, &dst, angle, nullptr, static_cast<SDL_RendererFlip>(flip));
 }
 
-const geometry::size pixmap::size() const { return _size; }
+const geometry::size pixmap::size() const noexcept { return _size; }
 
-void pixmap::set_size(const geometry::size &size) { _size = size; }
+void pixmap::set_size(const geometry::size &size) noexcept { _size = size; }

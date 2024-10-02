@@ -3,6 +3,7 @@
 #include "entitymanager.hpp"
 #include "pixmap.hpp"
 #include "pixmappool.hpp"
+#include "rect.hpp"
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 
@@ -36,10 +37,27 @@ void entity::update() {
   }
 }
 
+static int i = 0;
+
 void entity::draw() const {
-  // if (_pixmap) {
-  //   _pixmap->draw(_point, _angle, _flip, _alpha);
-  // }
+  if (_props.spritesheet) {
+    const auto source = _props.animations.at("walk")[i].frame;
+    i++;
+    if (i > 2) {
+      i = 0;
+    }
+
+    geometry::point position{10, 10};
+    geometry::rect destination{position, source.size()};
+    destination.scale(4.f);
+
+    _props.spritesheet->draw(
+        source,
+        destination,
+        .0f,
+        graphics::flip::none,
+        255);
+  }
 }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {

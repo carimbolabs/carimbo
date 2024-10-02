@@ -3,6 +3,7 @@
 #include "common.hpp"
 
 #include "point.hpp"
+#include "rect.hpp"
 #include "size.hpp"
 
 typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
@@ -21,14 +22,15 @@ public:
   ~pixmap() = default;
 
   void draw(
-      const geometry::point &point,
+      const geometry::rect &source,
+      const geometry::rect &destination,
       const double angle = 0.0,
       flip flip = flip::none,
-      const uint8_t alpha = 255) const;
+      const uint8_t alpha = 255) const noexcept;
 
-  const geometry::size size() const;
+  const geometry::size size() const noexcept;
 
-  void set_size(const geometry::size &size);
+  void set_size(const geometry::size &size) noexcept;
 
 private:
   std::shared_ptr<renderer> _renderer;

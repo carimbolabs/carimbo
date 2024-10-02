@@ -6,21 +6,25 @@ namespace geometry {
 class size {
 public:
   size() = default;
-  size(uint32_t width, uint32_t height);
+  size(int32_t width, int32_t height);
   size(const size &other);
-  // size(size &&other) noexcept;
-  virtual ~size() = default;
 
-  void set_width(const uint32_t width);
+  ~size() = default;
 
-  uint32_t width() const;
+  void set_width(const int32_t width) noexcept;
 
-  void set_height(const uint32_t height);
+  int32_t width() const noexcept;
 
-  uint32_t height() const;
+  void set_height(const int32_t height) noexcept;
+
+  int32_t height() const noexcept;
+
+  constexpr bool operator==(const size &rhs) const noexcept;
+
+  constexpr bool operator!=(const size &rhs) const noexcept;
 
 private:
-  uint32_t _width;
-  uint32_t _height;
+  int32_t _width;
+  int32_t _height;
 };
 }
