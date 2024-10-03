@@ -12,7 +12,7 @@
 
 using namespace framework;
 
-constexpr double_t GRAVITY = .1;
+constexpr double_t GRAVITY = .06;
 
 entity::entity(const entityprops &&props)
     : _props(std::move(props)), _fn(nullptr) {

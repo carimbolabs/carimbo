@@ -9,7 +9,6 @@
 extern "C" {
 #include <AL/al.h>
 #include <AL/alc.h>
-// #include <AL/alext.h>
 #include <SDL2/SDL.h>
 #include <curl/curl.h>
 #include <ogg/ogg.h>
