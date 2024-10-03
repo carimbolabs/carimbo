@@ -122,20 +122,27 @@ void engine::run() {
 }
 
 void engine::_loop() {
+  static auto prior = SDL_GetTicks();
   const auto now = SDL_GetTicks();
+  const auto delta = now - prior;
 
-  _resourcemanager->update();
-  _eventmanager->update();
-  _entitymanager->update();
+  prior = now;
+
+  // const auto now = SDL_GetTicks();
+
+  _resourcemanager->update(delta);
+  _eventmanager->update(delta);
+  _entitymanager->update(delta);
+
+  std::for_each(_loopables.begin(), _loopables.end(),
+                [delta](auto &loopable) { loopable->loop(delta); });
+
   _renderer->begin();
   _entitymanager->draw();
   // _scenegraph->render();
   _renderer->end();
 
-  const auto delta = SDL_GetTicks() - now;
-
-  std::for_each(_loopables.begin(), _loopables.end(),
-                [delta](auto &loopable) { loopable->loop(delta); });
+  // const auto delta = SDL_GetTicks() - now;
 }
 
 int32_t engine::width() const { return _window->width(); }

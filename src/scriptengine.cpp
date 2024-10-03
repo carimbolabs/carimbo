@@ -113,6 +113,7 @@ void scriptengine::run() {
       // "play", &entity::play_sound,
       "on_update", &entity::set_onupdate,
       "set_action", &entity::set_action,
+      "set_velocity", &entity::set_velocity,
       "set_placement", &entity::set_placement);
 
   // lua.new_usertype<loopable_proxy>("loopable_proxy",
@@ -122,6 +123,29 @@ void scriptengine::run() {
   lua.new_usertype<loopable_proxy>("loopable_proxy",
                                    sol::constructors<loopable_proxy(sol::function)>(),
                                    "loop", &loopable_proxy::loop);
+
+  lua.new_usertype<vector2d>(
+      "Vector2D",
+      sol::constructors<
+          vector2d(),
+          vector2d(double_t, double_t)>(),
+
+      "x", sol::property(&vector2d::x, &vector2d::set_x),
+      "y", sol::property(&vector2d::y, &vector2d::set_y),
+      "magnitude", &vector2d::magnitude,
+      "unit", &vector2d::unit,
+      "dot", &vector2d::dot,
+
+      sol::meta_function::addition, &vector2d::operator+,
+      sol::meta_function::subtraction, &vector2d::operator-,
+
+      "add_assign", &vector2d::operator+=,
+      "sub_assign", &vector2d::operator-=,
+      "mul_assign", &vector2d::operator*=,
+      "div_assign", &vector2d::operator/=,
+
+      sol::meta_function::equal_to, &vector2d::operator==);
+  // sol::meta_function::not_equal_to, &vector2d::operator!=);
 
   lua.set_function("sleep", &sleep);
 

@@ -4,6 +4,7 @@
 
 #include "anchor.hpp"
 #include "entityprops.hpp"
+#include "vector2d.hpp"
 #include <string_view>
 
 namespace framework {
@@ -15,37 +16,9 @@ public:
 
   uint64_t id() const;
 
-  virtual void update();
+  virtual void update(double delta) noexcept;
 
-  virtual void draw() const;
-
-  // void set_x(int32_t x);
-
-  // int32_t x() const;
-
-  // void set_y(int32_t y);
-
-  // int32_t y() const;
-
-  // void move(int32_t x, int32_t y);
-
-  // int32_t width() const;
-
-  // int32_t height() const;
-
-  // void scale(double factor);
-
-  // void set_angle(const double_t angle);
-
-  // double_t angle() const;
-
-  // void set_flip(graphics::flip flip);
-
-  // graphics::flip get_flip();
-
-  // void set_alpha(const uint8_t alpha);
-
-  // uint8_t alpha() const;
+  virtual void draw() const noexcept;
 
   const entityprops props() const noexcept;
 
@@ -58,6 +31,8 @@ public:
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
+
+  void set_velocity(const vector2d &velocity) noexcept;
 
   void set_pixmap(const std::string_view filename);
 

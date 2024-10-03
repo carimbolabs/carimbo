@@ -35,7 +35,7 @@ void entity::set_props(entityprops props) noexcept {
   _props = std::move(props);
 }
 
-void entity::update() {
+void entity::update(double delta) noexcept {
   if (!_props.action.empty()) {
     const auto now = SDL_GetTicks();
     const auto animation = _props.animations.at(_props.action);
@@ -44,7 +44,10 @@ void entity::update() {
       _props.last_frame = now;
     }
 
-    if (_props.gravitic) {
+    if (_props.gravitic || _props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
+      const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
+      const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
+      _props.position.set(x, y);
     }
   }
 
@@ -53,13 +56,11 @@ void entity::update() {
   }
 }
 
-void entity::draw() const {
+void entity::draw() const noexcept {
   if (!_props.action.empty()) {
     const auto source = _props.animations.at(_props.action)[_props.frame].frame;
     geometry::rect destination{_props.position, source.size()};
     destination.scale(_props.scale);
-
-    // std::cout << "_props.position >> " << _props.position.x() << "x" << _props.position.y() << std::endl;
 
     _props.spritesheet->draw(
         source,
@@ -111,6 +112,10 @@ void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
 void entity::set_resourcemanager(
     std::shared_ptr<resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
+}
+
+void entity::set_velocity(const vector2d &velocity) noexcept {
+  _props.velocity = std::move(velocity);
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) {

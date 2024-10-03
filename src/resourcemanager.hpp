@@ -12,7 +12,7 @@ public:
 
   void prefetch(const std::vector<std::string> &filenames);
 
-  void update();
+  void update(double_t delta);
 
   bool busy() const;
 

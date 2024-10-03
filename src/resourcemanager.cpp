@@ -1,8 +1,10 @@
 #include "resourcemanager.hpp"
 
+#include "helpers.hpp"
 #include "pixmappool.hpp"
 #include "renderer.hpp"
 #include "soundmanager.hpp"
+#include <cmath>
 
 using namespace framework;
 
@@ -24,7 +26,9 @@ void resourcemanager::prefetch(const std::vector<std::string> &filenames) {
   _filenames.insert(_filenames.end(), filenames.begin(), filenames.end());
 }
 
-void resourcemanager::update() {
+void resourcemanager::update(double_t delta) {
+  UNUSED(delta);
+
   if (_filenames.empty()) {
     return;
   }

@@ -5,6 +5,7 @@
 #include "pixmap.hpp"
 #include "point.hpp"
 #include "rect.hpp"
+#include "vector2d.hpp"
 
 namespace framework {
 struct keyframe {
@@ -31,6 +32,7 @@ public:
   std::string action;
   uint32_t frame;
   uint32_t last_frame;
+  vector2d velocity;
 
   entityprops() = default;
 };

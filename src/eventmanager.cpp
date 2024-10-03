@@ -2,6 +2,7 @@
 
 #include "event.hpp"
 #include "eventreceiver.hpp"
+#include "helpers.hpp"
 
 using namespace input;
 
@@ -21,7 +22,9 @@ eventmanager::eventmanager() {
   }
 }
 
-void eventmanager::update() {
+void eventmanager::update(double_t delta) {
+  UNUSED(delta);
+
   static std::unordered_map<Uint8, SDL_Keycode> mapping = {
       {SDL_CONTROLLER_BUTTON_DPAD_UP, SDLK_w},
       {SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDLK_a},

@@ -1,32 +1,36 @@
 #pragma once
 
+#include <cmath>
 class vector2d {
 public:
-  constexpr vector2d() noexcept;
-  constexpr vector2d(double_t x, double_t y) noexcept;
+  vector2d() noexcept;
+  vector2d(double_t x, double_t y) noexcept;
 
-  constexpr double_t get_x() const noexcept;
-  constexpr double_t get_y() const noexcept;
+  double_t x() const noexcept;
+  double_t y() const noexcept;
 
-  constexpr vector2d operator+(const vector2d &other) const noexcept;
-  constexpr vector2d operator-(const vector2d &other) const noexcept;
-  constexpr vector2d operator*(double scalar) const noexcept;
-  constexpr vector2d operator/(double scalar) const noexcept;
+  void set_x(double_t x) noexcept;
+  void set_y(double_t y) noexcept;
+
+  vector2d operator+(const vector2d &other) const noexcept;
+  vector2d operator-(const vector2d &other) const noexcept;
+  vector2d operator*(double scalar) const noexcept;
+  vector2d operator/(double scalar) const noexcept;
 
   vector2d &operator+=(const vector2d &other) noexcept;
   vector2d &operator-=(const vector2d &other) noexcept;
   vector2d &operator*=(double scalar) noexcept;
   vector2d &operator/=(double scalar) noexcept;
 
-  constexpr bool operator==(const vector2d &other) const noexcept;
-  constexpr bool operator!=(const vector2d &other) const noexcept;
+  bool operator==(const vector2d &other) const noexcept;
+  bool operator!=(const vector2d &other) const noexcept;
 
-  constexpr double_t magnitude() const noexcept;
+  double_t magnitude() const noexcept;
 
   vector2d unit() const noexcept;
 
-  constexpr double_t dot(const vector2d &other) const noexcept;
+  double_t dot(const vector2d &other) const noexcept;
 
 private:
-  double_t x, y;
+  double_t _x, _y;
 };

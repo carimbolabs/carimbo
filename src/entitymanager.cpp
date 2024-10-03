@@ -8,6 +8,7 @@
 #include "rect.hpp"
 #include "resourcemanager.hpp"
 #include "size.hpp"
+#include "vector2d.hpp"
 #include <cstdint>
 #include <string_view>
 #include <vector>
@@ -56,6 +57,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   std::string action;
   uint32_t frame{0};
   uint32_t last_frame{0};
+  vector2d velocity;
 
   entityprops props{
       id,
@@ -71,7 +73,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       gravitic,
       action,
       frame,
-      last_frame};
+      last_frame,
+      velocity};
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
@@ -92,13 +95,13 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
   return (it != _entities.end()) ? *it : nullptr;
 }
 
-void entitymanager::update() {
+void entitymanager::update(double delta) noexcept {
   for (auto entity : _entities) {
-    entity->update();
+    entity->update(delta);
   }
 }
 
-void entitymanager::draw() {
+void entitymanager::draw() noexcept {
   for (auto entity : _entities) {
     entity->draw();
   }

@@ -17,9 +17,9 @@ public:
 
   std::shared_ptr<entity> find(uint64_t id) const;
 
-  void update();
+  void update(double delta) noexcept;
 
-  void draw();
+  void draw() noexcept;
 
 private:
   std::shared_ptr<resourcemanager> _resourcemanager;
