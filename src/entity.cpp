@@ -57,18 +57,20 @@ void entity::update(double delta) noexcept {
 }
 
 void entity::draw() const noexcept {
-  if (!_props.action.empty()) {
-    const auto source = _props.animations.at(_props.action)[_props.frame].frame;
-    geometry::rect destination{_props.position, source.size()};
-    destination.scale(_props.scale);
-
-    _props.spritesheet->draw(
-        source,
-        destination,
-        _props.angle,
-        _props.flip,
-        _props.alpha);
+  if (_props.action.empty()) {
+    return;
   }
+
+  const auto source = _props.animations.at(_props.action)[_props.frame].frame;
+  geometry::rect destination{_props.position, source.size()};
+  destination.scale(_props.scale);
+
+  _props.spritesheet->draw(
+      source,
+      destination,
+      _props.angle,
+      _props.flip,
+      _props.alpha);
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
