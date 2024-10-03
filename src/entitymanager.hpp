@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include <cstdint>
 
 namespace framework {
 class entitymanager {
