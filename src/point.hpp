@@ -6,17 +6,19 @@ namespace geometry {
 class point {
 public:
   point() = default;
-  point(const int32_t x, const int32_t y);
-  point(const point &other);
+  point(int32_t x, int32_t y) noexcept;
+  point(const point &other) noexcept;
   ~point() = default;
 
-  int32_t x() const;
-  void set_x(const int32_t x);
+  void set(int32_t x, int32_t y) noexcept;
 
-  int32_t y() const;
-  void set_y(const int32_t y);
+  int32_t x() const noexcept;
+  void set_x(int32_t x) noexcept;
 
-  operator SDL_Point() const;
+  int32_t y() const noexcept;
+  void set_y(int32_t y) noexcept;
+
+  operator SDL_Point() const noexcept;
 
 private:
   int32_t _x;

@@ -2,16 +2,21 @@
 
 using namespace geometry;
 
-point::point(const int32_t x, const int32_t y) : _x(x), _y(y) {}
+point::point(int32_t x, int32_t y) noexcept : _x(x), _y(y) {}
 
-point::point(const point &other) : _x(other.x()), _y(other.y()) {}
+point::point(const point &other) noexcept : _x(other.x()), _y(other.y()) {}
 
-int32_t point::x() const { return _x; }
+void point::set(int32_t x, int32_t y) noexcept {
+  _x = x;
+  _y = y;
+}
 
-void point::set_x(const int32_t x) { _x = x; }
+int32_t point::x() const noexcept { return _x; }
 
-int32_t point::y() const { return _y; }
+void point::set_x(int32_t x) noexcept { _x = x; }
 
-void point::set_y(const int32_t y) { _y = y; }
+int32_t point::y() const noexcept { return _y; }
 
-point::operator SDL_Point() const { return SDL_Point{_x, _y}; }
+void point::set_y(int32_t y) noexcept { _y = y; }
+
+point::operator SDL_Point() const noexcept { return SDL_Point{_x, _y}; }

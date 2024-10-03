@@ -53,7 +53,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   float_t angle{.0f};
   graphics::flip flip = graphics::flip::none;
   uint8_t alpha{255};
-  std::string action{"idle"};
+  std::string action;
   uint32_t frame{0};
   uint32_t last_frame{0};
 

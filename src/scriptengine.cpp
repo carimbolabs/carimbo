@@ -1,5 +1,6 @@
 #include "scriptengine.hpp"
 
+#include "common.hpp"
 #include "delay.hpp"
 #include "engine.hpp"
 #include "enginefactory.hpp"
@@ -16,6 +17,7 @@
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
 #include "ticks.hpp"
+#include <sol/property.hpp>
 #include <sol/types.hpp>
 
 using namespace framework;
@@ -48,6 +50,14 @@ void scriptengine::run() {
       "s", input::keyevent::s,
       "d", input::keyevent::d,
       "space", input::keyevent::space);
+
+  lua.new_enum(
+      "Anchor",
+      "top", anchor::top,
+      "bottom", anchor::bottom,
+      "left", anchor::left,
+      "right", anchor::right,
+      "none", anchor::none);
 
   lua.new_usertype<geometry::point>(
       "Point",
@@ -101,7 +111,9 @@ void scriptengine::run() {
       // "alpha", sol::property(&entity::alpha, &entity::set_alpha),
       // "pixmap", sol::property(&entity::set_pixmap),
       // "play", &entity::play_sound,
-      "on_update", &entity::set_onupdate);
+      "on_update", &entity::set_onupdate,
+      "set_action", &entity::set_action,
+      "set_placement", &entity::set_placement);
 
   // lua.new_usertype<loopable_proxy>("loopable_proxy",
   //                                  sol::constructors<loopable_proxy(sol::function)>(),

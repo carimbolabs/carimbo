@@ -2,7 +2,9 @@
 
 #include "common.hpp"
 
+#include "anchor.hpp"
 #include "entityprops.hpp"
+#include <string_view>
 
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
@@ -45,9 +47,11 @@ public:
 
   // uint8_t alpha() const;
 
-  const entityprops props() const;
+  const entityprops props() const noexcept;
 
-  void set_props(entityprops props);
+  void set_props(entityprops props) noexcept;
+
+  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none) noexcept;
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
@@ -59,15 +63,12 @@ public:
 
   void play_sound(const std::string_view filename);
 
+  void set_action(const std::string_view action) noexcept;
+
+  std::string action() const noexcept;
+
 private:
   entity(const entityprops &&props);
-
-  // std::string _id;
-  // std::shared_ptr<graphics::pixmap> _pixmap;
-  // geometry::point _point;
-  // double_t _angle;
-  // graphics::flip _flip;
-  // uint8_t _alpha;
 
   std::string _id;
   entityprops _props;
