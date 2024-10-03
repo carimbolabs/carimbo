@@ -73,3 +73,19 @@ vector2d vector2d::unit() const noexcept {
 double_t vector2d::dot(const vector2d &other) const noexcept {
   return _x * other._x + _y * other._y;
 }
+
+bool vector2d::stationary() const noexcept {
+  return _x == 0.0 && _y == 0.0;
+}
+
+bool vector2d::moving() const noexcept {
+  return !stationary();
+}
+
+bool vector2d::right() const noexcept {
+  return _x > 0;
+}
+
+bool vector2d::left() const noexcept {
+  return _x < 0;
+}

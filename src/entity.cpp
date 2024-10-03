@@ -8,10 +8,11 @@
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 #include <iostream>
+#include <iterator>
 
 using namespace framework;
 
-// constexpr double_t GRAVITY = .5;
+constexpr double_t GRAVITY = .1;
 
 entity::entity(const entityprops &&props)
     : _props(std::move(props)), _fn(nullptr) {
@@ -36,6 +37,8 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::update(double delta) noexcept {
+  const int32_t GROUND_LEVEL = 580; // Substitua com o valor correspondente ao nível do chão no seu jogo.
+
   if (!_props.action.empty()) {
     const auto now = SDL_GetTicks();
     const auto animation = _props.animations.at(_props.action);
@@ -44,17 +47,56 @@ void entity::update(double delta) noexcept {
       _props.last_frame = now;
     }
 
+    // Aplicação da gravidade apenas se a entidade estiver acima do chão
+    if (_props.gravitic && _props.position.y() < GROUND_LEVEL) {
+      _props.velocity.set_y(_props.velocity.y() + GRAVITY * delta);
+    }
+
+    // Atualiza a posição com base na velocidade
     if (_props.gravitic || _props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
-      const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
-      const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
-      _props.position.set(x, y);
+      const auto new_x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
+      auto new_y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
+
+      // Verifica se a entidade está abaixo do nível do chão
+      if (new_y >= GROUND_LEVEL) {
+        new_y = GROUND_LEVEL;       // Posiciona a entidade no nível do chão
+        _props.velocity.set_y(0.0); // Zera a velocidade vertical
+      }
+
+      _props.position.set(new_x, new_y);
     }
   }
 
+  // Executa a função de callback, se existir
   if (_fn) {
     _fn(shared_from_this());
   }
 }
+
+// void entity::update(double delta) noexcept {
+//   if (!_props.action.empty()) {
+//     const auto now = SDL_GetTicks();
+//     const auto animation = _props.animations.at(_props.action);
+//     if (now - _props.last_frame >= animation[_props.frame].duration) {
+//       _props.frame = (_props.frame + 1) % animation.size();
+//       _props.last_frame = now;
+//     }
+
+//     if (_props.gravitic) {
+//       _props.velocity.set_y(_props.velocity.y() + GRAVITY * delta);
+//     }
+
+//     if (_props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
+//       const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
+//       const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
+//       _props.position.set(x, y);
+//     }
+//   }
+
+//   if (_fn) {
+//     _fn(shared_from_this());
+//   }
+// }
 
 void entity::draw() const noexcept {
   if (!_props.action.empty()) {
@@ -65,9 +107,9 @@ void entity::draw() const noexcept {
     _props.spritesheet->draw(
         source,
         destination,
-        .0f,
-        graphics::flip::none,
-        255);
+        _props.angle,
+        _props.flip,
+        _props.alpha);
   }
 }
 
@@ -120,6 +162,10 @@ void entity::set_velocity(const vector2d &velocity) noexcept {
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) {
   _fn = fn;
+}
+
+void entity::set_flip(graphics::flip flip) noexcept {
+  _props.flip = flip;
 }
 
 void entity::set_action(const std::string_view action) noexcept {

@@ -10,13 +10,13 @@
 #include "eventreceiver.hpp"
 #include "io.hpp"
 #include "loopable.hpp"
-#include "noncopyable.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
 #include "ticks.hpp"
+#include "vector2d.hpp"
 #include <sol/property.hpp>
 #include <sol/types.hpp>
 
@@ -58,6 +58,13 @@ void scriptengine::run() {
       "left", anchor::left,
       "right", anchor::right,
       "none", anchor::none);
+
+  lua.new_enum(
+      "Flip",
+      "none", graphics::flip::none,
+      "horizontal", graphics::flip::horizontal,
+      "vertical", graphics::flip::vertical,
+      "both", graphics::flip::both);
 
   lua.new_usertype<geometry::point>(
       "Point",
@@ -112,6 +119,7 @@ void scriptengine::run() {
       // "pixmap", sol::property(&entity::set_pixmap),
       // "play", &entity::play_sound,
       "on_update", &entity::set_onupdate,
+      "set_flip", &entity::set_flip,
       "set_action", &entity::set_action,
       "set_velocity", &entity::set_velocity,
       "set_placement", &entity::set_placement);
@@ -144,7 +152,12 @@ void scriptengine::run() {
       "mul_assign", &vector2d::operator*=,
       "div_assign", &vector2d::operator/=,
 
-      sol::meta_function::equal_to, &vector2d::operator==);
+      sol::meta_function::equal_to, &vector2d::operator==,
+
+      "stationary", &vector2d::stationary,
+      "moving", &vector2d::moving,
+      "right", &vector2d::right,
+      "left", &vector2d::left);
   // sol::meta_function::not_equal_to, &vector2d::operator!=);
 
   lua.set_function("sleep", &sleep);

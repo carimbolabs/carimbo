@@ -128,8 +128,6 @@ void engine::_loop() {
 
   prior = now;
 
-  // const auto now = SDL_GetTicks();
-
   _resourcemanager->update(delta);
   _eventmanager->update(delta);
   _entitymanager->update(delta);
@@ -141,8 +139,6 @@ void engine::_loop() {
   _entitymanager->draw();
   // _scenegraph->render();
   _renderer->end();
-
-  // const auto delta = SDL_GetTicks() - now;
 }
 
 int32_t engine::width() const { return _window->width(); }

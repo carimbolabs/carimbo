@@ -4,6 +4,7 @@
 
 #include "anchor.hpp"
 #include "entityprops.hpp"
+#include "pixmap.hpp"
 #include "vector2d.hpp"
 #include <string_view>
 
@@ -37,6 +38,8 @@ public:
   void set_pixmap(const std::string_view filename);
 
   void play_sound(const std::string_view filename);
+
+  void set_flip(graphics::flip flip) noexcept;
 
   void set_action(const std::string_view action) noexcept;
 

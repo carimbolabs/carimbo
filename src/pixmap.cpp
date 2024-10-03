@@ -1,6 +1,7 @@
 #include "pixmap.hpp"
 
 #include "deleters.hpp"
+#include "helpers.hpp"
 #include "io.hpp"
 #include "rect.hpp"
 #include "renderer.hpp"
