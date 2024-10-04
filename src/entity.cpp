@@ -142,7 +142,7 @@ std::string entity::action() const noexcept {
   return _props.action;
 }
 
-void entity::delivery(const std::string &message) {
+void entity::dispatch(const std::string &message) {
   if (!_onmail) {
     return;
   }

@@ -110,6 +110,6 @@ void entitymanager::draw() noexcept {
 
 void entitymanager::on_mail(const input::mailevent &event) {
   if (const auto entity = find(event.to); entity) {
-    entity->delivery(event.body);
+    entity->dispatch(event.body);
   }
 }

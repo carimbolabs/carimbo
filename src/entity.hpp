@@ -48,7 +48,7 @@ public:
 
   std::string action() const noexcept;
 
-  void delivery(const std::string &message);
+  void dispatch(const std::string &message);
 
 private:
   entity(const entityprops &&props);
