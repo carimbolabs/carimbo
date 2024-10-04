@@ -109,6 +109,14 @@ void eventmanager::update(double_t delta) {
             });
       }
     } break;
+
+    default:
+      switch (event.type) {
+      case input::eventtype::mail: {
+        std::cout << "Mail received" << std::endl;
+      } break;
+      }
+      break;
     }
   }
 }

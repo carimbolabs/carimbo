@@ -12,13 +12,14 @@
 #include "loopable.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
+#include "postalservice.hpp"
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
 #include "statemanager.hpp"
 #include "ticks.hpp"
 #include "vector2d.hpp"
-#include <sol/property.hpp>
-#include <sol/types.hpp>
+#include <cstdint>
+#include <string_view>
 
 using namespace framework;
 
@@ -159,6 +160,15 @@ void scriptengine::run() {
       "right", &vector2d::right,
       "left", &vector2d::left);
   // sol::meta_function::not_equal_to, &vector2d::operator!=);
+
+  lua.new_usertype<postalservice>(
+      "PostalService",
+      sol::constructors<postalservice()>(),
+      "post", &postalservice::post);
+
+  lua.new_usertype<mail>(
+      "Mail",
+      sol::constructors<mail(uint64_t, const std::string_view)>());
 
   lua.set_function("sleep", &sleep);
 

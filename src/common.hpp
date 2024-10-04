@@ -65,6 +65,7 @@ class entitymanager;
 class framerate;
 class garbagecollector;
 class loopable;
+class postalservice;
 class resourcemanager;
 class scriptengine;
 class statemanager;

@@ -3,6 +3,10 @@
 #include "common.hpp"
 
 namespace input {
+enum eventtype : Uint32 {
+  mail = SDL_USEREVENT + 1,
+};
+
 enum class keyevent : int32_t {
   w = SDLK_w,
   a = SDLK_a,
