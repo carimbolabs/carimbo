@@ -23,4 +23,13 @@ enum class joysticevent : int32_t {
   dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
   dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
 };
+
+class mailevent {
+public:
+  mailevent(uint64_t to, const std::string &body)
+      : to(to), body(body) {}
+
+  uint64_t to;
+  std::string body;
+};
 }

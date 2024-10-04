@@ -5,18 +5,16 @@
 namespace framework {
 struct mail {
   uint64_t to;
-  std::shared_ptr<std::string> msg;
+  std::string body;
 
-  mail(uint64_t to, const std::string_view message) : to(to), msg(std::make_shared<std::string>(message)) {}
+  mail(uint64_t to, const std::string_view body)
+      : to(to), body(body) {}
 };
 
 class postalservice {
 public:
-  postalservice();
+  postalservice() = default;
 
-  void post(const std::string_view message, uint64_t to);
-
-private:
-  uint32_t _eventtype;
+  void post(const mail &message);
 };
 }

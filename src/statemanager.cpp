@@ -10,9 +10,11 @@ bool statemanager::is_keydown(const input::keyevent &event) const {
 }
 
 void statemanager::on_keydown(const input::keyevent &event) {
-  _keys[event] = true;
+  _keys.emplace(event, true).first->second = true;
 }
 
 void statemanager::on_keyup(const input::keyevent &event) {
-  _keys[event] = false;
+  if (auto it = _keys.find(event); it != _keys.end()) {
+    it->second = false;
+  }
 }

@@ -14,5 +14,7 @@ public:
   virtual void on_keydown(const keyevent &event);
 
   virtual void on_keyup(const keyevent &event);
+
+  virtual void on_mail(const mailevent &event);
 };
 }

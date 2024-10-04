@@ -16,6 +16,6 @@ protected:
   virtual void on_keyup(const input::keyevent &event);
 
 private:
-  std::map<input::keyevent, bool> _keys;
+  std::unordered_map<input::keyevent, bool> _keys;
 };
 }

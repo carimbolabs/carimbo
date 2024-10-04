@@ -3,6 +3,8 @@
 #include "event.hpp"
 #include "eventreceiver.hpp"
 #include "helpers.hpp"
+#include "postalservice.hpp"
+#include <iostream>
 
 using namespace input;
 
@@ -110,7 +112,20 @@ void eventmanager::update(double_t delta) {
     default:
       switch (event.type) {
       case input::eventtype::mail: {
-        std::cout << "Mail received" << std::endl;
+        auto *ptr = static_cast<framework::mail *>(event.user.data1);
+
+        if (ptr) {
+          std::cout << " >>> UHUL " << ptr->body << " to " << ptr->to << std::endl;
+
+          std::for_each(
+              _receivers.begin(),
+              _receivers.end(),
+              [&ptr](const std::shared_ptr<eventreceiver> receiver) {
+                receiver->on_mail(mailevent(ptr->to, ptr->body));
+              });
+
+          delete ptr;
+        }
       } break;
       }
       break;

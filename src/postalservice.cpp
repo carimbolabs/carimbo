@@ -2,15 +2,12 @@
 
 using namespace framework;
 
-postalservice::postalservice() {
-}
-
-void postalservice::post(const std::string_view message, uint64_t to) {
+void postalservice::post(const mail &message) {
   SDL_Event event{};
-  event.type = static_cast<Uint32>(input::eventtype::mail);
-  // event.type = _eventtype;
-  // event.user.code = _eventcode;
-  event.user.data1 = static_cast<void *>(new mail(to, message));
+  event.type = input::eventtype::mail;
+
+  auto *ptr = new mail(message);
+  event.user.data1 = static_cast<void *>(ptr);
 
   SDL_PushEvent(&event);
 }
