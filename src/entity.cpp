@@ -53,7 +53,7 @@ void entity::update(double delta) noexcept {
   const auto now = SDL_GetTicks();
   const auto animation = _props.animations.at(_props.action);
   const auto duration = animation[_props.frame].duration;
-  if (duration >= 0 && now - _props.last_frame >= duration) {
+  if (duration > 0 && now - _props.last_frame >= duration) {
     _props.frame = (_props.frame + 1) % animation.size();
     _props.last_frame = now;
   }
