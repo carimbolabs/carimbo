@@ -115,8 +115,6 @@ void eventmanager::update(double_t delta) {
         auto *ptr = static_cast<framework::mail *>(event.user.data1);
 
         if (ptr) {
-          std::cout << " >>> UHUL " << ptr->body << " to " << ptr->to << std::endl;
-
           std::for_each(
               _receivers.begin(),
               _receivers.end(),
