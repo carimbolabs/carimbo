@@ -48,6 +48,7 @@ std::shared_ptr<engine> enginefactory::create() {
   e->set_statemanager(std::move(em3));
   e->set_resourcemanager(std::move(rm));
 
+  em1->add_receiver(std::move(em2));
   em1->add_receiver(std::move(e));
   em1->add_receiver(std::move(em3));
 

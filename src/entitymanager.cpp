@@ -9,6 +9,7 @@
 #include "resourcemanager.hpp"
 #include "size.hpp"
 #include "vector2d.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <string_view>
 #include <vector>
@@ -104,5 +105,11 @@ void entitymanager::update(double delta) noexcept {
 void entitymanager::draw() noexcept {
   for (auto entity : _entities) {
     entity->draw();
+  }
+}
+
+void entitymanager::on_mail(const input::mailevent &event) {
+  if (const auto entity = find(event.to); entity) {
+    entity->delivery(event.body);
   }
 }

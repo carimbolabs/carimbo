@@ -6,6 +6,7 @@
 #include "entityprops.hpp"
 #include "pixmap.hpp"
 #include "vector2d.hpp"
+#include <string>
 #include <string_view>
 
 namespace framework {
@@ -33,6 +34,8 @@ public:
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
 
+  void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn);
+
   void set_velocity(const vector2d &velocity) noexcept;
 
   void set_pixmap(const std::string_view filename);
@@ -45,6 +48,8 @@ public:
 
   std::string action() const noexcept;
 
+  void delivery(const std::string &message);
+
 private:
   entity(const entityprops &&props);
 
@@ -53,5 +58,6 @@ private:
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::function<void(std::shared_ptr<entity>)> _fn;
+  std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;
 };
 }

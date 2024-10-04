@@ -126,6 +126,10 @@ void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn
   _fn = fn;
 }
 
+void entity::set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) {
+  _onmail = fn;
+}
+
 void entity::set_flip(graphics::flip flip) noexcept {
   _props.flip = flip;
 }
@@ -136,4 +140,12 @@ void entity::set_action(const std::string_view action) noexcept {
 
 std::string entity::action() const noexcept {
   return _props.action;
+}
+
+void entity::delivery(const std::string &message) {
+  if (!_onmail) {
+    return;
+  }
+
+  _onmail(shared_from_this(), message);
 }

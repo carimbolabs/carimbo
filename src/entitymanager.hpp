@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common.hpp"
+#include "eventreceiver.hpp"
 
 namespace framework {
-class entitymanager {
+class entitymanager : public input::eventreceiver {
 public:
   entitymanager() = default;
   ~entitymanager() = default;
@@ -19,6 +20,9 @@ public:
   void update(double delta) noexcept;
 
   void draw() noexcept;
+
+protected:
+  virtual void on_mail(const input::mailevent &event);
 
 private:
   std::shared_ptr<resourcemanager> _resourcemanager;

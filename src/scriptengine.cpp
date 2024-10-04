@@ -120,6 +120,7 @@ void scriptengine::run() {
       // "pixmap", sol::property(&entity::set_pixmap),
       // "play", &entity::play_sound,
       "on_update", &entity::set_onupdate,
+      "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,
       "set_action", &entity::set_action,
       "set_velocity", &entity::set_velocity,
