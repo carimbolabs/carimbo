@@ -26,6 +26,10 @@ public:
 
   void set_props(entityprops props) noexcept;
 
+  int32_t x() const noexcept;
+
+  int32_t y() const noexcept;
+
   void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none) noexcept;
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);

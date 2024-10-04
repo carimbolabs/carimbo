@@ -19,6 +19,7 @@
 #include "ticks.hpp"
 #include "vector2d.hpp"
 #include <cstdint>
+#include <sol/property.hpp>
 #include <string_view>
 
 using namespace framework;
@@ -106,19 +107,20 @@ void scriptengine::run() {
       "play", &audio::soundmanager::play,
       "stop", &audio::soundmanager::stop);
 
+  lua.new_usertype<geometry::point>("Point",
+                                    sol::constructors<geometry::point(), geometry::point(int32_t, int32_t)>(),
+                                    "set", &geometry::point::set,
+                                    "x", sol::property(&geometry::point::x, &geometry::point::set_x),
+                                    "y", sol::property(&geometry::point::y, &geometry::point::set_y),
+                                    sol::meta_function::to_string, [](const geometry::point &p) {
+                                      return "point(" + std::to_string(p.x()) + ", " + std::to_string(p.y()) + ")";
+                                    });
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
-      // "x", sol::property(&entity::x, &entity::set_x),
-      // "y", sol::property(&entity::y, &entity::set_y),
-      // "width", sol::property(&entity::width),
-      // "height", sol::property(&entity::height),
-      // "move", &entity::move,
-      // "scale", &entity::scale,
-      // "angle", sol::property(&entity::angle, &entity::set_angle),
-      // "alpha", sol::property(&entity::alpha, &entity::set_alpha),
-      // "pixmap", sol::property(&entity::set_pixmap),
-      // "play", &entity::play_sound,
+      "x", sol::property(&entity::x),
+      "y", sol::property(&entity::y),
       "on_update", &entity::set_onupdate,
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,

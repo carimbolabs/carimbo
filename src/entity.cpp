@@ -7,8 +7,7 @@
 #include "rect.hpp"
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
-#include <iostream>
-#include <iterator>
+#include <cstdint>
 
 using namespace framework;
 
@@ -34,6 +33,14 @@ void entity::set_props(entityprops props) noexcept {
   _props = std::move(props);
 }
 
+int32_t entity::x() const noexcept {
+  return _props.position.x();
+}
+
+int32_t entity::y() const noexcept {
+  return _props.position.y();
+}
+
 void entity::update(double delta) noexcept {
   if (_fn) {
     _fn(shared_from_this());
@@ -45,7 +52,8 @@ void entity::update(double delta) noexcept {
 
   const auto now = SDL_GetTicks();
   const auto animation = _props.animations.at(_props.action);
-  if (now - _props.last_frame >= animation[_props.frame].duration) {
+  const auto duration = animation[_props.frame].duration;
+  if (duration >= 0 && now - _props.last_frame >= duration) {
     _props.frame = (_props.frame + 1) % animation.size();
     _props.last_frame = now;
   }
