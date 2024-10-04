@@ -13,12 +13,9 @@ eventmanager::eventmanager() {
       continue;
     }
 
-    const auto controller = SDL_GameControllerOpen(id);
-    if (!controller) {
-      continue;
+    if (auto controller = SDL_GameControllerOpen(id)) {
+      _controllers.emplace(id, gamecontroller_ptr(controller));
     }
-
-    _controllers[id] = gamecontroller_ptr(controller);
   }
 }
 
