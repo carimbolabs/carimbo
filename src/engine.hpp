@@ -45,6 +45,8 @@ public:
 
   bool is_keydown(const input::keyevent &event) const;
 
+  bool is_keyup(const input::keyevent &event) const;
+
   const std::shared_ptr<entity> spawn(const std::string &kind);
 
   void destroy(const std::shared_ptr<entity> entity);

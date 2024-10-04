@@ -89,6 +89,7 @@ void scriptengine::run() {
       "destroy", &engine::destroy,
       "ticks", &ticks,
       "is_keydown", &engine::is_keydown,
+      "is_keyup", &engine::is_keyup,
       "width", sol::property(&engine::width),
       "height", sol::property(&engine::height),
       "soundmanager", &engine::soundmanager,

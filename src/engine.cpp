@@ -89,6 +89,10 @@ bool engine::is_keydown(const input::keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
 
+bool engine::is_keyup(const input::keyevent &event) const {
+  return _statemanager->is_keyup(event);
+}
+
 const std::shared_ptr<entity> engine::spawn(const std::string &kind) {
   const auto entity = _entitymanager->spawn(kind);
   entity->set_entitymanager(_entitymanager);
