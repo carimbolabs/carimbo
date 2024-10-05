@@ -67,6 +67,7 @@ class garbagecollector;
 class loopable;
 class postalservice;
 class resourcemanager;
+class scenemanager;
 class scriptengine;
 class statemanager;
 class timermanager;

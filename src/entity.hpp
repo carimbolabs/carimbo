@@ -52,6 +52,8 @@ public:
 
   std::string action() const noexcept;
 
+  void set_visible(bool visible) noexcept;
+
   void dispatch(const std::string &message);
 
 private:

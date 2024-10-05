@@ -5,6 +5,7 @@
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "resourcemanager.hpp"
+#include "scenemanager.hpp"
 #include "window.hpp"
 
 using namespace framework;
@@ -37,6 +38,7 @@ std::shared_ptr<engine> enginefactory::create() {
   const auto em2 = std::make_shared<framework::entitymanager>();
   const auto em3 = std::make_shared<framework::statemanager>();
   const auto rm = std::make_shared<framework::resourcemanager>(r, ad);
+  const auto sm = std::make_shared<framework::scenemanager>(rm->pixmappool());
 
   const auto e = std::make_shared<framework::engine>();
 
@@ -47,6 +49,7 @@ std::shared_ptr<engine> enginefactory::create() {
   e->set_entitymanager(std::move(em2));
   e->set_statemanager(std::move(em3));
   e->set_resourcemanager(std::move(rm));
+  e->set_scenemanager(std::move(sm));
 
   em1->add_receiver(std::move(em2));
   em1->add_receiver(std::move(e));

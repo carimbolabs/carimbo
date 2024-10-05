@@ -94,6 +94,7 @@ void scriptengine::run() {
       "height", sol::property(&engine::height),
       "soundmanager", &engine::soundmanager,
       "add_loopable", &engine::add_loopable,
+      "set_scene", &engine::set_scene,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames{table.size()};
         for (auto &item : table) {

@@ -3,6 +3,7 @@
 #include "common.hpp"
 
 #include "eventreceiver.hpp"
+#include <memory>
 
 namespace framework {
 class engine : public input::eventreceiver {
@@ -41,6 +42,10 @@ public:
 
   const std::shared_ptr<framework::statemanager> statemanager() const;
 
+  void set_scenemanager(const std::shared_ptr<framework::scenemanager> scenemanager);
+
+  const std::shared_ptr<framework::scenemanager> scenemanager() const;
+
   void prefetch(const std::vector<std::string> &filenames);
 
   bool is_keydown(const input::keyevent &event) const;
@@ -50,6 +55,8 @@ public:
   void destroy(const std::shared_ptr<entity> entity);
 
   void add_loopable(std::shared_ptr<loopable> loopable);
+
+  void set_scene(const std::string_view name);
 
   int32_t width() const;
 
@@ -73,5 +80,6 @@ private:
   std::shared_ptr<framework::entitymanager> _entitymanager;
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;
+  std::shared_ptr<framework::scenemanager> _scenemanager;
 };
 }

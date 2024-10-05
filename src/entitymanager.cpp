@@ -9,10 +9,6 @@
 #include "resourcemanager.hpp"
 #include "size.hpp"
 #include "vector2d.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <string_view>
-#include <vector>
 
 using namespace framework;
 
@@ -64,6 +60,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   uint32_t frame{0};
   uint32_t last_frame{0};
   vector2d velocity;
+  bool visible{true};
 
   entityprops props{
       id,
@@ -80,7 +77,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       action,
       frame,
       last_frame,
-      velocity};
+      velocity,
+      visible};
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
@@ -88,8 +86,10 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   return e;
 }
 
-void entitymanager::destroy(const std::shared_ptr<entity> entity) {
-  _entities.remove(entity);
+void entitymanager::destroy(const std::weak_ptr<entity> entity) {
+  if (auto e = entity.lock()) {
+    _entities.remove(e);
+  }
 }
 
 std::shared_ptr<entity> entitymanager::find(uint64_t id) const {

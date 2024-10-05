@@ -67,7 +67,7 @@ void entity::update(double delta) noexcept {
 }
 
 void entity::draw() const noexcept {
-  if (_props.action.empty()) {
+  if (_props.action.empty() || !_props.visible) {
     return;
   }
 
@@ -76,9 +76,6 @@ void entity::draw() const noexcept {
   geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.scale);
 
-  if (_props.action == "dead") {
-    std::cout << ">>> offset x" << offset.x() << std::endl;
-  }
   _props.spritesheet->draw(
       source,
       destination,

@@ -4,14 +4,10 @@
 #include "entity.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
-#include "eventreceiver.hpp"
 #include "framerate.hpp"
-#include "garbagecollector.hpp"
 #include "loopable.hpp"
-#include "noncopyable.hpp"
 #include "renderer.hpp"
 #include "resourcemanager.hpp"
-#include "singleton.hpp"
 #include "statemanager.hpp"
 #include "window.hpp"
 
@@ -81,6 +77,14 @@ const std::shared_ptr<framework::statemanager> engine::statemanager() const {
   return _statemanager;
 }
 
+void engine::set_scenemanager(const std::shared_ptr<framework::scenemanager> scenemanager) {
+  _scenemanager = scenemanager;
+}
+
+const std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
+  return _scenemanager;
+}
+
 void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
@@ -102,6 +106,10 @@ void engine::destroy(const std::shared_ptr<entity> entity) {
 
 void engine::add_loopable(std::shared_ptr<loopable> loopable) {
   _loopables.emplace_back(std::move(loopable));
+}
+
+void engine::set_scene(const std::string_view name) {
+  _scenemanager->load(name);
 }
 
 #ifdef EMSCRIPTEN
@@ -129,6 +137,7 @@ void engine::_loop() {
   prior = now;
 
   _resourcemanager->update(delta);
+  _scenemanager->update(delta);
   _eventmanager->update(delta);
   _entitymanager->update(delta);
 
@@ -136,6 +145,7 @@ void engine::_loop() {
                 [delta](auto &loopable) { loopable->loop(delta); });
 
   _renderer->begin();
+  _scenemanager->draw();
   _entitymanager->draw();
   // _scenegraph->render();
   _renderer->end();

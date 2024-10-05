@@ -18,6 +18,7 @@ enum class flip : int32_t {
 
 class pixmap {
 public:
+  pixmap() = default;
   pixmap(const std::shared_ptr<renderer> renderer, std::string_view filename);
   ~pixmap() = default;
 

@@ -35,6 +35,7 @@ public:
   uint32_t frame;
   uint32_t last_frame;
   vector2d velocity;
+  bool visible;
 
   entityprops() = default;
 };
