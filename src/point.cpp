@@ -20,3 +20,7 @@ int32_t point::y() const noexcept { return _y; }
 void point::set_y(int32_t y) noexcept { _y = y; }
 
 point::operator SDL_Point() const noexcept { return SDL_Point{_x, _y}; }
+
+point point::operator+(const point &other) const noexcept {
+  return point(_x + other._x, _y + other._y);
+}

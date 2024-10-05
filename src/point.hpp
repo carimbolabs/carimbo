@@ -20,6 +20,8 @@ public:
 
   operator SDL_Point() const noexcept;
 
+  point operator+(const point &other) const noexcept;
+
 private:
   int32_t _x;
   int32_t _y;

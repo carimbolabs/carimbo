@@ -41,8 +41,13 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
         geometry::size size{f.at("width").get<int32_t>(), f.at("height").get<int32_t>()};
         geometry::rect rect{position, size};
         uint64_t duration = f.at("duration").get<uint64_t>();
+        geometry::point offset{0, 0};
+        const auto o = f.value("offset", json::object());
+        if (o.contains("x") || o.contains("y")) {
+          offset = geometry::point{o.value("x", 0), o.value("y", 0)};
+        }
 
-        keyframes.emplace_back(rect, duration);
+        keyframes.emplace_back(rect, duration, offset);
       }
     }
 

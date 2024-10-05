@@ -72,9 +72,13 @@ void entity::draw() const noexcept {
   }
 
   const auto source = _props.animations.at(_props.action)[_props.frame].frame;
-  geometry::rect destination{_props.position, source.size()};
+  const auto offset = _props.animations.at(_props.action)[_props.frame].offset;
+  geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.scale);
 
+  if (_props.action == "dead") {
+    std::cout << ">>> offset x" << offset.x() << std::endl;
+  }
   _props.spritesheet->draw(
       source,
       destination,
