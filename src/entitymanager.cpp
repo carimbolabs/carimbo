@@ -117,13 +117,13 @@ void entitymanager::update(double delta) noexcept {
       if (a == b /* || !entityB->collidable */) continue;
 
       if (a->colliding_with(*b)) {
-        if (!a->_props.velocity.zero() && b->_props.velocity.zero()) {
-          std::cout << "Entity " << a->kind() << " initiated collision with Entity " << b->kind() << std::endl;
-        } else if (!b->_props.velocity.zero() && a->_props.velocity.zero()) {
-          std::cout << "Entity " << b->kind() << " initiated collision with Entity " << a->kind() << std::endl;
-        } else {
-          std::cout << "Entity " << a->kind() << " and Entity " << b->kind() << " are colliding (both in motion)." << std::endl;
-        }
+        // if (!a->_props.velocity.zero() && b->_props.velocity.zero()) {
+        //   std::cout << "Entity " << a->kind() << " initiated collision with Entity " << b->kind() << std::endl;
+        // } else if (!b->_props.velocity.zero() && a->_props.velocity.zero()) {
+        //   std::cout << "Entity " << b->kind() << " initiated collision with Entity " << a->kind() << std::endl;
+        // } else {
+        //   std::cout << "Entity " << a->kind() << " and Entity " << b->kind() << " are colliding (both in motion)." << std::endl;
+        // }
       }
     }
   }
