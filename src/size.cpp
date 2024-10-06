@@ -14,10 +14,10 @@ void size::set_height(const int32_t height) noexcept { _height = height; }
 
 int32_t size::height() const noexcept { return _height; }
 
-constexpr bool size::operator==(const size &rhs) const noexcept {
+bool size::operator==(const size &rhs) const noexcept {
   return _width == rhs._width && _height == rhs._height;
 }
 
-constexpr bool size::operator!=(const size &rhs) const noexcept {
+bool size::operator!=(const size &rhs) const noexcept {
   return !(*this == rhs);
 }

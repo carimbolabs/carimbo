@@ -19,9 +19,9 @@ public:
 
   int32_t height() const noexcept;
 
-  constexpr bool operator==(const size &rhs) const noexcept;
+  bool operator==(const size &rhs) const noexcept;
 
-  constexpr bool operator!=(const size &rhs) const noexcept;
+  bool operator!=(const size &rhs) const noexcept;
 
 private:
   int32_t _width;

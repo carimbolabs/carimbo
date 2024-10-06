@@ -117,11 +117,21 @@ void scriptengine::run() {
                                       return "point(" + std::to_string(p.x()) + ", " + std::to_string(p.y()) + ")";
                                     });
 
+  lua.new_usertype<geometry::size>("Size",
+                                   sol::constructors<
+                                       geometry::size(),
+                                       geometry::size(int32_t, int32_t),
+                                       geometry::size(const geometry::size &)>(),
+
+                                   "width", sol::property(&geometry::size::width, &geometry::size::set_width),
+                                   "height", sol::property(&geometry::size::height, &geometry::size::set_height));
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
       "x", sol::property(&entity::x),
       "y", sol::property(&entity::y),
+      "size", sol::property(&entity::size),
       "on_update", &entity::set_onupdate,
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,

@@ -165,6 +165,10 @@ std::string entity::action() const noexcept {
   return _props.action;
 }
 
+const geometry::size entity::size() const noexcept {
+  return _props.size;
+}
+
 void entity::dispatch(const std::string &message) {
   if (!_onmail) {
     return;
