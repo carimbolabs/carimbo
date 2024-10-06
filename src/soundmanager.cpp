@@ -28,7 +28,7 @@ const std::shared_ptr<soundfx> soundmanager::get(const std::string_view filename
 }
 
 void soundmanager::play(const std::string_view filename, bool loop = false) {
-  get(filename)->play(loop);
+  get(fmt::format("blobs/{}.ogg", filename))->play(loop);
 }
 
 void soundmanager::stop(const std::string_view filename) {
