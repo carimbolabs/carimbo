@@ -7,7 +7,6 @@
 #include "rect.hpp"
 #include "resourcemanager.hpp"
 #include "soundmanager.hpp"
-#include <cstdint>
 
 using namespace framework;
 
@@ -154,6 +153,12 @@ void entity::set_flip(graphics::flip flip) noexcept {
 
 void entity::set_action(const std::string_view action) noexcept {
   _props.action = action;
+}
+
+void entity::unset_action() noexcept {
+  _props.action = std::string();
+  _props.frame = 0;
+  _props.last_frame = 0;
 }
 
 std::string entity::action() const noexcept {

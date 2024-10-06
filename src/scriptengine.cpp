@@ -126,6 +126,7 @@ void scriptengine::run() {
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,
       "set_action", &entity::set_action,
+      "unset_action", &entity::unset_action,
       "set_velocity", &entity::set_velocity,
       "set_placement", &entity::set_placement);
 

@@ -52,6 +52,8 @@ public:
 
   void set_action(const std::string_view action) noexcept;
 
+  void unset_action() noexcept;
+
   std::string action() const noexcept;
 
   void set_visible(bool visible) noexcept;
