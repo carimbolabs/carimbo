@@ -31,7 +31,6 @@ public:
 
   double_t dot(const vector2d &other) const noexcept;
 
-  bool stationary() const noexcept;
   bool moving() const noexcept;
   bool right() const noexcept;
   bool left() const noexcept;

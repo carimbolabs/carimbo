@@ -159,7 +159,7 @@ void scriptengine::run() {
 
       sol::meta_function::equal_to, &vector2d::operator==,
 
-      "stationary", &vector2d::stationary,
+      "zero", &vector2d::zero,
       "moving", &vector2d::moving,
       "right", &vector2d::right,
       "left", &vector2d::left);
