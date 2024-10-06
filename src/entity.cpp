@@ -25,6 +25,8 @@ std::shared_ptr<entity> entity::create(const entityprops &&props) {
 
 uint64_t entity::id() const { return _props.id; }
 
+const std::string entity::kind() const { return _props.kind; }
+
 const entityprops entity::props() const noexcept {
   return _props;
 }
@@ -82,6 +84,13 @@ void entity::draw() const noexcept {
       _props.angle,
       _props.flip,
       _props.alpha);
+}
+
+bool entity::colliding_with(const entity &other) const noexcept {
+  return _props.position.x() < other._props.position.x() + other._props.size.width() &&
+         _props.position.x() + _props.size.width() > other._props.position.x() &&
+         _props.position.y() < other._props.position.y() + other._props.size.height() &&
+         _props.position.y() + _props.size.height() > other._props.position.y();
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {

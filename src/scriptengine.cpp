@@ -172,18 +172,9 @@ void scriptengine::run() {
 
   lua.new_usertype<mail>(
       "Mail",
-      sol::constructors<mail(uint64_t, const std::string_view)>());
-
-  lua.set_function("sleep", &sleep);
+      sol::constructors<mail(uint64_t, const std::string_view, const std::string_view)>());
 
   const auto script = storage::io::read("scripts/main.lua");
-
-  sol::object loopable_proxy_obj = lua["loopable_proxy"];
-  if (loopable_proxy_obj.valid() && loopable_proxy_obj.get_type() == sol::type::userdata) {
-    std::cout << "loopable_proxy registrado corretamente como userdata." << std::endl;
-  } else {
-    std::cerr << "Erro: loopable_proxy não está registrado corretamente no Lua." << std::endl;
-  }
 
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
 }

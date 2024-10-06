@@ -26,6 +26,7 @@ public:
   std::map<std::string, std::vector<keyframe>> animations;
   geometry::point position;
   geometry::point pivot;
+  geometry::size size;
   float_t angle;
   double_t scale;
   graphics::flip flip;

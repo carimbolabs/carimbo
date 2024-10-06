@@ -89,3 +89,7 @@ bool vector2d::right() const noexcept {
 bool vector2d::left() const noexcept {
   return _x < 0;
 }
+
+bool vector2d::zero() const noexcept {
+  return _x == 0.0 && _y == 0.0;
+}

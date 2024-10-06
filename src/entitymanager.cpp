@@ -25,6 +25,9 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
   const auto gravitic = j.value("gravitic", false);
   const auto scale = j.value("scale", 1.);
+  const auto size = geometry::size{
+      static_cast<int32_t>(j.value("width", 0) * scale),
+      static_cast<int32_t>(j.value("height", 0) * scale)};
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
@@ -69,6 +72,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       animations,
       position,
       pivot,
+      size,
       angle,
       scale,
       flip,
@@ -104,6 +108,24 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
 void entitymanager::update(double delta) noexcept {
   for (auto entity : _entities) {
     entity->update(delta);
+  }
+
+  for (auto a : _entities) {
+    // if (!a->collidable) continue;
+
+    for (auto b : _entities) {
+      if (a == b /* || !entityB->collidable */) continue;
+
+      if (a->colliding_with(*b)) {
+        if (!a->_props.velocity.zero() && b->_props.velocity.zero()) {
+          std::cout << "Entity " << a->kind() << " initiated collision with Entity " << b->kind() << std::endl;
+        } else if (!b->_props.velocity.zero() && a->_props.velocity.zero()) {
+          std::cout << "Entity " << b->kind() << " initiated collision with Entity " << a->kind() << std::endl;
+        } else {
+          std::cout << "Entity " << a->kind() << " and Entity " << b->kind() << " are colliding (both in motion)." << std::endl;
+        }
+      }
+    }
   }
 }
 

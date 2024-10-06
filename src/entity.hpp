@@ -6,8 +6,6 @@
 #include "entityprops.hpp"
 #include "pixmap.hpp"
 #include "vector2d.hpp"
-#include <string>
-#include <string_view>
 
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
@@ -18,9 +16,13 @@ public:
 
   uint64_t id() const;
 
+  const std::string kind() const;
+
   virtual void update(double delta) noexcept;
 
   virtual void draw() const noexcept;
+
+  bool colliding_with(const entity &other) const noexcept;
 
   const entityprops props() const noexcept;
 
@@ -57,6 +59,8 @@ public:
   void dispatch(const std::string &message);
 
 private:
+  friend class entitymanager;
+
   entity(const entityprops &&props);
 
   std::string _id;
