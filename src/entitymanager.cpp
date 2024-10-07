@@ -118,6 +118,8 @@ void entitymanager::update(double delta) noexcept {
       if (a == b /* || !entityB->collidable */) continue;
 
       if (a->colliding_with(*b)) {
+        // TODO send position of collision
+
         // if (!a->_props.velocity.zero() && b->_props.velocity.zero()) {
         //   std::cout << "Entity " << a->kind() << " initiated collision with Entity " << b->kind() << std::endl;
         // } else if (!b->_props.velocity.zero() && a->_props.velocity.zero()) {
