@@ -42,32 +42,6 @@ int32_t entity::y() const noexcept {
   return _props.position.y();
 }
 
-// void entity::update(double delta) noexcept {
-//   if (_fn) {
-//     _fn(shared_from_this());
-//   }
-
-//   if (_props.action.empty()) {
-//     return;
-//   }
-
-//   const auto now = SDL_GetTicks();
-//   const auto animation = _props.animations.at(_props.action);
-//   const auto duration = animation[_props.frame].duration;
-
-//   if (duration > 0 && now - _props.last_frame >= duration) {
-//     _props.frame = (_props.frame + 1) % animation.size();
-//     _props.last_frame = now;
-//   }
-
-//   if (_props.gravitic || _props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
-//     const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
-//     const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
-
-//     _props.position.set(x, y);
-//   }
-// }
-
 void entity::update(double delta) noexcept {
   if (_fn) {
     _fn(shared_from_this());
