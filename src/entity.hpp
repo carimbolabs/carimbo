@@ -40,6 +40,8 @@ public:
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
 
+  void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn);
+
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn);
 
   void set_velocity(const vector2d &velocity) noexcept;
@@ -71,7 +73,8 @@ private:
   entityprops _props;
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;
-  std::function<void(std::shared_ptr<entity>)> _fn;
+  std::function<void(std::shared_ptr<entity>)> _onupdate;
+  std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;
 };
 }

@@ -134,6 +134,7 @@ void scriptengine::run() {
       "visible", sol::property(&entity::visible),
       "size", sol::property(&entity::size),
       "on_update", &entity::set_onupdate,
+      "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,
       "set_action", &entity::set_action,

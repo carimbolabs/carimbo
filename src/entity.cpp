@@ -3,15 +3,13 @@
 #include "anchor.hpp"
 #include "entitymanager.hpp"
 #include "pixmap.hpp"
-#include "pixmappool.hpp"
 #include "rect.hpp"
 #include "resourcemanager.hpp"
-#include "soundmanager.hpp"
 
 using namespace framework;
 
 entity::entity(const entityprops &&props)
-    : _props(std::move(props)), _fn(nullptr) {
+    : _props(std::move(props)) {
 }
 
 entity::~entity() {
@@ -43,8 +41,8 @@ int32_t entity::y() const noexcept {
 }
 
 void entity::update(double delta) noexcept {
-  if (_fn) {
-    _fn(shared_from_this());
+  if (_onupdate) {
+    _onupdate(shared_from_this());
   }
 
   if (_props.action.empty() || !_props.visible) {
@@ -62,8 +60,12 @@ void entity::update(double delta) noexcept {
     if (_props.frame >= animation.size()) {
       if (std::any_of(animation.begin(), animation.end(),
                       [](const auto &keyframe) { return keyframe.singleshoot; })) {
-        _props.visible = false;
         _props.action.clear();
+
+        if (_onanimationfinished) {
+          _onanimationfinished(shared_from_this());
+        }
+
         return;
       }
 
@@ -151,11 +153,15 @@ void entity::set_velocity(const vector2d &velocity) noexcept {
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) {
-  _fn = fn;
+  _onupdate = std::move(fn);
+}
+
+void entity::set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) {
+  _onanimationfinished = std::move(fn);
 }
 
 void entity::set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) {
-  _onmail = fn;
+  _onmail = std::move(fn);
 }
 
 void entity::set_flip(graphics::flip flip) noexcept {
