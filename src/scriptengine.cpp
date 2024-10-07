@@ -131,6 +131,7 @@ void scriptengine::run() {
       "id", sol::property(&entity::id),
       "x", sol::property(&entity::x),
       "y", sol::property(&entity::y),
+      "visible", sol::property(&entity::visible),
       "size", sol::property(&entity::size),
       "on_update", &entity::set_onupdate,
       "on_mail", &entity::set_onmail,

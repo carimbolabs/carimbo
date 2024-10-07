@@ -11,11 +11,16 @@ namespace framework {
 struct keyframe {
   geometry::rect frame;
   uint64_t duration;
+  bool singleshoot;
   geometry::point offset;
 
   keyframe() = default;
-  keyframe(const geometry::rect &rect, uint64_t duration, const geometry::point &offset)
-      : frame(rect), duration(duration), offset(offset) {}
+  keyframe(
+      const geometry::rect &rect,
+      uint64_t duration,
+      bool singleshoot,
+      const geometry::point &offset)
+      : frame(rect), duration(duration), singleshoot(singleshoot), offset(offset) {}
 };
 
 struct entityprops {

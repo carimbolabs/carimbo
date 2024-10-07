@@ -42,28 +42,65 @@ int32_t entity::y() const noexcept {
   return _props.position.y();
 }
 
+// void entity::update(double delta) noexcept {
+//   if (_fn) {
+//     _fn(shared_from_this());
+//   }
+
+//   if (_props.action.empty()) {
+//     return;
+//   }
+
+//   const auto now = SDL_GetTicks();
+//   const auto animation = _props.animations.at(_props.action);
+//   const auto duration = animation[_props.frame].duration;
+
+//   if (duration > 0 && now - _props.last_frame >= duration) {
+//     _props.frame = (_props.frame + 1) % animation.size();
+//     _props.last_frame = now;
+//   }
+
+//   if (_props.gravitic || _props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
+//     const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
+//     const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
+
+//     _props.position.set(x, y);
+//   }
+// }
+
 void entity::update(double delta) noexcept {
   if (_fn) {
     _fn(shared_from_this());
   }
 
-  if (_props.action.empty()) {
+  if (_props.action.empty() || !_props.visible) {
     return;
   }
 
   const auto now = SDL_GetTicks();
-  const auto animation = _props.animations.at(_props.action);
-  const auto duration = animation[_props.frame].duration;
-  if (duration > 0 && now - _props.last_frame >= duration) {
-    _props.frame = (_props.frame + 1) % animation.size();
+  const auto &animation = _props.animations.at(_props.action);
+  const auto &frame = animation[_props.frame];
+
+  if (frame.duration > 0 && now - _props.last_frame >= frame.duration) {
+    _props.frame++;
     _props.last_frame = now;
+
+    if (_props.frame >= animation.size()) {
+      if (std::any_of(animation.begin(), animation.end(),
+                      [](const auto &keyframe) { return keyframe.singleshoot; })) {
+        _props.visible = false;
+        _props.action.clear();
+        return;
+      }
+
+      _props.frame = 0;
+    }
   }
 
-  if (_props.gravitic || _props.velocity.x() != 0.0 || _props.velocity.y() != 0.0) {
-    const auto x = _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta);
-    const auto y = _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta);
-
-    _props.position.set(x, y);
+  if (_props.gravitic || !_props.velocity.zero()) {
+    _props.position.set(
+        _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta),
+        _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta));
   }
 }
 
@@ -152,13 +189,17 @@ void entity::set_flip(graphics::flip flip) noexcept {
 }
 
 void entity::set_action(const std::string_view action) noexcept {
-  _props.action = action;
+  if (_props.action != action) {
+    _props.action = action;
+    _props.frame = 0;
+    _props.last_frame = SDL_GetTicks();
+  }
 }
 
 void entity::unset_action() noexcept {
   _props.action = std::string();
   _props.frame = 0;
-  _props.last_frame = 0;
+  _props.last_frame = SDL_GetTicks();
 }
 
 std::string entity::action() const noexcept {
@@ -167,6 +208,10 @@ std::string entity::action() const noexcept {
 
 const geometry::size entity::size() const noexcept {
   return _props.size;
+}
+
+bool entity::visible() const noexcept {
+  return _props.visible;
 }
 
 void entity::dispatch(const std::string &message) {

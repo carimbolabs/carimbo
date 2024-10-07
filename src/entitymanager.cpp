@@ -36,17 +36,18 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
     for (const auto &frame_list : a) {
       for (const auto &f : frame_list) {
-        geometry::point position{f.at("x").get<int32_t>(), f.at("y").get<int32_t>()};
-        geometry::size size{f.at("width").get<int32_t>(), f.at("height").get<int32_t>()};
-        geometry::rect rect{position, size};
-        uint64_t duration = f.at("duration").get<uint64_t>();
-        geometry::point offset{0, 0};
+        const auto position = geometry::point{f.at("x").get<int32_t>(), f.at("y").get<int32_t>()};
+        const auto size = geometry::size{f.at("width").get<int32_t>(), f.at("height").get<int32_t>()};
+        const auto rect = geometry::rect{position, size};
+        const auto duration = f.at("duration").get<uint64_t>();
+        const auto singleshoot = f.value("singleshoot", false);
+        auto offset = geometry::point{0, 0};
         const auto o = f.value("offset", json::object());
         if (o.contains("x") || o.contains("y")) {
           offset = geometry::point{o.value("x", 0), o.value("y", 0)};
         }
 
-        keyframes.emplace_back(rect, duration, offset);
+        keyframes.emplace_back(rect, duration, singleshoot, offset);
       }
     }
 

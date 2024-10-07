@@ -58,7 +58,7 @@ public:
 
   const geometry::size size() const noexcept;
 
-  void set_visible(bool visible) noexcept;
+  bool visible() const noexcept;
 
   void dispatch(const std::string &message);
 
