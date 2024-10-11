@@ -2,19 +2,13 @@
 
 #include "common.hpp"
 
-#include "point.hpp"
+#include "effect.hpp"
+#include "flip.hpp"
 #include "rect.hpp"
 #include "size.hpp"
 
-typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
-
 namespace graphics {
-enum class flip : int32_t {
-  none = SDL_FLIP_NONE,
-  horizontal = SDL_FLIP_HORIZONTAL,
-  vertical = SDL_FLIP_VERTICAL,
-  both = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL
-};
+typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
 
 class pixmap {
 public:
