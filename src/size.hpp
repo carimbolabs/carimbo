@@ -11,17 +11,17 @@ public:
 
   ~size() = default;
 
-  void set_width(const int32_t width) noexcept;
+  void set_width(const int32_t width);
 
-  int32_t width() const noexcept;
+  int32_t width() const;
 
-  void set_height(const int32_t height) noexcept;
+  void set_height(const int32_t height);
 
-  int32_t height() const noexcept;
+  int32_t height() const;
 
-  bool operator==(const size &rhs) const noexcept;
+  bool operator==(const size &rhs) const;
 
-  bool operator!=(const size &rhs) const noexcept;
+  bool operator!=(const size &rhs) const;
 
 private:
   int32_t _width;

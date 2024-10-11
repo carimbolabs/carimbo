@@ -12,9 +12,9 @@ public:
 
   void load(const std::string_view name);
 
-  void update(double_t delta) noexcept;
+  void update(double_t delta);
 
-  void draw() noexcept;
+  void draw();
 
 private:
   std::shared_ptr<graphics::pixmappool> _pixmappool;

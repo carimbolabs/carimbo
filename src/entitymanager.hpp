@@ -17,9 +17,9 @@ public:
 
   std::shared_ptr<entity> find(uint64_t id) const;
 
-  void update(double delta) noexcept;
+  void update(double delta);
 
-  void draw() noexcept;
+  void draw();
 
 protected:
   virtual void on_mail(const input::mailevent &event);

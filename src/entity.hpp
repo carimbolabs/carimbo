@@ -18,21 +18,21 @@ public:
 
   const std::string kind() const;
 
-  virtual void update(double delta) noexcept;
+  virtual void update(double delta);
 
-  virtual void draw() const noexcept;
+  virtual void draw() const;
 
-  bool colliding_with(const entity &other) const noexcept;
+  bool colliding_with(const entity &other) const;
 
-  const entityprops props() const noexcept;
+  const entityprops props() const;
 
-  void set_props(entityprops props) noexcept;
+  void set_props(entityprops props);
 
-  int32_t x() const noexcept;
+  int32_t x() const;
 
-  int32_t y() const noexcept;
+  int32_t y() const;
 
-  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none) noexcept;
+  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none);
 
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
 
@@ -44,23 +44,23 @@ public:
 
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn);
 
-  void set_velocity(const vector2d &velocity) noexcept;
+  void set_velocity(const vector2d &velocity);
 
   void set_pixmap(const std::string_view filename);
 
   void play_sound(const std::string_view filename);
 
-  void set_flip(graphics::flip flip) noexcept;
+  void set_flip(graphics::flip flip);
 
-  void set_action(const std::string_view action) noexcept;
+  void set_action(const std::string_view action);
 
-  void unset_action() noexcept;
+  void unset_action();
 
-  std::string action() const noexcept;
+  std::string action() const;
 
-  const geometry::size size() const noexcept;
+  const geometry::size size() const;
 
-  bool visible() const noexcept;
+  bool visible() const;
 
   void dispatch(const std::string &message);
 

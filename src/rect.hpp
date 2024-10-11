@@ -11,17 +11,17 @@ public:
   rect(const rect &other) = default;
   ~rect() = default;
 
-  void set_position(const point &position) noexcept;
+  void set_position(const point &position);
 
-  const point position() const noexcept;
+  const point position() const;
 
-  void set_size(const geometry::size &size) noexcept;
+  void set_size(const geometry::size &size);
 
-  const geometry::size size() const noexcept;
+  const geometry::size size() const;
 
-  void scale(float_t factor) noexcept;
+  void scale(float_t factor);
 
-  operator SDL_Rect() const noexcept;
+  operator SDL_Rect() const;
 
 private:
   point _position;

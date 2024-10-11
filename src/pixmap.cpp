@@ -80,7 +80,7 @@ void pixmap::draw(
     const geometry::rect &destination,
     const double_t angle,
     flip flip,
-    const uint8_t alpha) const noexcept {
+    const uint8_t alpha) const {
   const SDL_Rect &src = source;
   const SDL_Rect &dst = destination;
 
@@ -89,6 +89,6 @@ void pixmap::draw(
       *_renderer, _texture.get(), &src, &dst, angle, nullptr, static_cast<SDL_RendererFlip>(flip));
 }
 
-const geometry::size pixmap::size() const noexcept { return _size; }
+const geometry::size pixmap::size() const { return _size; }
 
-void pixmap::set_size(const geometry::size &size) noexcept { _size = size; }
+void pixmap::set_size(const geometry::size &size) { _size = size; }

@@ -24,23 +24,23 @@ uint64_t entity::id() const { return _props.id; }
 
 const std::string entity::kind() const { return _props.kind; }
 
-const entityprops entity::props() const noexcept {
+const entityprops entity::props() const {
   return _props;
 }
 
-void entity::set_props(entityprops props) noexcept {
+void entity::set_props(entityprops props) {
   _props = std::move(props);
 }
 
-int32_t entity::x() const noexcept {
+int32_t entity::x() const {
   return _props.position.x();
 }
 
-int32_t entity::y() const noexcept {
+int32_t entity::y() const {
   return _props.position.y();
 }
 
-void entity::update(double delta) noexcept {
+void entity::update(double delta) {
   if (_onupdate) {
     _onupdate(shared_from_this());
   }
@@ -80,7 +80,7 @@ void entity::update(double delta) noexcept {
   }
 }
 
-void entity::draw() const noexcept {
+void entity::draw() const {
   if (_props.action.empty() || !_props.visible) {
     return;
   }
@@ -98,14 +98,14 @@ void entity::draw() const noexcept {
       _props.alpha);
 }
 
-bool entity::colliding_with(const entity &other) const noexcept {
+bool entity::colliding_with(const entity &other) const {
   return _props.position.x() < other._props.position.x() + other._props.size.width() &&
          _props.position.x() + _props.size.width() > other._props.position.x() &&
          _props.position.y() < other._props.position.y() + other._props.size.height() &&
          _props.position.y() + _props.size.height() > other._props.position.y();
 }
 
-void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
+void entity::set_placement(int32_t x, int32_t y, anchor) {
   int32_t _x{x}, _y{y};
 
   // const auto window = SDL_GetMouseFocus();
@@ -148,7 +148,7 @@ void entity::set_resourcemanager(
   _resourcemanager = resourcemanager;
 }
 
-void entity::set_velocity(const vector2d &velocity) noexcept {
+void entity::set_velocity(const vector2d &velocity) {
   _props.velocity = std::move(velocity);
 }
 
@@ -164,11 +164,11 @@ void entity::set_onmail(const std::function<void(std::shared_ptr<entity>, const 
   _onmail = std::move(fn);
 }
 
-void entity::set_flip(graphics::flip flip) noexcept {
+void entity::set_flip(graphics::flip flip) {
   _props.flip = flip;
 }
 
-void entity::set_action(const std::string_view action) noexcept {
+void entity::set_action(const std::string_view action) {
   if (_props.action != action) {
     _props.action = action;
     _props.frame = 0;
@@ -176,21 +176,21 @@ void entity::set_action(const std::string_view action) noexcept {
   }
 }
 
-void entity::unset_action() noexcept {
+void entity::unset_action() {
   _props.action = std::string();
   _props.frame = 0;
   _props.last_frame = SDL_GetTicks();
 }
 
-std::string entity::action() const noexcept {
+std::string entity::action() const {
   return _props.action;
 }
 
-const geometry::size entity::size() const noexcept {
+const geometry::size entity::size() const {
   return _props.size;
 }
 
-bool entity::visible() const noexcept {
+bool entity::visible() const {
   return _props.visible;
 }
 

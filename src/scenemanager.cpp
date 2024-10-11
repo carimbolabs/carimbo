@@ -15,11 +15,11 @@ void scenemanager::load(const std::string_view name) {
   _size = {j.at("width").get<int32_t>(), j.at("height").get<int32_t>()};
 }
 
-void scenemanager::update(double_t delta) noexcept {
+void scenemanager::update(double_t delta) {
   UNUSED(delta);
 }
 
-void scenemanager::draw() noexcept {
+void scenemanager::draw() {
   if (!_background) {
     return;
   }

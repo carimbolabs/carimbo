@@ -106,7 +106,7 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
   return (it != _entities.end()) ? *it : nullptr;
 }
 
-void entitymanager::update(double delta) noexcept {
+void entitymanager::update(double delta) {
   for (auto entity : _entities) {
     entity->update(delta);
   }
@@ -132,7 +132,7 @@ void entitymanager::update(double delta) noexcept {
   }
 }
 
-void entitymanager::draw() noexcept {
+void entitymanager::draw() {
   for (auto entity : _entities) {
     entity->draw();
   }

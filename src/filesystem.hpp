@@ -8,7 +8,7 @@ public:
   static void mount(std::string_view filename, std::string_view mountpoint);
 
 private:
-  constexpr filesystem() noexcept = default;
-  ~filesystem() noexcept = default;
+  constexpr filesystem() = default;
+  ~filesystem() = default;
 };
 }
