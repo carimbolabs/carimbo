@@ -85,6 +85,7 @@ class size;
 }
 
 namespace graphics {
+class effect;
 class pixmap;
 class pixmappool;
 class renderer;

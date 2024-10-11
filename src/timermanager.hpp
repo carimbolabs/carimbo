@@ -6,13 +6,12 @@ namespace framework {
 class timermanager {
 public:
   timermanager() = default;
-  virtual ~timermanager();
+  ~timermanager();
 
-  void set(int32_t interval, std::unique_ptr<std::function<void()>> fn);
-
+  void set(int32_t interval, std::function<void()> fn);
   void clear(int32_t id);
 
 private:
-  std::map<int32_t, std::unique_ptr<std::function<void()>>> _timers;
+  std::map<int32_t, std::function<void()>> _timers;
 };
 }

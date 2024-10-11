@@ -47,7 +47,9 @@ void resourcemanager::update(double_t delta) {
   }
 }
 
-bool resourcemanager::busy() const { return !_filenames.empty(); }
+bool resourcemanager::busy() const {
+  return !_filenames.empty();
+}
 
 std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() {
   return _pixmappool;

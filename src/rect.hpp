@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hpp"
+#include "point.hpp"
 #include "size.hpp"
 
 namespace geometry {
