@@ -182,11 +182,7 @@ void scriptengine::run() {
 
   lua.new_usertype<timermanager>(
       "TimeManager", sol::constructors<timermanager()>(),
-      "set", [](timermanager &self, int interval, sol::function fn) {
-        self.set(interval, [fn]() {
-          fn();
-        });
-      },
+      "set", &timermanager::set,
       "clear", &timermanager::clear
   );
 
