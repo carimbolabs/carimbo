@@ -3,7 +3,6 @@
 #include "entity.hpp"
 #include "entityprops.hpp"
 #include "io.hpp"
-#include "pixmap.hpp"
 #include "point.hpp"
 #include "rect.hpp"
 #include "resourcemanager.hpp"
@@ -15,19 +14,21 @@ using namespace framework;
 using json = nlohmann::json;
 
 void entitymanager::set_resourcemanager(
-    std::shared_ptr<resourcemanager> resourcemanager) {
+    std::shared_ptr<resourcemanager> resourcemanager
+) {
   _resourcemanager = resourcemanager;
 }
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
-  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string_view>());
+  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string>());
   const auto gravitic = j.value("gravitic", false);
   const auto scale = j.value("scale", 1.);
   const auto size = geometry::size{
       static_cast<int32_t>(j.value("width", 0) * scale),
-      static_cast<int32_t>(j.value("height", 0) * scale)};
+      static_cast<int32_t>(j.value("height", 0) * scale)
+  };
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
@@ -83,7 +84,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       frame,
       last_frame,
       velocity,
-      visible};
+      visible
+  };
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
@@ -98,10 +100,9 @@ void entitymanager::destroy(const std::weak_ptr<entity> entity) {
 }
 
 std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
-  const auto it = std::find_if(_entities.begin(), _entities.end(),
-                               [id](const std::shared_ptr<entity> &entity) {
-                                 return entity->id() == id;
-                               });
+  const auto it = std::find_if(_entities.begin(), _entities.end(), [id](const std::shared_ptr<entity> &entity) {
+    return entity->id() == id;
+  });
 
   return (it != _entities.end()) ? *it : nullptr;
 }

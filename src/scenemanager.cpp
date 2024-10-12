@@ -11,7 +11,7 @@ scenemanager::scenemanager(const std::shared_ptr<graphics::pixmappool> pixmappoo
 void scenemanager::load(const std::string_view name) {
   const auto buffer = storage::io::read(fmt::format("scenes/{}.json", name));
   const auto j = json::parse(buffer);
-  _background = _pixmappool->get(j["background"].template get<std::string_view>());
+  _background = _pixmappool->get(j["background"].template get<std::string>());
   _size = {j.at("width").get<int32_t>(), j.at("height").get<int32_t>()};
 }
 

@@ -10,14 +10,15 @@ using namespace framework;
 
 resourcemanager::resourcemanager(
     const std::shared_ptr<graphics::renderer> renderer,
-    const std::shared_ptr<audio::audiodevice> audiodevice)
+    const std::shared_ptr<audio::audiodevice> audiodevice
+)
     : _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
       _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
-  _handlers[".png"] = [this](const std::string_view filename) {
+  _handlers[".png"] = [this](const std::string &filename) {
     _pixmappool->get(filename);
   };
 
-  _handlers[".ogg"] = [this](const std::string_view filename) {
+  _handlers[".ogg"] = [this](const std::string &filename) {
     _soundmanager->get(filename);
   };
 }

@@ -89,6 +89,11 @@ void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
 
+void engine::flush() const {
+  _resourcemanager->pixmappool()->flush();
+  _resourcemanager->soundmanager()->flush();
+}
+
 bool engine::is_keydown(const input::keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
@@ -141,8 +146,7 @@ void engine::_loop() {
   _eventmanager->update(delta);
   _entitymanager->update(delta);
 
-  std::for_each(_loopables.begin(), _loopables.end(),
-                [delta](auto &loopable) { loopable->loop(delta); });
+  std::for_each(_loopables.begin(), _loopables.end(), [delta](auto &loopable) { loopable->loop(delta); });
 
   _renderer->begin();
   _scenemanager->draw();

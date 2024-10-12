@@ -48,6 +48,8 @@ public:
 
   void prefetch(const std::vector<std::string> &filenames);
 
+  void flush() const;
+
   bool is_keydown(const input::keyevent &event) const;
 
   const std::shared_ptr<entity> spawn(const std::string &kind);

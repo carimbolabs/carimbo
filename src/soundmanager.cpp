@@ -5,13 +5,13 @@ using namespace audio;
 soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice)
     : _audiodevice(audiodevice) {}
 
-void soundmanager::prefetch(const std::vector<std::string_view> &filenames) {
+void soundmanager::prefetch(const std::vector<std::string> &filenames) {
   for (const auto &filename : filenames) {
     get(filename);
   }
 }
 
-const std::shared_ptr<soundfx> soundmanager::get(const std::string_view filename) {
+const std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
   auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
   if (added) {
@@ -27,11 +27,11 @@ const std::shared_ptr<soundfx> soundmanager::get(const std::string_view filename
   return it->second;
 }
 
-void soundmanager::play(const std::string_view filename, bool loop = false) {
+void soundmanager::play(const std::string &filename, bool loop = false) {
   get(fmt::format("blobs/{}.ogg", filename))->play(loop);
 }
 
-void soundmanager::stop(const std::string_view filename) {
+void soundmanager::stop(const std::string &filename) {
   get(filename)->stop();
 }
 

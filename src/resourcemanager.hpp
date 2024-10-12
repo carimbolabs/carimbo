@@ -1,14 +1,14 @@
 #pragma once
 
 #include "common.hpp"
-#include <string_view>
 
 namespace framework {
 class resourcemanager {
 public:
   resourcemanager(
       const std::shared_ptr<graphics::renderer> renderer,
-      const std::shared_ptr<audio::audiodevice> audiodevice);
+      const std::shared_ptr<audio::audiodevice> audiodevice
+  );
 
   ~resourcemanager() = default;
 
@@ -23,7 +23,7 @@ public:
   std::shared_ptr<audio::soundmanager> soundmanager();
 
 private:
-  std::unordered_map<std::string, std::function<void(const std::string_view)>>
+  std::map<std::string, std::function<void(const std::string &)>>
       _handlers;
 
   std::list<std::string> _filenames;

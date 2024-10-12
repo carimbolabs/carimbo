@@ -12,6 +12,7 @@
 #include "soundmanager.hpp"
 #include "ticks.hpp"
 #include "vector2d.hpp"
+#include <string>
 
 using namespace framework;
 
@@ -93,12 +94,14 @@ void scriptengine::run() {
       "add_loopable", &engine::add_loopable,
       "set_scene", &engine::set_scene,
       "prefetch", [](engine &engine, sol::table table) {
-        std::vector<std::string> filenames{table.size()};
-        for (auto &item : table) {
-          filenames.push_back(item.second.as<std::string>());
+        std::vector<std::string> filenames;
+        filenames.reserve(table.size());
+        for (const auto &item : table) {
+          filenames.emplace_back(item.second.as<std::string>());
         }
         engine.prefetch(filenames);
-      }
+      },
+      "flush", &engine::flush
   );
 
   lua.new_usertype<audio::soundmanager>(
