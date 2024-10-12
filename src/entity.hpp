@@ -69,7 +69,6 @@ private:
 
   entity(const entityprops &&props);
 
-  std::string _id;
   entityprops _props;
   std::shared_ptr<entitymanager> _entitymanager;
   std::shared_ptr<resourcemanager> _resourcemanager;

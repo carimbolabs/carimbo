@@ -2,7 +2,6 @@
 
 #include "anchor.hpp"
 #include "entitymanager.hpp"
-#include "pixmap.hpp"
 #include "rect.hpp"
 #include "resourcemanager.hpp"
 
@@ -13,7 +12,7 @@ entity::entity(const entityprops &&props)
 }
 
 entity::~entity() {
-  std::cout << "entity::~entity(), id: " << _id << std::endl;
+  std::cout << "entity::~entity(), id: " << _props.id << std::endl;
 }
 
 std::shared_ptr<entity> entity::create(const entityprops &&props) {
@@ -58,8 +57,7 @@ void entity::update(double delta) {
     _props.last_frame = now;
 
     if (_props.frame >= animation.size()) {
-      if (std::any_of(animation.begin(), animation.end(),
-                      [](const auto &keyframe) { return keyframe.singleshoot; })) {
+      if (std::any_of(animation.begin(), animation.end(), [](const auto &keyframe) { return keyframe.singleshoot; })) {
         _props.action.clear();
 
         if (_onanimationfinished) {
@@ -76,7 +74,8 @@ void entity::update(double delta) {
   if (_props.gravitic || !_props.velocity.zero()) {
     _props.position.set(
         _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta),
-        _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta));
+        _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta)
+    );
   }
 }
 
@@ -95,7 +94,8 @@ void entity::draw() const {
       destination,
       _props.angle,
       _props.flip,
-      _props.alpha);
+      _props.alpha
+  );
 }
 
 bool entity::colliding_with(const entity &other) const {
@@ -144,7 +144,8 @@ void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) {
 }
 
 void entity::set_resourcemanager(
-    std::shared_ptr<resourcemanager> resourcemanager) {
+    std::shared_ptr<resourcemanager> resourcemanager
+) {
   _resourcemanager = resourcemanager;
 }
 
