@@ -13,7 +13,6 @@ timermanager::~timermanager() {
     SDL_RemoveTimer(id);
   }
 }
-
 void timermanager::set(int32_t interval, const std::function<void()> &fn) {
   const auto ptr = std::make_shared<std::function<void()>>(fn);
   const auto id = SDL_AddTimer(interval, wrapper, ptr.get());

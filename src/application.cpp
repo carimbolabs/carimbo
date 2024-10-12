@@ -1,14 +1,8 @@
 #include "application.hpp"
 
-#include "audiodevice.hpp"
 #include "common.hpp"
-#include "enginefactory.hpp"
-#include "entitymanager.hpp"
 #include "filesystem.hpp"
-#include "noncopyable.hpp"
-#include "pixmappool.hpp"
 #include "scriptengine.hpp"
-#include "timermanager.hpp"
 
 using namespace framework;
 
@@ -16,9 +10,7 @@ application::application(int argc, char **argv) {
   UNUSED(argc);
   UNUSED(argv);
 
-  SDL_Init(SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_VIDEO);
-  // SDL_EventState(SDL_CONTROLLERDEVICEADDED, SDL_ENABLE);
-  // SDL_EventState(SDL_CONTROLLERDEVICEREMOVED, SDL_ENABLE);
+  SDL_Init(SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
   PHYSFS_init(argv[0]);
 }
