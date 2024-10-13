@@ -186,6 +186,7 @@ void scriptengine::run() {
   lua.new_usertype<timermanager>(
       "TimeManager", sol::constructors<timermanager()>(),
       "set", &timermanager::set,
+      "singleshot", &timermanager::singleshot,
       "clear", &timermanager::clear
   );
 
