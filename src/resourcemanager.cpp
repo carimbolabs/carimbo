@@ -13,8 +13,7 @@ resourcemanager::resourcemanager(const std::shared_ptr<graphics::renderer> rende
     : _renderer(renderer),
       _audiodevice(audiodevice),
       _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
-      _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)),
-      _fontfactory(std::make_shared<graphics::fontfactory>(weak_from_this())) {
+      _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
   _handlers[".png"] = [this](const std::string &filename) {
     return _pixmappool->get(filename);
   };

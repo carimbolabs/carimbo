@@ -85,6 +85,14 @@ const std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
   return _scenemanager;
 }
 
+void engine::set_fontfactory(const std::shared_ptr<graphics::fontfactory> fontfactory) {
+  _fontfactory = fontfactory;
+}
+
+const std::shared_ptr<graphics::fontfactory> engine::fontfactory() {
+  return _fontfactory;
+}
+
 void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
 }
