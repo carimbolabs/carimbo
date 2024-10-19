@@ -1,5 +1,6 @@
 #include "resourcemanager.hpp"
 
+#include "fontfactory.hpp"
 #include "helpers.hpp"
 #include "pixmappool.hpp"
 #include "renderer.hpp"
@@ -8,14 +9,12 @@
 
 using namespace framework;
 
-resourcemanager::resourcemanager(
-    const std::shared_ptr<graphics::renderer> renderer,
-    const std::shared_ptr<audio::audiodevice> audiodevice
-)
+resourcemanager::resourcemanager(const std::shared_ptr<graphics::renderer> renderer, const std::shared_ptr<audio::audiodevice> audiodevice)
     : _renderer(renderer),
       _audiodevice(audiodevice),
-      _pixmappool(renderer),
-      _soundmanager(audiodevice) {
+      _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
+      _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)),
+      _fontfactory(std::make_shared<graphics::fontfactory>(weak_from_this())) {
   _handlers[".png"] = [this](const std::string &filename) {
     return _pixmappool->get(filename);
   };
@@ -64,4 +63,8 @@ std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() {
 
 std::shared_ptr<audio::soundmanager> resourcemanager::soundmanager() {
   return _soundmanager;
+}
+
+std::shared_ptr<graphics::fontfactory> resourcemanager::fontfactory() {
+  return _fontfactory;
 }

@@ -3,12 +3,9 @@
 #include "common.hpp"
 
 namespace framework {
-class resourcemanager {
+class resourcemanager : protected std::enable_shared_from_this<resourcemanager> {
 public:
-  resourcemanager(
-      const std::shared_ptr<graphics::renderer> renderer,
-      const std::shared_ptr<audio::audiodevice> audiodevice
-  );
+  resourcemanager(const std::shared_ptr<graphics::renderer> renderer, const std::shared_ptr<audio::audiodevice> audiodevice);
 
   ~resourcemanager() = default;
 
@@ -24,6 +21,8 @@ public:
 
   std::shared_ptr<audio::soundmanager> soundmanager();
 
+  std::shared_ptr<graphics::fontfactory> fontfactory();
+
 private:
   std::map<std::string, std::function<void(const std::string &)>> _handlers;
 
@@ -32,5 +31,6 @@ private:
   std::shared_ptr<audio::audiodevice> _audiodevice;
   std::shared_ptr<graphics::pixmappool> _pixmappool;
   std::shared_ptr<audio::soundmanager> _soundmanager;
+  std::shared_ptr<graphics::fontfactory> _fontfactory;
 };
 }

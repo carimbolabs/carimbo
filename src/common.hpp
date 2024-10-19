@@ -89,6 +89,8 @@ namespace graphics {
 class effect;
 class pixmap;
 class pixmappool;
+class fontfactory;
+class glyph;
 class renderer;
 class window;
 }
