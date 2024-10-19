@@ -17,7 +17,7 @@ public:
 
   std::shared_ptr<entity> find(uint64_t id) const;
 
-  void update(double delta);
+  void update(double_t delta);
 
   void draw();
 

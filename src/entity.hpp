@@ -18,7 +18,7 @@ public:
 
   const std::string kind() const;
 
-  virtual void update(double delta);
+  virtual void update(double_t delta);
 
   virtual void draw() const;
 

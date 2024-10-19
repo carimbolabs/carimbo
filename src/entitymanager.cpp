@@ -13,9 +13,7 @@ using namespace framework;
 
 using json = nlohmann::json;
 
-void entitymanager::set_resourcemanager(
-    std::shared_ptr<resourcemanager> resourcemanager
-) {
+void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
   _resourcemanager = resourcemanager;
 }
 
@@ -107,7 +105,7 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
   return (it != _entities.end()) ? *it : nullptr;
 }
 
-void entitymanager::update(double delta) {
+void entitymanager::update(double_t delta) {
   for (auto entity : _entities) {
     entity->update(delta);
   }

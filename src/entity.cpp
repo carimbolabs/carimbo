@@ -39,7 +39,7 @@ int32_t entity::y() const {
   return _props.position.y();
 }
 
-void entity::update(double delta) {
+void entity::update(double_t delta) {
   if (_onupdate) {
     _onupdate(shared_from_this());
   }
