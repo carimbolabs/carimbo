@@ -12,14 +12,16 @@ resourcemanager::resourcemanager(
     const std::shared_ptr<graphics::renderer> renderer,
     const std::shared_ptr<audio::audiodevice> audiodevice
 )
-    : _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
-      _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
+    : _renderer(renderer),
+      _audiodevice(audiodevice),
+      _pixmappool(renderer),
+      _soundmanager(audiodevice) {
   _handlers[".png"] = [this](const std::string &filename) {
-    _pixmappool->get(filename);
+    return _pixmappool->get(filename);
   };
 
   _handlers[".ogg"] = [this](const std::string &filename) {
-    _soundmanager->get(filename);
+    return _soundmanager->get(filename);
   };
 }
 
@@ -50,6 +52,10 @@ void resourcemanager::update(double_t delta) {
 
 bool resourcemanager::busy() const {
   return !_filenames.empty();
+}
+
+std::shared_ptr<graphics::renderer> resourcemanager::renderer() const {
+  return _renderer;
 }
 
 std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() {

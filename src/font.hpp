@@ -8,7 +8,7 @@
 namespace graphics {
 class font {
   font() = delete;
-  font(const std::string_view filename, const std::string &alphabet);
+  font(const std::shared_ptr<pixmappool> pixmappool, const std::string &filename, const std::string &alphabet);
   ~font() = default;
 
   // void update(double_t delta);

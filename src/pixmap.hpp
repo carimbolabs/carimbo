@@ -23,11 +23,14 @@ public:
       const geometry::rect &destination,
       const double angle = 0.0,
       flip flip = flip::none,
-      const uint8_t alpha = 255) const;
+      const uint8_t alpha = 255
+  ) const;
 
   const geometry::size size() const;
 
   void set_size(const geometry::size &size);
+
+  operator SDL_Texture *() const;
 
 private:
   std::shared_ptr<renderer> _renderer;
