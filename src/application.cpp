@@ -19,9 +19,9 @@ int application::run() {
   try {
 #if SANDBOX
     // storage::filesystem::mount("../assets/sandbox", "/");
-    storage::filesystem::mount("/opt/workspace/khromatizo/megarick", "/");
+    storage::filesystem::mount("/opt/workspace/carimbolabs/matrix"sv, "/"sv);
 #else
-    storage::filesystem::mount("bundle.7z", "/");
+    storage::filesystem::mount("bundle.7z"sv, "/"sv);
 #endif
 
     auto se = scriptengine();

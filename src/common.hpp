@@ -33,6 +33,7 @@ extern "C" {
 #include <optional>
 #include <random>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -100,3 +101,5 @@ class eventreceiver;
 namespace math {
 class vector2d;
 }
+
+using namespace std::literals;
