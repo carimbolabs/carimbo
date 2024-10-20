@@ -9,17 +9,17 @@ namespace graphics {
 class fontfactory {
 public:
   fontfactory() = delete;
-  fontfactory(const std::weak_ptr<framework::resourcemanager> _resourcemanager);
+  fontfactory(const std::shared_ptr<framework::resourcemanager> _resourcemanager);
   ~fontfactory() = default;
 
-  std::shared_ptr<font> get(const std::string &filename, const std::string &alphabet);
+  std::shared_ptr<font> get(const std::string &face);
 
   // void update(double_t delta);
 
   // void draw() const;
 
 private:
-  std::weak_ptr<framework::resourcemanager> _resourcemanager;
+  std::shared_ptr<framework::resourcemanager> _resourcemanager;
 
   // std::map<uint8_t, glyph> _glyphs;
   // std::shared_ptr<pixmap> _pixmap;

@@ -63,7 +63,3 @@ std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() {
 std::shared_ptr<audio::soundmanager> resourcemanager::soundmanager() {
   return _soundmanager;
 }
-
-std::shared_ptr<graphics::fontfactory> resourcemanager::fontfactory() {
-  return _fontfactory;
-}

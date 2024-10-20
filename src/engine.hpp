@@ -52,6 +52,8 @@ public:
 
   void prefetch(const std::vector<std::string> &filenames);
 
+  void load_font(const std::vector<std::string> &filename);
+
   void flush() const;
 
   bool is_keydown(const input::keyevent &event) const;

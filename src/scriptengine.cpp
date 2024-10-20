@@ -79,6 +79,7 @@ void scriptengine::run() {
       "soundmanager", &engine::soundmanager,
       "add_loopable", &engine::add_loopable,
       "set_scene", &engine::set_scene,
+      //"load_font", &engine::load_font,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames;
         filenames.reserve(table.size());
