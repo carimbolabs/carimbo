@@ -1,6 +1,7 @@
 #include "fontfactory.hpp"
 
 #include "color.hpp"
+#include "helpers.hpp"
 
 using namespace graphics;
 
@@ -54,11 +55,12 @@ std::shared_ptr<font> fontfactory::get(const std::string &face) {
   const auto format = surface->format;
   const auto pixel = pixels[0];
   const auto separator = color(pixel, format);
+  UNUSED(separator);
 
   for (auto y = 0; y < height; ++y) {
     for (auto x = 0; x < width; ++x) {
       const auto pixel = pixels[(y * width) + x];
-      color separator(pixel, format);
+      color color(pixel, format);
     }
   }
 

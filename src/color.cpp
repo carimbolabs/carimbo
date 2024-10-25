@@ -50,7 +50,7 @@ void color::set_b(uint8_t b) { _b = b; }
 void color::set_a(uint8_t a) { _a = a; }
 
 bool color::operator==(const color &other) const {
-  return _r == other._r && _g == other._g && _b == other._b && _a == other._a;
+  return std::tie(_r, _g, _b, _a) == std::tie(other._r, other._g, other._b, other._a);
 }
 
 bool color::operator!=(const color &other) const {

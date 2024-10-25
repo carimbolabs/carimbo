@@ -12,10 +12,10 @@ public:
   color(uint32_t pixel, const SDL_PixelFormat *format);
   ~color() = default;
 
-  uint8_t r() const;
-  uint8_t g() const;
-  uint8_t b() const;
-  uint8_t a() const;
+  [[nodiscard]] uint8_t r() const;
+  [[nodiscard]] uint8_t g() const;
+  [[nodiscard]] uint8_t b() const;
+  [[nodiscard]] uint8_t a() const;
 
   void set_r(uint8_t r);
   void set_g(uint8_t g);
