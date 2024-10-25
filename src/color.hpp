@@ -12,21 +12,21 @@ public:
   color(uint32_t pixel, const SDL_PixelFormat *format);
   ~color() = default;
 
-  [[nodiscard]] uint8_t r() const;
-  [[nodiscard]] uint8_t g() const;
-  [[nodiscard]] uint8_t b() const;
-  [[nodiscard]] uint8_t a() const;
+  [[nodiscard]] inline uint8_t r() const noexcept { return _r; }
+  [[nodiscard]] inline uint8_t g() const noexcept { return _g; }
+  [[nodiscard]] inline uint8_t b() const noexcept { return _b; }
+  [[nodiscard]] inline uint8_t a() const noexcept { return _a; }
 
-  void set_r(uint8_t r);
-  void set_g(uint8_t g);
-  void set_b(uint8_t b);
-  void set_a(uint8_t a);
+  inline void set_r(uint8_t r) noexcept { _r = r; }
+  inline void set_g(uint8_t g) noexcept { _g = g; }
+  inline void set_b(uint8_t b) noexcept { _b = b; }
+  inline void set_a(uint8_t a) noexcept { _a = a; }
 
-  bool operator==(const color &other) const;
+  bool operator==(const color &other) const noexcept;
 
-  bool operator!=(const color &other) const;
+  bool operator!=(const color &other) const noexcept;
 
-  operator SDL_Color() const;
+  explicit operator SDL_Color() const noexcept;
 
 private:
   uint8_t _r = 0;

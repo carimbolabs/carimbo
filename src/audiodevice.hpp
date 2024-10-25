@@ -6,7 +6,7 @@ namespace audio {
 class audiodevice {
 public:
   audiodevice();
-  virtual ~audiodevice();
+  virtual ~audiodevice() noexcept;
 
   // uint32_t id() const;
 

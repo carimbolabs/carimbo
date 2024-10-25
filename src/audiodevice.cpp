@@ -14,18 +14,18 @@ audiodevice::audiodevice() : device(nullptr, [](ALCdevice *device) {
                              }) {
 
   device.reset(alcOpenDevice(nullptr));
-  if (!device) {
+  if (!device || alcGetError(device.get()) != ALC_NO_ERROR) {
     throw std::runtime_error("Failed to open ALC device");
   }
 
   context.reset(alcCreateContext(device.get(), nullptr));
-  if (!context) {
+  if (!context || alcGetError(device.get()) != ALC_NO_ERROR) {
     throw std::runtime_error("Failed to create ALC context");
   }
 
   alcMakeContextCurrent(context.get());
 }
 
-audiodevice::~audiodevice() {
+audiodevice::~audiodevice() noexcept {
   alcMakeContextCurrent(nullptr);
 }

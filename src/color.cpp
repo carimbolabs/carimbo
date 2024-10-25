@@ -5,58 +5,41 @@ using namespace graphics;
 color::color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     : _r(r), _g(g), _b(b), _a(a) {}
 
-color::color(const SDL_Color &color)
-    : _r(color.r), _g(color.g), _b(color.b), _a(color.a) {}
+color::color(const SDL_Color &scolor)
+    : color(scolor.r, scolor.g, scolor.b, scolor.a) {}
 
-color::color(const std::string &hex) {
-  auto to_uint8 = [](const std::string &hex) -> uint8_t {
-    unsigned int value;
-    std::stringstream ss;
-    ss << std::hex << hex;
-    ss >> value;
-    return static_cast<uint8_t>(value);
-  };
-
+color::color(const std::string &hex) : color(0, 0, 0, 255) {
   if (hex.length() == 7 || hex.length() == 9) {
     if (hex[0] != '#') {
       throw std::invalid_argument("Hex code must start with '#'");
     }
-    _r = to_uint8(hex.substr(1, 2));
-    _g = to_uint8(hex.substr(3, 2));
-    _b = to_uint8(hex.substr(5, 2));
 
-    if (hex.length() == 9) {
-      _a = to_uint8(hex.substr(7, 2));
-    } else {
-      _a = 255;
-    }
+    _r = static_cast<uint8_t>(std::stoi(hex.substr(1, 2), nullptr, 16));
+    _g = static_cast<uint8_t>(std::stoi(hex.substr(3, 2), nullptr, 16));
+    _b = static_cast<uint8_t>(std::stoi(hex.substr(5, 2), nullptr, 16));
+    _a = (hex.length() == 9) ? static_cast<uint8_t>(std::stoi(hex.substr(7, 2), nullptr, 16)) : 255;
   } else {
     throw std::invalid_argument("Invalid hex code format. Use #RRGGBB or #RRGGBBAA.");
   }
 }
 
 color::color(uint32_t pixel, const SDL_PixelFormat *format) {
-  SDL_GetRGBA(pixel, format, &_r, &_g, &_b, &_a);
+  std::array<uint8_t, 4> rgba;
+  SDL_GetRGBA(pixel, format, &rgba[0], &rgba[1], &rgba[2], &rgba[3]);
+  _r = rgba[0];
+  _g = rgba[1];
+  _b = rgba[2];
+  _a = rgba[3];
 }
 
-uint8_t color::r() const { return _r; }
-uint8_t color::g() const { return _g; }
-uint8_t color::b() const { return _b; }
-uint8_t color::a() const { return _a; }
-
-void color::set_r(uint8_t r) { _r = r; }
-void color::set_g(uint8_t g) { _g = g; }
-void color::set_b(uint8_t b) { _b = b; }
-void color::set_a(uint8_t a) { _a = a; }
-
-bool color::operator==(const color &other) const {
+bool color::operator==(const color &other) const noexcept {
   return std::tie(_r, _g, _b, _a) == std::tie(other._r, other._g, other._b, other._a);
 }
 
-bool color::operator!=(const color &other) const {
+bool color::operator!=(const color &other) const noexcept {
   return !(*this == other);
 }
 
-color::operator SDL_Color() const {
+color::operator SDL_Color() const noexcept {
   return SDL_Color{_r, _g, _b, _a};
 }
