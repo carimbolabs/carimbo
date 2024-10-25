@@ -35,6 +35,10 @@ color::color(const std::string &hex) {
   }
 }
 
+color::color(uint32_t pixel, const SDL_PixelFormat *format) {
+  SDL_GetRGBA(pixel, format, &_r, &_g, &_b, &_a);
+}
+
 uint8_t color::r() const { return _r; }
 uint8_t color::g() const { return _g; }
 uint8_t color::b() const { return _b; }

@@ -8,6 +8,5 @@ void postalservice::post(const mail &message) {
 
   auto *ptr = new mail(message);
   event.user.data1 = static_cast<void *>(ptr);
-
   SDL_PushEvent(&event);
 }

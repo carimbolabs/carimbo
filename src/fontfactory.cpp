@@ -1,5 +1,7 @@
 #include "fontfactory.hpp"
 
+#include "color.hpp"
+
 using namespace graphics;
 
 using json = nlohmann::json;
@@ -41,21 +43,22 @@ std::shared_ptr<font> fontfactory::get(const std::string &face) {
       SDL_FreeSurface
   };
   if (!surface) {
-    throw std::runtime_error(
-        fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}", SDL_GetError())
-    );
+    throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface with format: {}", SDL_GetError()));
   }
 
   if (SDL_RenderReadPixels(*_resourcemanager->renderer(), NULL, surface->format->format, surface->pixels, surface->pitch) != 0) {
     throw std::runtime_error(fmt::format("[SDL_RenderReadPixels] error reading pixels: {}", SDL_GetError()));
   }
 
-  uint32_t *pixels = reinterpret_cast<uint32_t *>(surface->pixels);
-  for (int32_t y = 0; y < height; ++y) {
-    for (int32_t x = 0; x < width; ++x) {
-      uint32_t pixel = pixels[(y * width) + x];
-      uint8_t r, g, b, a;
-      SDL_GetRGBA(pixel, surface->format, &r, &g, &b, &a);
+  const auto pixels = reinterpret_cast<uint32_t *>(surface->pixels);
+  const auto format = surface->format;
+  const auto pixel = pixels[0];
+  const auto separator = color(pixel, format);
+
+  for (auto y = 0; y < height; ++y) {
+    for (auto x = 0; x < width; ++x) {
+      const auto pixel = pixels[(y * width) + x];
+      color separator(pixel, format);
     }
   }
 
