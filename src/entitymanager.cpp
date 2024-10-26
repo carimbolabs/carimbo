@@ -10,79 +10,59 @@
 #include "vector2d.hpp"
 
 using namespace framework;
-
 using json = nlohmann::json;
 
-void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) {
-  _resourcemanager = resourcemanager;
+void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept {
+  _resourcemanager = std::move(resourcemanager);
 }
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
-  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].template get<std::string>());
+  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
   const auto gravitic = j.value("gravitic", false);
-  const auto scale = j.value("scale", 1.);
+  const auto scale = j.value("scale", 1.0);
   const auto size = geometry::size{
       static_cast<int32_t>(j.value("width", 0) * scale),
       static_cast<int32_t>(j.value("height", 0) * scale)
   };
 
   std::map<std::string, std::vector<keyframe>> animations;
-  for (const auto &[key, a] : j["animations"].get<json::object_t>()) {
+  for (const auto &[key, frames] : j["animations"].items()) {
     std::vector<keyframe> keyframes;
-    keyframes.reserve(a.size());
-
-    for (const auto &frame_list : a) {
+    for (const auto &frame_list : frames) {
       for (const auto &f : frame_list) {
-        const auto position = geometry::point{f.at("x").get<int32_t>(), f.at("y").get<int32_t>()};
-        const auto size = geometry::size{f.at("width").get<int32_t>(), f.at("height").get<int32_t>()};
-        const auto rect = geometry::rect{position, size};
+        const auto rect = geometry::rect{
+            {f.at("x").get<int32_t>(), f.at("y").get<int32_t>()},
+            {f.at("width").get<int32_t>(), f.at("height").get<int32_t>()}
+        };
         const auto duration = f.at("duration").get<uint64_t>();
         const auto singleshoot = f.value("singleshoot", false);
-        auto offset = geometry::point{0, 0};
-        const auto o = f.value("offset", json::object());
-        if (o.contains("x") || o.contains("y")) {
-          offset = geometry::point{o.value("x", 0), o.value("y", 0)};
-        }
-
+        const auto offset = geometry::point{f.value("offset", json::object()).value("x", 0), f.value("offset", json::object()).value("y", 0)};
         keyframes.emplace_back(rect, duration, singleshoot, offset);
       }
     }
-
     animations.emplace(key, std::move(keyframes));
   }
 
-  const auto id = _counter++;
-  geometry::point position;
-  geometry::point pivot;
-  float_t angle{.0f};
-  graphics::flip flip = graphics::flip::none;
-  uint8_t alpha{255};
-  std::string action;
-  uint32_t frame{0};
-  uint32_t last_frame{0};
-  vector2d velocity;
-  bool visible{true};
-
   entityprops props{
-      id,
+      _counter++,
       kind,
       spritesheet,
-      animations,
-      position,
-      pivot,
+      std::move(animations),
+      {},
+      {},
       size,
-      angle,
+      0.0f,
       scale,
-      flip,
-      alpha,
+      graphics::flip::none,
+      255,
       gravitic,
-      action,
-      frame,
-      last_frame,
-      velocity,
-      visible
+      "",
+      0,
+      SDL_GetTicks(),
+      {},
+      true
   };
 
   const auto e = entity::create(std::move(props));
@@ -91,53 +71,38 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   return e;
 }
 
-void entitymanager::destroy(const std::weak_ptr<entity> entity) {
+void entitymanager::destroy(const std::weak_ptr<entity> entity) noexcept {
   if (auto e = entity.lock()) {
     _entities.remove(e);
   }
 }
 
-std::shared_ptr<entity> entitymanager::find(uint64_t id) const {
-  const auto it = std::find_if(_entities.begin(), _entities.end(), [id](const std::shared_ptr<entity> &entity) {
-    return entity->id() == id;
-  });
-
+std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
+  const auto it = std::find_if(_entities.begin(), _entities.end(), [id](const std::shared_ptr<entity> &entity) { return entity->id() == id; });
   return (it != _entities.end()) ? *it : nullptr;
 }
 
 void entitymanager::update(double_t delta) {
-  for (auto entity : _entities) {
+  for (const auto &entity : _entities) {
     entity->update(delta);
   }
 
-  for (auto a : _entities) {
-    // if (!a->collidable) continue;
-
-    for (auto b : _entities) {
-      if (a == b /* || !entityB->collidable */) continue;
-
-      if (a->colliding_with(*b)) {
-        // TODO send position of collision
-
-        // if (!a->_props.velocity.zero() && b->_props.velocity.zero()) {
-        //   std::cout << "Entity " << a->kind() << " initiated collision with Entity " << b->kind() << std::endl;
-        // } else if (!b->_props.velocity.zero() && a->_props.velocity.zero()) {
-        //   std::cout << "Entity " << b->kind() << " initiated collision with Entity " << a->kind() << std::endl;
-        // } else {
-        //   std::cout << "Entity " << a->kind() << " and Entity " << b->kind() << " are colliding (both in motion)." << std::endl;
-        // }
+  for (auto itA = _entities.begin(); itA != _entities.end(); ++itA) {
+    for (auto itB = std::next(itA); itB != _entities.end(); ++itB) {
+      if ((*itA)->colliding_with(**itB)) {
+        // Placeholder for collision handling logic
       }
     }
   }
 }
 
-void entitymanager::draw() {
-  for (auto entity : _entities) {
+void entitymanager::draw() noexcept {
+  for (const auto &entity : _entities) {
     entity->draw();
   }
 }
 
-void entitymanager::on_mail(const input::mailevent &event) {
+void entitymanager::on_mail(const input::mailevent &event) noexcept {
   if (const auto entity = find(event.to); entity) {
     entity->dispatch(event.body);
   }

@@ -5,8 +5,10 @@
 namespace framework {
 class garbagecollector {
 public:
-  garbagecollector() = default;
-  virtual ~garbagecollector() = default;
+  garbagecollector() = delete;
+  ~garbagecollector() = delete;
+
+  static void collect() noexcept;
 
 private:
 };

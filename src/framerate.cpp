@@ -2,11 +2,10 @@
 
 using namespace framework;
 
-uint64_t framerate::per_second() const { return _frames; }
+uint64_t framerate::per_second() const noexcept { return _frames; }
 
-void framerate::loop(uint32_t delta) {
+void framerate::loop(uint32_t delta) noexcept {
   UNUSED(delta);
-
   _frames++;
 
   const auto now = SDL_GetTicks();
@@ -14,8 +13,7 @@ void framerate::loop(uint32_t delta) {
   _start = now;
 
   if (_elapsed >= 1000) {
-    std::cout << fmt::format("{:.{}f}", _frames / (_elapsed / 1000.f), 1)
-              << std::endl;
+    std::cout << std::fixed << std::setprecision(1) << (_frames / (_elapsed / 1000.0f)) << std::endl;
     _elapsed = 0;
     _frames = 0;
   }

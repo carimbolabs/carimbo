@@ -2,8 +2,9 @@
 
 using namespace graphics;
 
-// void glyph::update(double_t delta) {
-// }
+glyph::glyph(uint32_t code) noexcept
+    : _code(code) {}
 
-// void glyph::draw() const {
-// }
+void glyph::draw(const glyphprops &props) const noexcept {
+  UNUSED(props);
+}

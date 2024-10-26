@@ -5,10 +5,10 @@
 namespace storage {
 class filesystem {
 public:
-  static void mount(std::string_view filename, std::string_view mountpoint);
+  static void mount(std::string_view filename, std::string_view mountpoint) noexcept(false);
 
 private:
-  constexpr filesystem() = default;
-  ~filesystem() = default;
+  filesystem() = delete;
+  ~filesystem() = delete;
 };
 }

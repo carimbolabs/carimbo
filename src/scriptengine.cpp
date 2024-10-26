@@ -20,7 +20,7 @@ class loopable_proxy : public loopable {
 public:
   loopable_proxy(sol::function lua_func) : function(lua_func) {}
 
-  void loop(uint32_t delta) override {
+  void loop(uint32_t delta) noexcept override {
     if (function.valid()) {
       function(delta);
     }
@@ -174,6 +174,8 @@ void scriptengine::run() {
       "singleshot", &timermanager::singleshot,
       "clear", &timermanager::clear
   );
+
+  using math::vector2d;
 
   lua.new_usertype<vector2d>(
       "Vector2D", sol::constructors<vector2d(), vector2d(double_t, double_t)>(),

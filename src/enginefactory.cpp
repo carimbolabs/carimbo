@@ -10,53 +10,53 @@
 
 using namespace framework;
 
-enginefactory &enginefactory::set_title(const std::string &title) {
+enginefactory &enginefactory::set_title(const std::string &title) noexcept {
   _title = title;
   return *this;
 }
 
-enginefactory &enginefactory::set_width(int32_t width) {
+enginefactory &enginefactory::set_width(int32_t width) noexcept {
   _width = width;
   return *this;
 }
 
-enginefactory &enginefactory::set_height(int32_t height) {
+enginefactory &enginefactory::set_height(int32_t height) noexcept {
   _height = height;
   return *this;
 }
 
-enginefactory &enginefactory::set_fullscreen(bool fullscreen) {
+enginefactory &enginefactory::set_fullscreen(bool fullscreen) noexcept {
   _fullscreen = fullscreen;
   return *this;
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  const auto w = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
-  const auto r = w->create_renderer();
-  const auto ad = std::make_shared<audio::audiodevice>();
-  const auto em1 = std::make_shared<input::eventmanager>();
-  const auto em2 = std::make_shared<framework::entitymanager>();
-  const auto em3 = std::make_shared<framework::statemanager>();
-  const auto rm = std::make_shared<framework::resourcemanager>(r, ad);
-  const auto sm = std::make_shared<framework::scenemanager>(rm->pixmappool());
-  const auto ff = std::make_shared<graphics::fontfactory>(rm);
-  const auto e = std::make_shared<framework::engine>();
+  auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
+  auto renderer = window->create_renderer();
+  auto audiodevice = std::make_shared<audio::audiodevice>();
+  auto eventmanager = std::make_shared<input::eventmanager>();
+  auto entitymanager = std::make_shared<framework::entitymanager>();
+  auto statemanager = std::make_shared<framework::statemanager>();
+  auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
+  auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
+  auto fontfactory = std::make_shared<graphics::fontfactory>(resourcemanager);
+  auto engine = std::make_shared<framework::engine>();
 
-  e->set_window(std::move(w));
-  e->set_renderer(std::move(r));
-  e->set_audiodevice(std::move(ad));
-  e->set_eventmanager(std::move(em1));
-  e->set_entitymanager(std::move(em2));
-  e->set_statemanager(std::move(em3));
-  e->set_resourcemanager(std::move(rm));
-  e->set_scenemanager(std::move(sm));
-  e->set_fontfactory(std::move(ff));
+  engine->set_window(std::move(window));
+  engine->set_renderer(std::move(renderer));
+  engine->set_audiodevice(std::move(audiodevice));
+  engine->set_eventmanager(std::move(eventmanager));
+  engine->set_entitymanager(std::move(entitymanager));
+  engine->set_statemanager(std::move(statemanager));
+  engine->set_resourcemanager(std::move(resourcemanager));
+  engine->set_scenemanager(std::move(scenemanager));
+  engine->set_fontfactory(std::move(fontfactory));
 
-  em1->add_receiver(std::move(em2));
-  em1->add_receiver(std::move(e));
-  em1->add_receiver(std::move(em3));
+  engine->eventmanager()->add_receiver(engine->entitymanager());
+  engine->eventmanager()->add_receiver(engine);
+  engine->eventmanager()->add_receiver(engine->statemanager());
 
-  em2->set_resourcemanager(std::move(rm));
+  engine->entitymanager()->set_resourcemanager(engine->resourcemanager());
 
-  return e;
+  return engine;
 }

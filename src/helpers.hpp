@@ -1,3 +1,4 @@
 #pragma once
 
-#define UNUSED(x) (void)(x)
+template <typename T>
+constexpr void UNUSED(const T &x) { (void)x; }

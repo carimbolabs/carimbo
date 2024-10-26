@@ -5,21 +5,20 @@
 namespace graphics {
 class window {
 public:
-  window(std::string_view title, int32_t width, int32_t height, bool fullscreen);
+  window(std::string_view title, int32_t width, int32_t height, bool fullscreen) noexcept(false);
   ~window() = default;
 
-  operator SDL_Window *();
+  operator SDL_Window *() noexcept;
 
-  const std::shared_ptr<renderer> create_renderer() const;
+  std::shared_ptr<renderer> create_renderer() const noexcept;
 
-  int32_t width() const;
+  int32_t width() const noexcept;
 
-  int32_t height() const;
+  int32_t height() const noexcept;
 
 private:
   int32_t _width;
   int32_t _height;
-
   std::unique_ptr<SDL_Window, SDL_Deleter> _window;
 };
 }

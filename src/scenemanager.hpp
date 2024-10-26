@@ -1,20 +1,16 @@
 #pragma once
 
 #include "common.hpp"
-#include "pixmap.hpp"
-#include "pixmappool.hpp"
-#include "rect.hpp"
+#include "size.hpp"
 
 namespace framework {
 class scenemanager {
 public:
-  scenemanager(const std::shared_ptr<graphics::pixmappool> pixmappool);
+  scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noexcept;
 
   void load(const std::string_view name);
-
-  void update(double_t delta);
-
-  void draw();
+  void update(double_t delta) noexcept;
+  void draw() noexcept;
 
 private:
   std::shared_ptr<graphics::pixmappool> _pixmappool;

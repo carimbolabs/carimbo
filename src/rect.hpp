@@ -7,22 +7,20 @@
 namespace geometry {
 class rect {
 public:
-  rect() = default;
-  rect(const point &position, const size &size);
-  rect(const rect &other) = default;
-  ~rect() = default;
+  rect() noexcept = default;
+  rect(const point &position, const size &size) noexcept;
+  rect(const rect &other) noexcept = default;
+  ~rect() noexcept = default;
 
-  void set_position(const point &position);
+  void set_position(const point &position) noexcept;
+  point position() const noexcept;
 
-  const point position() const;
+  void set_size(const geometry::size &size) noexcept;
+  geometry::size size() const noexcept;
 
-  void set_size(const geometry::size &size);
+  void scale(float_t factor) noexcept;
 
-  const geometry::size size() const;
-
-  void scale(float_t factor);
-
-  operator SDL_Rect() const;
+  operator SDL_Rect() const noexcept;
 
 private:
   point _position;

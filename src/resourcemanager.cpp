@@ -1,25 +1,18 @@
 #include "resourcemanager.hpp"
 
-#include "fontfactory.hpp"
-#include "helpers.hpp"
-#include "pixmappool.hpp"
-#include "renderer.hpp"
-#include "soundmanager.hpp"
-#include <cmath>
-
 using namespace framework;
 
-resourcemanager::resourcemanager(const std::shared_ptr<graphics::renderer> renderer, const std::shared_ptr<audio::audiodevice> audiodevice)
-    : _renderer(renderer),
-      _audiodevice(audiodevice),
-      _pixmappool(std::make_shared<graphics::pixmappool>(renderer)),
-      _soundmanager(std::make_shared<audio::soundmanager>(audiodevice)) {
+resourcemanager::resourcemanager(std::shared_ptr<graphics::renderer> renderer, std::shared_ptr<audio::audiodevice> audiodevice) noexcept
+    : _renderer(std::move(renderer)),
+      _audiodevice(std::move(audiodevice)),
+      _pixmappool(std::make_shared<graphics::pixmappool>(_renderer)),
+      _soundmanager(std::make_shared<audio::soundmanager>(_audiodevice)) {
   _handlers[".png"] = [this](const std::string &filename) {
-    return _pixmappool->get(filename);
+    _pixmappool->get(filename);
   };
 
   _handlers[".ogg"] = [this](const std::string &filename) {
-    return _soundmanager->get(filename);
+    _soundmanager->get(filename);
   };
 }
 
@@ -27,39 +20,36 @@ void resourcemanager::prefetch(const std::vector<std::string> &filenames) {
   _filenames.insert(_filenames.end(), filenames.begin(), filenames.end());
 }
 
-void resourcemanager::update(double_t delta) {
+void resourcemanager::update(double_t delta) noexcept {
   UNUSED(delta);
 
   if (_filenames.empty()) {
     return;
   }
 
-  if (const auto filename = std::move(_filenames.front());
-      !_filenames.empty()) {
-    _filenames.pop_front();
+  const auto filename = std::move(_filenames.front());
+  _filenames.pop_front();
 
-    if (const auto position = filename.rfind('.');
-        position != std::string::npos) {
-      const auto extension = filename.substr(position);
-      if (const auto it = _handlers.find(extension); it != _handlers.end()) {
-        it->second(filename);
-      }
+  if (const auto position = filename.rfind('.'); position != std::string::npos) {
+    const auto extension = filename.substr(position);
+    if (const auto it = _handlers.find(extension); it != _handlers.end()) {
+      it->second(filename);
     }
   }
 }
 
-bool resourcemanager::busy() const {
+bool resourcemanager::busy() const noexcept {
   return !_filenames.empty();
 }
 
-std::shared_ptr<graphics::renderer> resourcemanager::renderer() const {
+std::shared_ptr<graphics::renderer> resourcemanager::renderer() const noexcept {
   return _renderer;
 }
 
-std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() {
+std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() noexcept {
   return _pixmappool;
 }
 
-std::shared_ptr<audio::soundmanager> resourcemanager::soundmanager() {
+std::shared_ptr<audio::soundmanager> resourcemanager::soundmanager() noexcept {
   return _soundmanager;
 }

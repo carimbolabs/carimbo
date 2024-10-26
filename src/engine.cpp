@@ -21,7 +21,7 @@ void engine::set_window(std::shared_ptr<graphics::window> window) {
   _window = std::move(window);
 }
 
-const std::shared_ptr<graphics::window> engine::window() const {
+std::shared_ptr<graphics::window> engine::window() const {
   return _window;
 }
 
@@ -29,7 +29,7 @@ void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) {
   _renderer = std::move(renderer);
 }
 
-const std::shared_ptr<graphics::renderer> engine::renderer() const {
+std::shared_ptr<graphics::renderer> engine::renderer() const {
   return _renderer;
 }
 
@@ -37,7 +37,7 @@ void engine::set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice) {
   _audiodevice = std::move(audiodevice);
 }
 
-const std::shared_ptr<audio::audiodevice> engine::audiodevice() {
+std::shared_ptr<audio::audiodevice> engine::audiodevice() const {
   return _audiodevice;
 }
 
@@ -45,7 +45,7 @@ void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager)
   _eventmanager = std::move(eventmanager);
 }
 
-const std::shared_ptr<input::eventmanager> engine::eventmanager() const {
+std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
 }
 
@@ -53,7 +53,7 @@ void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitym
   _entitymanager = std::move(entitymanager);
 }
 
-const std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
+std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
   return _entitymanager;
 }
 
@@ -61,11 +61,11 @@ void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> res
   _resourcemanager = std::move(resourcemanager);
 }
 
-const std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
+std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
   return _resourcemanager;
 }
 
-const std::shared_ptr<audio::soundmanager> engine::soundmanager() const {
+std::shared_ptr<audio::soundmanager> engine::soundmanager() const {
   return _resourcemanager->soundmanager();
 }
 
@@ -73,23 +73,23 @@ void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemana
   _statemanager = std::move(statemanager);
 }
 
-const std::shared_ptr<framework::statemanager> engine::statemanager() const {
+std::shared_ptr<framework::statemanager> engine::statemanager() const {
   return _statemanager;
 }
 
-void engine::set_scenemanager(const std::shared_ptr<framework::scenemanager> scenemanager) {
-  _scenemanager = scenemanager;
+void engine::set_scenemanager(std::shared_ptr<framework::scenemanager> scenemanager) {
+  _scenemanager = std::move(scenemanager);
 }
 
-const std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
+std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
   return _scenemanager;
 }
 
-void engine::set_fontfactory(const std::shared_ptr<graphics::fontfactory> fontfactory) {
-  _fontfactory = fontfactory;
+void engine::set_fontfactory(std::shared_ptr<graphics::fontfactory> fontfactory) {
+  _fontfactory = std::move(fontfactory);
 }
 
-const std::shared_ptr<graphics::fontfactory> engine::fontfactory() {
+std::shared_ptr<graphics::fontfactory> engine::fontfactory() const {
   return _fontfactory;
 }
 
@@ -106,8 +106,8 @@ bool engine::is_keydown(const input::keyevent &event) const {
   return _statemanager->is_keydown(event);
 }
 
-const std::shared_ptr<entity> engine::spawn(const std::string &kind) {
-  const auto entity = _entitymanager->spawn(kind);
+std::shared_ptr<entity> engine::spawn(const std::string &kind) {
+  auto entity = _entitymanager->spawn(kind);
   entity->set_entitymanager(_entitymanager);
   entity->set_resourcemanager(_resourcemanager);
   return entity;
@@ -154,12 +154,13 @@ void engine::_loop() {
   _eventmanager->update(delta);
   _entitymanager->update(delta);
 
-  std::for_each(_loopables.begin(), _loopables.end(), [delta](auto &loopable) { loopable->loop(delta); });
+  for (auto &loopable : _loopables) {
+    loopable->loop(delta);
+  }
 
   _renderer->begin();
   _scenemanager->draw();
   _entitymanager->draw();
-  // _scenegraph->render();
   _renderer->end();
 }
 
@@ -167,4 +168,4 @@ int32_t engine::width() const { return _window->width(); }
 
 int32_t engine::height() const { return _window->height(); }
 
-void engine::on_quit() { _running = false; }
+void engine::on_quit() noexcept { _running = false; }

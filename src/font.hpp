@@ -4,6 +4,7 @@
 
 namespace graphics {
 class font {
+public:
   font() = default;
   ~font() = default;
 

@@ -1,10 +1,8 @@
 #include "pixmappool.hpp"
 
-#include "pixmap.hpp"
-
 using namespace graphics;
 
-pixmappool::pixmappool(const std::shared_ptr<renderer> renderer)
+pixmappool::pixmappool(const std::shared_ptr<renderer> &renderer) noexcept
     : _renderer(renderer) {}
 
 void pixmappool::preload(const std::vector<std::string> &filenames) {
@@ -18,22 +16,17 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
 
   if (added) {
     std::cout << "[pixmappool] cache miss: " << filename << std::endl;
+
     assert(_renderer);
     it->second = std::make_shared<pixmap>(_renderer, filename);
   }
 
-#ifdef DEBUG
-  std::cout << "[pixmappool] cache hit: " << filename << std::endl;
-#endif
-
   return it->second;
 }
 
-void pixmappool::flush() {
+void pixmappool::flush() noexcept {
   for (auto it = _pool.begin(); it != _pool.end();) {
-
-    const auto unique = it->second.use_count() == 1;
-    if (unique) {
+    if (it->second.use_count() == 1) {
       it = _pool.erase(it);
     } else {
       ++it;

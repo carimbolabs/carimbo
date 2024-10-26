@@ -4,7 +4,9 @@
 #define SOL_ALL_SAFETIES_ON 1
 #endif
 
+#ifdef _WIN32
 #define NOMINMAX
+#endif
 
 extern "C" {
 #include <AL/al.h>
@@ -23,6 +25,7 @@ extern "C" {
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <fmt/core.h>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -30,16 +33,14 @@ extern "C" {
 #include <map>
 #include <memory>
 #include <mutex>
+#include <nlohmann/json.hpp>
 #include <optional>
 #include <random>
+#include <sol/sol.hpp>
 #include <string>
 #include <string_view>
 #include <unordered_map>
 #include <vector>
-
-#include <fmt/core.h>
-#include <nlohmann/json.hpp>
-#include <sol/sol.hpp>
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
@@ -61,8 +62,8 @@ class application;
 class engine;
 class enginefactory;
 class entity;
-class entityprops;
 class entitymanager;
+class entityprops;
 class framerate;
 class garbagecollector;
 class loopable;
@@ -74,11 +75,6 @@ class statemanager;
 class timermanager;
 }
 
-namespace storage {
-class filesystem;
-class io;
-}
-
 namespace geometry {
 class point;
 class rect;
@@ -87,10 +83,10 @@ class size;
 
 namespace graphics {
 class effect;
-class pixmap;
-class pixmappool;
 class fontfactory;
 class glyph;
+class pixmap;
+class pixmappool;
 class renderer;
 class window;
 }

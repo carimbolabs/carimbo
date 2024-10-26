@@ -17,7 +17,7 @@ enum class keyevent : int32_t {
 
 enum class mouseevent : int32_t {};
 
-enum class joysticevent : int32_t {
+enum class joystickevent : int32_t {
   dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
   dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
   dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
@@ -26,7 +26,7 @@ enum class joysticevent : int32_t {
 
 class mailevent {
 public:
-  mailevent(uint64_t to, const std::string &body)
+  mailevent(uint64_t to, std::string_view body) noexcept
       : to(to), body(body) {}
 
   uint64_t to;

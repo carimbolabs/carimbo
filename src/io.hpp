@@ -8,6 +8,6 @@ public:
   io() = delete;
   ~io() = delete;
 
-  static const std::vector<uint8_t> read(std::string_view filename);
+  static std::vector<uint8_t> read(std::string_view filename) noexcept(false);
 };
 }

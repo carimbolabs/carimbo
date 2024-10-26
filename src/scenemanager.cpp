@@ -1,25 +1,24 @@
 #include "scenemanager.hpp"
-#include "point.hpp"
 
 using namespace framework;
 
 using json = nlohmann::json;
 
-scenemanager::scenemanager(const std::shared_ptr<graphics::pixmappool> pixmappool)
-    : _pixmappool(pixmappool) {}
+scenemanager::scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noexcept
+    : _pixmappool(std::move(pixmappool)) {}
 
 void scenemanager::load(const std::string_view name) {
   const auto buffer = storage::io::read(fmt::format("scenes/{}.json", name));
   const auto j = json::parse(buffer);
-  _background = _pixmappool->get(j["background"].template get<std::string>());
+  _background = _pixmappool->get(j["background"].get<std::string>());
   _size = {j.at("width").get<int32_t>(), j.at("height").get<int32_t>()};
 }
 
-void scenemanager::update(double_t delta) {
+void scenemanager::update(double_t delta) noexcept {
   UNUSED(delta);
 }
 
-void scenemanager::draw() {
+void scenemanager::draw() noexcept {
   if (!_background) {
     return;
   }

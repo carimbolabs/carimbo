@@ -11,9 +11,9 @@ public:
   bool is_keydown(const input::keyevent &event) const;
 
 protected:
-  virtual void on_keydown(const input::keyevent &event);
+  virtual void on_keydown(const input::keyevent &event) noexcept;
 
-  virtual void on_keyup(const input::keyevent &event);
+  virtual void on_keyup(const input::keyevent &event) noexcept;
 
 private:
   std::unordered_map<input::keyevent, bool> _keys;

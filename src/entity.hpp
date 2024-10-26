@@ -1,10 +1,11 @@
 #pragma once
 
-#include "common.hpp"
-
 #include "anchor.hpp"
+#include "common.hpp"
+#include "entitymanager.hpp"
 #include "entityprops.hpp"
-#include "pixmap.hpp"
+#include "flip.hpp"
+#include "resourcemanager.hpp"
 #include "vector2d.hpp"
 
 namespace framework {
@@ -14,53 +15,53 @@ public:
 
   static std::shared_ptr<entity> create(const entityprops &&props);
 
-  uint64_t id() const;
+  uint64_t id() const noexcept;
 
-  const std::string kind() const;
+  std::string kind() const;
 
   virtual void update(double_t delta);
 
   virtual void draw() const;
 
-  bool colliding_with(const entity &other) const;
+  bool colliding_with(const entity &other) const noexcept;
 
-  const entityprops props() const;
+  entityprops props() const;
 
-  void set_props(entityprops props);
+  void set_props(entityprops props) noexcept;
 
-  int32_t x() const;
+  int32_t x() const noexcept;
 
-  int32_t y() const;
+  int32_t y() const noexcept;
 
-  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none);
+  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none) noexcept;
 
-  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager);
+  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept;
 
-  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager);
+  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
 
-  void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn);
+  void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
 
-  void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn);
+  void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
 
-  void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn);
+  void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept;
 
-  void set_velocity(const vector2d &velocity);
+  void set_velocity(const math::vector2d &velocity) noexcept;
 
-  void set_pixmap(const std::string_view filename);
+  void set_pixmap(std::string_view filename);
 
-  void play_sound(const std::string_view filename);
+  void play_sound(std::string_view filename);
 
-  void set_flip(graphics::flip flip);
+  void set_flip(graphics::flip flip) noexcept;
 
-  void set_action(const std::string_view action);
+  void set_action(std::string_view action);
 
   void unset_action();
 
   std::string action() const;
 
-  const geometry::size size() const;
+  geometry::size size() const noexcept;
 
-  bool visible() const;
+  bool visible() const noexcept;
 
   void dispatch(const std::string &message);
 
