@@ -31,6 +31,10 @@ std::shared_ptr<font> fontfactory::get(const std::string &face) {
   const auto format = surface->format;
   const auto separator = color(pixels[0], format);
 
+  static const auto black = color("#000000");
+  static const auto white = color("#ffffff");
+  static const auto mangeta = color("#ff00ff");
+
   for (auto y = 0; y < height; ++y) {
     for (auto x = 0; x < width; ++x) {
       const auto pixel = pixels[(y * width) + x];

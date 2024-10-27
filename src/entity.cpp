@@ -19,10 +19,6 @@ std::string entity::kind() const { return _props.kind; }
 
 entityprops entity::props() const { return _props; }
 
-void entity::set_props(entityprops props) noexcept {
-  _props = std::move(props);
-}
-
 int32_t entity::x() const noexcept { return _props.position.x(); }
 
 int32_t entity::y() const noexcept { return _props.position.y(); }
@@ -91,6 +87,10 @@ bool entity::colliding_with(const entity &other) const noexcept {
          _props.position.x() + _props.size.width() > other._props.position.x() &&
          _props.position.y() < other._props.position.y() + other._props.size.height() &&
          _props.position.y() + _props.size.height() > other._props.position.y();
+}
+
+void entity::set_props(entityprops props) noexcept {
+  _props = std::move(props);
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
