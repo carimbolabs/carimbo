@@ -6,7 +6,7 @@ entity::entity(const entityprops &&props)
     : _props(std::move(props)) {}
 
 entity::~entity() {
-  std::cout << "entity::~entity(), id: " << _props.id << std::endl;
+  std::cout << "~entity id: " << _props.id << std::endl;
 }
 
 std::shared_ptr<entity> entity::create(const entityprops &&props) {

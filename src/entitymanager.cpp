@@ -7,7 +7,6 @@
 #include "rect.hpp"
 #include "resourcemanager.hpp"
 #include "size.hpp"
-#include "vector2d.hpp"
 
 using namespace framework;
 using json = nlohmann::json;
@@ -87,10 +86,9 @@ void entitymanager::update(double_t delta) {
     entity->update(delta);
   }
 
-  for (auto itA = _entities.begin(); itA != _entities.end(); ++itA) {
-    for (auto itB = std::next(itA); itB != _entities.end(); ++itB) {
-      if ((*itA)->colliding_with(**itB)) {
-        // Placeholder for collision handling logic
+  for (auto a = _entities.begin(); a != _entities.end(); ++a) {
+    for (auto b = std::next(a); b != _entities.end(); ++b) {
+      if ((*a)->colliding_with(**b)) {
       }
     }
   }
