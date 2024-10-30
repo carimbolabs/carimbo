@@ -10,8 +10,8 @@ class resourcemanager;
 
 class entitymanager : public input::eventreceiver {
 public:
-  entitymanager() = default;
-  ~entitymanager() = default;
+  entitymanager();
+  ~entitymanager();
 
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
   std::shared_ptr<entity> spawn(const std::string &kind);
@@ -24,6 +24,8 @@ protected:
   virtual void on_mail(const input::mailevent &event) noexcept override;
 
 private:
+  b2WorldId _world;
+
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
   std::atomic<uint64_t> _counter{0};

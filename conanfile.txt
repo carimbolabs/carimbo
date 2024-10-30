@@ -1,4 +1,5 @@
 [requires]
+box2d/3.0.0
 fmt/11.0.2
 libcurl/8.10.1
 libspng/0.7.4

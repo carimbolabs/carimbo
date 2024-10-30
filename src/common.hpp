@@ -26,6 +26,7 @@ extern "C" {
 #include <cmath>
 #include <cstdint>
 #include <fmt/core.h>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -40,11 +41,14 @@ extern "C" {
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <variant>
 #include <vector>
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
 #endif
+
+#include <box2d/box2d.h>
 
 #include "constants.hpp"
 #include "deleters.hpp"

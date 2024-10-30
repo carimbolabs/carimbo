@@ -55,7 +55,7 @@ void entity::update(double_t delta) {
     }
   }
 
-  if (_props.gravitic || !_props.velocity.zero()) {
+  if (!_props.velocity.zero()) {
     _props.position.set(
         _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta),
         _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta)

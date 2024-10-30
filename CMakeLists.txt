@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package(box2d CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
@@ -61,6 +62,7 @@ if(SANDBOX)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
+  box2d::box2d
   CURL::libcurl
   fmt::fmt
   Ogg::ogg
