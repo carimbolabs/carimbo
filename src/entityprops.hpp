@@ -9,34 +9,35 @@
 #include "vector2d.hpp"
 
 namespace framework {
+
 struct keyframe {
   geometry::rect frame;
+  geometry::point offset;
   uint64_t duration{};
   bool singleshoot{};
-  geometry::point offset;
 
   keyframe() noexcept = default;
   keyframe(const geometry::rect &rect, uint64_t duration, bool singleshoot, const geometry::point &offset) noexcept
-      : frame(rect), duration(duration), singleshoot(singleshoot), offset(offset) {}
+      : frame(rect), offset(offset), duration(duration), singleshoot(singleshoot) {}
 };
 
 struct entityprops {
   uint64_t id{};
-  std::string kind;
-  std::shared_ptr<graphics::pixmap> spritesheet;
-  std::map<std::string, std::vector<keyframe>> animations;
+  uint32_t frame{};
+  uint32_t last_frame{};
+  double_t angle{};
+  double_t scale{1.0};
+  uint8_t alpha{255};
+  bool visible{true};
   geometry::point position;
   geometry::point pivot;
   geometry::size size;
-  float_t angle{};
-  double_t scale{1.0};
-  graphics::flip flip{graphics::flip::none};
-  uint8_t alpha{255};
-  std::string action;
-  uint32_t frame{};
-  uint32_t last_frame{};
   math::vector2d velocity;
-  bool visible{true};
+  std::string kind;
+  std::string action;
+  graphics::flip flip{graphics::flip::none};
+  std::shared_ptr<graphics::pixmap> spritesheet;
+  std::map<std::string, std::vector<keyframe>> animations;
   b2BodyId body;
 
   entityprops() noexcept = default;
@@ -58,49 +59,81 @@ struct entityprops {
       b2BodyId>;
 
   attribute_t get(const std::string &name) const {
-    static const std::map<std::string, std::function<attribute_t(const entityprops &)>> getters{
-        {"id", [](const entityprops &e) { return e.id; }},
-        {"kind", [](const entityprops &e) { return e.kind; }},
-        {"spritesheet", [](const entityprops &e) { return e.spritesheet; }},
-        {"animations", [](const entityprops &e) { return e.animations; }},
-        {"position", [](const entityprops &e) { return e.position; }},
-        {"pivot", [](const entityprops &e) { return e.pivot; }},
-        {"size", [](const entityprops &e) { return e.size; }},
-        {"angle", [](const entityprops &e) { return e.angle; }},
-        {"scale", [](const entityprops &e) { return e.scale; }},
-        {"flip", [](const entityprops &e) { return e.flip; }},
-        {"alpha", [](const entityprops &e) { return e.alpha; }},
-        {"action", [](const entityprops &e) { return e.action; }},
-        {"frame", [](const entityprops &e) { return e.frame; }},
-        {"last_frame", [](const entityprops &e) { return e.last_frame; }},
-        {"velocity", [](const entityprops &e) { return e.velocity; }},
-        {"visible", [](const entityprops &e) { return e.visible; }},
-        {"body", [](const entityprops &e) { return e.body; }},
-    };
-    return getters.at(name)(*this);
+    if (name == "id")
+      return id;
+    else if (name == "frame")
+      return frame;
+    else if (name == "last_frame")
+      return last_frame;
+    else if (name == "angle")
+      return angle;
+    else if (name == "scale")
+      return scale;
+    else if (name == "alpha")
+      return alpha;
+    else if (name == "visible")
+      return visible;
+    else if (name == "position")
+      return position;
+    else if (name == "pivot")
+      return pivot;
+    else if (name == "size")
+      return size;
+    else if (name == "velocity")
+      return velocity;
+    else if (name == "kind")
+      return kind;
+    else if (name == "action")
+      return action;
+    else if (name == "flip")
+      return flip;
+    else if (name == "spritesheet")
+      return spritesheet;
+    else if (name == "animations")
+      return animations;
+    else if (name == "body")
+      return body;
+    throw std::invalid_argument("Invalid property name");
   }
 
   void set(const std::string &name, const attribute_t &value) {
-    static const std::map<std::string, std::function<void(entityprops &, const attribute_t &)>> setters{
-        {"id", [](entityprops &e, const attribute_t &v) { e.id = std::get<uint64_t>(v); }},
-        {"kind", [](entityprops &e, const attribute_t &v) { e.kind = std::get<std::string>(v); }},
-        {"spritesheet", [](entityprops &e, const attribute_t &v) { e.spritesheet = std::get<std::shared_ptr<graphics::pixmap>>(v); }},
-        {"animations", [](entityprops &e, const attribute_t &v) { e.animations = std::get<std::map<std::string, std::vector<keyframe>>>(v); }},
-        {"position", [](entityprops &e, const attribute_t &v) { e.position = std::get<geometry::point>(v); }},
-        {"pivot", [](entityprops &e, const attribute_t &v) { e.pivot = std::get<geometry::point>(v); }},
-        {"size", [](entityprops &e, const attribute_t &v) { e.size = std::get<geometry::size>(v); }},
-        {"angle", [](entityprops &e, const attribute_t &v) { e.angle = std::get<float_t>(v); }},
-        {"scale", [](entityprops &e, const attribute_t &v) { e.scale = std::get<double_t>(v); }},
-        {"flip", [](entityprops &e, const attribute_t &v) { e.flip = std::get<graphics::flip>(v); }},
-        {"alpha", [](entityprops &e, const attribute_t &v) { e.alpha = std::get<uint8_t>(v); }},
-        {"action", [](entityprops &e, const attribute_t &v) { e.action = std::get<std::string>(v); }},
-        {"frame", [](entityprops &e, const attribute_t &v) { e.frame = std::get<uint32_t>(v); }},
-        {"last_frame", [](entityprops &e, const attribute_t &v) { e.last_frame = std::get<uint32_t>(v); }},
-        {"velocity", [](entityprops &e, const attribute_t &v) { e.velocity = std::get<math::vector2d>(v); }},
-        {"visible", [](entityprops &e, const attribute_t &v) { e.visible = std::get<bool>(v); }},
-        {"body", [](entityprops &e, const attribute_t &v) { e.body = std::get<b2BodyId>(v); }},
-    };
-    setters.at(name)(*this, value);
+    if (name == "id")
+      id = std::get<uint64_t>(value);
+    else if (name == "frame")
+      frame = std::get<uint32_t>(value);
+    else if (name == "last_frame")
+      last_frame = std::get<uint32_t>(value);
+    else if (name == "angle")
+      angle = std::get<double_t>(value);
+    else if (name == "scale")
+      scale = std::get<double_t>(value);
+    else if (name == "alpha")
+      alpha = std::get<uint8_t>(value);
+    else if (name == "visible")
+      visible = std::get<bool>(value);
+    else if (name == "position")
+      position = std::get<geometry::point>(value);
+    else if (name == "pivot")
+      pivot = std::get<geometry::point>(value);
+    else if (name == "size")
+      size = std::get<geometry::size>(value);
+    else if (name == "velocity")
+      velocity = std::get<math::vector2d>(value);
+    else if (name == "kind")
+      kind = std::get<std::string>(value);
+    else if (name == "action")
+      action = std::get<std::string>(value);
+    else if (name == "flip")
+      flip = std::get<graphics::flip>(value);
+    else if (name == "spritesheet")
+      spritesheet = std::get<std::shared_ptr<graphics::pixmap>>(value);
+    else if (name == "animations")
+      animations = std::get<std::map<std::string, std::vector<keyframe>>>(value);
+    else if (name == "body")
+      body = std::get<b2BodyId>(value);
+    else
+      throw std::invalid_argument("Invalid property name");
   }
 };
+
 }

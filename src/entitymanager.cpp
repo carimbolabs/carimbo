@@ -14,10 +14,10 @@ using namespace framework;
 using json = nlohmann::json;
 
 entitymanager::entitymanager() {
-  auto def = b2DefaultWorldDef();
-  def.gravity = {0.0f, -10.0f};
+  auto worldDef = b2DefaultWorldDef();
+  worldDef.gravity = {0.0f, -10.0f};
 
-  _world = b2CreateWorld(&def);
+  _world = b2CreateWorld(&worldDef);
 }
 
 entitymanager::~entitymanager() {
@@ -78,37 +78,47 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       {"dynamic", b2_dynamicBody},
   };
 
-  const auto type = mapping[j["physics"]["type"].get<std::string>()];
+  const auto p = j["physics"];
+  const auto s = p["size"];
+  const auto width = s["width"].get<int32_t>();
+  const auto height = s["height"].get<int32_t>();
+  const auto type = mapping[p["type"].get<std::string>()];
 
   const auto margin = j["physics"]["margin"].get<geometry::margin>();
-  // const auto top = .value("top", 0);
-  // const auto left = j["physics"]["margin"].value("left", 0);
-  // const auto top = j["physics"]["margin"].value("top", 0);
-  // const auto top = j["physics"]["margin"].value("top", 0);
 
   auto bodyDef = b2DefaultBodyDef();
-  bodyDef.position = {0.0f, -10.0f};
+  bodyDef.position = {.0f, .0f};
   bodyDef.type = type;
 
   const auto body = b2CreateBody(_world, &bodyDef);
 
+  b2Polygon shape = b2MakeBox(
+      (width - margin.left - margin.right) * .5f,
+      (height - margin.top - margin.bottom) * .5f
+  );
+
+  b2ShapeDef shapeDef = b2DefaultShapeDef();
+  shapeDef.density = p.value("density", 1.f);
+  shapeDef.friction = 0.3f;
+  b2CreatePolygonShape(body, &shapeDef, &shape);
+
   entityprops props{
       _counter++,
-      kind,
-      spritesheet,
-      std::move(animations),
+      0,
+      SDL_GetTicks(),
+      0.0,
+      scale,
+      255,
+      true,
       {},
       {},
       size,
-      0.0f,
-      scale,
-      graphics::flip::none,
-      255,
-      "",
-      0,
-      SDL_GetTicks(),
       {},
-      true,
+      kind,
+      "",
+      graphics::flip::none,
+      spritesheet,
+      std::move(animations),
       body
   };
 
@@ -129,19 +139,19 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
   return (it != _entities.end()) ? *it : nullptr;
 }
 
-void entitymanager::update(double_t delta) {
-  b2World_Step(_world, delta, 1);
+void entitymanager::update(float_t delta) {
+  b2World_Step(_world, delta, 4);
 
   for (const auto &entity : _entities) {
-    entity->update(delta);
+    entity->update();
   }
 
-  for (auto a = _entities.begin(); a != _entities.end(); ++a) {
-    for (auto b = std::next(a); b != _entities.end(); ++b) {
-      if ((*a)->colliding_with(**b)) {
-      }
-    }
-  }
+  // for (auto a = _entities.begin(); a != _entities.end(); ++a) {
+  //   for (auto b = std::next(a); b != _entities.end(); ++b) {
+  //     if ((*a)->colliding_with(**b)) {
+  //     }
+  //   }
+  // }
 }
 
 void entitymanager::draw() noexcept {

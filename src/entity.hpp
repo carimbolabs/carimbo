@@ -19,7 +19,7 @@ public:
   uint64_t id() const noexcept;
   std::string kind() const;
 
-  virtual void update(double_t delta);
+  virtual void update();
   virtual void draw() const;
 
   bool colliding_with(const entity &other) const noexcept;

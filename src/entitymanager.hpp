@@ -17,7 +17,7 @@ public:
   std::shared_ptr<entity> spawn(const std::string &kind);
   void destroy(const std::weak_ptr<entity> entity) noexcept;
   std::shared_ptr<entity> find(uint64_t id) const noexcept;
-  void update(double_t delta);
+  void update(float_t delta);
   void draw() noexcept;
 
 protected:

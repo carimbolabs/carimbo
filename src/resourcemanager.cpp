@@ -20,7 +20,7 @@ void resourcemanager::prefetch(const std::vector<std::string> &filenames) {
   _filenames.insert(_filenames.end(), filenames.begin(), filenames.end());
 }
 
-void resourcemanager::update(double_t delta) noexcept {
+void resourcemanager::update(float_t delta) noexcept {
   UNUSED(delta);
 
   if (_filenames.empty()) {

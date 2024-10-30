@@ -19,7 +19,7 @@ public:
   void draw(
       const geometry::rect &source,
       const geometry::rect &destination,
-      double angle = 0.0,
+      double_t angle = 0.0f,
       flip flip = flip::none,
       uint8_t alpha = 255
   ) const noexcept;

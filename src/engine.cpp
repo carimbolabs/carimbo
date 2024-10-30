@@ -145,7 +145,7 @@ void engine::run() {
 void engine::_loop() {
   static auto prior = SDL_GetTicks();
   const auto now = SDL_GetTicks();
-  const auto delta = now - prior;
+  const auto delta = static_cast<float_t>(now - prior);
 
   prior = now;
 

@@ -9,7 +9,7 @@ public:
   scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noexcept;
 
   void load(const std::string_view name);
-  void update(double_t delta) noexcept;
+  void update(float_t delta) noexcept;
   void draw() noexcept;
 
 private:

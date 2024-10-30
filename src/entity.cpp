@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include <box2d/box2d.h>
 
 using namespace framework;
 
@@ -23,7 +24,7 @@ int32_t entity::x() const noexcept { return _props.position.x(); }
 
 int32_t entity::y() const noexcept { return _props.position.y(); }
 
-void entity::update(double_t delta) {
+void entity::update() {
   if (_onupdate) {
     _onupdate(shared_from_this());
   }
@@ -55,12 +56,13 @@ void entity::update(double_t delta) {
     }
   }
 
-  if (!_props.velocity.zero()) {
-    _props.position.set(
-        _props.position.x() + static_cast<int32_t>(_props.velocity.x() * delta),
-        _props.position.y() + static_cast<int32_t>(_props.velocity.y() * delta)
-    );
-  }
+  const auto position = b2Body_GetPosition(_props.body);
+  _props.position.set(
+      static_cast<int32_t>(std::round(position.x)),
+      static_cast<int32_t>(std::round(position.y))
+  );
+
+  _props.angle = b2Rot_GetAngle(b2Body_GetRotation(_props.body));
 }
 
 void entity::draw() const {

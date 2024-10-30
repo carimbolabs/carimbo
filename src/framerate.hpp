@@ -11,7 +11,7 @@ public:
 
   uint64_t per_second() const noexcept;
 
-  void loop(uint32_t delta) noexcept override;
+  void loop(float_t delta) noexcept override;
 
 private:
   uint64_t _frames{0};

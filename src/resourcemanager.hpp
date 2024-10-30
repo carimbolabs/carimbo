@@ -9,7 +9,7 @@ public:
   ~resourcemanager() noexcept = default;
 
   void prefetch(const std::vector<std::string> &filenames);
-  void update(double_t delta) noexcept;
+  void update(float_t delta) noexcept;
   bool busy() const noexcept;
 
   std::shared_ptr<graphics::renderer> renderer() const noexcept;

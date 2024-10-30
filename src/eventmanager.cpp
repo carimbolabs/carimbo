@@ -13,7 +13,7 @@ eventmanager::eventmanager() {
   }
 }
 
-void eventmanager::update(double_t delta) {
+void eventmanager::update(float_t delta) {
   UNUSED(delta);
 
   static const std::unordered_map<Uint8, SDL_Keycode> mapping = {

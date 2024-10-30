@@ -15,7 +15,7 @@ public:
   eventmanager();
   virtual ~eventmanager() = default;
 
-  void update(double_t delta);
+  void update(float_t delta);
 
   void add_receiver(std::shared_ptr<eventreceiver> receiver) noexcept;
 
