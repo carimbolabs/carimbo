@@ -98,7 +98,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   );
 
   b2ShapeDef shapeDef = b2DefaultShapeDef();
-  shapeDef.density = p.value("density", 1.f);
+  shapeDef.density = 1.0f; // p.value("density", 1.f);
   shapeDef.friction = 0.3f;
   b2CreatePolygonShape(body, &shapeDef, &shape);
 
@@ -113,7 +113,6 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       {},
       {},
       size,
-      {},
       kind,
       "",
       graphics::flip::none,

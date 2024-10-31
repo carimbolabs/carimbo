@@ -29,16 +29,16 @@ struct entityprops {
   double_t scale{1.0};
   uint8_t alpha{255};
   bool visible{true};
-  geometry::point position;
-  geometry::point pivot;
-  geometry::size size;
-  math::vector2d velocity;
-  std::string kind;
-  std::string action;
+  geometry::point position{};
+  geometry::point pivot{};
+  geometry::size size{};
+  // math::vector2d velocity;
+  std::string kind{};
+  std::string action{};
   graphics::flip flip{graphics::flip::none};
-  std::shared_ptr<graphics::pixmap> spritesheet;
-  std::map<std::string, std::vector<keyframe>> animations;
-  b2BodyId body;
+  std::shared_ptr<graphics::pixmap> spritesheet{};
+  std::map<std::string, std::vector<keyframe>> animations{};
+  b2BodyId body{};
 
   entityprops() noexcept = default;
 
@@ -61,10 +61,6 @@ struct entityprops {
   attribute_t get(const std::string &name) const {
     if (name == "id")
       return id;
-    else if (name == "frame")
-      return frame;
-    else if (name == "last_frame")
-      return last_frame;
     else if (name == "angle")
       return angle;
     else if (name == "scale")
@@ -79,8 +75,6 @@ struct entityprops {
       return pivot;
     else if (name == "size")
       return size;
-    else if (name == "velocity")
-      return velocity;
     else if (name == "kind")
       return kind;
     else if (name == "action")
@@ -117,8 +111,6 @@ struct entityprops {
       pivot = std::get<geometry::point>(value);
     else if (name == "size")
       size = std::get<geometry::size>(value);
-    else if (name == "velocity")
-      velocity = std::get<math::vector2d>(value);
     else if (name == "kind")
       kind = std::get<std::string>(value);
     else if (name == "action")
