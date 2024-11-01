@@ -15,7 +15,7 @@ using json = nlohmann::json;
 
 entitymanager::entitymanager() {
   auto worldDef = b2DefaultWorldDef();
-  worldDef.gravity = {0.0f, -10.0f};
+  worldDef.gravity = {0.0f, 9.8f};
 
   _world = b2CreateWorld(&worldDef);
 }
@@ -56,22 +56,6 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
     animations.emplace(key, std::move(keyframes));
   }
 
-  /*
-  "physics": {
-    "dynamic": true,
-    "margin": {
-      "top": 0,
-      "left": 0,
-      "bottom": 0,
-      "right": 0
-    },
-    "size": {
-      "width": 32,
-      "height": 32
-    }
-  }
-  */
-
   static auto mapping = std::unordered_map<std::string_view, b2BodyType>{
       {"static", b2_staticBody},
       {"kinematic", b2_kinematicBody},
@@ -86,15 +70,24 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   const auto margin = j["physics"]["margin"].get<geometry::margin>();
 
+  UNUSED(margin);
+  UNUSED(width);
+  UNUSED(height);
+  UNUSED(type);
+
+  const auto ppm = 32.f;
+  UNUSED(ppm);
+
   auto bodyDef = b2DefaultBodyDef();
-  bodyDef.position = {.0f, .0f};
-  bodyDef.type = type;
+  bodyDef.position = {0.0f, 5.0f};
+  bodyDef.type = b2_dynamicBody;
 
   const auto body = b2CreateBody(_world, &bodyDef);
 
   b2Polygon shape = b2MakeBox(
-      (width - margin.left - margin.right) * .5f,
-      (height - margin.top - margin.bottom) * .5f
+      1.0f, 1.0f
+      //(width - margin.left - margin.right) * .5f,
+      //(height - margin.top - margin.bottom) * .5f
   );
 
   b2ShapeDef shapeDef = b2DefaultShapeDef();
@@ -139,7 +132,8 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 }
 
 void entitymanager::update(float_t delta) {
-  b2World_Step(_world, delta, 4);
+  UNUSED(delta);
+  b2World_Step(_world, 1 / 60.0f, 4);
 
   for (const auto &entity : _entities) {
     entity->update();
