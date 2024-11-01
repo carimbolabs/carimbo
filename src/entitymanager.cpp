@@ -132,8 +132,7 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 }
 
 void entitymanager::update(float_t delta) {
-  UNUSED(delta);
-  b2World_Step(_world, 1 / 60.0f, 4);
+  b2World_Step(_world, delta, 4);
 
   for (const auto &entity : _entities) {
     entity->update();
