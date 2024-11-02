@@ -59,7 +59,7 @@ void entity::update() {
   const auto ppm = 32.0f;
 
   const auto position = b2Body_GetPosition(_props.body);
-  std::cout << "x " << position.x * ppm << " y " << position.y * ppm << " angle " << b2Rot_GetAngle(b2Body_GetRotation(_props.body)) << std::endl;
+
   _props.position.set(
       static_cast<int32_t>(std::round(position.x * ppm)),
       static_cast<int32_t>(std::round(position.y * ppm))

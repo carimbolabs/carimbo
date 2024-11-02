@@ -27,33 +27,31 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
-  else()
+  elseif(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O0 -g)
   endif()
 elseif(CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O3 /GL)
-  else()
+  elseif(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
   endif()
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  set(EMSCRIPTEN_OPTIONS
+  target_link_options(${PROJECT_NAME} PRIVATE
     "-s EVAL_CTORS=1"
     "-s WASM_BIGINT=1"
     "-s DISABLE_EXCEPTION_CATCHING=1"
     "-s ALLOW_MEMORY_GROWTH=1"
     "-s INITIAL_MEMORY=134217728"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
-    # Debuggging
+    # Debug
     "-s RUNTIME_DEBUG"
     "-s ASSERTIONS=1"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
-
-  target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Os -flto)
 endif()
 
 option(SANDBOX "Use sandbox" OFF)

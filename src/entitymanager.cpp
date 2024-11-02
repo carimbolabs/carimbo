@@ -63,35 +63,29 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   };
 
   const auto p = j["physics"];
-  const auto s = p["size"];
-  const auto width = s["width"].get<int32_t>();
-  const auto height = s["height"].get<int32_t>();
+  const auto width = p["size"]["width"].get<int32_t>();
+  const auto height = p["size"]["height"].get<int32_t>();
   const auto type = mapping[p["type"].get<std::string>()];
-
-  const auto margin = j["physics"]["margin"].get<geometry::margin>();
-
-  UNUSED(margin);
-  UNUSED(width);
-  UNUSED(height);
-  UNUSED(type);
-
-  const auto ppm = 32.f;
-  UNUSED(ppm);
+  const auto margin = p["margin"].get<geometry::margin>();
 
   auto bodyDef = b2DefaultBodyDef();
-  bodyDef.position = {0.0f, 5.0f};
-  bodyDef.type = b2_dynamicBody;
+  bodyDef.position = {10.0f, 0.0f};
+  bodyDef.type = type;
 
   const auto body = b2CreateBody(_world, &bodyDef);
 
+  std::cout << "kind " << width / 32.0f << std::endl;
+  UNUSED(width);
+  UNUSED(height);
+  UNUSED(margin);
   b2Polygon shape = b2MakeBox(
       1.0f, 1.0f
-      //(width - margin.left - margin.right) * .5f,
-      //(height - margin.top - margin.bottom) * .5f
+      // width / 32.0f,
+      // height / 32.0f
   );
 
   b2ShapeDef shapeDef = b2DefaultShapeDef();
-  shapeDef.density = 1.0f; // p.value("density", 1.f);
+  shapeDef.density = 1.0f; // p.value("density", 1.0f);
   shapeDef.friction = 0.3f;
   b2CreatePolygonShape(body, &shapeDef, &shape);
 
@@ -137,13 +131,6 @@ void entitymanager::update(float_t delta) {
   for (const auto &entity : _entities) {
     entity->update();
   }
-
-  // for (auto a = _entities.begin(); a != _entities.end(); ++a) {
-  //   for (auto b = std::next(a); b != _entities.end(); ++b) {
-  //     if ((*a)->colliding_with(**b)) {
-  //     }
-  //   }
-  // }
 }
 
 void entitymanager::draw() noexcept {
