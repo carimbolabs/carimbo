@@ -34,7 +34,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O3 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -march=native -O3 -flto)
   endif()
 endif()
 
@@ -53,7 +53,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   )
 
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-pass-failed=transform-warning -pedantic -O3 -flto)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -march=native -O3 -flto)
 endif()
 
 option(SANDBOX "Use sandbox" OFF)
