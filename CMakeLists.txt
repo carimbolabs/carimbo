@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(box2d CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
+find_package(chipmunk2d CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
@@ -34,7 +34,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O3 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -march=native -O3 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
   endif()
 endif()
 
@@ -53,7 +53,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   )
 
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -march=native -O3 -flto)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
 endif()
 
 option(SANDBOX "Use sandbox" OFF)
@@ -62,8 +62,8 @@ if(SANDBOX)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-  box2d::box2d
   CURL::libcurl
+  chipmunk2d::chipmunk2d
   fmt::fmt
   Ogg::ogg
   physfs-static

@@ -24,8 +24,6 @@ protected:
   virtual void on_mail(const input::mailevent &event) noexcept override;
 
 private:
-  b2WorldId _world;
-
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
   std::atomic<uint64_t> _counter{0};

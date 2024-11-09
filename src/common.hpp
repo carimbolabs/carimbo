@@ -12,6 +12,7 @@ extern "C" {
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <SDL2/SDL.h>
+#include <chipmunk/chipmunk.h>
 #include <curl/curl.h>
 #include <ogg/ogg.h>
 #include <physfs.h>
@@ -47,8 +48,6 @@ extern "C" {
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
 #endif
-
-#include <box2d/box2d.h>
 
 #include "constants.hpp"
 #include "deleters.hpp"

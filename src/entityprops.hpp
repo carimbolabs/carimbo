@@ -38,7 +38,7 @@ struct entityprops {
   graphics::flip flip{graphics::flip::none};
   std::shared_ptr<graphics::pixmap> spritesheet{};
   std::map<std::string, std::vector<keyframe>> animations{};
-  b2BodyId body{};
+  // b2BodyId body{};
 
   entityprops() noexcept = default;
 
@@ -55,8 +55,7 @@ struct entityprops {
       uint8_t,
       uint32_t,
       math::vector2d,
-      bool,
-      b2BodyId>;
+      bool>;
 
   attribute_t get(const std::string &name) const {
     if (name == "id")
@@ -85,8 +84,6 @@ struct entityprops {
       return spritesheet;
     else if (name == "animations")
       return animations;
-    else if (name == "body")
-      return body;
     throw std::invalid_argument("Invalid property name");
   }
 
@@ -121,8 +118,6 @@ struct entityprops {
       spritesheet = std::get<std::shared_ptr<graphics::pixmap>>(value);
     else if (name == "animations")
       animations = std::get<std::map<std::string, std::vector<keyframe>>>(value);
-    else if (name == "body")
-      body = std::get<b2BodyId>(value);
     else
       throw std::invalid_argument("Invalid property name");
   }

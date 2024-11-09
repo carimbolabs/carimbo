@@ -1,5 +1,4 @@
 #include "entity.hpp"
-#include <box2d/box2d.h>
 
 using namespace framework;
 
@@ -56,16 +55,16 @@ void entity::update() {
     }
   }
 
-  const auto ppm = 32.0f;
+  // const auto ppm = 32.0f;
 
-  const auto position = b2Body_GetPosition(_props.body);
+  // const auto position = b2Body_GetPosition(_props.body);
 
-  _props.position.set(
-      static_cast<int32_t>(std::round(position.x * ppm)),
-      static_cast<int32_t>(std::round(position.y * ppm))
-  );
+  // _props.position.set(
+  //     static_cast<int32_t>(std::round(position.x * ppm)),
+  //     static_cast<int32_t>(std::round(position.y * ppm))
+  // );
 
-  _props.angle = b2Rot_GetAngle(b2Body_GetRotation(_props.body));
+  // _props.angle = b2Rot_GetAngle(b2Body_GetRotation(_props.body));
 }
 
 void entity::draw() const {
