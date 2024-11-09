@@ -13,8 +13,11 @@
 #include <SDL2/SDL.h>
 #include <chipmunk/chipmunk.h>
 #include <curl/curl.h>
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 #include <ogg/ogg.h>
 #include <physfs.h>
+#include <sol/sol.hpp>
 #include <spng.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
@@ -24,7 +27,6 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
-#include <fmt/core.h>
 #include <functional>
 #include <iostream>
 #include <iterator>
@@ -33,10 +35,8 @@
 #include <map>
 #include <memory>
 #include <mutex>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <random>
-#include <sol/sol.hpp>
 #include <string>
 #include <string_view>
 #include <unordered_map>
