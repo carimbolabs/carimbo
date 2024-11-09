@@ -8,7 +8,6 @@
 #define NOMINMAX
 #endif
 
-extern "C" {
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <SDL2/SDL.h>
@@ -19,7 +18,6 @@ extern "C" {
 #include <spng.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
-}
 
 #include <algorithm>
 #include <atomic>
