@@ -1,11 +1,35 @@
-
 #include "margin.hpp"
 
-namespace geometry {
-void from_json(const nlohmann::json &j, margin &m) {
-  m.top = j.at("top").get<int32_t>();
-  m.left = j.at("left").get<int32_t>();
-  m.bottom = j.at("bottom").get<int32_t>();
-  m.right = j.at("right").get<int32_t>();
+using namespace geometry;
+
+int32_t margin::top() const noexcept {
+  return _top;
 }
+
+void margin::set_top(int32_t value) noexcept {
+  _top = value;
+}
+
+int32_t margin::left() const noexcept {
+  return _left;
+}
+
+void margin::set_left(int32_t value) noexcept {
+  _left = value;
+}
+
+int32_t margin::bottom() const noexcept {
+  return _bottom;
+}
+
+void margin::set_bottom(int32_t value) noexcept {
+  _bottom = value;
+}
+
+int32_t margin::right() const noexcept {
+  return _right;
+}
+
+void margin::set_right(int32_t value) noexcept {
+  _right = value;
 }

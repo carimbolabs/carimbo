@@ -13,8 +13,10 @@ using namespace framework;
 
 using json = nlohmann::json;
 
-entitymanager::entitymanager() {
-  // worldDef.gravity = {0.0f, 9.8f};
+entitymanager::entitymanager()
+    : _space(cpSpaceNew(), &cpSpaceFree) {
+  const auto gravity = cpv(0, -9.8);
+  cpSpaceSetGravity(_space.get(), gravity);
 }
 
 entitymanager::~entitymanager() {
@@ -29,10 +31,21 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
   const auto scale = j.value("scale", 1.0);
-  const auto size = geometry::size{
-      static_cast<int32_t>(j.value("width", 0) * scale),
-      static_cast<int32_t>(j.value("height", 0) * scale)
-  };
+
+  const auto position = j["position"].get<geometry::point>();
+
+  // const auto position = geometry::point{
+  //     static_cast<int32_t>(j.value("x", 0) * scale),
+  //     static_cast<int32_t>(j.value("y", 0) * scale),
+  // };
+
+  const auto size = j["size"].get<geometry::size>();
+
+  UNUSED(size);
+  // const auto size = geometry::size{
+  //     static_cast<int32_t>(j.value("width", 0) * scale),
+  //     static_cast<int32_t>(j.value("height", 0) * scale)
+  // };
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, frames] : j["animations"].items()) {
@@ -58,12 +71,24 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   //     {"dynamic", b2_dynamicBody},
   // };
 
+  std::unordered_map<std::string, std::function<void()>> cases = {
+      {"static", []() {
+
+       }},
+      {"dynamic", []() {
+
+       }}
+  };
+
   const auto p = j["physics"];
   const auto width = p["size"]["width"].get<int32_t>();
   const auto height = p["size"]["height"].get<int32_t>();
-  // const auto type = mapping[p["type"].get<std::string>()];
+  const auto type = p["type"].get<std::string>();
   const auto margin = p["margin"].get<geometry::margin>();
 
+  cases[type]();
+
+  UNUSED(position);
   UNUSED(width);
   UNUSED(height);
   UNUSED(margin);
@@ -105,7 +130,8 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 
 void entitymanager::update(float_t delta) {
   UNUSED(delta);
-  // b2World_Step(_world, delta, 4);
+
+  cpSpaceStep(_space.get(), 1.0 / 60.0);
 
   for (const auto &entity : _entities) {
     entity->update();

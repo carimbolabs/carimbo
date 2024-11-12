@@ -5,8 +5,7 @@
 #include "eventreceiver.hpp"
 
 namespace framework {
-class entity;
-class resourcemanager;
+using space_ptr = std::unique_ptr<cpSpace, decltype(&cpSpaceFree)>;
 
 class entitymanager : public input::eventreceiver {
 public:
@@ -24,6 +23,8 @@ protected:
   virtual void on_mail(const input::mailevent &event) noexcept override;
 
 private:
+  space_ptr _space;
+
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
   std::atomic<uint64_t> _counter{0};

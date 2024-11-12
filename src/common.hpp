@@ -8,6 +8,10 @@
 #define NOMINMAX
 #endif
 
+#ifdef EMSCRIPTEN
+#include <emscripten.h>
+#endif
+
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <SDL2/SDL.h>
@@ -42,10 +46,6 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
-
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-#endif
 
 #include "constants.hpp"
 #include "deleters.hpp"
