@@ -2,14 +2,10 @@
 
 using namespace framework;
 
-entity::entity(const entityprops &&props)
+entity::entity(entityprops &&props)
     : _props(std::move(props)) {}
 
-entity::~entity() {
-  std::cout << "~entity id: " << _props.id << std::endl;
-}
-
-std::shared_ptr<entity> entity::create(const entityprops &&props) {
+std::shared_ptr<entity> entity::create(entityprops &&props) {
   return std::shared_ptr<entity>(new entity(std::move(props)));
 }
 
@@ -17,7 +13,7 @@ uint64_t entity::id() const noexcept { return _props.id; }
 
 std::string entity::kind() const { return _props.kind; }
 
-entityprops entity::props() const { return _props; }
+const entityprops &entity::props() const { return _props; }
 
 int32_t entity::x() const noexcept { return _props.position.x(); }
 
@@ -64,6 +60,16 @@ void entity::update() {
   //     static_cast<int32_t>(std::round(position.y * ppm))
   // );
 
+  cpVect position = cpBodyGetPosition(_props.body.get());
+  cpFloat angle = cpBodyGetAngle(_props.body.get());
+
+  _props.position.set(
+      static_cast<int32_t>(std::round(position.x)),
+      static_cast<int32_t>(std::round(position.y))
+  );
+
+  _props.angle = angle;
+
   // _props.angle = b2Rot_GetAngle(b2Body_GetRotation(_props.body));
 }
 
@@ -75,7 +81,7 @@ void entity::draw() const {
   const auto source = _props.animations.at(_props.action)[_props.frame].frame;
   const auto offset = _props.animations.at(_props.action)[_props.frame].offset;
   geometry::rect destination{_props.position + offset, source.size()};
-  destination.scale(_props.scale);
+  destination.scale(_props.size.scale());
 
   _props.spritesheet->draw(
       source,
@@ -151,7 +157,7 @@ geometry::size entity::size() const noexcept { return _props.size; }
 
 bool entity::visible() const noexcept { return _props.visible; }
 
-void entity::dispatch(const std::string &message) {
+void entity::on_email(const std::string &message) {
   if (!_onmail) {
     return;
   }

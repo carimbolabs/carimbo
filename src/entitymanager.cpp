@@ -30,9 +30,9 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
-  const auto scale = j.value("scale", 1.0);
 
-  const auto position = j["position"].get<geometry::point>();
+  // const auto position = j["position"].get<geometry::point>();
+  // UNUSED(position);
 
   // const auto position = geometry::point{
   //     static_cast<int32_t>(j.value("x", 0) * scale),
@@ -40,18 +40,21 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   // };
 
   const auto size = j["size"].get<geometry::size>();
-
-  UNUSED(size);
-  // const auto size = geometry::size{
-  //     static_cast<int32_t>(j.value("width", 0) * scale),
-  //     static_cast<int32_t>(j.value("height", 0) * scale)
-  // };
+  std::cout << "w " << size.width() << " h " << size.height() << " s " << size.scale() << std::endl;
+  // UNUSED(size);
+  //  const auto size = geometry::size{
+  //      static_cast<int32_t>(j.value("width", 0) * scale),
+  //      static_cast<int32_t>(j.value("height", 0) * scale)
+  //  };
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, frames] : j["animations"].items()) {
     std::vector<keyframe> keyframes;
     for (const auto &frame_list : frames) {
       for (const auto &f : frame_list) {
+
+        // const auto rect = f.get<geometry::size>();
+
         const auto rect = geometry::rect{
             {f.at("x").get<int32_t>(), f.at("y").get<int32_t>()},
             {f.at("width").get<int32_t>(), f.at("height").get<int32_t>()}
@@ -71,34 +74,36 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   //     {"dynamic", b2_dynamicBody},
   // };
 
-  std::unordered_map<std::string, std::function<void()>> cases = {
-      {"static", []() {
+  auto body = body_ptr(cpBodyNew(10, 10 /* _props.mass, _props.moment */), [](cpBody *body) { cpBodyFree(body); });
 
-       }},
-      {"dynamic", []() {
+  std::unordered_map<std::string, std::function<void()>>
+      cases = {
+          {"static", []() {
 
-       }}
-  };
+           }},
+          {"dynamic", []() {
 
-  const auto p = j["physics"];
-  const auto width = p["size"]["width"].get<int32_t>();
-  const auto height = p["size"]["height"].get<int32_t>();
-  const auto type = p["type"].get<std::string>();
-  const auto margin = p["margin"].get<geometry::margin>();
+           }}
+      };
 
-  cases[type]();
+  // const auto p = j["physics"];
+  // const auto width = p["size"]["width"].get<int32_t>();
+  // const auto height = p["size"]["height"].get<int32_t>();
+  // const auto type = p["type"].get<std::string>();
+  // const auto margin = p["margin"].get<geometry::margin>();
 
-  UNUSED(position);
-  UNUSED(width);
-  UNUSED(height);
-  UNUSED(margin);
+  // cases[type]();
+
+  // UNUSED(position);
+  // UNUSED(width);
+  // UNUSED(height);
+  // UNUSED(margin);
 
   entityprops props{
       _counter++,
       0,
       SDL_GetTicks(),
       0.0,
-      scale,
       255,
       true,
       {},
@@ -108,12 +113,13 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       "",
       graphics::flip::none,
       spritesheet,
-      std::move(animations)
+      std::move(animations),
+      std::move(body)
   };
 
   const auto e = entity::create(std::move(props));
   std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
-  _entities.emplace_back(e);
+  _entities.emplace_back(std::move(e));
   return e;
 }
 
@@ -146,6 +152,6 @@ void entitymanager::draw() noexcept {
 
 void entitymanager::on_mail(const input::mailevent &event) noexcept {
   if (const auto entity = find(event.to); entity) {
-    entity->dispatch(event.body);
+    entity->on_email(event.body);
   }
 }

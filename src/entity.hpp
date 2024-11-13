@@ -11,10 +11,10 @@
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
 public:
-  entity(const entityprops &&props);
-  virtual ~entity();
+  explicit entity(entityprops &&props);
+  ~entity() noexcept = default;
 
-  static std::shared_ptr<entity> create(const entityprops &&props);
+  static std::shared_ptr<entity> create(entityprops &&props);
 
   uint64_t id() const noexcept;
   std::string kind() const;
@@ -24,7 +24,7 @@ public:
 
   bool colliding_with(const entity &other) const noexcept;
 
-  entityprops props() const;
+  const entityprops &props() const;
   void set_props(entityprops props) noexcept;
 
   int32_t x() const noexcept;
@@ -49,7 +49,7 @@ public:
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 
-  void dispatch(const std::string &message);
+  void on_email(const std::string &message);
 
 private:
   friend class entitymanager;
