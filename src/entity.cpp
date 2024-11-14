@@ -84,9 +84,8 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
-  // int32_t _x{x}, _y{y};
-  //  _props.position.set(_x, _y);
-  cpBodySetPosition(_props.body.get(), cpv(static_cast<cpFloat>(x), static_cast<cpFloat>(y)));
+
+  cpBodySetPosition(_props.body.get(), {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
 }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept {
