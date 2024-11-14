@@ -15,7 +15,7 @@ using json = nlohmann::json;
 
 entitymanager::entitymanager()
     : _space(cpSpaceNew(), &cpSpaceFree) {
-  const auto gravity = cpv(0, 19.8);
+  const auto gravity = cpv(0, 9.8);
   cpSpaceSetGravity(_space.get(), gravity);
 }
 
