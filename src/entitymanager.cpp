@@ -15,7 +15,7 @@ using json = nlohmann::json;
 
 entitymanager::entitymanager()
     : _space(cpSpaceNew(), &cpSpaceFree) {
-  const auto gravity = cpv(0, -9.8);
+  const auto gravity = cpv(0, 19.8);
   cpSpaceSetGravity(_space.get(), gravity);
 }
 
@@ -74,7 +74,23 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   //     {"dynamic", b2_dynamicBody},
   // };
 
-  auto body = body_ptr(cpBodyNew(10, 10 /* _props.mass, _props.moment */), [](cpBody *body) { cpBodyFree(body); });
+  // auto body = body_ptr(cpBodyNewKinematic(), [](cpBody *body) { cpBodyFree(body); });
+  auto body = body_ptr(cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())), [](cpBody *body) { cpBodyFree(body); });
+
+  cpVect vertices[] = {
+      cpv(0, 0),
+      cpv(size.width(), 0),
+      cpv(size.width(), size.height()),
+      cpv(0, size.height())
+  };
+
+  const int numVertices = sizeof(vertices) / sizeof(vertices[0]);
+
+  shape_ptr shape(cpPolyShapeNew(body.get(), numVertices, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+  cpShapeSetFriction(shape.get(), 0.7);
+  cpShapeSetElasticity(shape.get(), 0.3);
+  cpSpaceAddShape(_space.get(), shape.get());
+  cpSpaceAddBody(_space.get(), body.get());
 
   std::unordered_map<std::string, std::function<void()>>
       cases = {
@@ -114,7 +130,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       graphics::flip::none,
       spritesheet,
       std::move(animations),
-      std::move(body)
+      std::move(body),
+      std::move(shape)
   };
 
   const auto e = entity::create(std::move(props));

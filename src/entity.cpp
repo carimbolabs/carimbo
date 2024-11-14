@@ -51,26 +51,18 @@ void entity::update() {
     }
   }
 
-  // const auto ppm = 32.0f;
+  // usando chipmunk, leia de props o tamanho, considere o scale de size e o tipo do body e entao aplique o shape
+  // mas, faca cache, se nao mudar nao mexa no shape, se mudar desaloque a memoria e criei um novo e atache ao body
+  // para o cache pode ser criada uma propriedade em _props
+  // e arrume o caculo de angulo e posicao, o body nao esta se movendo
 
-  // const auto position = b2Body_GetPosition(_props.body);
+  _props.angle = cpBodyGetAngle(_props.body.get());
 
-  // _props.position.set(
-  //     static_cast<int32_t>(std::round(position.x * ppm)),
-  //     static_cast<int32_t>(std::round(position.y * ppm))
-  // );
-
-  cpVect position = cpBodyGetPosition(_props.body.get());
-  cpFloat angle = cpBodyGetAngle(_props.body.get());
-
+  const auto position = cpBodyGetPosition(_props.body.get());
   _props.position.set(
       static_cast<int32_t>(std::round(position.x)),
       static_cast<int32_t>(std::round(position.y))
   );
-
-  _props.angle = angle;
-
-  // _props.angle = b2Rot_GetAngle(b2Body_GetRotation(_props.body));
 }
 
 void entity::draw() const {
