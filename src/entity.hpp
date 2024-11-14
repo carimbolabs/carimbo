@@ -22,8 +22,6 @@ public:
   virtual void update();
   virtual void draw() const;
 
-  bool colliding_with(const entity &other) const noexcept;
-
   const entityprops &props() const;
   void set_props(entityprops props) noexcept;
 

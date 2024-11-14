@@ -27,55 +27,31 @@ void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourc
 }
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
+  std::cout << "kind " << kind << std::endl;
+
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
   const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
-
-  // const auto position = j["position"].get<geometry::point>();
-  // UNUSED(position);
-
-  // const auto position = geometry::point{
-  //     static_cast<int32_t>(j.value("x", 0) * scale),
-  //     static_cast<int32_t>(j.value("y", 0) * scale),
-  // };
-
   const auto size = j["size"].get<geometry::size>();
-  std::cout << "w " << size.width() << " h " << size.height() << " s " << size.scale() << std::endl;
-  // UNUSED(size);
-  //  const auto size = geometry::size{
-  //      static_cast<int32_t>(j.value("width", 0) * scale),
-  //      static_cast<int32_t>(j.value("height", 0) * scale)
-  //  };
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, frames] : j["animations"].items()) {
     std::vector<keyframe> keyframes;
-    for (const auto &frame_list : frames) {
-      for (const auto &f : frame_list) {
-
-        // const auto rect = f.get<geometry::size>();
-
-        const auto rect = geometry::rect{
-            {f.at("x").get<int32_t>(), f.at("y").get<int32_t>()},
-            {f.at("width").get<int32_t>(), f.at("height").get<int32_t>()}
-        };
+    for (const auto &fl : frames) {
+      for (const auto &f : fl) {
+        const auto rect = f["rect"].get<geometry::rect>();
         const auto duration = f.at("duration").get<uint64_t>();
         const auto singleshoot = f.value("singleshoot", false);
-        const auto offset = geometry::point{f.value("offset", json::object()).value("x", 0), f.value("offset", json::object()).value("y", 0)};
+        const auto offset = j.value("offset", geometry::point{});
+
         keyframes.emplace_back(rect, duration, singleshoot, offset);
       }
     }
     animations.emplace(key, std::move(keyframes));
   }
 
-  // static auto mapping = std::unordered_map<std::string_view, b2BodyType>{
-  //     {"static", b2_staticBody},
-  //     {"kinematic", b2_kinematicBody},
-  //     {"dynamic", b2_dynamicBody},
-  // };
-
-  // auto body = body_ptr(cpBodyNewKinematic(), [](cpBody *body) { cpBodyFree(body); });
-  auto body = body_ptr(cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())), [](cpBody *body) { cpBodyFree(body); });
+  body_ptr body{nullptr, cpBodyFree};
+  shape_ptr shape{nullptr, cpShapeFree};
 
   cpVect vertices[] = {
       cpv(0, 0),
@@ -84,36 +60,33 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       cpv(0, size.height())
   };
 
-  const int numVertices = sizeof(vertices) / sizeof(vertices[0]);
+  const int n = sizeof(vertices) / sizeof(vertices[0]);
 
-  shape_ptr shape(cpPolyShapeNew(body.get(), numVertices, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
-  cpShapeSetFriction(shape.get(), 0.7);
-  cpShapeSetElasticity(shape.get(), 0.3);
+  std::unordered_map<bodytype, std::function<void()>> mapping = {
+      {bodytype::stationary, [&]() {
+         body = body_ptr(cpBodyNewStatic(), [](cpBody *body) { cpBodyFree(body); });
+         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+       }},
+      {bodytype::kinematic, [&]() {
+         body = body_ptr(cpBodyNewKinematic(), [](cpBody *body) { cpBodyFree(body); });
+         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+       }},
+      {bodytype::dynamic, [&]() {
+         body = body_ptr(cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())), [](cpBody *body) { cpBodyFree(body); });
+         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+         cpShapeSetFriction(shape.get(), 0.7);
+         cpShapeSetElasticity(shape.get(), 0.3);
+         cpSpaceAddBody(_space.get(), body.get());
+       }}
+  };
+
+  const auto p = j["physics"];
+
+  mapping[p["type"].get<bodytype>()]();
+
+  cpShapeSetFriction(shape.get(), p.value("friction", .0f));
+  cpShapeSetElasticity(shape.get(), p.value("elasticity", .0f));
   cpSpaceAddShape(_space.get(), shape.get());
-  cpSpaceAddBody(_space.get(), body.get());
-
-  std::unordered_map<std::string, std::function<void()>>
-      cases = {
-          {"static", []() {
-
-           }},
-          {"dynamic", []() {
-
-           }}
-      };
-
-  // const auto p = j["physics"];
-  // const auto width = p["size"]["width"].get<int32_t>();
-  // const auto height = p["size"]["height"].get<int32_t>();
-  // const auto type = p["type"].get<std::string>();
-  // const auto margin = p["margin"].get<geometry::margin>();
-
-  // cases[type]();
-
-  // UNUSED(position);
-  // UNUSED(width);
-  // UNUSED(height);
-  // UNUSED(margin);
 
   entityprops props{
       _counter++,

@@ -29,9 +29,4 @@ private:
   int32_t _x{0};
   int32_t _y{0};
 };
-
-inline void from_json(const nlohmann::json &j, point &m) noexcept {
-  j.at("x").get_to(m._x);
-  j.at("y").get_to(m._y);
-}
 }

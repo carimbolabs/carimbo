@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include <cstdint>
 
 namespace geometry {
 class size {
@@ -31,10 +30,4 @@ private:
   int32_t _width{0};
   int32_t _height{0};
 };
-
-inline void from_json(const nlohmann::json &j, size &s) noexcept {
-  j.at("scale").get_to(s._scale);
-  j.at("width").get_to(s._width);
-  j.at("height").get_to(s._height);
-}
 }

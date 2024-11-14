@@ -22,6 +22,8 @@ public:
 
   operator SDL_Rect() const noexcept;
 
+  friend void from_json(const nlohmann::json &j, rect &r) noexcept;
+
 private:
   point _position;
   geometry::size _size;

@@ -51,11 +51,6 @@ void entity::update() {
     }
   }
 
-  // usando chipmunk, leia de props o tamanho, considere o scale de size e o tipo do body e entao aplique o shape
-  // mas, faca cache, se nao mudar nao mexa no shape, se mudar desaloque a memoria e criei um novo e atache ao body
-  // para o cache pode ser criada uma propriedade em _props
-  // e arrume o caculo de angulo e posicao, o body nao esta se movendo
-
   _props.angle = cpBodyGetAngle(_props.body.get());
 
   const auto position = cpBodyGetPosition(_props.body.get());
@@ -84,20 +79,14 @@ void entity::draw() const {
   );
 }
 
-bool entity::colliding_with(const entity &other) const noexcept {
-  return _props.position.x() < other._props.position.x() + other._props.size.width() &&
-         _props.position.x() + _props.size.width() > other._props.position.x() &&
-         _props.position.y() < other._props.position.y() + other._props.size.height() &&
-         _props.position.y() + _props.size.height() > other._props.position.y();
-}
-
 void entity::set_props(entityprops props) noexcept {
   _props = std::move(props);
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
-  int32_t _x{x}, _y{y};
-  _props.position.set(_x, _y);
+  // int32_t _x{x}, _y{y};
+  //  _props.position.set(_x, _y);
+  cpBodySetPosition(_props.body.get(), cpv(static_cast<cpFloat>(x), static_cast<cpFloat>(y)));
 }
 
 void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept {

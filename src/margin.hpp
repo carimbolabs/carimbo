@@ -28,11 +28,4 @@ private:
   int32_t _bottom{0};
   int32_t _right{0};
 };
-
-inline void from_json(const nlohmann::json &j, margin &m) {
-  j.at("top").get_to(m._top);
-  j.at("left").get_to(m._left);
-  j.at("bottom").get_to(m._bottom);
-  j.at("right").get_to(m._right);
-}
 }
