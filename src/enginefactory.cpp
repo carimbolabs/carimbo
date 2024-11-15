@@ -25,6 +25,11 @@ enginefactory &enginefactory::set_height(int32_t height) noexcept {
   return *this;
 }
 
+enginefactory &enginefactory::set_gravity(float_t gravity) noexcept {
+  _gravity = gravity;
+  return *this;
+}
+
 enginefactory &enginefactory::set_fullscreen(bool fullscreen) noexcept {
   _fullscreen = fullscreen;
   return *this;
@@ -35,7 +40,7 @@ std::shared_ptr<engine> enginefactory::create() {
   auto renderer = window->create_renderer();
   auto audiodevice = std::make_shared<audio::audiodevice>();
   auto eventmanager = std::make_shared<input::eventmanager>();
-  auto entitymanager = std::make_shared<framework::entitymanager>();
+  auto entitymanager = std::make_shared<framework::entitymanager>(_gravity);
   auto statemanager = std::make_shared<framework::statemanager>();
   auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
   auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());

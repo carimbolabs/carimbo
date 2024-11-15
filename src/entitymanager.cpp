@@ -3,7 +3,7 @@
 #include "entity.hpp"
 #include "entityprops.hpp"
 #include "io.hpp"
-#include "margin.hpp"
+#include "pixmappool.hpp"
 #include "point.hpp"
 #include "rect.hpp"
 #include "resourcemanager.hpp"
@@ -13,10 +13,9 @@ using namespace framework;
 
 using json = nlohmann::json;
 
-entitymanager::entitymanager()
+entitymanager::entitymanager(float_t gravity)
     : _space(cpSpaceNew(), &cpSpaceFree) {
-  const auto gravity = cpv(0, 9.8);
-  cpSpaceSetGravity(_space.get(), gravity);
+  cpSpaceSetGravity(_space.get(), {0, gravity});
 }
 
 entitymanager::~entitymanager() {
@@ -27,11 +26,12 @@ void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourc
 }
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
-  std::cout << "kind " << kind << std::endl;
-
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
-  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
+  const auto spritesheet = j.contains("spritesheet")
+                               ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>())
+                               : graphics::pixmap_ptr(nullptr);
+
   const auto size = j["size"].get<geometry::size>();
 
   std::map<std::string, std::vector<keyframe>> animations;
@@ -84,8 +84,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   mapping[p["type"].get<bodytype>()]();
 
-  cpShapeSetFriction(shape.get(), p.value("friction", .0f));
-  cpShapeSetElasticity(shape.get(), p.value("elasticity", .0f));
+  cpShapeSetFriction(shape.get(), p.value("friction", 0.5f));
+  cpShapeSetElasticity(shape.get(), p.value("elasticity", 0.3f));
   cpSpaceAddShape(_space.get(), shape.get());
 
   entityprops props{
@@ -101,14 +101,14 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       kind,
       "",
       graphics::flip::none,
-      spritesheet,
+      std::move(spritesheet),
       std::move(animations),
       std::move(body),
       std::move(shape)
   };
 
   const auto e = entity::create(std::move(props));
-  std::cout << "[entitymanager] spawn: " << e->id() << std::endl;
+  std::cout << "[entitymanager] spawn " << e->id() << " kind " << kind << std::endl;
   _entities.emplace_back(std::move(e));
   return e;
 }

@@ -57,6 +57,7 @@ void scriptengine::run() {
       "y", sol::property(&entity::y),
       "visible", sol::property(&entity::visible),
       "size", sol::property(&entity::size),
+      "move", &entity::move,
       "on_update", &entity::set_onupdate,
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
@@ -97,6 +98,7 @@ void scriptengine::run() {
       "set_title", &enginefactory::set_title,
       "set_width", &enginefactory::set_width,
       "set_height", &enginefactory::set_height,
+      "set_gravity", &enginefactory::set_gravity,
       "set_fullscreen", &enginefactory::set_fullscreen,
       "create", &enginefactory::create
   );

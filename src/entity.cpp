@@ -19,6 +19,10 @@ int32_t entity::x() const noexcept { return _props.position.x(); }
 
 int32_t entity::y() const noexcept { return _props.position.y(); }
 
+void entity::move(float_t velocity) {
+  cpBodySetVelocity(_props.body.get(), {velocity, cpBodyGetVelocity(_props.body.get()).y});
+}
+
 void entity::update() {
   if (_onupdate) {
     _onupdate(shared_from_this());
@@ -84,7 +88,6 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::set_placement(int32_t x, int32_t y, anchor) noexcept {
-
   cpBodySetPosition(_props.body.get(), {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
 }
 

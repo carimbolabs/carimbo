@@ -3,6 +3,8 @@
 #include "common.hpp"
 
 namespace graphics {
+using pixmap_ptr = std::shared_ptr<pixmap>;
+
 class pixmappool {
 public:
   explicit pixmappool(const std::shared_ptr<renderer> &renderer) noexcept;
@@ -16,6 +18,6 @@ public:
 
 private:
   std::shared_ptr<renderer> _renderer;
-  std::map<std::string, std::shared_ptr<pixmap>> _pool;
+  std::map<std::string, pixmap_ptr> _pool;
 };
 }
