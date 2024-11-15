@@ -30,8 +30,10 @@ public:
 
   operator SDL_Texture *() const noexcept;
 
-private:
   std::shared_ptr<renderer> _renderer;
+
+private:
+  // std::shared_ptr<renderer> _renderer;
   geometry::size _size{0, 0};
   texture_ptr _texture;
 };

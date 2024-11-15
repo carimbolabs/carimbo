@@ -52,12 +52,12 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   body_ptr body{nullptr, cpBodyFree};
   shape_ptr shape{nullptr, cpShapeFree};
-
+  const auto resized = size.resized();
   cpVect vertices[] = {
       cpv(0, 0),
-      cpv(size.width(), 0),
-      cpv(size.width(), size.height()),
-      cpv(0, size.height())
+      cpv(resized.width(), 0),
+      cpv(resized.width(), resized.height()),
+      cpv(0, resized.height())
   };
 
   const int n = sizeof(vertices) / sizeof(vertices[0]);

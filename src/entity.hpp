@@ -30,7 +30,7 @@ public:
 
   void move(float_t velocity);
 
-  void set_placement(int32_t x, int32_t y, anchor anchor = anchor::none) noexcept;
+  void set_placement(int32_t x, int32_t y) noexcept;
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept;
   void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
 
