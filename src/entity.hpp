@@ -38,7 +38,6 @@ public:
   void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept;
 
-  void set_velocity(const math::vector2d &velocity) noexcept;
   void set_pixmap(std::string_view filename);
   void play_sound(std::string_view filename);
   void set_flip(graphics::flip flip) noexcept;

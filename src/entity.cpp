@@ -99,11 +99,6 @@ void entity::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanage
   _resourcemanager = std::move(resourcemanager);
 }
 
-void entity::set_velocity(const math::vector2d &velocity) noexcept {
-  UNUSED(velocity);
-  // _props.velocity = velocity;
-}
-
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {
   _onupdate = fn;
 }
