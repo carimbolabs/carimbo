@@ -24,12 +24,12 @@ color::color(const std::string &hex) : color(0, 0, 0, 255) {
 }
 
 color::color(uint32_t pixel, const SDL_PixelFormat *format) {
-  std::array<uint8_t, 4> rgba;
-  SDL_GetRGBA(pixel, format, &rgba[0], &rgba[1], &rgba[2], &rgba[3]);
-  _r = rgba[0];
-  _g = rgba[1];
-  _b = rgba[2];
-  _a = rgba[3];
+  uint8_t r, g, b, a;
+  SDL_GetRGBA(pixel, format, &r, &g, &b, &a);
+  _r = r;
+  _g = g;
+  _b = b;
+  _a = a;
 }
 
 bool color::operator==(const color &other) const noexcept {
