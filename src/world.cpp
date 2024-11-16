@@ -18,6 +18,12 @@ space_ptr world::space() const noexcept {
   return _space;
 }
 
+void world::update(float_t delta) const noexcept {
+  UNUSED(delta);
+
+  cpSpaceStep(_space.get(), 1.0 / 60.0);
+}
+
 void world::draw() noexcept {
   auto drawShape = [&](cpShape *shape) {
     const cpBody *body = cpShapeGetBody(shape);
@@ -25,7 +31,6 @@ void world::draw() noexcept {
 
     int count = cpPolyShapeGetCount(shape);
     std::vector<cpVect> vertices(count);
-
     std::generate(vertices.begin(), vertices.end(), [&, i = 0]() mutable {
       return cpPolyShapeGetVert(shape, i++);
     });

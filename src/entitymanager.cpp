@@ -122,8 +122,6 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 void entitymanager::update(float_t delta) {
   UNUSED(delta);
 
-  cpSpaceStep(_world->space().get(), 1.0 / 60.0);
-
   for (const auto &entity : _entities) {
     entity->update();
   }
@@ -133,8 +131,6 @@ void entitymanager::draw() noexcept {
   for (const auto &entity : _entities) {
     entity->draw();
   }
-
-  _world->draw();
 }
 
 void entitymanager::on_mail(const input::mailevent &event) noexcept {

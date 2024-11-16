@@ -19,6 +19,9 @@ public:
   void set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice);
   std::shared_ptr<audio::audiodevice> audiodevice() const;
 
+  void set_world(std::shared_ptr<framework::world> world);
+  std::shared_ptr<framework::world> world() const;
+
   void set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager);
   std::shared_ptr<framework::entitymanager> entitymanager() const;
 
@@ -67,6 +70,7 @@ private:
   std::shared_ptr<graphics::renderer> _renderer;
   std::shared_ptr<audio::audiodevice> _audiodevice;
   std::shared_ptr<input::eventmanager> _eventmanager;
+  std::shared_ptr<framework::world> _world;
   std::shared_ptr<framework::entitymanager> _entitymanager;
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;

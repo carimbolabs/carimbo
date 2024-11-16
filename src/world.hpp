@@ -14,6 +14,8 @@ public:
 
   space_ptr space() const noexcept;
 
+  void update(float_t delta) const noexcept;
+
   void draw() noexcept;
 
 private:

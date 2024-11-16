@@ -10,6 +10,7 @@
 #include "resourcemanager.hpp"
 #include "statemanager.hpp"
 #include "window.hpp"
+#include "world.hpp"
 
 using namespace framework;
 
@@ -47,6 +48,14 @@ void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager)
 
 std::shared_ptr<input::eventmanager> engine::eventmanager() const {
   return _eventmanager;
+}
+
+void engine::set_world(std::shared_ptr<framework::world> world) {
+  _world = std::move(world);
+}
+
+std::shared_ptr<framework::world> engine::world() const {
+  return _world;
 }
 
 void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
@@ -152,6 +161,7 @@ void engine::_loop() {
   _resourcemanager->update(delta);
   _scenemanager->update(delta);
   _eventmanager->update(delta);
+  _world->update(delta);
   _entitymanager->update(delta);
 
   for (auto &loopable : _loopables) {
@@ -161,6 +171,7 @@ void engine::_loop() {
   _renderer->begin();
   _scenemanager->draw();
   _entitymanager->draw();
+  _world->draw();
   _renderer->end();
 }
 

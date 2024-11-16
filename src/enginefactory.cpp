@@ -53,6 +53,7 @@ std::shared_ptr<engine> enginefactory::create() {
   engine->set_renderer(std::move(renderer));
   engine->set_audiodevice(std::move(audiodevice));
   engine->set_eventmanager(std::move(eventmanager));
+  engine->set_world(std::move(world));
   engine->set_entitymanager(std::move(entitymanager));
   engine->set_statemanager(std::move(statemanager));
   engine->set_resourcemanager(std::move(resourcemanager));
