@@ -3,7 +3,6 @@
 #include "entity.hpp"
 #include "entityprops.hpp"
 #include "io.hpp"
-#include "pixmappool.hpp"
 #include "point.hpp"
 #include "rect.hpp"
 #include "resourcemanager.hpp"
@@ -13,10 +12,8 @@ using namespace framework;
 
 using json = nlohmann::json;
 
-entitymanager::entitymanager(float_t gravity)
-    : _space(cpSpaceNew(), &cpSpaceFree) {
-  cpSpaceSetGravity(_space.get(), {0, gravity});
-}
+entitymanager::entitymanager(std::shared_ptr<world> world)
+    : _world(world) {}
 
 entitymanager::~entitymanager() {
 }
@@ -28,9 +25,7 @@ void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourc
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
-  const auto spritesheet = j.contains("spritesheet")
-                               ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>())
-                               : graphics::pixmap_ptr(nullptr);
+  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
 
   const auto size = j["size"].get<geometry::size>();
 
@@ -76,7 +71,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
          shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
          cpShapeSetFriction(shape.get(), 0.7);
          cpShapeSetElasticity(shape.get(), 0.3);
-         cpSpaceAddBody(_space.get(), body.get());
+         cpSpaceAddBody(_world->space().get(), body.get());
        }}
   };
 
@@ -86,7 +81,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   cpShapeSetFriction(shape.get(), p.value("friction", 0.5f));
   cpShapeSetElasticity(shape.get(), p.value("elasticity", 0.3f));
-  cpSpaceAddShape(_space.get(), shape.get());
+  cpSpaceAddShape(_world->space().get(), shape.get());
 
   entityprops props{
       _counter++,
@@ -127,7 +122,7 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 void entitymanager::update(float_t delta) {
   UNUSED(delta);
 
-  cpSpaceStep(_space.get(), 1.0 / 60.0);
+  cpSpaceStep(_world->space().get(), 1.0 / 60.0);
 
   for (const auto &entity : _entities) {
     entity->update();
@@ -138,6 +133,8 @@ void entitymanager::draw() noexcept {
   for (const auto &entity : _entities) {
     entity->draw();
   }
+
+  _world->draw();
 }
 
 void entitymanager::on_mail(const input::mailevent &event) noexcept {

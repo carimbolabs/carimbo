@@ -19,8 +19,8 @@ int32_t entity::x() const noexcept { return _props.position.x(); }
 
 int32_t entity::y() const noexcept { return _props.position.y(); }
 
-void entity::move(float_t velocity) {
-  cpBodySetVelocity(_props.body.get(), {velocity, cpBodyGetVelocity(_props.body.get()).y});
+void entity::move(float_t x_velocity, float_t y_velocity) {
+  cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
 }
 
 void entity::update() {
@@ -64,37 +64,7 @@ void entity::update() {
   );
 }
 
-#include <chipmunk/cpPolyShape.h>
-
 void entity::draw() const {
-  if (!_props.spritesheet) {
-    return;
-  }
-
-  // #ifdef DEBUG
-  const auto position = cpBodyGetPosition(_props.body.get());
-  const auto count = cpPolyShapeGetCount(_props.shape.get());
-
-  std::vector<cpVect> vertices(count);
-  std::generate(vertices.begin(), vertices.end(), [&, i = 0]() mutable {
-    return cpPolyShapeGetVert(_props.shape.get(), i++);
-  });
-
-  const SDL_Color color{0, 255, 0, 255};
-  SDL_SetRenderDrawColor(*_props.spritesheet->_renderer, color.r, color.g, color.b, color.a);
-
-  for (auto i = 0; i < count; ++i) {
-    const auto next = (i + 1) % count;
-
-    const auto x1 = static_cast<int>(position.x + vertices[i].x);
-    const auto y1 = static_cast<int>(position.y + vertices[i].y);
-    const auto x2 = static_cast<int>(position.x + vertices[next].x);
-    const auto y2 = static_cast<int>(position.y + vertices[next].y);
-
-    SDL_RenderDrawLine(*_props.spritesheet->_renderer, x1, y1, x2, y2);
-  }
-  // #endif
-
   if (_props.action.empty() || !_props.visible) {
     return;
   }

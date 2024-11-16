@@ -7,6 +7,7 @@
 #include "resourcemanager.hpp"
 #include "scenemanager.hpp"
 #include "window.hpp"
+#include "world.hpp"
 
 using namespace framework;
 
@@ -36,16 +37,17 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) noexcept {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
-  auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
-  auto renderer = window->create_renderer();
-  auto audiodevice = std::make_shared<audio::audiodevice>();
-  auto eventmanager = std::make_shared<input::eventmanager>();
-  auto entitymanager = std::make_shared<framework::entitymanager>(_gravity);
-  auto statemanager = std::make_shared<framework::statemanager>();
-  auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
-  auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
-  auto fontfactory = std::make_shared<graphics::fontfactory>(resourcemanager);
-  auto engine = std::make_shared<framework::engine>();
+  const auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
+  const auto renderer = window->create_renderer();
+  const auto audiodevice = std::make_shared<audio::audiodevice>();
+  const auto eventmanager = std::make_shared<input::eventmanager>();
+  const auto world = std::make_shared<framework::world>(_gravity, renderer);
+  const auto entitymanager = std::make_shared<framework::entitymanager>(world);
+  const auto statemanager = std::make_shared<framework::statemanager>();
+  const auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
+  const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
+  const auto fontfactory = std::make_shared<graphics::fontfactory>(resourcemanager);
+  const auto engine = std::make_shared<framework::engine>();
 
   engine->set_window(std::move(window));
   engine->set_renderer(std::move(renderer));

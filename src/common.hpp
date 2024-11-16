@@ -74,6 +74,7 @@ class scenemanager;
 class scriptengine;
 class statemanager;
 class timermanager;
+class world;
 }
 
 namespace geometry {

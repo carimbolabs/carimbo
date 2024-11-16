@@ -28,7 +28,7 @@ public:
   int32_t x() const noexcept;
   int32_t y() const noexcept;
 
-  void move(float_t velocity);
+  void move(float_t x_velocity, float_t y_velocity);
 
   void set_placement(int32_t x, int32_t y) noexcept;
   void set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept;
