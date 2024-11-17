@@ -23,6 +23,11 @@ void entity::move(float_t x_velocity, float_t y_velocity) {
   cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
 }
 
+math::vector2d entity::get_velocity() const noexcept {
+  cpVect velocity = cpBodyGetVelocity(_props.body.get());
+  return math::vector2d{velocity.x, velocity.y};
+}
+
 void entity::update() {
   if (_onupdate) {
     _onupdate(shared_from_this());

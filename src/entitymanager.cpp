@@ -25,7 +25,8 @@ void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourc
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
-  const auto spritesheet = _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>());
+  const auto spritesheet = j.contains("spritesheet") ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>())
+                                                     : std::shared_ptr<graphics::pixmap>(nullptr);
 
   const auto size = j["size"].get<geometry::size>();
 
@@ -45,8 +46,6 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
     animations.emplace(key, std::move(keyframes));
   }
 
-  body_ptr body{nullptr, cpBodyFree};
-  shape_ptr shape{nullptr, cpShapeFree};
   const auto resized = size.resized();
   cpVect vertices[] = {
       cpv(0, 0),
@@ -57,21 +56,16 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   const int n = sizeof(vertices) / sizeof(vertices[0]);
 
+  body_ptr body{nullptr, cpBodyFree};
   std::unordered_map<bodytype, std::function<void()>> mapping = {
-      {bodytype::stationary, [&]() {
+      {bodytype::stationary, [&body]() {
          body = body_ptr(cpBodyNewStatic(), [](cpBody *body) { cpBodyFree(body); });
-         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
        }},
-      {bodytype::kinematic, [&]() {
+      {bodytype::kinematic, [&body]() {
          body = body_ptr(cpBodyNewKinematic(), [](cpBody *body) { cpBodyFree(body); });
-         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
        }},
-      {bodytype::dynamic, [&]() {
+      {bodytype::dynamic, [&body, &size]() {
          body = body_ptr(cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())), [](cpBody *body) { cpBodyFree(body); });
-         shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
-         cpShapeSetFriction(shape.get(), 0.7);
-         cpShapeSetElasticity(shape.get(), 0.3);
-         cpSpaceAddBody(_world->space().get(), body.get());
        }}
   };
 
@@ -79,9 +73,12 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   mapping[p["type"].get<bodytype>()]();
 
+  auto shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+
   cpShapeSetFriction(shape.get(), p.value("friction", 0.5f));
   cpShapeSetElasticity(shape.get(), p.value("elasticity", 0.3f));
   cpSpaceAddShape(_world->space().get(), shape.get());
+  cpSpaceAddBody(_world->space().get(), body.get());
 
   entityprops props{
       _counter++,

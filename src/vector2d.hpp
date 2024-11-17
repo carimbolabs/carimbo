@@ -16,13 +16,13 @@ public:
 
   vector2d operator+(const vector2d &other) const noexcept;
   vector2d operator-(const vector2d &other) const noexcept;
-  vector2d operator*(double scalar) const noexcept;
-  vector2d operator/(double scalar) const noexcept;
+  vector2d operator*(double_t scalar) const noexcept;
+  vector2d operator/(double_t scalar) const noexcept;
 
   vector2d &operator+=(const vector2d &other) noexcept;
   vector2d &operator-=(const vector2d &other) noexcept;
-  vector2d &operator*=(double scalar) noexcept;
-  vector2d &operator/=(double scalar) noexcept;
+  vector2d &operator*=(double_t scalar) noexcept;
+  vector2d &operator/=(double_t scalar) noexcept;
 
   bool operator==(const vector2d &other) const noexcept;
   bool operator!=(const vector2d &other) const noexcept;
