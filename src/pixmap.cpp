@@ -30,6 +30,15 @@ pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::string_view filen
   }
 }
 
+pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface)
+    : _renderer(renderer), _size(surface->w, surface->h) {
+
+  _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
+  if (!_texture) {
+    throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture, SDL Error: {}", SDL_GetError()));
+  }
+}
+
 void pixmap::draw(const geometry::rect &source, const geometry::rect &destination, const double_t angle, flip flip, const uint8_t alpha) const noexcept {
   const SDL_Rect &src = source;
   const SDL_Rect &dst = destination;
