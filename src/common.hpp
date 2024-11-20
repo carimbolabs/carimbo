@@ -87,6 +87,7 @@ class size;
 namespace graphics {
 class effect;
 class fontfactory;
+class font;
 class glyph;
 class pixmap;
 class pixmappool;

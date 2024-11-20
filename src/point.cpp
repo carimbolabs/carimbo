@@ -30,3 +30,12 @@ point &point::operator+=(const point &other) noexcept {
   _y += other._y;
   return *this;
 }
+
+point &point::operator+=(std::pair<char, int32_t> offset) noexcept {
+  if (offset.first == 'x') {
+    _x += offset.second;
+  } else if (offset.first == 'y') {
+    _y += offset.second;
+  }
+  return *this;
+}

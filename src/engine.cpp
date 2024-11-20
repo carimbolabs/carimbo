@@ -94,13 +94,13 @@ std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
   return _scenemanager;
 }
 
-// void engine::set_fontfactory(std::shared_ptr<graphics::fontfactory> fontfactory) {
-//   _fontfactory = std::move(fontfactory);
-// }
+void engine::set_fontfactory(std::shared_ptr<graphics::fontfactory> fontfactory) {
+  _fontfactory = std::move(fontfactory);
+}
 
-// std::shared_ptr<graphics::fontfactory> engine::fontfactory() const {
-//   return _fontfactory;
-// }
+std::shared_ptr<graphics::fontfactory> engine::fontfactory() const {
+  return _fontfactory;
+}
 
 void engine::prefetch(const std::vector<std::string> &filenames) {
   _resourcemanager->prefetch(filenames);
@@ -141,14 +141,7 @@ inline void run(void *arg) {
 }
 #endif
 
-#include "fontfactory.hpp"
-
 void engine::run() {
-
-  graphics::fontfactory ff(_renderer);
-  // TODO XXX
-  /*const auto font = */ ff.get("fixedsys");
-
 #ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else

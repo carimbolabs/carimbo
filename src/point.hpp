@@ -22,6 +22,7 @@ public:
 
   point operator+(const point &other) const noexcept;
   point &operator+=(const point &other) noexcept;
+  point &operator+=(std::pair<char, int32_t> axis_offset) noexcept;
 
   friend void from_json(const nlohmann::json &j, point &m) noexcept;
 

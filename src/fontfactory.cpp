@@ -21,7 +21,7 @@ std::ostream &operator<<(std::ostream &os, const color &c) {
 fontfactory::fontfactory(std::shared_ptr<graphics::renderer> renderer) noexcept
     : _renderer(std::move(renderer)) {}
 
-/* std::shared_ptr<font> */ void fontfactory::get(const std::string &face) {
+std::shared_ptr<font> fontfactory::get(const std::string &face) {
   const auto buffer = storage::io::read(fmt::format("fonts/{}.json", face));
   const auto j = json::parse(buffer);
   const auto alphabet = j["alphabet"].get<std::string>();
@@ -93,5 +93,5 @@ fontfactory::fontfactory(std::shared_ptr<graphics::renderer> renderer) noexcept
     fmt::print("glyph '{}' -> x: {}, y: {}, w: {}, h: {}\n", static_cast<char>(letter), rect.position().x(), rect.position().y(), rect.size().width(), rect.size().height());
   }
 
-  auto _pixmap = pixmap(_renderer, std::move(surface));
+  return std::make_shared<font>(map, std::make_shared<pixmap>(_renderer, std::move(surface)));
 }
