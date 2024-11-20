@@ -9,7 +9,13 @@ pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::string_view filen
   std::tie(output, _size) = _load_png(filename);
 
   std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface{
-      SDL_CreateRGBSurfaceWithFormat(0, _size.width(), _size.height(), 0, SDL_PIXELFORMAT_ABGR8888),
+      SDL_CreateRGBSurfaceWithFormat(
+          0,
+          _size.width(),
+          _size.height(),
+          0,
+          SDL_PIXELFORMAT_ABGR8888
+      ),
       SDL_FreeSurface
   };
   if (!surface) {

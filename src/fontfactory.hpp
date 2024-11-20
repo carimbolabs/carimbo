@@ -6,12 +6,12 @@ namespace graphics {
 class fontfactory {
 public:
   fontfactory() = delete;
-  explicit fontfactory(const std::shared_ptr<framework::resourcemanager> resourcemanager) noexcept;
+  explicit fontfactory(std::shared_ptr<graphics::renderer> renderer) noexcept;
   ~fontfactory() noexcept = default;
 
   /* std::shared_ptr<font> */ void get(const std::string &face);
 
 private:
-  std::shared_ptr<framework::resourcemanager> _resourcemanager;
+  std::shared_ptr<graphics::renderer> _renderer;
 };
 }

@@ -145,7 +145,7 @@ inline void run(void *arg) {
 
 void engine::run() {
 
-  graphics::fontfactory ff(_resourcemanager);
+  graphics::fontfactory ff(_renderer);
   // TODO XXX
   /*const auto font = */ ff.get("fixedsys");
 
