@@ -1,5 +1,6 @@
 [requires]
 chipmunk2d/7.0.3
+freetype/2.13.3
 fmt/11.0.2
 libcurl/8.10.1
 libspng/0.7.4

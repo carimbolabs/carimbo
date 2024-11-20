@@ -8,6 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(CURL CONFIG REQUIRED)
 find_package(chipmunk2d CONFIG REQUIRED)
+find_package(freetype CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
@@ -64,6 +65,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE
   CURL::libcurl
   chipmunk2d::chipmunk2d
+  Freetype::Freetype
   fmt::fmt
   Ogg::ogg
   physfs-static

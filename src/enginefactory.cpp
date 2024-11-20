@@ -46,7 +46,7 @@ std::shared_ptr<engine> enginefactory::create() {
   const auto statemanager = std::make_shared<framework::statemanager>();
   const auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
   const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
-  const auto fontfactory = std::make_shared<graphics::fontfactory>(resourcemanager);
+  // const auto fontfactory = std::make_shared<graphics::fontfactory>(resourcemanager);
   const auto engine = std::make_shared<framework::engine>();
 
   engine->set_window(std::move(window));
@@ -58,7 +58,7 @@ std::shared_ptr<engine> enginefactory::create() {
   engine->set_statemanager(std::move(statemanager));
   engine->set_resourcemanager(std::move(resourcemanager));
   engine->set_scenemanager(std::move(scenemanager));
-  engine->set_fontfactory(std::move(fontfactory));
+  // engine->set_fontfactory(std::move(fontfactory));
 
   engine->eventmanager()->add_receiver(engine->entitymanager());
   engine->eventmanager()->add_receiver(engine);
