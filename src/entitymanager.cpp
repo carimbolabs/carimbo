@@ -58,13 +58,13 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
 
   body_ptr body{nullptr, cpBodyFree};
   std::unordered_map<bodytype, std::function<void()>> mapping = {
-      {bodytype::stationary, [&body]() {
+      {bodytype::stationary, [&]() {
          body = body_ptr(cpBodyNewStatic(), [](cpBody *body) { cpBodyFree(body); });
        }},
-      {bodytype::kinematic, [&body]() {
+      {bodytype::kinematic, [&]() {
          body = body_ptr(cpBodyNewKinematic(), [](cpBody *body) { cpBodyFree(body); });
        }},
-      {bodytype::dynamic, [&body, &size]() {
+      {bodytype::dynamic, [&]() {
          body = body_ptr(cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())), [](cpBody *body) { cpBodyFree(body); });
        }}
   };
@@ -74,6 +74,11 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   mapping[p["type"].get<bodytype>()]();
 
   auto shape = shape_ptr(cpPolyShapeNew(body.get(), n, vertices, cpTransformIdentity, 0.0), [](cpShape *shape) { cpShapeFree(shape); });
+
+  shape.get()->filter = CP_SHAPE_FILTER_ALL;
+
+  // cpShapeSetCollisionType(shape.get(), p["collision"].get<collision>().type);
+  cpShapeSetCollisionType(shape.get(), p["collision"].get<collision>().type);
 
   cpShapeSetFriction(shape.get(), p.value("friction", 0.5f));
   cpShapeSetElasticity(shape.get(), p.value("elasticity", 0.3f));

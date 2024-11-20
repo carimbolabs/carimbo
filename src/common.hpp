@@ -16,6 +16,7 @@
 #include <AL/alc.h>
 #include <SDL2/SDL.h>
 #include <chipmunk/chipmunk.h>
+#include <chipmunk/chipmunk_structs.h>
 #include <curl/curl.h>
 #include <fmt/core.h>
 #include <nlohmann/json.hpp>

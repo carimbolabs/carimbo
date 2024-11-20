@@ -35,7 +35,42 @@ void world::draw() noexcept {
       return cpPolyShapeGetVert(shape, i++);
     });
 
-    SDL_SetRenderDrawColor(*_renderer.get(), 0, 255, 0, 255);
+    uint8_t r, g, b, a = 255;
+    switch (cpShapeGetCollisionType(shape)) {
+    case 1:
+      r = 255;
+      g = 0;
+      b = 0;
+      break;
+    case 2:
+      r = 0;
+      g = 0;
+      b = 255;
+      break;
+    case 3:
+      r = 255;
+      g = 255;
+      b = 0;
+      break;
+    case 4:
+      r = 0;
+      g = 255;
+      b = 255;
+      break;
+    case 5:
+      r = 0;
+      g = 255;
+      b = 0;
+      break;
+    default:
+      r = 255;
+      g = 255;
+      b = 255;
+      break;
+    }
+
+    SDL_SetRenderDrawColor(*_renderer.get(), r, g, b, a);
+
     for (int i = 0; i < count; ++i) {
       int next = (i + 1) % count;
 

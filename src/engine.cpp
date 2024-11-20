@@ -141,7 +141,14 @@ inline void run(void *arg) {
 }
 #endif
 
+#include "fontfactory.hpp"
+
 void engine::run() {
+
+  graphics::fontfactory ff(_resourcemanager);
+  // TODO XXX
+  /*const auto font = */ ff.get("fixedsys");
+
 #ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else

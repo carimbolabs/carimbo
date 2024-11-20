@@ -23,6 +23,21 @@ enum bodytype : int8_t {
 
 NLOHMANN_JSON_SERIALIZE_ENUM(bodytype, {{stationary, "stationary"}, {dynamic, "dynamic"}, {kinematic, "kinematic"}})
 
+enum collisiontype : uint8_t {
+  player = 1,
+  enemy = 2,
+  playerbullet = 3,
+  enemybullet = 4,
+  wall = 5
+};
+
+struct collision {
+  collisiontype type;
+  std::optional<std::string> from;
+};
+
+void from_json(const nlohmann::json &j, collision &c);
+
 struct keyframe {
   geometry::rect frame;
   geometry::point offset;

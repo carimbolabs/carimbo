@@ -2,9 +2,8 @@
 
 using namespace graphics;
 
-glyph::glyph(uint32_t code) noexcept
-    : _code(code) {}
-
-void glyph::draw(const glyphprops &props) const noexcept {
-  UNUSED(props);
+glyph::glyph(const geometry::rect &rect) noexcept {
+  UNUSED(rect);
 }
+
+void glyph::draw() const noexcept {}

@@ -6,7 +6,7 @@ using json = nlohmann::json;
 fontfactory::fontfactory(std::shared_ptr<framework::resourcemanager> resourcemanager) noexcept
     : _resourcemanager(std::move(resourcemanager)) {}
 
-std::shared_ptr<font> fontfactory::get(const std::string &face) {
+/* std::shared_ptr<font> */ void fontfactory::get(const std::string &face) {
   const auto buffer = storage::io::read(fmt::format("fonts/{}.json", face));
   const auto j = json::parse(buffer);
   const auto alphabet = j["alphabet"].get<std::string>();
@@ -49,5 +49,5 @@ std::shared_ptr<font> fontfactory::get(const std::string &face) {
     }
   }
 
-  return std::make_shared<font>();
+  // return std::make_shared<font>();
 }

@@ -1,16 +1,17 @@
 #pragma once
 
 #include "common.hpp"
-#include "glyphprops.hpp"
 
 namespace graphics {
 class glyph {
 public:
-  explicit glyph(uint32_t code) noexcept;
+  explicit glyph(const geometry::rect &rect) noexcept;
 
-  void draw(const glyphprops &props) const noexcept;
+  void draw() const noexcept;
 
 private:
   uint32_t _code{0};
+  geometry::rect _rect{};
+  double_t _angle{0.0f};
 };
 }
