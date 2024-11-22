@@ -23,7 +23,6 @@ jobs:
           - name: Ubuntu
             os: ubuntu-latest
           - name: WebAssembly
-            script: build/carimbo.js
             os: ubuntu-latest
           - name: Windows
             os: windows-latest
