@@ -39,9 +39,6 @@ public:
   void set_scenemanager(std::shared_ptr<framework::scenemanager> scenemanager);
   std::shared_ptr<framework::scenemanager> scenemanager() const;
 
-  void set_fontfactory(std::shared_ptr<graphics::fontfactory> fontfactory);
-  std::shared_ptr<graphics::fontfactory> fontfactory() const;
-
   void prefetch(const std::vector<std::string> &filenames);
   void flush() const;
 
@@ -75,6 +72,5 @@ private:
   std::shared_ptr<framework::resourcemanager> _resourcemanager;
   std::shared_ptr<framework::statemanager> _statemanager;
   std::shared_ptr<framework::scenemanager> _scenemanager;
-  std::shared_ptr<graphics::fontfactory> _fontfactory;
 };
 }

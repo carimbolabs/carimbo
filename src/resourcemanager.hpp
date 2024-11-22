@@ -15,6 +15,7 @@ public:
   std::shared_ptr<graphics::renderer> renderer() const noexcept;
   std::shared_ptr<graphics::pixmappool> pixmappool() noexcept;
   std::shared_ptr<audio::soundmanager> soundmanager() noexcept;
+  std::shared_ptr<graphics::fontfactory> fontfactory() noexcept;
 
 private:
   std::map<std::string, std::function<void(const std::string &)>> _handlers;
@@ -23,5 +24,6 @@ private:
   std::shared_ptr<audio::audiodevice> _audiodevice;
   std::shared_ptr<graphics::pixmappool> _pixmappool;
   std::shared_ptr<audio::soundmanager> _soundmanager;
+  std::shared_ptr<graphics::fontfactory> _fontfactory;
 };
 }

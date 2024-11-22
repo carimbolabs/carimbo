@@ -6,13 +6,18 @@ resourcemanager::resourcemanager(std::shared_ptr<graphics::renderer> renderer, s
     : _renderer(std::move(renderer)),
       _audiodevice(std::move(audiodevice)),
       _pixmappool(std::make_shared<graphics::pixmappool>(_renderer)),
-      _soundmanager(std::make_shared<audio::soundmanager>(_audiodevice)) {
+      _soundmanager(std::make_shared<audio::soundmanager>(_audiodevice)),
+      _fontfactory(std::make_shared<graphics::fontfactory>(_renderer)) {
   _handlers[".png"] = [this](const std::string &filename) {
     _pixmappool->get(filename);
   };
 
   _handlers[".ogg"] = [this](const std::string &filename) {
     _soundmanager->get(filename);
+  };
+
+  _handlers[".json"] = [this](const std::string &filename) {
+    _fontfactory->get(filename);
   };
 }
 
@@ -52,4 +57,8 @@ std::shared_ptr<graphics::pixmappool> resourcemanager::pixmappool() noexcept {
 
 std::shared_ptr<audio::soundmanager> resourcemanager::soundmanager() noexcept {
   return _soundmanager;
+}
+
+std::shared_ptr<graphics::fontfactory> resourcemanager::fontfactory() noexcept {
+  return _fontfactory;
 }
