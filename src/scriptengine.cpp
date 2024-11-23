@@ -70,17 +70,19 @@ void scriptengine::run() {
 
   lua.new_usertype<engine>(
       "Engine",
-      "run", &engine::run,
-      "spawn", &engine::spawn,
+      "add_loopable", &engine::add_loopable,
       "destroy", &engine::destroy,
-      "ticks", &ticks,
-      "is_keydown", &engine::is_keydown,
+      "entitymanager", &engine::entitymanager,
+      "flush", &engine::flush,
       "width", sol::property(&engine::width),
       "height", sol::property(&engine::height),
-      "soundmanager", &engine::soundmanager,
-      "add_loopable", &engine::add_loopable,
+      "is_keydown", &engine::is_keydown,
+      "overlay", &engine::overlay,
+      "run", &engine::run,
       "set_scene", &engine::set_scene,
-      //"load_font", &engine::load_font,
+      "soundmanager", &engine::soundmanager,
+      "spawn", &engine::spawn,
+      "ticks", &ticks,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames;
         filenames.reserve(table.size());
@@ -88,8 +90,7 @@ void scriptengine::run() {
           filenames.emplace_back(item.second.as<std::string>());
         }
         engine.prefetch(filenames);
-      },
-      "flush", &engine::flush
+      }
   );
 
   lua.new_usertype<enginefactory>(
