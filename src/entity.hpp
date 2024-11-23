@@ -32,8 +32,6 @@ public:
   math::vector2d get_velocity() const noexcept;
 
   void set_placement(int32_t x, int32_t y) noexcept;
-  void set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept;
-  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
 
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
   void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
@@ -55,8 +53,6 @@ private:
   friend class entitymanager;
 
   entityprops _props;
-  std::shared_ptr<entitymanager> _entitymanager;
-  std::shared_ptr<resourcemanager> _resourcemanager;
   std::function<void(std::shared_ptr<entity>)> _onupdate;
   std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;

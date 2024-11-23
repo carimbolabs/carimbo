@@ -5,6 +5,7 @@
 #include "engine.hpp"
 #include "enginefactory.hpp"
 #include "entity.hpp"
+#include "entitymanager.hpp"
 #include "event.hpp"
 #include "io.hpp"
 #include "loopable.hpp"
@@ -68,10 +69,15 @@ void scriptengine::run() {
       "set_placement", &entity::set_placement
   );
 
+  lua.new_usertype<entitymanager>(
+      "EntityManager",
+      "spawn", &entitymanager::spawn,
+      "destroy", &entitymanager::destroy
+  );
+
   lua.new_usertype<engine>(
       "Engine",
       "add_loopable", &engine::add_loopable,
-      "destroy", &engine::destroy,
       "entitymanager", &engine::entitymanager,
       "flush", &engine::flush,
       "width", sol::property(&engine::width),
@@ -81,7 +87,6 @@ void scriptengine::run() {
       "run", &engine::run,
       "set_scene", &engine::set_scene,
       "soundmanager", &engine::soundmanager,
-      "spawn", &engine::spawn,
       "ticks", &ticks,
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames;

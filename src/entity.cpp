@@ -96,14 +96,6 @@ void entity::set_placement(int32_t x, int32_t y) noexcept {
   cpBodySetPosition(_props.body.get(), {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
 }
 
-void entity::set_entitymanager(std::shared_ptr<entitymanager> entitymanager) noexcept {
-  _entitymanager = std::move(entitymanager);
-}
-
-void entity::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept {
-  _resourcemanager = std::move(resourcemanager);
-}
-
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {
   _onupdate = fn;
 }

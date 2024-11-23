@@ -37,13 +37,11 @@ public:
   void set_world(std::shared_ptr<framework::world> world) noexcept;
 
   void add_loopable(std::shared_ptr<loopable> loopable) noexcept;
-  void destroy(const std::shared_ptr<entity> entity) noexcept;
   void flush() const noexcept;
   bool is_keydown(const input::keyevent &event) const noexcept;
   void prefetch(const std::vector<std::string> &filenames) noexcept;
   void run() noexcept;
   void set_scene(const std::string_view name) noexcept;
-  std::shared_ptr<entity> spawn(const std::string &kind) noexcept;
   void _loop() noexcept;
 
 protected:

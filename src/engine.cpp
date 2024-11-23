@@ -114,10 +114,6 @@ void engine::add_loopable(std::shared_ptr<loopable> loopable) noexcept {
   _loopables.emplace_back(std::move(loopable));
 }
 
-void engine::destroy(const std::shared_ptr<entity> entity) noexcept {
-  _entitymanager->destroy(entity);
-}
-
 void engine::flush() const noexcept {
   _resourcemanager->pixmappool()->flush();
   _resourcemanager->soundmanager()->flush();
@@ -133,13 +129,6 @@ void engine::prefetch(const std::vector<std::string> &filenames) noexcept {
 
 void engine::set_scene(const std::string_view name) noexcept {
   _scenemanager->load(name);
-}
-
-std::shared_ptr<entity> engine::spawn(const std::string &kind) noexcept {
-  auto entity = _entitymanager->spawn(kind);
-  entity->set_entitymanager(_entitymanager);
-  entity->set_resourcemanager(_resourcemanager);
-  return entity;
 }
 
 #ifdef EMSCRIPTEN
