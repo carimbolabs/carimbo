@@ -7,7 +7,7 @@ void overlay::add(std::shared_ptr<widget> widget) noexcept {
 }
 
 void overlay::remove(std::shared_ptr<widget> widget) noexcept {
-  _widgets.remove_if([&widget](const std::shared_ptr<graphics::widget> &existing) {
+  _widgets.remove_if([&widget](const std::shared_ptr<::widget> &existing) {
     return existing == widget;
   });
 }
