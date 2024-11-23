@@ -13,7 +13,7 @@ void overlay::remove(std::shared_ptr<widget> widget) noexcept {
 }
 
 void overlay::update(float_t delta) noexcept {
-  for (auto &widget : _widgets) {
+  for (const auto &widget : _widgets) {
     widget->update(delta);
   }
 }
