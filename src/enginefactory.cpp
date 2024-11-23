@@ -1,6 +1,7 @@
 #include "enginefactory.hpp"
 
 #include "audiodevice.hpp"
+#include "common.hpp"
 #include "engine.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
@@ -37,26 +38,28 @@ enginefactory &enginefactory::set_fullscreen(bool fullscreen) noexcept {
 }
 
 std::shared_ptr<engine> enginefactory::create() {
+  const auto audiodevice = std::make_shared<audio::audiodevice>();
+  const auto engine = std::make_shared<framework::engine>();
+  const auto eventmanager = std::make_shared<input::eventmanager>();
+  const auto overlay = std::make_shared<graphics::overlay>();
   const auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
   const auto renderer = window->create_renderer();
-  const auto audiodevice = std::make_shared<audio::audiodevice>();
-  const auto eventmanager = std::make_shared<input::eventmanager>();
-  const auto world = std::make_shared<framework::world>(_gravity, renderer);
-  const auto entitymanager = std::make_shared<framework::entitymanager>(world);
-  const auto statemanager = std::make_shared<framework::statemanager>();
   const auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
   const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
-  const auto engine = std::make_shared<framework::engine>();
+  const auto statemanager = std::make_shared<framework::statemanager>();
+  const auto world = std::make_shared<framework::world>(_gravity, renderer);
+  const auto entitymanager = std::make_shared<framework::entitymanager>(world);
 
-  engine->set_window(std::move(window));
-  engine->set_renderer(std::move(renderer));
   engine->set_audiodevice(std::move(audiodevice));
-  engine->set_eventmanager(std::move(eventmanager));
-  engine->set_world(std::move(world));
   engine->set_entitymanager(std::move(entitymanager));
-  engine->set_statemanager(std::move(statemanager));
+  engine->set_eventmanager(std::move(eventmanager));
+  engine->set_overlay(std::move(overlay));
+  engine->set_renderer(std::move(renderer));
   engine->set_resourcemanager(std::move(resourcemanager));
   engine->set_scenemanager(std::move(scenemanager));
+  engine->set_statemanager(std::move(statemanager));
+  engine->set_window(std::move(window));
+  engine->set_world(std::move(world));
 
   engine->eventmanager()->add_receiver(engine->entitymanager());
   engine->eventmanager()->add_receiver(engine);

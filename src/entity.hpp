@@ -19,8 +19,8 @@ public:
   uint64_t id() const noexcept;
   std::string kind() const;
 
-  virtual void update();
-  virtual void draw() const;
+  virtual void update() noexcept;
+  virtual void draw() const noexcept;
 
   const entityprops &props() const;
   void set_props(entityprops props) noexcept;

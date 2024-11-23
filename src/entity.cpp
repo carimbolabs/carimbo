@@ -28,7 +28,7 @@ math::vector2d entity::get_velocity() const noexcept {
   return math::vector2d{velocity.x, velocity.y};
 }
 
-void entity::update() {
+void entity::update() noexcept {
   if (_onupdate) {
     _onupdate(shared_from_this());
   }
@@ -69,7 +69,7 @@ void entity::update() {
   );
 }
 
-void entity::draw() const {
+void entity::draw() const noexcept {
   if (_props.action.empty() || !_props.visible) {
     return;
   }

@@ -91,7 +91,9 @@ class font;
 class glyph;
 class pixmap;
 class pixmappool;
+class overlay;
 class renderer;
+class widget;
 class window;
 }
 

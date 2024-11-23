@@ -14,126 +14,142 @@
 
 using namespace framework;
 
-engine::engine() : _running(true) {
+engine::engine() noexcept : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
 
-void engine::set_window(std::shared_ptr<graphics::window> window) {
-  _window = std::move(window);
-}
-
-std::shared_ptr<graphics::window> engine::window() const {
-  return _window;
-}
-
-void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) {
-  _renderer = std::move(renderer);
-}
-
-std::shared_ptr<graphics::renderer> engine::renderer() const {
-  return _renderer;
-}
-
-void engine::set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice) {
-  _audiodevice = std::move(audiodevice);
-}
-
-std::shared_ptr<audio::audiodevice> engine::audiodevice() const {
+std::shared_ptr<audio::audiodevice> engine::audiodevice() const noexcept {
   return _audiodevice;
 }
 
-void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager) {
-  _eventmanager = std::move(eventmanager);
-}
-
-std::shared_ptr<input::eventmanager> engine::eventmanager() const {
-  return _eventmanager;
-}
-
-void engine::set_world(std::shared_ptr<framework::world> world) {
-  _world = std::move(world);
-}
-
-std::shared_ptr<framework::world> engine::world() const {
-  return _world;
-}
-
-void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) {
-  _entitymanager = std::move(entitymanager);
-}
-
-std::shared_ptr<framework::entitymanager> engine::entitymanager() const {
+std::shared_ptr<framework::entitymanager> engine::entitymanager() const noexcept {
   return _entitymanager;
 }
 
-void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) {
-  _resourcemanager = std::move(resourcemanager);
+std::shared_ptr<input::eventmanager> engine::eventmanager() const noexcept {
+  return _eventmanager;
 }
 
-std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const {
+std::shared_ptr<graphics::overlay> engine::overlay() const noexcept {
+  return _overlay;
+}
+
+std::shared_ptr<framework::resourcemanager> engine::resourcemanager() const noexcept {
   return _resourcemanager;
 }
 
-std::shared_ptr<audio::soundmanager> engine::soundmanager() const {
-  return _resourcemanager->soundmanager();
-}
-
-void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) {
-  _statemanager = std::move(statemanager);
-}
-
-std::shared_ptr<framework::statemanager> engine::statemanager() const {
-  return _statemanager;
-}
-
-void engine::set_scenemanager(std::shared_ptr<framework::scenemanager> scenemanager) {
-  _scenemanager = std::move(scenemanager);
-}
-
-std::shared_ptr<framework::scenemanager> engine::scenemanager() const {
+std::shared_ptr<framework::scenemanager> engine::scenemanager() const noexcept {
   return _scenemanager;
 }
 
-void engine::prefetch(const std::vector<std::string> &filenames) {
-  _resourcemanager->prefetch(filenames);
+std::shared_ptr<framework::statemanager> engine::statemanager() const noexcept {
+  return _statemanager;
 }
 
-void engine::flush() const {
+std::shared_ptr<audio::soundmanager> engine::soundmanager() const noexcept {
+  return _resourcemanager->soundmanager();
+}
+
+std::shared_ptr<graphics::window> engine::window() const noexcept {
+  return _window;
+}
+
+std::shared_ptr<graphics::renderer> engine::renderer() const noexcept {
+  return _renderer;
+}
+
+std::shared_ptr<framework::world> engine::world() const noexcept {
+  return _world;
+}
+
+int32_t engine::height() const noexcept {
+  return _window->height();
+}
+
+int32_t engine::width() const noexcept {
+  return _window->width();
+}
+
+void engine::set_audiodevice(std::shared_ptr<audio::audiodevice> audiodevice) noexcept {
+  _audiodevice = std::move(audiodevice);
+}
+
+void engine::set_entitymanager(std::shared_ptr<framework::entitymanager> entitymanager) noexcept {
+  _entitymanager = std::move(entitymanager);
+}
+
+void engine::set_eventmanager(std::shared_ptr<input::eventmanager> eventmanager) noexcept {
+  _eventmanager = std::move(eventmanager);
+}
+
+void engine::set_overlay(std::shared_ptr<graphics::overlay> overlay) noexcept {
+  _overlay = std::move(overlay);
+}
+
+void engine::set_resourcemanager(std::shared_ptr<framework::resourcemanager> resourcemanager) noexcept {
+  _resourcemanager = std::move(resourcemanager);
+}
+
+void engine::set_scenemanager(std::shared_ptr<framework::scenemanager> scenemanager) noexcept {
+  _scenemanager = std::move(scenemanager);
+}
+
+void engine::set_statemanager(std::shared_ptr<framework::statemanager> statemanager) noexcept {
+  _statemanager = std::move(statemanager);
+}
+
+void engine::set_window(std::shared_ptr<graphics::window> window) noexcept {
+  _window = std::move(window);
+}
+
+void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) noexcept {
+  _renderer = std::move(renderer);
+}
+
+void engine::set_world(std::shared_ptr<framework::world> world) noexcept {
+  _world = std::move(world);
+}
+
+void engine::add_loopable(std::shared_ptr<loopable> loopable) noexcept {
+  _loopables.emplace_back(std::move(loopable));
+}
+
+void engine::destroy(const std::shared_ptr<entity> entity) noexcept {
+  _entitymanager->destroy(entity);
+}
+
+void engine::flush() const noexcept {
   _resourcemanager->pixmappool()->flush();
   _resourcemanager->soundmanager()->flush();
 }
 
-bool engine::is_keydown(const input::keyevent &event) const {
+bool engine::is_keydown(const input::keyevent &event) const noexcept {
   return _statemanager->is_keydown(event);
 }
 
-std::shared_ptr<entity> engine::spawn(const std::string &kind) {
+void engine::prefetch(const std::vector<std::string> &filenames) noexcept {
+  _resourcemanager->prefetch(filenames);
+}
+
+void engine::set_scene(const std::string_view name) noexcept {
+  _scenemanager->load(name);
+}
+
+std::shared_ptr<entity> engine::spawn(const std::string &kind) noexcept {
   auto entity = _entitymanager->spawn(kind);
   entity->set_entitymanager(_entitymanager);
   entity->set_resourcemanager(_resourcemanager);
   return entity;
 }
 
-void engine::destroy(const std::shared_ptr<entity> entity) {
-  _entitymanager->destroy(entity);
-}
-
-void engine::add_loopable(std::shared_ptr<loopable> loopable) {
-  _loopables.emplace_back(std::move(loopable));
-}
-
-void engine::set_scene(const std::string_view name) {
-  _scenemanager->load(name);
-}
-
 #ifdef EMSCRIPTEN
 template <class T>
-inline void run(void *arg) {
+inline void run(void *arg) noexcept {
   reinterpret_cast<T *>(arg)->_loop();
 }
 #endif
 
-void engine::run() {
+void engine::run() noexcept {
 #ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else
@@ -143,7 +159,7 @@ void engine::run() {
 #endif
 }
 
-void engine::_loop() {
+void engine::_loop() noexcept {
   static auto prior = SDL_GetTicks();
   const auto now = SDL_GetTicks();
   const auto delta = std::min(static_cast<float_t>(now - prior) / 1000.0f, 1.0f / 60.0f);
@@ -154,6 +170,7 @@ void engine::_loop() {
   _scenemanager->update(delta);
   _eventmanager->update(delta);
   _world->update(delta);
+  _overlay->update(delta);
   _entitymanager->update(delta);
 
   for (auto &loopable : _loopables) {
@@ -164,11 +181,10 @@ void engine::_loop() {
   _scenemanager->draw();
   _entitymanager->draw();
   _world->draw();
+  _overlay->draw();
   _renderer->end();
 }
 
-int32_t engine::width() const { return _window->width(); }
-
-int32_t engine::height() const { return _window->height(); }
-
-void engine::on_quit() noexcept { _running = false; }
+void engine::on_quit() noexcept {
+  _running = false;
+}
