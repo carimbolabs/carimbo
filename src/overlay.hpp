@@ -1,12 +1,17 @@
 #pragma once
 
 #include "common.hpp"
+#include "fontfactory.hpp"
 #include "widget.hpp"
 
 namespace graphics {
 class overlay {
 public:
-  overlay() = default;
+  overlay(std::shared_ptr<renderer> renderer) : _renderer(std::move(renderer)) {
+    auto ff = fontfactory(_renderer);
+    _font = ff.get("fonts/fixedsys.json");
+  }
+
   ~overlay() = default;
 
   void add(std::shared_ptr<widget> widget) noexcept;
@@ -18,6 +23,8 @@ public:
   void draw() const noexcept;
 
 private:
+  std::shared_ptr<renderer> _renderer;
   std::list<std::shared_ptr<widget>> _widgets;
+  std::shared_ptr<font> _font;
 };
 }

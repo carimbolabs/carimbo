@@ -41,10 +41,10 @@ std::shared_ptr<engine> enginefactory::create() {
   const auto audiodevice = std::make_shared<audio::audiodevice>();
   const auto engine = std::make_shared<framework::engine>();
   const auto eventmanager = std::make_shared<input::eventmanager>();
-  const auto overlay = std::make_shared<graphics::overlay>();
   const auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
   const auto renderer = window->create_renderer();
   const auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
+  const auto overlay = std::make_shared<graphics::overlay>(renderer);
   const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
   const auto statemanager = std::make_shared<framework::statemanager>();
   const auto world = std::make_shared<framework::world>(_gravity, renderer);

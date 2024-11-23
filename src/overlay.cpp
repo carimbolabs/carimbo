@@ -22,4 +22,6 @@ void overlay::draw() const noexcept {
   for (const auto &widget : _widgets) {
     widget->draw();
   }
+
+  _font->draw("Rodrigo Delduca! :)", {10, 10});
 }
