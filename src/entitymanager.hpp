@@ -8,10 +8,8 @@
 namespace framework {
 class entitymanager : public input::eventreceiver {
 public:
-  explicit entitymanager(std::shared_ptr<world> world);
+  entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager);
   ~entitymanager();
-
-  void set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
 
   std::shared_ptr<entity> spawn(const std::string &kind);
 
@@ -27,8 +25,8 @@ protected:
   virtual void on_mail(const input::mailevent &event) noexcept override;
 
 private:
-  std::shared_ptr<resourcemanager> _resourcemanager;
   std::shared_ptr<world> _world;
+  std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
   std::atomic<uint64_t> _counter{0};
 };

@@ -48,7 +48,7 @@ std::shared_ptr<engine> enginefactory::create() {
   const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());
   const auto statemanager = std::make_shared<framework::statemanager>();
   const auto world = std::make_shared<framework::world>(_gravity, renderer);
-  const auto entitymanager = std::make_shared<framework::entitymanager>(world);
+  const auto entitymanager = std::make_shared<framework::entitymanager>(world, resourcemanager);
 
   engine->set_audiodevice(std::move(audiodevice));
   engine->set_entitymanager(std::move(entitymanager));
@@ -64,8 +64,6 @@ std::shared_ptr<engine> enginefactory::create() {
   engine->eventmanager()->add_receiver(engine->entitymanager());
   engine->eventmanager()->add_receiver(engine);
   engine->eventmanager()->add_receiver(engine->statemanager());
-
-  engine->entitymanager()->set_resourcemanager(engine->resourcemanager());
 
   return engine;
 }

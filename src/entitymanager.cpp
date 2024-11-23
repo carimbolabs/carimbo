@@ -12,14 +12,11 @@ using namespace framework;
 
 using json = nlohmann::json;
 
-entitymanager::entitymanager(std::shared_ptr<world> world)
-    : _world(world) {}
+entitymanager::entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager)
+    : _world(std::move(world)),
+      _resourcemanager(std::move(resourcemanager)) {}
 
 entitymanager::~entitymanager() {
-}
-
-void entitymanager::set_resourcemanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept {
-  _resourcemanager = std::move(resourcemanager);
 }
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
