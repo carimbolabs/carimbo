@@ -66,11 +66,6 @@ struct entityprops {
   std::map<std::string, std::vector<keyframe>> animations{};
   body_ptr body{nullptr, [](cpBody *) {}};
   shape_ptr shape{nullptr, [](cpShape *) {}};
-
-  entityprops(const entityprops &) = delete;
-  entityprops &operator=(const entityprops &) = delete;
-  entityprops(entityprops &&) noexcept = default;
-  entityprops &operator=(entityprops &&) noexcept = default;
 };
 
 }
