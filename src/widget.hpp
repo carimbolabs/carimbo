@@ -3,6 +3,10 @@
 #include "common.hpp"
 
 namespace graphics {
+enum class widgettype : uint8_t {
+  label
+};
+
 class widget {
 public:
   widget() = default;

@@ -2,21 +2,27 @@
 
 using namespace graphics;
 
-// label::label(/*std::shared_ptr<font> font, */ const std::string &text, const geometry::point &position)
-//     : /* _font(std::move(font)), */ _text(text), _position(position) {}
-
-// std::shared_ptr<label> label::create(std::shared_ptr<font> font, const std::string &text, const geometry::point &position) noexcept {
-//   return std::make_shared<label>(std::move(font), text, position);
-// }
-
-void label::set(const std::string &text) {
-  _text = text;
+void label::set_font(const std::shared_ptr<font> &font) noexcept {
+  _font = font;
 }
 
-void label::set(std::string text, const geometry::point &position) {
-  _text = std::move(text);
+void label::set_placement(const geometry::point &position) noexcept {
   _position = position;
 }
 
+void label::set_text(std::string_view text) noexcept {
+  _text = text;
+}
+
+void label::set_text_with_position(std::string_view text, const geometry::point &position) noexcept {
+  _text = text;
+  _position = position;
+}
+
+void label::update(float_t delta) noexcept {
+  UNUSED(delta);
+}
+
 void label::draw() const noexcept {
+  _font->draw(_text, _position);
 }

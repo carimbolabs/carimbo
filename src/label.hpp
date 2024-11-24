@@ -1,26 +1,27 @@
 #pragma once
 
 #include "common.hpp"
+#include "widget.hpp"
 
 namespace graphics {
 
-class label : public std::enable_shared_from_this<label> {
+class label : public widget {
 public:
-  label() = delete;
-  // label(std::shared_ptr<font> font, const std::string &text, const geometry::point &position);
-  ~label() = default;
+  label() = default;
+  virtual ~label() = default;
 
-  // static std::shared_ptr<label> create(std::shared_ptr<font> font, const std::string &text, const geometry::point &position) noexcept;
+  void set_font(const std::shared_ptr<font> &font) noexcept;
+  void set_placement(const geometry::point &position) noexcept;
 
-  void set(const std::string &text);
-  void set(std::string text, const geometry::point &position);
+  void set_text(std::string_view text) noexcept;
+  void set_text_with_position(std::string_view text, const geometry::point &position) noexcept;
 
-  void draw() const noexcept;
-  void dispose() noexcept;
+  void update(float_t delta) noexcept override;
+  void draw() const noexcept override;
 
 private:
-  // std::shared_ptr<font> _font;
-  std::string _text;
-  geometry::point _position;
+  std::shared_ptr<font> _font{};
+  std::string _text{};
+  geometry::point _position{};
 };
 }

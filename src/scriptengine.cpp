@@ -8,12 +8,15 @@
 #include "entitymanager.hpp"
 #include "event.hpp"
 #include "io.hpp"
+#include "label.hpp"
 #include "loopable.hpp"
 #include "point.hpp"
 #include "postalservice.hpp"
 #include "soundmanager.hpp"
 #include "ticks.hpp"
 #include "vector2d.hpp"
+#include "widget.hpp"
+#include <sol/overload.hpp>
 
 using namespace framework;
 
@@ -51,6 +54,11 @@ void scriptengine::run() {
       "none", anchor::none
   );
 
+  lua.new_enum(
+      "Widget",
+      "label", graphics::widgettype::label
+  );
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
@@ -80,6 +88,7 @@ void scriptengine::run() {
       "add_loopable", &engine::add_loopable,
       "entitymanager", &engine::entitymanager,
       "flush", &engine::flush,
+      "fontfactory", &engine::fontfactory,
       "width", sol::property(&engine::width),
       "height", sol::property(&engine::height),
       "is_keydown", &engine::is_keydown,
@@ -96,6 +105,12 @@ void scriptengine::run() {
         }
         engine.prefetch(filenames);
       }
+  );
+
+  lua.new_usertype<graphics::overlay>(
+      "Overlay",
+      "create", &graphics::overlay::create,
+      "destroy", &graphics::overlay::destroy
   );
 
   lua.new_usertype<enginefactory>(
@@ -135,6 +150,7 @@ void scriptengine::run() {
   );
 
   lua.new_usertype<graphics::color>(
+      "Color",
       "color", sol::constructors<graphics::color(const std::string &)>(),
 
       "r", sol::property(&graphics::color::r, &graphics::color::set_r),
@@ -208,6 +224,18 @@ void scriptengine::run() {
       "moving", &vector2d::moving,
       "right", &vector2d::right,
       "left", &vector2d::left
+  );
+
+  lua.new_usertype<graphics::label>(
+      "Label",
+      "set_font", &graphics::label::set_font,
+      "set_placement", &graphics::label::set_placement,
+      "set", sol::overload(&graphics::label::set_text, &graphics::label::set_text_with_position)
+  );
+
+  lua.new_usertype<graphics::fontfactory>(
+      "FontFactory",
+      "get", &graphics::fontfactory::get
   );
 
   const auto script = storage::io::read("scripts/main.lua");
