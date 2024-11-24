@@ -13,8 +13,8 @@ public:
   void set_font(const std::shared_ptr<font> &font) noexcept;
   void set_placement(const geometry::point &position) noexcept;
 
-  void set_text(std::string_view text) noexcept;
-  void set_text_with_position(std::string_view text, const geometry::point &position) noexcept;
+  void set(std::string_view text) noexcept;
+  void set_with_placement(std::string_view text, const geometry::point &position) noexcept;
 
   void update(float_t delta) noexcept override;
   void draw() const noexcept override;

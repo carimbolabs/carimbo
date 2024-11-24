@@ -229,8 +229,8 @@ void scriptengine::run() {
   lua.new_usertype<graphics::label>(
       "Label",
       "set_font", &graphics::label::set_font,
-      "set_placement", &graphics::label::set_placement,
-      "set", sol::overload(&graphics::label::set_text, &graphics::label::set_text_with_position)
+      "set_placement", &graphics::label::set,
+      "set", sol::overload(&graphics::label::set, &graphics::label::set_with_placement)
   );
 
   lua.new_usertype<graphics::fontfactory>(

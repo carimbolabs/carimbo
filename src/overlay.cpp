@@ -20,11 +20,14 @@ void overlay::draw() const noexcept {
 std::shared_ptr<widget> overlay::create(widgettype type) noexcept {
   std::shared_ptr<widget> widget;
 
+  std::cout << "Creating widget of type: " << static_cast<int>(type) << std::endl;
+
   switch (type) {
   case widgettype::label:
     widget = std::make_shared<label>();
     break;
   default:
+    std::cout << ">>> NULLPTR" << std::endl;
     return nullptr;
   }
 
