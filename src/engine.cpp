@@ -1,7 +1,6 @@
 #include "engine.hpp"
 
 #include "audiodevice.hpp"
-#include "entity.hpp"
 #include "entitymanager.hpp"
 #include "eventmanager.hpp"
 #include "framerate.hpp"
@@ -170,7 +169,7 @@ void engine::_loop() noexcept {
   _overlay->update(delta);
   _entitymanager->update(delta);
 
-  for (auto &loopable : _loopables) {
+  for (const auto &loopable : _loopables) {
     loopable->loop(delta);
   }
 

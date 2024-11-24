@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.hpp"
-#include "fontfactory.hpp"
 #include "widget.hpp"
 
 namespace graphics {

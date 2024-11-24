@@ -17,7 +17,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
   if (added) {
     std::cout << "[fontfactory] cache miss: " << name << std::endl;
 
-    const auto buffer = storage::io::read(name);
+    const auto buffer = storage::io::read(fmt::format("fonts/{}.json", name));
     const auto j = json::parse(buffer);
     const auto alphabet = j["alphabet"].get<std::string>();
 

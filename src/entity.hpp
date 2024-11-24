@@ -1,11 +1,9 @@
 #pragma once
 
-#include "anchor.hpp"
 #include "common.hpp"
 #include "entitymanager.hpp"
 #include "entityprops.hpp"
 #include "flip.hpp"
-#include "resourcemanager.hpp"
 #include "vector2d.hpp"
 
 namespace framework {

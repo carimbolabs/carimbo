@@ -24,7 +24,7 @@ void label::update(float_t delta) noexcept {
 }
 
 void label::draw() const noexcept {
-  if (!_font || _text.empty()) {
+  if (!_font || _text.empty()) [[unlikely]] {
     return;
   }
 
