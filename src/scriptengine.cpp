@@ -19,6 +19,8 @@
 #include <sol/overload.hpp>
 
 using namespace framework;
+using namespace graphics;
+using namespace math;
 
 class loopable_proxy : public loopable {
 public:
@@ -52,11 +54,6 @@ void scriptengine::run() {
       "left", anchor::left,
       "right", anchor::right,
       "none", anchor::none
-  );
-
-  lua.new_enum(
-      "Widget",
-      "label", graphics::widgettype::label
   );
 
   lua.new_usertype<entity>(
@@ -100,17 +97,29 @@ void scriptengine::run() {
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames;
         filenames.reserve(table.size());
-        for (const auto &item : table) {
+        for (const auto &item : table | std::views::all) {
           filenames.emplace_back(item.second.as<std::string>());
         }
         engine.prefetch(filenames);
       }
   );
 
-  lua.new_usertype<graphics::overlay>(
+  lua.new_usertype<overlay>(
       "Overlay",
-      "create", &graphics::overlay::create,
-      "destroy", &graphics::overlay::destroy
+      "add", &overlay::add
+
+      // "create", &overlay::create,
+      // "destroy", &overlay::destroy
+  );
+
+  lua.new_enum(
+      "WidgetType",
+      "label", widgettype::label
+  );
+
+  lua.new_usertype<font>(
+      "Font",
+      sol::constructors<font()>()
   );
 
   lua.new_usertype<enginefactory>(
@@ -143,24 +152,24 @@ void scriptengine::run() {
 
   lua.new_enum(
       "Flip",
-      "none", graphics::flip::none,
-      "horizontal", graphics::flip::horizontal,
-      "vertical", graphics::flip::vertical,
-      "both", graphics::flip::both
+      "none", flip::none,
+      "horizontal", flip::horizontal,
+      "vertical", flip::vertical,
+      "both", flip::both
   );
 
-  lua.new_usertype<graphics::color>(
+  lua.new_usertype<color>(
       "Color",
-      "color", sol::constructors<graphics::color(const std::string &)>(),
+      "color", sol::constructors<color(const std::string &)>(),
 
-      "r", sol::property(&graphics::color::r, &graphics::color::set_r),
-      "g", sol::property(&graphics::color::g, &graphics::color::set_g),
-      "b", sol::property(&graphics::color::b, &graphics::color::set_b),
-      "a", sol::property(&graphics::color::a, &graphics::color::set_a),
+      "r", sol::property(&color::r, &color::set_r),
+      "g", sol::property(&color::g, &color::set_g),
+      "b", sol::property(&color::b, &color::set_b),
+      "a", sol::property(&color::a, &color::set_a),
 
-      sol::meta_function::equal_to, &graphics::color::operator==, // sol::meta_function::not_equal_to, &graphics::color::operator!=,
+      sol::meta_function::equal_to, &color::operator==, // sol::meta_function::not_equal_to, &color::operator!=,
 
-      sol::meta_function::to_string, [](const graphics::color &c) {
+      sol::meta_function::to_string, [](const color &c) {
         return "color(" + std::to_string(c.r()) + ", " +
                std::to_string(c.g()) + ", " +
                std::to_string(c.b()) + ", " +
@@ -199,44 +208,57 @@ void scriptengine::run() {
       "clear", &timermanager::clear
   );
 
-  using math::vector2d;
+  lua.new_usertype<math::vector2d>(
+      "Vector2D", sol::constructors<math::vector2d(), math::vector2d(double_t, double_t)>(),
 
-  lua.new_usertype<vector2d>(
-      "Vector2D", sol::constructors<vector2d(), vector2d(double_t, double_t)>(),
+      "x", sol::property(&math::vector2d::x, &math::vector2d::set_x),
+      "y", sol::property(&math::vector2d::y, &math::vector2d::set_y),
+      "magnitude", &math::vector2d::magnitude,
+      "unit", &math::vector2d::unit,
+      "dot", &math::vector2d::dot,
 
-      "x", sol::property(&vector2d::x, &vector2d::set_x),
-      "y", sol::property(&vector2d::y, &vector2d::set_y),
-      "magnitude", &vector2d::magnitude,
-      "unit", &vector2d::unit,
-      "dot", &vector2d::dot,
+      sol::meta_function::addition, &math::vector2d::operator+,
+      sol::meta_function::subtraction, &math::vector2d::operator-,
 
-      sol::meta_function::addition, &vector2d::operator+,
-      sol::meta_function::subtraction, &vector2d::operator-,
+      "add_assign", &math::vector2d::operator+=,
+      "sub_assign", &math::vector2d::operator-=,
+      "mul_assign", &math::vector2d::operator*=,
+      "div_assign", &math::vector2d::operator/=,
 
-      "add_assign", &vector2d::operator+=,
-      "sub_assign", &vector2d::operator-=,
-      "mul_assign", &vector2d::operator*=,
-      "div_assign", &vector2d::operator/=,
+      sol::meta_function::equal_to, &math::vector2d::operator==,
 
-      sol::meta_function::equal_to, &vector2d::operator==,
-
-      "zero", &vector2d::zero,
-      "moving", &vector2d::moving,
-      "right", &vector2d::right,
-      "left", &vector2d::left
+      "zero", &math::vector2d::zero,
+      "moving", &math::vector2d::moving,
+      "right", &math::vector2d::right,
+      "left", &math::vector2d::left
   );
 
-  lua.new_usertype<graphics::label>(
+  lua.new_usertype<label>(
       "Label",
-      "set_font", &graphics::label::set_font,
-      "set_placement", &graphics::label::set,
-      "set", sol::overload(&graphics::label::set, &graphics::label::set_with_placement)
+      // sol::constructors<label()>(),
+      sol::factories([] {
+        return std::make_shared<label>();
+      }),
+      sol::base_classes, sol::bases<widget>(),
+      "set_font", &label::set_font,
+      "set_placement", &label::set_placement,
+      "set", &label::set,
+      "set_with_placement", &label::set_with_placement
   );
 
-  lua.new_usertype<graphics::fontfactory>(
-      "FontFactory",
-      "get", &graphics::fontfactory::get
+  lua.new_usertype<widget>(
+      "Widget",
+      sol::no_constructor
   );
+
+  lua.new_usertype<fontfactory>(
+      "FontFactory",
+      "get", &fontfactory::get
+  );
+
+  lua.set_function("to_widget", [](std::shared_ptr<label> label) -> std::shared_ptr<widget> {
+    return std::static_pointer_cast<widget>(label);
+  });
 
   const auto script = storage::io::read("scripts/main.lua");
 

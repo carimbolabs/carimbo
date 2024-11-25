@@ -2,8 +2,8 @@
 
 using namespace graphics;
 
-void label::set_font(const std::shared_ptr<font> &font) noexcept {
-  _font = font;
+void label::set_font(const std::shared_ptr<font> font) noexcept {
+  _font = std::move(font);
 }
 
 void label::set_placement(const geometry::point &position) noexcept {
@@ -14,9 +14,9 @@ void label::set(std::string_view text) noexcept {
   _text = text;
 }
 
-void label::set_with_placement(std::string_view text, const geometry::point &position) noexcept {
+void label::set_with_placement(std::string_view text, int32_t x, int32_t y) noexcept {
   _text = text;
-  _position = position;
+  _position = {x, y};
 }
 
 void label::update(float_t delta) noexcept {

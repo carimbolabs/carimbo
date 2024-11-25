@@ -79,11 +79,6 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
       x += width;
     }
 
-    // int line_height = 0;
-    // for (const auto &[_, rect] : map) {
-    //   line_height = std::max(line_height, rect.size().height());
-    // }
-
     // for (const auto &[letter, rect] : map) {
     //   fmt::print("glyph '{}' -> x: {}, y: {}, w: {}, h: {}\n", static_cast<char>(letter), rect.position().x(), rect.position().y(), rect.size().width(), rect.size().height());
     // }

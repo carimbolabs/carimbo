@@ -10,6 +10,7 @@
 #include "statemanager.hpp"
 #include "window.hpp"
 #include "world.hpp"
+#include <ranges>
 
 using namespace framework;
 
@@ -169,7 +170,7 @@ void engine::_loop() noexcept {
   _overlay->update(delta);
   _entitymanager->update(delta);
 
-  for (const auto &loopable : _loopables) {
+  for (const auto &loopable : _loopables | std::views::all) {
     loopable->loop(delta);
   }
 

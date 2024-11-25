@@ -13,9 +13,11 @@ public:
 
   void draw() const noexcept;
 
-  std::shared_ptr<widget> create(widgettype type) noexcept;
+  void add(std::shared_ptr<widget> widget) noexcept;
 
-  void destroy(std::shared_ptr<widget> widget) noexcept;
+  // std::shared_ptr<widget> create(widgettype type) noexcept;
+
+  // void destroy(std::shared_ptr<widget> widget) noexcept;
 
 private:
   std::shared_ptr<renderer> _renderer;

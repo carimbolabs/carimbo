@@ -17,7 +17,7 @@ uint32_t singleshot_wrapper(uint32_t interval, void *param) {
 }
 
 timermanager::~timermanager() noexcept {
-  for (const auto &[id, ptr] : _timers) {
+  for (const auto &[id, ptr] : _timers | std::views::all) {
     SDL_RemoveTimer(id);
   }
 }

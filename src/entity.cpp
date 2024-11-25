@@ -6,18 +6,28 @@ entity::entity(entityprops &&props)
     : _props(std::move(props)) {}
 
 std::shared_ptr<entity> entity::create(entityprops &&props) {
-  return std::shared_ptr<entity>(new entity(std::move(props)));
+  return std::make_shared<entity>(std::move(props));
 }
 
-uint64_t entity::id() const noexcept { return _props.id; }
+uint64_t entity::id() const noexcept {
+  return _props.id;
+}
 
-std::string entity::kind() const { return _props.kind; }
+std::string_view entity::kind() const noexcept {
+  return _props.kind;
+}
 
-const entityprops &entity::props() const { return _props; }
+const entityprops &entity::props() const noexcept {
+  return _props;
+}
 
-int32_t entity::x() const noexcept { return _props.position.x(); }
+int32_t entity::x() const noexcept {
+  return _props.position.x();
+}
 
-int32_t entity::y() const noexcept { return _props.position.y(); }
+int32_t entity::y() const noexcept {
+  return _props.position.y();
+}
 
 void entity::move(float_t x_velocity, float_t y_velocity) {
   cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
@@ -25,7 +35,7 @@ void entity::move(float_t x_velocity, float_t y_velocity) {
 
 math::vector2d entity::get_velocity() const noexcept {
   cpVect velocity = cpBodyGetVelocity(_props.body.get());
-  return math::vector2d{velocity.x, velocity.y};
+  return {velocity.x, velocity.y};
 }
 
 void entity::update() noexcept {
@@ -42,11 +52,11 @@ void entity::update() noexcept {
   const auto &frame = animation[_props.frame];
 
   if (frame.duration > 0 && now - _props.last_frame >= frame.duration) {
-    _props.frame++;
+    ++_props.frame;
     _props.last_frame = now;
 
     if (_props.frame >= animation.size()) {
-      if (std::any_of(animation.begin(), animation.end(), [](const auto &keyframe) { return keyframe.singleshoot; })) {
+      if (std::ranges::any_of(animation, [](const auto &keyframe) { return keyframe.singleshoot; })) {
         _props.action.clear();
 
         if (_onanimationfinished) {
@@ -74,8 +84,9 @@ void entity::draw() const noexcept {
     return;
   }
 
-  const auto source = _props.animations.at(_props.action)[_props.frame].frame;
-  const auto offset = _props.animations.at(_props.action)[_props.frame].offset;
+  const auto &animation_frame = _props.animations.at(_props.action)[_props.frame];
+  const auto &source = animation_frame.frame;
+  const auto &offset = animation_frame.offset;
   geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.size.scale());
 
@@ -114,28 +125,32 @@ void entity::set_flip(graphics::flip flip) noexcept {
 
 void entity::set_action(const std::string_view action) {
   if (_props.action != action) {
-    _props.action = action;
+    _props.action.assign(action);
     _props.frame = 0;
     _props.last_frame = SDL_GetTicks();
   }
 }
 
 void entity::unset_action() {
-  std::string().swap(_props.action);
+  _props.action.clear();
   _props.frame = 0;
   _props.last_frame = SDL_GetTicks();
 }
 
-std::string entity::action() const { return _props.action; }
+std::string_view entity::action() const noexcept {
+  return _props.action;
+}
 
-geometry::size entity::size() const noexcept { return _props.size; }
+geometry::size entity::size() const noexcept {
+  return _props.size;
+}
 
-bool entity::visible() const noexcept { return _props.visible; }
+bool entity::visible() const noexcept {
+  return _props.visible;
+}
 
 void entity::on_email(const std::string &message) {
-  if (!_onmail) {
-    return;
+  if (_onmail) {
+    _onmail(shared_from_this(), message);
   }
-
-  _onmail(shared_from_this(), message);
 }

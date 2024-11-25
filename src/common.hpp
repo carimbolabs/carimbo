@@ -1,8 +1,9 @@
 #pragma once
 
 #ifdef DEBUG
-#define SOL_ALL_SAFETIES_ON 1
+// #define SOL_ALL_SAFETIES_ON 1
 #endif
+#define SOL_SAFE_FUNCTION_CALLS 0
 
 #ifdef _WIN32
 #define NOMINMAX
@@ -42,6 +43,7 @@
 #include <mutex>
 #include <optional>
 #include <random>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <unordered_map>

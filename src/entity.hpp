@@ -5,6 +5,7 @@
 #include "entityprops.hpp"
 #include "flip.hpp"
 #include "vector2d.hpp"
+#include <string_view>
 
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
@@ -15,12 +16,12 @@ public:
   static std::shared_ptr<entity> create(entityprops &&props);
 
   uint64_t id() const noexcept;
-  std::string kind() const;
+  std::string_view kind() const noexcept;
 
   virtual void update() noexcept;
   virtual void draw() const noexcept;
 
-  const entityprops &props() const;
+  const entityprops &props() const noexcept;
   void set_props(entityprops props) noexcept;
 
   int32_t x() const noexcept;
@@ -41,7 +42,7 @@ public:
   void set_action(std::string_view action);
   void unset_action();
 
-  std::string action() const;
+  std::string_view action() const noexcept;
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 

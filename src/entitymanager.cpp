@@ -28,10 +28,10 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto size = j["size"].get<geometry::size>();
 
   std::map<std::string, std::vector<keyframe>> animations;
-  for (const auto &[key, frames] : j["animations"].items()) {
+  for (const auto &[key, frames] : j["animations"].items() | std::views::all) {
     std::vector<keyframe> keyframes;
-    for (const auto &fl : frames) {
-      for (const auto &f : fl) {
+    for (const auto &fl : frames | std::views::all) {
+      for (const auto &f : fl | std::views::all) {
         const auto rect = f["rect"].get<geometry::rect>();
         const auto duration = f.at("duration").get<uint64_t>();
         const auto singleshoot = f.value("singleshoot", false);
@@ -121,13 +121,13 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 void entitymanager::update(float_t delta) {
   UNUSED(delta);
 
-  for (const auto &entity : _entities) {
+  for (const auto &entity : _entities | std::views::all) {
     entity->update();
   }
 }
 
 void entitymanager::draw() noexcept {
-  for (const auto &entity : _entities) {
+  for (const auto &entity : _entities | std::views::all) {
     entity->draw();
   }
 }

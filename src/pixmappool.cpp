@@ -6,7 +6,7 @@ pixmappool::pixmappool(const std::shared_ptr<renderer> &renderer) noexcept
     : _renderer(renderer) {}
 
 void pixmappool::preload(const std::vector<std::string> &filenames) {
-  for (const auto &filename : filenames) {
+  for (const auto &filename : filenames | std::views::all) {
     get(filename);
   }
 }

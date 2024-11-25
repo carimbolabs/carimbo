@@ -6,7 +6,7 @@ soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept
     : _audiodevice(std::move(audiodevice)) {}
 
 void soundmanager::prefetch(const std::vector<std::string> &filenames) noexcept {
-  for (const auto &filename : filenames) {
+  for (const auto &filename : filenames | std::views::all) {
     get(filename);
   }
 }
