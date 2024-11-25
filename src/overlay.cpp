@@ -18,14 +18,14 @@ void overlay::draw() const noexcept {
   }
 }
 
-void overlay::add(std::variant<std::shared_ptr<widget>, std::shared_ptr<label>> &&widget) noexcept {
+void overlay::add(std::variant<std::shared_ptr<label>> &&widget) noexcept {
   std::visit([this](auto &&arg) {
     _widgets.emplace_back(std::move(arg));
   },
              std::move(widget));
 }
 
-void overlay::remove(std::variant<std::shared_ptr<widget>, std::shared_ptr<label>> &&widget) noexcept {
+void overlay::remove(std::variant<std::shared_ptr<label>> &&widget) noexcept {
   std::visit([this](auto &&arg) {
     std::erase_if(_widgets, [&arg](const auto &existing) {
       return existing == arg;

@@ -13,3 +13,4 @@ PointerAlignment: Right
 AccessModifierOffset: -2
 QualifierAlignment: Left
 FixNamespaceComments: False
+AllowShortFunctionsOnASingleLine: Inline

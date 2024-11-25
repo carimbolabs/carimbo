@@ -13,9 +13,9 @@ public:
 
   void draw() const noexcept;
 
-  void add(std::variant<std::shared_ptr<widget>, std::shared_ptr<label>> &&widget) noexcept;
+  void add(std::variant<std::shared_ptr<label>> &&widget) noexcept;
 
-  void remove(std::variant<std::shared_ptr<widget>, std::shared_ptr<label>> &&widget) noexcept;
+  void remove(std::variant<std::shared_ptr<label>> &&widget) noexcept;
 
 private:
   std::shared_ptr<renderer> _renderer;
