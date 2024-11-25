@@ -235,7 +235,6 @@ void scriptengine::run() {
 
   lua.new_usertype<label>(
       "Label",
-      // sol::constructors<label()>(),
       sol::factories([] {
         return std::make_shared<label>();
       }),
@@ -243,7 +242,6 @@ void scriptengine::run() {
       "set_font", &label::set_font,
       "set_placement", &label::set_placement,
       "set", sol::overload(&label::set, &label::set_with_placement)
-      //"set_with_placement", &label::set_with_placement
   );
 
   lua.new_usertype<widget>(
