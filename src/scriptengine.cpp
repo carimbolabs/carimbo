@@ -106,10 +106,8 @@ void scriptengine::run() {
 
   lua.new_usertype<overlay>(
       "Overlay",
-      "add", &overlay::add
-
-      // "create", &overlay::create,
-      // "destroy", &overlay::destroy
+      "add", &overlay::add,
+      "remove", &overlay::remove
   );
 
   lua.new_enum(
