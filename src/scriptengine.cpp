@@ -242,8 +242,8 @@ void scriptengine::run() {
       sol::base_classes, sol::bases<widget>(),
       "set_font", &label::set_font,
       "set_placement", &label::set_placement,
-      "set", &label::set,
-      "set_with_placement", &label::set_with_placement
+      "set", sol::overload(&label::set, &label::set_with_placement)
+      //"set_with_placement", &label::set_with_placement
   );
 
   lua.new_usertype<widget>(
