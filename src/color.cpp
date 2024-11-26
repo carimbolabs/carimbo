@@ -8,8 +8,9 @@ color::color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) noexcept
 color::color(const SDL_Color &scolor) noexcept
     : color(scolor.r, scolor.g, scolor.b, scolor.a) {}
 
-color::color(const std::string &hex) : _r(0), _g(0), _b(0), _a(255) {
-  if (hex.length() != 7 && hex.length() != 9) {
+color::color(const std::string &hex)
+    : _r(0), _g(0), _b(0), _a(255) {
+  if (hex.length() != 7 && hex.length() != 9) [[unlikely]] {
     throw std::invalid_argument(fmt::format(
         "Invalid hex code format: '{}'. Use #RRGGBB or #RRGGBBAA.", hex
     ));
@@ -44,15 +45,31 @@ color::color(uint32_t pixel, const SDL_PixelFormat *format) noexcept {
   _a = a;
 }
 
-uint8_t color::r() const noexcept { return _r; }
-uint8_t color::g() const noexcept { return _g; }
-uint8_t color::b() const noexcept { return _b; }
-uint8_t color::a() const noexcept { return _a; }
+uint8_t color::r() const noexcept {
+  return _r;
+}
+uint8_t color::g() const noexcept {
+  return _g;
+}
+uint8_t color::b() const noexcept {
+  return _b;
+}
+uint8_t color::a() const noexcept {
+  return _a;
+}
 
-void color::set_r(uint8_t r) noexcept { _r = r; }
-void color::set_g(uint8_t g) noexcept { _g = g; }
-void color::set_b(uint8_t b) noexcept { _b = b; }
-void color::set_a(uint8_t a) noexcept { _a = a; }
+void color::set_r(uint8_t r) noexcept {
+  _r = r;
+}
+void color::set_g(uint8_t g) noexcept {
+  _g = g;
+}
+void color::set_b(uint8_t b) noexcept {
+  _b = b;
+}
+void color::set_a(uint8_t a) noexcept {
+  _a = a;
+}
 
 bool color::operator==(const color &other) const noexcept {
   return std::tie(_r, _g, _b, _a) == std::tie(other._r, other._g, other._b, other._a);

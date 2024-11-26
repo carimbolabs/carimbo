@@ -18,7 +18,7 @@ Conan & pre-commit hooks
 ```shell
 uv pip install -r requirements.txt
 pre-commit install
-conan install . --output-folder=build --build=missing
+conan install . --output-folder=build --build=missing --settings compiler.cppstd=20 --settings build_type=Release
 ```
 
 CMake build

@@ -14,7 +14,8 @@
 
 using namespace framework;
 
-engine::engine() noexcept : _running(true) {
+engine::engine() noexcept
+    : _running(true) {
   add_loopable(std::make_shared<framerate>());
 }
 
@@ -150,7 +151,7 @@ void engine::run() noexcept {
 #ifdef EMSCRIPTEN
   emscripten_set_main_loop_arg(::run<engine>, this, 0, true);
 #else
-  while (_running) {
+  while (_running) [[likely]] {
     _loop();
   }
 #endif
@@ -170,9 +171,9 @@ void engine::_loop() noexcept {
   _overlay->update(delta);
   _entitymanager->update(delta);
 
-  for (const auto &loopable : _loopables | std::views::all) {
+  std::ranges::for_each(_loopables, [&](auto &loopable) {
     loopable->loop(delta);
-  }
+  });
 
   _renderer->begin();
   _scenemanager->draw();

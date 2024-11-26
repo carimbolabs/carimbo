@@ -1,4 +1,5 @@
 #include "entitymanager.hpp"
+#include <algorithm>
 
 using namespace framework;
 
@@ -112,15 +113,15 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 }
 
 void entitymanager::update(float_t delta) noexcept {
-  for (const auto &entity : _entities) {
+  std::ranges::for_each(_entities, [delta](const auto &entity) {
     entity->update(delta);
-  }
+  });
 }
 
 void entitymanager::draw() noexcept {
-  for (const auto &entity : _entities) {
+  std::ranges::for_each(_entities, [](const auto &entity) {
     entity->draw();
-  }
+  });
 }
 
 void entitymanager::on_mail(const input::mailevent &event) noexcept {

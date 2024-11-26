@@ -33,13 +33,13 @@ void overlay::destroy(std::variant<std::shared_ptr<label>> &&widget) noexcept {
 }
 
 void overlay::update(float_t delta) noexcept {
-  for (const auto &widget : _widgets | std::views::all) {
+  std::ranges::for_each(_widgets, [delta](const auto &widget) {
     widget->update(delta);
-  }
+  });
 }
 
 void overlay::draw() const noexcept {
-  for (const auto &widget : _widgets | std::views::all) {
+  std::ranges::for_each(_widgets, [](const auto &widget) {
     widget->draw();
-  }
+  });
 }

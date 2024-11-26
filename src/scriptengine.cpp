@@ -98,9 +98,9 @@ void scriptengine::run() {
       "prefetch", [](engine &engine, sol::table table) {
         std::vector<std::string> filenames;
         filenames.reserve(table.size());
-        for (const auto &item : table | std::views::all) {
-          filenames.emplace_back(item.second.as<std::string>());
-        }
+        std::ranges::transform(table, std::back_inserter(filenames), [](const auto &item) {
+          return item.second.template as<std::string>();
+        });
         engine.prefetch(filenames);
       }
   );
