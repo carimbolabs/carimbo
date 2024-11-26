@@ -31,12 +31,7 @@ color::color(const std::string &hex)
 }
 
 color::color(uint32_t pixel, const SDL_PixelFormat *format) noexcept {
-  uint8_t r, g, b, a;
-  SDL_GetRGBA(pixel, format, &r, &g, &b, &a);
-  _r = r;
-  _g = g;
-  _b = b;
-  _a = a;
+  SDL_GetRGBA(pixel, format, &_r, &_g, &_b, &_a);
 }
 
 uint8_t color::r() const noexcept {
