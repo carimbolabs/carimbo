@@ -18,15 +18,11 @@ color::color(const std::string &hex)
     throw std::invalid_argument(fmt::format("Hex code '{}' must start with '#'.", hex));
   }
 
-  try {
-    _r = static_cast<uint8_t>(std::stoi(hex.substr(1, 2), nullptr, 16));
-    _g = static_cast<uint8_t>(std::stoi(hex.substr(3, 2), nullptr, 16));
-    _b = static_cast<uint8_t>(std::stoi(hex.substr(5, 2), nullptr, 16));
-    if (hex.length() == 9) {
-      _a = static_cast<uint8_t>(std::stoi(hex.substr(7, 2), nullptr, 16));
-    }
-  } catch (const std::exception &) {
-    throw std::invalid_argument(fmt::format("Failed to parse hex code '{}'. Ensure valid #RRGGBB or #RRGGBBAA format.", hex));
+  _r = static_cast<uint8_t>(std::stoi(hex.substr(1, 2), nullptr, 16));
+  _g = static_cast<uint8_t>(std::stoi(hex.substr(3, 2), nullptr, 16));
+  _b = static_cast<uint8_t>(std::stoi(hex.substr(5, 2), nullptr, 16));
+  if (hex.length() == 9) {
+    _a = static_cast<uint8_t>(std::stoi(hex.substr(7, 2), nullptr, 16));
   }
 }
 
