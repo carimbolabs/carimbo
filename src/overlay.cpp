@@ -12,10 +12,12 @@ std::variant<std::shared_ptr<label>> overlay::create(widgettype type) noexcept {
     case widgettype::label:
       return std::make_shared<label>();
     }
-    __builtin_unreachable();
+
+    std::terminate();
   }();
 
   _widgets.emplace_back(widget);
+
   return widget;
 }
 
