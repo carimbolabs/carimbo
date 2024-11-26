@@ -14,7 +14,7 @@ color::color(const std::string &hex)
     throw std::invalid_argument(fmt::format("Invalid hex code format: '{}'. Use #RRGGBB or #RRGGBBAA.", hex));
   }
 
-  if (hex[0] != '#') {
+  if (hex[0] != '#') [[unlikely]] {
     throw std::invalid_argument(fmt::format("Hex code '{}' must start with '#'.", hex));
   }
 

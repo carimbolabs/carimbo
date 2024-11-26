@@ -78,12 +78,12 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
   }
 
   std::unique_ptr<OggVorbis_File, decltype(&ov_clear)> vf{new OggVorbis_File, ov_clear};
-  if (ov_open_callbacks(fp.get(), vf.get(), nullptr, 0, PHYSFS_callbacks) < 0) {
+  if (ov_open_callbacks(fp.get(), vf.get(), nullptr, 0, PHYSFS_callbacks) < 0) [[unlikely]] {
     throw std::runtime_error("[ov_open_callbacks] error while opening file");
   }
 
   const auto info = ov_info(vf.get(), -1);
-  if (!info) {
+  if (!info) [[unlikely]] {
     throw std::runtime_error("[ov_info] failed to retrieve OggVorbis info");
   }
 

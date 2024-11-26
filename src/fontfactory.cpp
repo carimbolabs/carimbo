@@ -36,7 +36,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
         SDL_FreeSurface
     };
 
-    if (!surface) {
+    if (!surface) [[unlikely]] {
       throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error creating surface. Error: {}", SDL_GetError()));
     }
 
@@ -54,7 +54,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
         ++x;
       }
 
-      if (x >= size.width()) {
+      if (x >= size.width()) [[unlikely]] {
         throw std::runtime_error(fmt::format("Error: Missing glyph for '{}'", letter));
       }
 
