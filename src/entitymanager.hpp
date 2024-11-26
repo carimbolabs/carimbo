@@ -8,8 +8,8 @@
 namespace framework {
 class entitymanager : public input::eventreceiver {
 public:
-  entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager);
-  ~entitymanager();
+  entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager) noexcept;
+  ~entitymanager() = default;
 
   std::shared_ptr<entity> spawn(const std::string &kind);
 
@@ -17,7 +17,7 @@ public:
 
   std::shared_ptr<entity> find(uint64_t id) const noexcept;
 
-  void update(float_t delta);
+  void update(float_t delta) noexcept;
 
   void draw() noexcept;
 

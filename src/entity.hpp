@@ -18,7 +18,7 @@ public:
   uint64_t id() const noexcept;
   std::string_view kind() const noexcept;
 
-  virtual void update() noexcept;
+  virtual void update(float_t delta) noexcept;
   virtual void draw() const noexcept;
 
   const entityprops &props() const noexcept;

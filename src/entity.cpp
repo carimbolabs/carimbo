@@ -38,7 +38,9 @@ math::vector2d entity::get_velocity() const noexcept {
   return {velocity.x, velocity.y};
 }
 
-void entity::update() noexcept {
+void entity::update(float_t delta) noexcept {
+  UNUSED(delta);
+
   if (_onupdate) {
     _onupdate(shared_from_this());
   }
