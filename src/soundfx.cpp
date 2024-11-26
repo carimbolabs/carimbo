@@ -73,7 +73,7 @@ const char *ov_strerror(int code) {
 soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view filename)
     : _audiodevice(std::move(audiodevice)) {
   std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{PHYSFS_openRead(filename.data()), PHYSFS_close};
-  if (!fp) {
+  if (!fp) [[unlikely]] {
     throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
@@ -105,10 +105,10 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
 
   do {
     offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
-    if (offset < 0) {
+    if (offset < 0) [[unlikely]] {
       throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
     }
-    data.insert(data.end(), array.begin(), array.begin() + offset);
+    data.insert(data.end(), array.begin(), std::ranges::next(array.begin(), offset));
   } while (offset > 0);
 
   ALuint buffer;

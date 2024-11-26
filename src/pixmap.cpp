@@ -18,14 +18,14 @@ pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::string_view filen
       ),
       SDL_FreeSurface
   };
-  if (!surface) {
+  if (!surface) [[unlikely]] {
     throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormat] error while creating surface, file: {}, error: {}", filename, SDL_GetError()));
   }
 
   std::memcpy(surface->pixels, output.data(), output.size());
 
   _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
-  if (!_texture) {
+  if (!_texture) [[unlikely]] {
     throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture from surface, file: {}", filename));
   }
 }
@@ -34,7 +34,7 @@ pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::unique_ptr<SDL_Su
     : _renderer(renderer), _size(surface->w, surface->h) {
 
   _texture = texture_ptr(SDL_CreateTextureFromSurface(*renderer, surface.get()), SDL_Deleter());
-  if (!_texture) {
+  if (!_texture) [[unlikely]] {
     throw std::runtime_error(fmt::format("[SDL_CreateTextureFromSurface] error while creating texture, SDL Error: {}", SDL_GetError()));
   }
 }
@@ -47,8 +47,14 @@ void pixmap::draw(const geometry::rect &source, const geometry::rect &destinatio
   SDL_RenderCopyEx(*_renderer, _texture.get(), &src, &dst, angle, nullptr, static_cast<SDL_RendererFlip>(flip));
 }
 
-geometry::size pixmap::size() const noexcept { return _size; }
+geometry::size pixmap::size() const noexcept {
+  return _size;
+}
 
-void pixmap::set_size(const geometry::size &size) noexcept { _size = size; }
+void pixmap::set_size(const geometry::size &size) noexcept {
+  _size = size;
+}
 
-pixmap::operator SDL_Texture *() const noexcept { return _texture.get(); }
+pixmap::operator SDL_Texture *() const noexcept {
+  return _texture.get();
+}

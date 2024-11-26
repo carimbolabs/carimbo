@@ -35,7 +35,7 @@ void from_json(const nlohmann::json &j, collision &c) {
       c.type = playerbullet;
     } else if (from == "enemy") {
       c.type = enemybullet;
-    } else {
+    } else [[unlikely]] {
       throw std::invalid_argument("[collision] Invalid 'from' value for bullet");
     }
   } else if (type == "player") {

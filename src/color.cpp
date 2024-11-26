@@ -11,15 +11,11 @@ color::color(const SDL_Color &scolor) noexcept
 color::color(const std::string &hex)
     : _r(0), _g(0), _b(0), _a(255) {
   if (hex.length() != 7 && hex.length() != 9) [[unlikely]] {
-    throw std::invalid_argument(fmt::format(
-        "Invalid hex code format: '{}'. Use #RRGGBB or #RRGGBBAA.", hex
-    ));
+    throw std::invalid_argument(fmt::format("Invalid hex code format: '{}'. Use #RRGGBB or #RRGGBBAA.", hex));
   }
 
   if (hex[0] != '#') {
-    throw std::invalid_argument(
-        fmt::format("Hex code '{}' must start with '#'.", hex)
-    );
+    throw std::invalid_argument(fmt::format("Hex code '{}' must start with '#'.", hex));
   }
 
   try {
@@ -30,9 +26,7 @@ color::color(const std::string &hex)
       _a = static_cast<uint8_t>(std::stoi(hex.substr(7, 2), nullptr, 16));
     }
   } catch (const std::exception &) {
-    throw std::invalid_argument(
-        fmt::format("Failed to parse hex code '{}'. Ensure valid #RRGGBB or #RRGGBBAA format.", hex)
-    );
+    throw std::invalid_argument(fmt::format("Failed to parse hex code '{}'. Ensure valid #RRGGBB or #RRGGBBAA format.", hex));
   }
 }
 

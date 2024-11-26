@@ -46,7 +46,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
 
     glyphmap map;
     int x = 0, y = 0, width = 0, height = 0;
-    for (const auto letter : alphabet | std::views::all) {
+    for (const auto &letter : alphabet) {
       while (x < size.width()) {
         if (color(pixels[y * size.width() + x], surface->format) != separator) {
           break;

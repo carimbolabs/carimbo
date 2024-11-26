@@ -17,9 +17,9 @@ uint32_t singleshot_wrapper(uint32_t interval, void *param) {
 }
 
 timermanager::~timermanager() noexcept {
-  for (const auto &[id, ptr] : _timers | std::views::all) {
-    SDL_RemoveTimer(id);
-  }
+  std::ranges::for_each(_timers, [](const auto &timer) {
+    SDL_RemoveTimer(timer.first);
+  });
 }
 
 void timermanager::set(int32_t interval, std::function<void()> fn) {
@@ -40,7 +40,7 @@ void timermanager::clear(int32_t id) noexcept {
 void timermanager::add_timer(int32_t interval, std::function<void()> fn, bool repeat) {
   const auto ptr = std::make_shared<std::function<void()>>(std::move(fn));
   const auto id = SDL_AddTimer(interval, repeat ? wrapper : singleshot_wrapper, ptr.get());
-  if (!id) {
+  if (!id) [[unlikely]] {
     throw std::runtime_error(fmt::format("[SDL_AddTimer] failed to set timer. reason: {}", SDL_GetError()));
   }
 

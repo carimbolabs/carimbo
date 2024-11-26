@@ -113,15 +113,15 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 }
 
 void entitymanager::update(float_t delta) noexcept {
-  std::ranges::for_each(_entities, [delta](const auto &entity) {
+  for (const auto &entity : _entities) {
     entity->update(delta);
-  });
+  }
 }
 
 void entitymanager::draw() noexcept {
-  std::ranges::for_each(_entities, [](const auto &entity) {
+  for (const auto &entity : _entities) {
     entity->draw();
-  });
+  }
 }
 
 void entitymanager::on_mail(const input::mailevent &event) noexcept {

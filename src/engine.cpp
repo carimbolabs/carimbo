@@ -171,9 +171,9 @@ void engine::_loop() noexcept {
   _overlay->update(delta);
   _entitymanager->update(delta);
 
-  std::ranges::for_each(_loopables, [&](auto &loopable) {
+  for (const auto &loopable : _loopables) {
     loopable->loop(delta);
-  });
+  }
 
   _renderer->begin();
   _scenemanager->draw();

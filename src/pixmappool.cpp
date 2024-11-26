@@ -6,9 +6,9 @@ pixmappool::pixmappool(const std::shared_ptr<renderer> &renderer) noexcept
     : _renderer(renderer) {}
 
 void pixmappool::preload(const std::vector<std::string> &filenames) {
-  std::ranges::for_each(filenames | std::views::all, [this](const auto &filename) {
+  for (const auto &filename : filenames) {
     get(filename);
-  });
+  }
 }
 
 const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
