@@ -13,12 +13,14 @@ std::variant<std::shared_ptr<label>> overlay::create() noexcept {
 }
 
 void overlay::destroy(std::variant<std::shared_ptr<label>> &&widget) noexcept {
-  std::visit([this](auto &&argument) {
-    std::erase_if(_widgets, [&argument](const auto &existing) {
-      return existing == argument;
-    });
-  },
-             std::move(widget));
+  std::visit(
+      [this](auto &&argument) {
+        std::erase_if(_widgets, [&argument](const auto &existing) {
+          return existing == argument;
+        });
+      },
+      widget
+  );
 }
 
 void overlay::update(float_t delta) noexcept {
