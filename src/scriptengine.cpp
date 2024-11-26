@@ -24,7 +24,8 @@ using namespace math;
 
 class loopable_proxy : public loopable {
 public:
-  loopable_proxy(sol::function lua_func) : function(lua_func) {}
+  loopable_proxy(sol::function lua_func)
+      : function(lua_func) {}
 
   void loop(float_t delta) noexcept override {
     if (function.valid()) {
@@ -106,8 +107,8 @@ void scriptengine::run() {
 
   lua.new_usertype<overlay>(
       "Overlay",
-      "add", &overlay::add,
-      "remove", &overlay::remove
+      "create", &overlay::create,
+      "destroy", &overlay::destroy
   );
 
   lua.new_enum(
