@@ -65,8 +65,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       cpShapeFree
   );
 
-  auto &physics = j["physics"];
-  shape->filter = CP_SHAPE_FILTER_ALL;
+  const auto &physics = j["physics"];
   cpShapeSetCollisionType(shape.get(), physics["collision"].get<collision>().type);
   cpShapeSetFriction(shape.get(), physics.value("friction", 0.5f));
   cpShapeSetElasticity(shape.get(), physics.value("elasticity", 0.3f));
