@@ -42,9 +42,9 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       cpv(0, resized.height())
   };
 
-  body_ptr body{nullptr, cpBodyFree};
   const auto type = j["physics"]["type"].get<bodytype>();
 
+  body_ptr body{nullptr, cpBodyFree};
   switch (type) {
   case bodytype::stationary:
     body = body_ptr(cpBodyNewStatic(), cpBodyFree);

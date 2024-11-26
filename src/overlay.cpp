@@ -6,8 +6,15 @@ using namespace graphics;
 overlay::overlay(std::shared_ptr<renderer> renderer)
     : _renderer(std::move(renderer)) {}
 
-std::variant<std::shared_ptr<label>> overlay::create() noexcept {
-  auto widget = std::make_shared<label>();
+std::variant<std::shared_ptr<label>> overlay::create(widgettype type) noexcept {
+  auto widget = [&]() noexcept {
+    switch (type) {
+    case widgettype::label:
+      return std::make_shared<label>();
+    }
+    __builtin_unreachable();
+  }();
+
   _widgets.emplace_back(widget);
   return widget;
 }

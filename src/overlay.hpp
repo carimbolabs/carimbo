@@ -9,7 +9,7 @@ public:
   explicit overlay(std::shared_ptr<renderer> renderer);
   ~overlay() = default;
 
-  std::variant<std::shared_ptr<label>> create() noexcept;
+  std::variant<std::shared_ptr<label>> create(widgettype type) noexcept;
 
   void destroy(std::variant<std::shared_ptr<label>> &&widget) noexcept;
 
