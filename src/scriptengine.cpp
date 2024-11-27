@@ -88,18 +88,22 @@ void scriptengine::run() {
       }
   );
 
+  lua.new_usertype<statemanager>(
+      "StateManager",
+      "is_keydown", &statemanager::is_keydown
+  );
+
   lua.new_usertype<engine>(
       "Engine",
       "add_loopable", &engine::add_loopable,
       "entitymanager", &engine::entitymanager,
       "fontfactory", &engine::fontfactory,
-      "is_keydown", &engine::is_keydown,
       "overlay", &engine::overlay,
       "run", &engine::run,
       "set_scene", &engine::set_scene,
       "resourcemanager", &engine::resourcemanager,
       "soundmanager", &engine::soundmanager,
-      "ticks", &ticks
+      "statemanager", &engine::statemanager
   );
 
   lua.new_usertype<overlay>(
