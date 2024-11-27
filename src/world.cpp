@@ -51,22 +51,9 @@ void world::draw() noexcept {
       return cpPolyShapeGetVert(shape, i++);
     });
 
-    auto [r, g, b] = [](cpCollisionType type) -> std::tuple<uint8_t, uint8_t, uint8_t> {
-      switch (type) {
-      case 1:
-        return {255, 0, 0};
-      case 2:
-        return {0, 0, 255};
-      case 3:
-        return {255, 255, 0};
-      case 4:
-        return {0, 255, 255};
-      case 5:
-        return {0, 255, 0};
-      default:
-        return {255, 255, 255};
-      }
-    }(cpShapeGetCollisionType(shape));
+    static constexpr std::array<std::tuple<uint8_t, uint8_t, uint8_t>, 6> colors = {{{255, 255, 255}, {255, 0, 0}, {0, 0, 255}, {255, 255, 0}, {0, 255, 255}, {0, 255, 0}}};
+
+    auto [r, g, b] = colors[std::min(cpShapeGetCollisionType(shape), static_cast<cpCollisionType>(5))];
 
     SDL_SetRenderDrawColor(*_renderer, r, g, b, 255);
 
