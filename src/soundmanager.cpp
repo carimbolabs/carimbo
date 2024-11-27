@@ -33,10 +33,14 @@ void soundmanager::stop(const std::string &filename) noexcept {
 
 void soundmanager::flush() noexcept {
   for (auto it = _soundmap.begin(); it != _soundmap.end();) {
-    if (it->second.use_count() == 1) {
+    switch (it->second.use_count()) {
+    case 1:
       it = _soundmap.erase(it);
-    } else {
+      break;
+
+    default:
       ++it;
+      break;
     }
   }
 }

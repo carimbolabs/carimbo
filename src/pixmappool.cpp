@@ -26,10 +26,14 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
 
 void pixmappool::flush() noexcept {
   for (auto it = _pool.begin(); it != _pool.end();) {
-    if (it->second.use_count() == 1) {
+    switch (it->second.use_count()) {
+    case 1:
       it = _pool.erase(it);
-    } else {
+      break;
+
+    default:
       ++it;
+      break;
     }
   }
 }
