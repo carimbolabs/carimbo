@@ -9,15 +9,16 @@ public:
   resourcemanager(std::shared_ptr<graphics::renderer> renderer, std::shared_ptr<audio::audiodevice> audiodevice) noexcept;
   ~resourcemanager() noexcept = default;
 
-  void prefetch(const std::vector<std::string> &filenames) noexcept;
-  void update(float_t delta) noexcept;
   bool busy() const noexcept;
   void flush() noexcept;
+  void prefetch(const std::vector<std::string> &filenames) noexcept;
+
+  void update(float_t delta) noexcept;
 
   std::shared_ptr<graphics::renderer> renderer() const noexcept;
-  std::shared_ptr<graphics::pixmappool> pixmappool() noexcept;
-  std::shared_ptr<audio::soundmanager> soundmanager() noexcept;
-  std::shared_ptr<graphics::fontfactory> fontfactory() noexcept;
+  std::shared_ptr<graphics::pixmappool> pixmappool() const noexcept;
+  std::shared_ptr<audio::soundmanager> soundmanager() const noexcept;
+  std::shared_ptr<graphics::fontfactory> fontfactory() const noexcept;
 
 private:
   std::map<std::string, std::function<void(const std::string &)>> _handlers;

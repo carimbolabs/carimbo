@@ -2,7 +2,6 @@
 
 #include "color.hpp"
 #include "common.hpp"
-#include "engine.hpp"
 #include "enginefactory.hpp"
 #include "entity.hpp"
 #include "entitymanager.hpp"
@@ -13,10 +12,8 @@
 #include "point.hpp"
 #include "postalservice.hpp"
 #include "soundmanager.hpp"
-#include "ticks.hpp"
 #include "vector2d.hpp"
 #include "widget.hpp"
-#include <sol/overload.hpp>
 
 using namespace framework;
 using namespace graphics;
@@ -81,28 +78,28 @@ void scriptengine::run() {
       "destroy", &entitymanager::destroy
   );
 
+  lua.new_usertype<resourcemanager>(
+      "ResourceManager",
+      "busy", &resourcemanager::busy, "flush", &resourcemanager::flush,
+      "prefetch", [](std::shared_ptr<resourcemanager> manager, sol::table table) {
+        std::vector<std::string> filenames(table.size());
+        std::ranges::transform(table, filenames.begin(), [](const auto &item) { return item.second.template as<std::string>(); });
+        manager->prefetch(std::move(filenames));
+      }
+  );
+
   lua.new_usertype<engine>(
       "Engine",
       "add_loopable", &engine::add_loopable,
       "entitymanager", &engine::entitymanager,
-      "flush", &engine::flush,
       "fontfactory", &engine::fontfactory,
-      "width", sol::property(&engine::width),
-      "height", sol::property(&engine::height),
       "is_keydown", &engine::is_keydown,
       "overlay", &engine::overlay,
       "run", &engine::run,
       "set_scene", &engine::set_scene,
+      "resourcemanager", &engine::resourcemanager,
       "soundmanager", &engine::soundmanager,
-      "ticks", &ticks,
-      "prefetch", [](engine &engine, sol::table table) {
-        std::vector<std::string> filenames;
-        filenames.reserve(table.size());
-        std::ranges::transform(table, std::back_inserter(filenames), [](const auto &item) {
-          return item.second.template as<std::string>();
-        });
-        engine.prefetch(filenames);
-      }
+      "ticks", &ticks
   );
 
   lua.new_usertype<overlay>(
