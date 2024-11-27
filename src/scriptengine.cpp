@@ -14,6 +14,7 @@
 #include "soundmanager.hpp"
 #include "vector2d.hpp"
 #include "widget.hpp"
+#include <sol/overload.hpp>
 
 using namespace framework;
 using namespace graphics;

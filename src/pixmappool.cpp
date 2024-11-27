@@ -5,7 +5,7 @@ using namespace graphics;
 pixmappool::pixmappool(const std::shared_ptr<renderer> &renderer) noexcept
     : _renderer(renderer) {}
 
-const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
+const std::shared_ptr<pixmap> pixmappool::get(std::string_view filename) {
   auto [it, added] = _pool.try_emplace(filename, nullptr);
 
   if (added) {

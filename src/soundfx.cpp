@@ -90,7 +90,7 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
   const auto format = (info->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
   const auto frequency = static_cast<ALsizei>(info->rate);
 
-  int32_t offset = 0;
+  auto offset = 0;
   constexpr auto length = 2014 * 8;
   std::array<uint8_t, length> array{};
 
@@ -98,9 +98,9 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
   data.reserve(static_cast<size_t>(ov_pcm_total(vf.get(), -1)) * info->channels * 2);
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-  const int bigendian = 0;
+  constexpr auto bigendian = 0;
 #else
-  const int bigendian = 1;
+  constexpr auto bigendian = 1;
 #endif
 
   do {
@@ -124,8 +124,8 @@ soundfx::~soundfx() noexcept {
   alDeleteSources(1, &source);
 }
 
-void soundfx::play(bool loop) const noexcept {
-  alSourcei(source, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+void soundfx::play() const noexcept {
+  alSourcei(source, AL_LOOPING, /* loop */ AL_FALSE);
   alSourcePlay(source);
 }
 

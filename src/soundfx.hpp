@@ -8,7 +8,7 @@ public:
   soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view filename);
   ~soundfx() noexcept;
 
-  void play(bool loop) const noexcept;
+  void play() const noexcept;
   void stop() const noexcept;
 
 private:

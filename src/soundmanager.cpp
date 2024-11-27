@@ -5,7 +5,8 @@ using namespace audio;
 soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept
     : _audiodevice(std::move(audiodevice)) {}
 
-std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
+std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
+  std::cout << filename << std::endl;
   auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
   if (added) {
@@ -19,11 +20,11 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) {
   return it->second;
 }
 
-void soundmanager::play(const std::string &filename, bool loop) noexcept {
-  get(fmt::format("blobs/{}.ogg", filename))->play(loop);
+void soundmanager::play(std::string_view filename) noexcept {
+  get(fmt::format("blobs/{}.ogg", filename))->play();
 }
 
-void soundmanager::stop(const std::string &filename) noexcept {
+void soundmanager::stop(std::string_view filename) noexcept {
   get(filename)->stop();
 }
 
