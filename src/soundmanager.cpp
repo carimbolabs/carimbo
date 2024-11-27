@@ -6,7 +6,6 @@ soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept
     : _audiodevice(std::move(audiodevice)) {}
 
 std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
-  std::cout << filename << std::endl;
   auto [it, added] = _soundmap.try_emplace(filename, nullptr);
 
   if (added) {
@@ -21,11 +20,15 @@ std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
 }
 
 void soundmanager::play(std::string_view filename) noexcept {
-  get(fmt::format("blobs/{}.ogg", filename))->play();
+  if (const auto &sound = get(fmt::format("blobs/{}.ogg", filename)); sound) {
+    sound->play();
+  }
 }
 
 void soundmanager::stop(std::string_view filename) noexcept {
-  get(filename)->stop();
+  if (const auto &sound = get(filename); sound) {
+    sound->stop();
+  }
 }
 
 void soundmanager::flush() noexcept {

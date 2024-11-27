@@ -14,7 +14,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto j = json::parse(buffer);
 
   auto spritesheet = j.contains("spritesheet")
-                         ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string>())
+                         ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string_view>())
                          : nullptr;
 
   const auto size = j["size"].get<geometry::size>();
