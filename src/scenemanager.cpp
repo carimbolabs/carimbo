@@ -7,7 +7,7 @@ using json = nlohmann::json;
 scenemanager::scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noexcept
     : _pixmappool(std::move(pixmappool)) {}
 
-void scenemanager::load(const std::string_view name) {
+void scenemanager::set(const std::string_view name) noexcept {
   const auto buffer = storage::io::read(fmt::format("scenes/{}.json", name));
   const auto j = json::parse(buffer);
   _background = _pixmappool->get(j["background"].get<std::string>());
@@ -18,7 +18,7 @@ void scenemanager::update(float_t delta) noexcept {
   UNUSED(delta);
 }
 
-void scenemanager::draw() noexcept {
+void scenemanager::draw() const noexcept {
   if (!_background) {
     return;
   }

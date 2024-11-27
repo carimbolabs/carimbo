@@ -93,17 +93,14 @@ void scriptengine::run() {
       "is_keydown", &statemanager::is_keydown
   );
 
-  lua.new_usertype<engine>(
-      "Engine",
-      "add_loopable", &engine::add_loopable,
-      "entitymanager", &engine::entitymanager,
-      "fontfactory", &engine::fontfactory,
-      "overlay", &engine::overlay,
-      "run", &engine::run,
-      "set_scene", &engine::set_scene,
-      "resourcemanager", &engine::resourcemanager,
-      "soundmanager", &engine::soundmanager,
-      "statemanager", &engine::statemanager
+  lua.new_usertype<scenemanager>(
+      "SceneManager",
+      "set", &scenemanager::set
+  );
+
+  lua.new_enum(
+      "WidgetType",
+      "label", widgettype::label
   );
 
   lua.new_usertype<overlay>(
@@ -112,9 +109,17 @@ void scriptengine::run() {
       "destroy", &overlay::destroy
   );
 
-  lua.new_enum(
-      "WidgetType",
-      "label", widgettype::label
+  lua.new_usertype<engine>(
+      "Engine",
+      "add_loopable", &engine::add_loopable,
+      "entitymanager", &engine::entitymanager,
+      "fontfactory", &engine::fontfactory,
+      "overlay", &engine::overlay,
+      "resourcemanager", &engine::resourcemanager,
+      "soundmanager", &engine::soundmanager,
+      "statemanager", &engine::statemanager,
+      "scenemanager", &engine::scenemanager,
+      "run", &engine::run
   );
 
   lua.new_usertype<font>(
@@ -125,11 +130,11 @@ void scriptengine::run() {
   lua.new_usertype<enginefactory>(
       "EngineFactory",
       sol::constructors<enginefactory()>(),
-      "set_title", &enginefactory::set_title,
-      "set_width", &enginefactory::set_width,
-      "set_height", &enginefactory::set_height,
-      "set_gravity", &enginefactory::set_gravity,
-      "set_fullscreen", &enginefactory::set_fullscreen,
+      "with_title", &enginefactory::with_title,
+      "with_width", &enginefactory::with_width,
+      "with_height", &enginefactory::with_height,
+      "with_gravity", &enginefactory::with_gravity,
+      "with_fullscreen", &enginefactory::with_fullscreen,
       "create", &enginefactory::create
   );
 

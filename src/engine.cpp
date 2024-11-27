@@ -137,7 +137,7 @@ void engine::prefetch(const std::vector<std::string> &filenames) noexcept {
 }
 
 void engine::set_scene(const std::string_view name) noexcept {
-  _scenemanager->load(name);
+  _scenemanager->set(name);
 }
 
 #ifdef EMSCRIPTEN

@@ -8,9 +8,9 @@ class scenemanager {
 public:
   scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noexcept;
 
-  void load(const std::string_view name);
+  void set(const std::string_view name) noexcept;
   void update(float_t delta) noexcept;
-  void draw() noexcept;
+  void draw() const noexcept;
 
 private:
   std::shared_ptr<graphics::pixmappool> _pixmappool;

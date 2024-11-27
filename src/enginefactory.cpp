@@ -12,32 +12,32 @@
 
 using namespace framework;
 
-enginefactory &enginefactory::set_title(const std::string &title) noexcept {
+enginefactory &enginefactory::with_title(const std::string &title) noexcept {
   _title = title;
   return *this;
 }
 
-enginefactory &enginefactory::set_width(int32_t width) noexcept {
+enginefactory &enginefactory::with_width(int32_t width) noexcept {
   _width = width;
   return *this;
 }
 
-enginefactory &enginefactory::set_height(int32_t height) noexcept {
+enginefactory &enginefactory::with_height(int32_t height) noexcept {
   _height = height;
   return *this;
 }
 
-enginefactory &enginefactory::set_gravity(float_t gravity) noexcept {
+enginefactory &enginefactory::with_gravity(float_t gravity) noexcept {
   _gravity = gravity;
   return *this;
 }
 
-enginefactory &enginefactory::set_fullscreen(bool fullscreen) noexcept {
+enginefactory &enginefactory::with_fullscreen(bool fullscreen) noexcept {
   _fullscreen = fullscreen;
   return *this;
 }
 
-std::shared_ptr<engine> enginefactory::create() {
+std::shared_ptr<engine> enginefactory::create() const noexcept {
   const auto audiodevice = std::make_shared<audio::audiodevice>();
   const auto engine = std::make_shared<framework::engine>();
   const auto eventmanager = std::make_shared<input::eventmanager>();
