@@ -8,25 +8,27 @@
 
 using namespace framework;
 
-cpBool collision_callback(cpArbiter *arb, cpSpace *, void *) {
-  printf("Collision detected! Stopping objects.\n");
-
-  cpBody *bodyA, *bodyB;
-  cpArbiterGetBodies(arb, &bodyA, &bodyB);
-
-  cpBodySetVelocity(bodyA, cpvzero);
-  cpBodySetVelocity(bodyB, cpvzero);
-
-  return cpFalse;
-}
-
 world::world(float_t gravity, std::shared_ptr<graphics::renderer> renderer)
     : _space(cpSpaceNew(), &cpSpaceFree), _renderer(renderer) {
   cpVect gravityVect = cpv(0, gravity);
   cpSpaceSetGravity(_space.get(), gravityVect);
 
   cpCollisionHandler *handler = cpSpaceAddDefaultCollisionHandler(_space.get());
-  handler->beginFunc = collision_callback;
+  handler->postSolveFunc = [](cpArbiter *arbiter, cpSpace *space, void *data) noexcept {
+    UNUSED(arbiter);
+    UNUSED(space);
+    UNUSED(data);
+
+    CP_ARBITER_GET_BODIES(arbiter, bodyA, bodyB);
+
+    auto stopBody = [](cpBody *body) {
+      cpBodySetVelocity(body, cpvzero);
+      cpBodySetAngularVelocity(body, 0);
+    };
+
+    stopBody(bodyA);
+    stopBody(bodyB);
+  };
 }
 
 space_ptr world::space() const noexcept {
