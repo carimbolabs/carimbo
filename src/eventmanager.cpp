@@ -7,7 +7,7 @@ eventmanager::eventmanager() {
   for (auto id = 0; id < number; ++id) {
     if (SDL_IsGameController(id)) {
       if (auto controller = SDL_GameControllerOpen(id)) {
-        _controllers.emplace(id, gamecontroller_ptr(controller));
+        _controllers.emplace(SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(controller)), gamecontroller_ptr(controller));
       }
     }
   }
@@ -16,46 +16,34 @@ eventmanager::eventmanager() {
 void eventmanager::update(float_t delta) {
   UNUSED(delta);
 
-  static const std::unordered_map<Uint8, SDL_Keycode> mapping = {
+  static constexpr std::array<std::pair<Uint8, SDL_Keycode>, 6> mapping = {{
       {SDL_CONTROLLER_BUTTON_DPAD_UP, SDLK_w},
       {SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDLK_a},
       {SDL_CONTROLLER_BUTTON_DPAD_DOWN, SDLK_s},
       {SDL_CONTROLLER_BUTTON_DPAD_RIGHT, SDLK_d},
       {SDL_CONTROLLER_BUTTON_A, SDLK_SPACE},
       {SDL_CONTROLLER_BUTTON_B, SDLK_SPACE},
-  };
+  }};
 
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
     case SDL_QUIT:
-      std::for_each(
-          _receivers.begin(),
-          _receivers.end(),
-          [](const auto &receiver) {
-            receiver->on_quit();
-          }
-      );
+      for (const auto &receiver : _receivers) {
+        receiver->on_quit();
+      }
       break;
 
     case SDL_KEYDOWN:
-      std::for_each(
-          _receivers.begin(),
-          _receivers.end(),
-          [&event](const auto &receiver) {
-            receiver->on_keydown(keyevent(event.key.keysym.sym));
-          }
-      );
+      for (const auto &receiver : _receivers) {
+        receiver->on_keydown(keyevent(event.key.keysym.sym));
+      }
       break;
 
     case SDL_KEYUP:
-      std::for_each(
-          _receivers.begin(),
-          _receivers.end(),
-          [&event](const auto &receiver) {
-            receiver->on_keyup(keyevent(event.key.keysym.sym));
-          }
-      );
+      for (const auto &receiver : _receivers) {
+        receiver->on_keyup(keyevent(event.key.keysym.sym));
+      }
       break;
 
     case SDL_CONTROLLERDEVICEADDED:
@@ -74,68 +62,54 @@ void eventmanager::update(float_t delta) {
 
     case SDL_CONTROLLERBUTTONDOWN:
     case SDL_CONTROLLERBUTTONUP: {
-      const auto it = mapping.find(event.cbutton.button);
+      const auto it = std::find_if(mapping.begin(), mapping.end(), [&event](const auto &pair) {
+        return pair.first == event.cbutton.button;
+      });
       if (it != mapping.end()) {
         const auto action = (event.type == SDL_CONTROLLERBUTTONDOWN) ? &eventreceiver::on_keydown : &eventreceiver::on_keyup;
-        std::for_each(
-            _receivers.begin(),
-            _receivers.end(),
-            [&it, action](const auto &receiver) {
-              (receiver.get()->*action)(keyevent(it->second));
-            }
-        );
+        for (const auto &receiver : _receivers) {
+          (receiver.get()->*action)(keyevent(it->second));
+        }
       }
     } break;
 
     case SDL_CONTROLLERAXISMOTION: {
-      static const auto threshold = 8000;
-      static const auto deadzone = 4000;
+      static constexpr auto threshold = 8000;
+      static constexpr auto deadzone = 4000;
+
       const auto axis = event.caxis.axis;
       const auto value = event.caxis.value;
 
+      const auto process_axis = [&](SDL_Keycode negative, SDL_Keycode positive) {
+        if (value < -threshold) {
+          for (const auto &receiver : _receivers) {
+            receiver->on_keydown(keyevent(negative));
+          }
+        } else if (value > threshold) {
+          for (const auto &receiver : _receivers) {
+            receiver->on_keydown(keyevent(positive));
+          }
+        } else if (std::abs(value) < deadzone) {
+          for (const auto &receiver : _receivers) {
+            receiver->on_keyup(keyevent(negative));
+            receiver->on_keyup(keyevent(positive));
+          }
+        }
+      };
+
       if (axis == SDL_CONTROLLER_AXIS_LEFTY) {
-        if (value < -threshold) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keydown(keyevent(SDLK_w));
-          });
-        } else if (value > threshold) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keydown(keyevent(SDLK_s));
-          });
-        } else if (abs(value) < deadzone) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keyup(keyevent(SDLK_w));
-            receiver->on_keyup(keyevent(SDLK_s));
-          });
-        }
+        process_axis(SDLK_w, SDLK_s);
       } else if (axis == SDL_CONTROLLER_AXIS_LEFTX) {
-        if (value < -threshold) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keydown(keyevent(SDLK_a));
-          });
-        } else if (value > threshold) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keydown(keyevent(SDLK_d));
-          });
-        } else if (abs(value) < deadzone) {
-          std::for_each(_receivers.begin(), _receivers.end(), [](const auto &receiver) {
-            receiver->on_keyup(keyevent(SDLK_a));
-            receiver->on_keyup(keyevent(SDLK_d));
-          });
-        }
+        process_axis(SDLK_a, SDLK_d);
       }
     } break;
 
     case input::eventtype::mail: {
       auto *ptr = static_cast<framework::mail *>(event.user.data1);
       if (ptr) {
-        std::for_each(
-            _receivers.begin(),
-            _receivers.end(),
-            [&ptr](const auto &receiver) {
-              receiver->on_mail(mailevent(ptr->to, ptr->body));
-            }
-        );
+        for (const auto &receiver : _receivers) {
+          receiver->on_mail(mailevent(ptr->to, ptr->body));
+        }
         delete ptr;
       }
     } break;
