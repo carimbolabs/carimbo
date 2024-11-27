@@ -62,9 +62,8 @@ void eventmanager::update(float_t delta) {
 
     case SDL_CONTROLLERBUTTONDOWN:
     case SDL_CONTROLLERBUTTONUP: {
-      const auto it = std::find_if(mapping.begin(), mapping.end(), [&event](const auto &pair) {
-        return pair.first == event.cbutton.button;
-      });
+      const auto it = std::find_if(mapping.begin(), mapping.end(), [&event](const auto &pair) { return pair.first == event.cbutton.button; });
+
       if (it != mapping.end()) {
         const auto action = (event.type == SDL_CONTROLLERBUTTONDOWN) ? &eventreceiver::on_keydown : &eventreceiver::on_keyup;
         for (const auto &receiver : _receivers) {
@@ -79,8 +78,7 @@ void eventmanager::update(float_t delta) {
 
       const auto axis = event.caxis.axis;
       const auto value = event.caxis.value;
-
-      const auto process_axis = [&](SDL_Keycode negative, SDL_Keycode positive) {
+      const auto process = [&](SDL_Keycode negative, SDL_Keycode positive) {
         if (value < -threshold) {
           for (const auto &receiver : _receivers) {
             receiver->on_keydown(keyevent(negative));
@@ -97,10 +95,17 @@ void eventmanager::update(float_t delta) {
         }
       };
 
-      if (axis == SDL_CONTROLLER_AXIS_LEFTY) {
-        process_axis(SDLK_w, SDLK_s);
-      } else if (axis == SDL_CONTROLLER_AXIS_LEFTX) {
-        process_axis(SDLK_a, SDLK_d);
+      switch (axis) {
+      case SDL_CONTROLLER_AXIS_LEFTY:
+        process(SDLK_w, SDLK_s);
+        break;
+
+      case SDL_CONTROLLER_AXIS_LEFTX:
+        process(SDLK_a, SDLK_d);
+        break;
+
+      default:
+        break;
       }
     } break;
 
