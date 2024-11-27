@@ -88,3 +88,17 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
 
   return it->second;
 }
+
+void fontfactory::flush() noexcept {
+  for (auto it = _pool.begin(); it != _pool.end();) {
+    switch (it->second.use_count()) {
+    case 1:
+      it = _pool.erase(it);
+      break;
+
+    default:
+      ++it;
+      break;
+    }
+  }
+}

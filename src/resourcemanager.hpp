@@ -5,12 +5,14 @@
 namespace framework {
 class resourcemanager {
 public:
+  resourcemanager() = delete;
   resourcemanager(std::shared_ptr<graphics::renderer> renderer, std::shared_ptr<audio::audiodevice> audiodevice) noexcept;
   ~resourcemanager() noexcept = default;
 
-  void prefetch(const std::vector<std::string> &filenames);
+  void prefetch(const std::vector<std::string> &filenames) noexcept;
   void update(float_t delta) noexcept;
   bool busy() const noexcept;
+  void flush() noexcept;
 
   std::shared_ptr<graphics::renderer> renderer() const noexcept;
   std::shared_ptr<graphics::pixmappool> pixmappool() noexcept;

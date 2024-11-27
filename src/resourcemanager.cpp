@@ -21,30 +21,36 @@ resourcemanager::resourcemanager(std::shared_ptr<graphics::renderer> renderer, s
   };
 }
 
-void resourcemanager::prefetch(const std::vector<std::string> &filenames) {
-  _filenames.insert(_filenames.end(), filenames.begin(), filenames.end());
+void resourcemanager::prefetch(const std::vector<std::string> &filenames) noexcept {
+  _filenames.insert(_filenames.cend(), filenames.cbegin(), filenames.cend());
 }
 
 void resourcemanager::update(float_t delta) noexcept {
   UNUSED(delta);
 
-  if (_filenames.empty()) {
+  if (_filenames.empty()) [[likely]] {
     return;
   }
 
-  const auto filename = std::move(_filenames.front());
+  auto filename = std::move(_filenames.front());
   _filenames.pop_front();
 
-  if (const auto position = filename.rfind('.'); position != std::string::npos) {
-    const auto extension = filename.substr(position);
-    if (const auto it = _handlers.find(extension); it != _handlers.end()) {
-      it->second(filename);
+  if (auto position = filename.rfind('.'); position != std::string::npos) {
+    auto extension = filename.substr(position);
+    if (auto it = _handlers.find(extension); it != _handlers.end()) {
+      it->second(std::move(filename));
     }
   }
 }
 
 bool resourcemanager::busy() const noexcept {
   return !_filenames.empty();
+}
+
+void resourcemanager::flush() noexcept {
+  _pixmappool->flush();
+  _soundmanager->flush();
+  _fontfactory->flush();
 }
 
 std::shared_ptr<graphics::renderer> resourcemanager::renderer() const noexcept {

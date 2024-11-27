@@ -9,8 +9,7 @@ public:
   soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept;
   ~soundmanager() noexcept = default;
 
-  void prefetch(const std::vector<std::string> &filenames) noexcept;
-  std::shared_ptr<soundfx> get(const std::string &filename) noexcept;
+  std::shared_ptr<soundfx> get(const std::string &filename);
   void play(const std::string &filename, bool loop) noexcept;
   void stop(const std::string &filename) noexcept;
   void flush() noexcept;
