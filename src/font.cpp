@@ -2,8 +2,8 @@
 
 using namespace graphics;
 
-font::font(const glyphmap &glyphs, std::shared_ptr<pixmap> pixmap)
-    : _glyphs(glyphs), _pixmap(std::move(pixmap)) {}
+font::font(const glyphmap &glyphs, std::shared_ptr<pixmap> pixmap, int16_t spacing)
+    : _glyphs(glyphs), _pixmap(std::move(pixmap)), _spacing(spacing) {}
 
 void font::draw(const std::string &text, const geometry::point &position) const noexcept {
   geometry::point cursor = position;
@@ -14,6 +14,6 @@ void font::draw(const std::string &text, const geometry::point &position) const 
 
     _pixmap->draw(glyph, {cursor, size});
 
-    cursor += std::make_pair('x', size.width());
+    cursor += std::make_pair('x', size.width() + _spacing);
   }
 }

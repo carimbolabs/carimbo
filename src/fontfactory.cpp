@@ -17,9 +17,10 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
   if (added) {
     std::cout << "[fontfactory] cache miss: " << name << std::endl;
 
-    const auto buffer = storage::io::read(fmt::format("fonts/{}.json", name));
-    const auto j = json::parse(buffer);
-    const auto alphabet = j["alphabet"].get<std::string>();
+    const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", name));
+    const auto &j = json::parse(buffer);
+    const auto &alphabet = j["alphabet"].get<std::string>();
+    const auto spacing = j["spacing"].get<int16_t>();
 
     std::vector<uint8_t> output;
     geometry::size size;
@@ -83,7 +84,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
     //   fmt::print("glyph '{}' -> x: {}, y: {}, w: {}, h: {}\n", static_cast<char>(letter), rect.position().x(), rect.position().y(), rect.size().width(), rect.size().height());
     // }
 
-    it->second = std::make_shared<font>(map, std::make_shared<pixmap>(_renderer, std::move(surface)));
+    it->second = std::make_shared<font>(map, std::make_shared<pixmap>(_renderer, std::move(surface)), spacing);
   }
 
   return it->second;
