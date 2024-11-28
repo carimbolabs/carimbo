@@ -16,6 +16,6 @@ public:
 
 private:
   std::shared_ptr<audiodevice> _audiodevice;
-  std::map<std::string_view, std::shared_ptr<soundfx>> _soundmap;
+  std::unordered_map<std::string_view, std::shared_ptr<soundfx>> _pool;
 };
 }

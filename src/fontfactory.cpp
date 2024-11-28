@@ -1,23 +1,19 @@
 #include "fontfactory.hpp"
-#include "font.hpp"
-#include "helpers.hpp"
-#include "rect.hpp"
-#include "renderer.hpp"
-#include <ostream>
 
 using namespace graphics;
+
 using json = nlohmann::json;
 
 fontfactory::fontfactory(std::shared_ptr<graphics::renderer> renderer) noexcept
     : _renderer(std::move(renderer)) {}
 
-std::shared_ptr<font> fontfactory::get(const std::string &name) {
-  auto [it, added] = _pool.try_emplace(name, nullptr);
+std::shared_ptr<font> fontfactory::get(std::string_view family) {
+  auto [it, added] = _pool.insert_or_assign(family, nullptr);
 
-  if (added) {
-    std::cout << "[fontfactory] cache miss: " << name << std::endl;
+  if (added) [[unlikely]] {
+    std::cout << "[fontfactory] cache miss: " << family << '\n';
 
-    const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", name));
+    const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", family));
     const auto &j = json::parse(buffer);
     const auto &alphabet = j["alphabet"].get<std::string>();
     const auto spacing = j["spacing"].get<int16_t>();
@@ -25,6 +21,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
     std::vector<uint8_t> output;
     geometry::size size;
     std::tie(output, size) = _load_png(j["spritesheet"].get<std::string_view>());
+
     auto surface = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>{
         SDL_CreateRGBSurfaceWithFormatFrom(
             output.data(),
@@ -38,20 +35,19 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
     };
 
     if (!surface) [[unlikely]] {
-      throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error creating surface. Error: {}", SDL_GetError()));
+      throw std::runtime_error(
+          fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error: {}", SDL_GetError())
+      );
     }
 
     const auto pixels = static_cast<uint32_t *>(surface->pixels);
-
     const auto separator = color(pixels[0], surface->format);
 
     glyphmap map;
     int x = 0, y = 0, width = 0, height = 0;
-    for (const auto &letter : alphabet) {
-      while (x < size.width()) {
-        if (color(pixels[y * size.width() + x], surface->format) != separator) {
-          break;
-        }
+
+    for (const char letter : alphabet) {
+      while (x < size.width() && color(pixels[y * size.width() + x], surface->format) == separator) {
         ++x;
       }
 
@@ -60,46 +56,31 @@ std::shared_ptr<font> fontfactory::get(const std::string &name) {
       }
 
       width = 0;
-      while (x + width < size.width()) {
-        if (color(pixels[y * size.width() + x + width], surface->format) == separator) {
-          break;
-        }
+      while (x + width < size.width() &&
+             color(pixels[y * size.width() + x + width], surface->format) != separator) {
         ++width;
       }
 
       height = 0;
-      while (y + height < size.height()) {
-        if (color(pixels[(y + height) * size.width() + x], surface->format) == separator) {
-          break;
-        }
+      while (y + height < size.height() &&
+             color(pixels[(y + height) * size.width() + x], surface->format) != separator) {
         ++height;
       }
 
       map[letter] = {{x, y}, {width, height}};
-
       x += width;
     }
 
-    // for (const auto &[letter, rect] : map) {
-    //   fmt::print("glyph '{}' -> x: {}, y: {}, w: {}, h: {}\n", static_cast<char>(letter), rect.position().x(), rect.position().y(), rect.size().width(), rect.size().height());
-    // }
-
-    it->second = std::make_shared<font>(map, std::make_shared<pixmap>(_renderer, std::move(surface)), spacing);
+    it->second = std::make_shared<font>(
+        std::move(map),
+        std::make_shared<pixmap>(_renderer, std::move(surface)),
+        spacing
+    );
   }
 
   return it->second;
 }
 
 void fontfactory::flush() noexcept {
-  for (auto it = _pool.begin(); it != _pool.end();) {
-    switch (it->second.use_count()) {
-    case 1:
-      it = _pool.erase(it);
-      break;
-
-    default:
-      ++it;
-      break;
-    }
-  }
+  std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
 }

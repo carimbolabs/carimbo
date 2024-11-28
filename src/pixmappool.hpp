@@ -16,6 +16,6 @@ public:
 
 private:
   std::shared_ptr<renderer> _renderer;
-  std::map<std::string_view, pixmap_ptr> _pool;
+  std::unordered_map<std::string_view, pixmap_ptr> _pool;
 };
 }

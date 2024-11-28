@@ -6,9 +6,9 @@ pixmappool::pixmappool(const std::shared_ptr<renderer> &renderer) noexcept
     : _renderer(renderer) {}
 
 const std::shared_ptr<pixmap> pixmappool::get(std::string_view filename) {
-  auto [it, added] = _pool.try_emplace(filename, nullptr);
+  auto [it, added] = _pool.insert_or_assign(filename, nullptr);
 
-  if (added) {
+  if (added) [[unlikely]] {
     std::cout << "[pixmappool] cache miss: " << filename << std::endl;
 
     assert(_renderer);
@@ -20,15 +20,5 @@ const std::shared_ptr<pixmap> pixmappool::get(std::string_view filename) {
 }
 
 void pixmappool::flush() noexcept {
-  for (auto it = _pool.begin(); it != _pool.end();) {
-    switch (it->second.use_count()) {
-    case 1:
-      it = _pool.erase(it);
-      break;
-
-    default:
-      ++it;
-      break;
-    }
-  }
+  std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
 }
