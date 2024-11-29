@@ -22,8 +22,8 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, frames] : j["animations"].items()) {
     std::vector<keyframe> keyframes;
-    for (const auto &fl : frames) {
-      for (const auto &f : fl) {
+    for (const auto &frame : frames) {
+      for (const auto &f : frame) {
         keyframes.emplace_back(
             f["rect"].get<geometry::rect>(),
             f["duration"].get<uint64_t>(),

@@ -124,8 +124,7 @@ void engine::add_loopable(std::shared_ptr<loopable> loopable) noexcept {
 }
 
 void engine::flush() const noexcept {
-  _resourcemanager->pixmappool()->flush();
-  _resourcemanager->soundmanager()->flush();
+  _resourcemanager->flush();
 }
 
 bool engine::is_keydown(const input::keyevent &event) const noexcept {

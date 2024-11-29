@@ -19,6 +19,7 @@ world::world(float_t gravity, std::shared_ptr<graphics::renderer> renderer)
     UNUSED(space);
     UNUSED(data);
 
+    std::cout << "Collision!" << std::endl;
     CP_ARBITER_GET_BODIES(arbiter, bodyA, bodyB);
 
     auto stopBody = [](cpBody *body) {
@@ -45,7 +46,7 @@ void world::update(float_t delta) const noexcept {
 void world::draw() noexcept {
   auto drawShape = [&](cpShape *shape) {
     const auto *body = cpShapeGetBody(shape);
-    const auto position = cpBodyGetPosition(body);
+    const auto &position = cpBodyGetPosition(body);
 
     const int n = cpPolyShapeGetCount(shape);
     std::vector<cpVect> vertices(n);
