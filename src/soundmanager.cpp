@@ -36,3 +36,7 @@ void soundmanager::stop(std::string_view filename) noexcept {
 void soundmanager::flush() noexcept {
   std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
 }
+
+void soundmanager::update(float_t delta) noexcept {
+  UNUSED(delta);
+}

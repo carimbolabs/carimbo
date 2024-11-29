@@ -22,3 +22,7 @@ const std::shared_ptr<pixmap> pixmappool::get(std::string_view filename) {
 void pixmappool::flush() noexcept {
   std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
 }
+
+void pixmappool::update(float_t delta) noexcept {
+  UNUSED(delta);
+}

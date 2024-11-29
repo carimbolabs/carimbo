@@ -38,6 +38,10 @@ void resourcemanager::prefetch(const std::vector<std::string> &filenames) noexce
 void resourcemanager::update(float_t delta) noexcept {
   UNUSED(delta);
 
+  _pixmappool->update(delta);
+  _soundmanager->update(delta);
+  _fontfactory->update(delta);
+
   if (_filenames.empty()) [[likely]] {
     return;
   }

@@ -84,3 +84,7 @@ std::shared_ptr<font> fontfactory::get(std::string_view family) {
 void fontfactory::flush() noexcept {
   std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
 }
+
+void fontfactory::update(float_t delta) noexcept {
+  UNUSED(delta);
+}
