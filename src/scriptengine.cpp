@@ -36,6 +36,86 @@ void scriptengine::run() {
     return require(lua, module);
   };
 
+  lua["JSON"] = lua.create_table_with(
+      "parse",
+      [](const std::string &json_str, sol::this_state state) {
+        nlohmann::json parsed_json = nlohmann::json::parse(json_str);
+        sol::state_view lua(state);
+
+        std::function<sol::object(const nlohmann::json &, sol::state_view)> to_lua = [&](const nlohmann::json &value, sol::state_view lua) -> sol::object {
+          switch (value.type()) {
+          case nlohmann::json::value_t::object: {
+            sol::table t = lua.create_table();
+            for (const auto &[k, v] : value.items())
+              t[k] = to_lua(v, lua);
+            return t;
+          }
+          case nlohmann::json::value_t::array: {
+            sol::table t = lua.create_table();
+            for (size_t i = 0; i < value.size(); ++i)
+              t[i + 1] = to_lua(value[i], lua);
+            return t;
+          }
+          case nlohmann::json::value_t::string:
+            return sol::make_object(lua, value.get<std::string>());
+          case nlohmann::json::value_t::boolean:
+            return sol::make_object(lua, value.get<bool>());
+          case nlohmann::json::value_t::number_float:
+          case nlohmann::json::value_t::number_integer:
+          case nlohmann::json::value_t::number_unsigned:
+            return sol::make_object(lua, value.get<double>());
+          default:
+            return sol::lua_nil;
+          }
+        };
+
+        return to_lua(parsed_json, lua);
+      },
+      "stringify",
+      [](const sol::table &table) {
+        std::function<nlohmann::json(const sol::object &)> to_json = [&](const sol::object &value) -> nlohmann::json {
+          switch (value.get_type()) {
+          case sol::type::table: {
+            sol::table lua_table = value.as<sol::table>();
+            bool is_array = true;
+            size_t index = 1;
+            for (const auto &pair : lua_table) {
+              if (pair.first.get_type() != sol::type::number || pair.first.as<size_t>() != index++) {
+                is_array = false;
+                break;
+              }
+            }
+
+            if (is_array) {
+              nlohmann::json j = nlohmann::json::array();
+              for (const auto &pair : lua_table)
+                j.push_back(to_json(pair.second));
+              return j;
+            }
+
+            nlohmann::json j = nlohmann::json::object();
+            for (const auto &pair : lua_table)
+              j[pair.first.as<std::string>()] = to_json(pair.second);
+            return j;
+          }
+          case sol::type::string:
+            return value.as<std::string>();
+          case sol::type::boolean:
+            return value.as<bool>();
+          case sol::type::number:
+            return value.as<double>();
+          default:
+            return nullptr;
+          }
+        };
+
+        nlohmann::json result;
+        for (const auto &pair : table)
+          result[pair.first.as<std::string>()] = to_json(pair.second);
+        return result.dump();
+      }
+  );
+
   lua.new_usertype<audio::soundmanager>(
       "SoundManager",
       "play", &audio::soundmanager::play,
