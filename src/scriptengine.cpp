@@ -8,37 +8,33 @@
 #include "event.hpp"
 #include "io.hpp"
 #include "label.hpp"
-#include "loopable.hpp"
 #include "point.hpp"
 #include "postalservice.hpp"
 #include "soundmanager.hpp"
 #include "vector2d.hpp"
 #include "widget.hpp"
-#include <sol/overload.hpp>
 
 using namespace framework;
 using namespace graphics;
 using namespace math;
+using namespace storage;
 
-class loopable_proxy : public loopable {
-public:
-  loopable_proxy(sol::function lua_func)
-      : function(lua_func) {}
+sol::table require(sol::state &lua, std::string_view module) {
+  const auto data = io::read(fmt::format("scripts/{}.lua", module));
+  const auto script = std::string(data.begin(), data.end());
+  const auto result = lua.script(script);
 
-  void loop(float_t delta) noexcept override {
-    if (function.valid()) {
-      function(delta);
-    }
-  }
-
-private:
-  sol::function function;
-};
+  return result;
+}
 
 void scriptengine::run() {
   sol::state lua;
 
   lua.open_libraries();
+
+  lua["require"] = [&lua](std::string_view module) {
+    return require(lua, module);
+  };
 
   lua.new_usertype<audio::soundmanager>(
       "SoundManager",
@@ -190,11 +186,6 @@ void scriptengine::run() {
       "s", input::keyevent::s,
       "d", input::keyevent::d,
       "space", input::keyevent::space
-  );
-
-  lua.new_usertype<loopable_proxy>(
-      "loopable_proxy", sol::constructors<loopable_proxy(sol::function)>(),
-      "loop", &loopable_proxy::loop
   );
 
   lua.new_usertype<mail>(
