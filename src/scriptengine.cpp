@@ -77,16 +77,9 @@ void scriptengine::run() {
           switch (value.get_type()) {
           case sol::type::table: {
             sol::table lua_table = value.as<sol::table>();
-            bool is_array = true;
-            size_t index = 1;
-            for (const auto &pair : lua_table) {
-              if (pair.first.get_type() != sol::type::number || pair.first.as<size_t>() != index++) {
-                is_array = false;
-                break;
-              }
-            }
-
-            if (is_array) {
+            if (std::ranges::all_of(lua_table, [](const auto &pair) {
+                  return pair.first.get_type() == sol::type::number && pair.first.template as<size_t>() >= 1;
+                })) {
               nlohmann::json j = nlohmann::json::array();
               for (const auto &pair : lua_table)
                 j.push_back(to_json(pair.second));
