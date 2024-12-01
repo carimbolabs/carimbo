@@ -60,9 +60,11 @@ void scriptengine::run() {
             return sol::make_object(lua, value.get<std::string>());
           case nlohmann::json::value_t::boolean:
             return sol::make_object(lua, value.get<bool>());
-          case nlohmann::json::value_t::number_float:
           case nlohmann::json::value_t::number_integer:
+            return sol::make_object(lua, value.get<int64_t>());
           case nlohmann::json::value_t::number_unsigned:
+            return sol::make_object(lua, value.get<uint64_t>());
+          case nlohmann::json::value_t::number_float:
             return sol::make_object(lua, value.get<double>());
           default:
             return sol::lua_nil;
@@ -95,8 +97,13 @@ void scriptengine::run() {
             return value.as<std::string>();
           case sol::type::boolean:
             return value.as<bool>();
-          case sol::type::number:
-            return value.as<double>();
+          case sol::type::number: {
+            double num = value.as<double>();
+            if (std::trunc(num) == num) {
+              return static_cast<int64_t>(num);
+            }
+            return num;
+          }
           default:
             return nullptr;
           }
