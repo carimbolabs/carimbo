@@ -24,7 +24,7 @@ sol::table require(sol::state &lua, std::string_view module) {
   const auto script = std::string(data.begin(), data.end());
   const auto result = lua.script(script);
 
-  return result;
+  return result.get<sol::table>();
 }
 
 void scriptengine::run() {
