@@ -14,7 +14,7 @@ networkmanager::networkmanager() {
 #ifndef EMSCRIPTEN
   const auto result = curl_global_init(CURL_GLOBAL_DEFAULT);
   if (result != CURLE_OK) {
-    throw std::runtime_error(fmt::format("Failed to initialize CURL: {}", curl_easy_strerror(static_cast<CURLcode>(result)));
+    throw std::runtime_error(fmt::format("Failed to initialize CURL: {}", curl_easy_strerror(result)));
   }
 #endif
 }
@@ -99,13 +99,13 @@ void networkmanager::send(const networkrequest &request) {
   });
   curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &data);
 
-  const auto res = curl_easy_perform(curl.get());
-  if (res != CURLE_OK) {
-    throw std::runtime_error(fmt::format("CURL request failed: {}", curl_easy_strerror(res)));
+  const auto result = curl_easy_perform(curl.get());
+  if (result != CURLE_OK) {
+    throw std::runtime_error(fmt::format("CURL request failed: {}", curl_easy_strerror(result)));
   }
 
-  long response_code = 0;
-  curl_easy_getinfo(curl.get(), CURLINFO_RESPONSE_CODE, &response_code);
-  request.callback(data, response_code);
+  long code = 0;
+  curl_easy_getinfo(curl.get(), CURLINFO_RESPONSE_CODE, &code);
+  request.callback(data, code);
 #endif
 }
