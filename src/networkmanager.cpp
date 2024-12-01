@@ -14,7 +14,7 @@ networkmanager::networkmanager() {
 #ifndef EMSCRIPTEN
   const auto result = curl_global_init(CURL_GLOBAL_DEFAULT);
   if (result != CURLE_OK) {
-    throw std::runtime_error(fmt::format("Failed to initialize CURL: {}", curl_easy_strerror(result)));
+    throw std::runtime_error(fmt::format("Failed to initialize cURL: {}", curl_easy_strerror(result)));
   }
 #endif
 }
@@ -101,7 +101,7 @@ void networkmanager::send(const networkrequest &request) {
 
   const auto result = curl_easy_perform(curl.get());
   if (result != CURLE_OK) {
-    throw std::runtime_error(fmt::format("CURL request failed: {}", curl_easy_strerror(result)));
+    throw std::runtime_error(fmt::format("cURL request failed: {}", curl_easy_strerror(result)));
   }
 
   long code = 0;
