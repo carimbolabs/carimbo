@@ -52,12 +52,12 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s ALLOW_MEMORY_GROWTH=1"
     "-s INITIAL_MEMORY=134217728"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
-    "-s FETCH=0"
+    "-s FETCH=1"
     # Debugging
-    "-s RUNTIME_DEBUG"
-    "-s ASSERTIONS=2"
-    "-s DISABLE_EXCEPTION_CATCHING=0"
-    "-s NO_DISABLE_EXCEPTION_CATCHING"
+    # "-s RUNTIME_DEBUG"
+    # "-s ASSERTIONS=2"
+    # "-s DISABLE_EXCEPTION_CATCHING=0"
+    # "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
 
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)

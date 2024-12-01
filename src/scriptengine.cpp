@@ -32,7 +32,6 @@ void scriptengine::run() {
 
   lua.open_libraries();
 
-  /*
   lua["require"] = [&lua](std::string_view module) {
     return require(lua, module);
   };
@@ -116,8 +115,6 @@ void scriptengine::run() {
         return result.dump();
       }
   );
-
-  */
 
   lua.new_usertype<audio::soundmanager>(
       "SoundManager",

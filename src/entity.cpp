@@ -125,7 +125,7 @@ void entity::set_flip(graphics::flip flip) noexcept {
   _props.flip = flip;
 }
 
-void entity::set_action(const std::string_view action) {
+void entity::set_action(std::string_view action) {
   if (_props.action != action) {
     _props.action.assign(action);
     _props.frame = 0;
