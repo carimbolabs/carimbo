@@ -12,6 +12,7 @@
 
 #ifdef EMSCRIPTEN
 #include <emscripten.h>
+#include <emscripten/websocket.h>
 #endif
 
 #include <AL/al.h>
@@ -44,9 +45,11 @@
 #include <optional>
 #include <random>
 #include <ranges>
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <utility>
 #include <variant>
 #include <vector>
 
@@ -106,6 +109,10 @@ class eventreceiver;
 
 namespace math {
 class vector2d;
+}
+
+namespace network {
+class querybuilder;
 }
 
 using namespace std::literals;

@@ -52,7 +52,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s ALLOW_MEMORY_GROWTH=1"
     "-s INITIAL_MEMORY=134217728"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
-    "-s FETCH=1"
+    "-l websocket.js"
     # Debugging
     # "-s RUNTIME_DEBUG"
     # "-s ASSERTIONS=2"
