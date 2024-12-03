@@ -2,6 +2,7 @@
 
 #include "querybuilder.hpp"
 
+#if 0
 class socketio {
 public:
   explicit socketio(const std::string &url)
@@ -124,6 +125,7 @@ private:
   std::function<void()> _on_error;
   std::unordered_map<std::string, std::function<void(const std::string &)>> _subscriptions;
 };
+#endif
 
 int main(int argc, char **argv) {
   network::querybuilder qb;
@@ -134,6 +136,7 @@ int main(int argc, char **argv) {
 
   const auto url = fmt::format("{}/{}/?{}", "ws://localhost:9000", "socket.io", query);
 
+#if 0
   socketio io(url);
 
   io.set_on_open([&]() {
@@ -157,6 +160,8 @@ int main(int argc, char **argv) {
   });
 
   // io.emit("echo", "Hello, Server!");
+
+#endif
 
   framework::application app(argc, std::move(argv));
 
