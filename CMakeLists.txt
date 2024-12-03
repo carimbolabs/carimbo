@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package(OpenAL CONFIG REQUIRED)
 find_package(chipmunk2d CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
@@ -14,11 +15,10 @@ find_package(SDL2 CONFIG REQUIRED)
 find_package(SPNG CONFIG REQUIRED)
 find_package(sol2 CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
-find_package(Vorbis REQUIRED)
+find_package(Vorbis CONFIG REQUIRED)
 
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  find_package(CURL CONFIG REQUIRED)
-  find_package(OpenAL CONFIG REQUIRED)
+  # WebSocket++
 endif()
 
 file(GLOB HEADER_FILES "src/*.hpp")
@@ -50,9 +50,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s EVAL_CTORS=1"
     "-s WASM_BIGINT=1"
     "-s ALLOW_MEMORY_GROWTH=1"
-    "-s INITIAL_MEMORY=134217728"
-    "-s EXPORTED_RUNTIME_METHODS=['callMain']"
+    "-s PTHREAD_POOL_SIZE=4"
+    "-s INITIAL_MEMORY=128MB"
     "-l websocket.js"
+    "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
     # "-s RUNTIME_DEBUG"
     # "-s ASSERTIONS=2"
@@ -84,8 +85,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   target_link_libraries(${PROJECT_NAME} PRIVATE
-    CURL::libcurl
     OpenAL::OpenAL
+    # WebSocket++
   )
 endif()
 

@@ -34,3 +34,11 @@ std::string querybuilder::build() const noexcept {
   }
   return query.str();
 }
+
+std::string querybuilder::make(std::initializer_list<std::pair<std::string, std::string>> entries) {
+  querybuilder builder;
+  for (const auto &[key, value] : entries) {
+    builder.add(key, value);
+  }
+  return builder.build();
+}

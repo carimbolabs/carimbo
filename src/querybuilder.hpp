@@ -9,6 +9,8 @@ public:
 
   [[nodiscard]] std::string build() const noexcept;
 
+  static std::string make(std::initializer_list<std::pair<std::string, std::string>> entries);
+
 private:
   std::unordered_map<std::string, std::string> _parameters;
 };
