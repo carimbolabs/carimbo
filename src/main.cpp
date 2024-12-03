@@ -87,9 +87,8 @@ private:
         self->_on_close(event->reason);
       }
 
-      std::this_thread::sleep_for(std::chrono::seconds(1));
       self->disconnect();
-      self->connect();
+      // self->connect();
 
       return true;
     });

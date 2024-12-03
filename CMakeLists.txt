@@ -55,10 +55,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-l websocket.js"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
-    # "-s RUNTIME_DEBUG"
-    # "-s ASSERTIONS=2"
-    # "-s DISABLE_EXCEPTION_CATCHING=0"
-    # "-s NO_DISABLE_EXCEPTION_CATCHING"
+    "-s RUNTIME_DEBUG"
+    "-s ASSERTIONS=2"
+    "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
 
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
