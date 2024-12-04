@@ -53,6 +53,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s PTHREAD_POOL_SIZE=4"
     "-s INITIAL_MEMORY=128MB"
     "-l websocket.js"
+    "-s WEBSOCKET_SUBPROTOCOL=text"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
     #"-s ASSERTIONS=2"

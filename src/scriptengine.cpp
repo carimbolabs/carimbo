@@ -8,6 +8,7 @@
 #include "event.hpp"
 #include "io.hpp"
 #include "label.hpp"
+#include "loopable.hpp"
 #include "point.hpp"
 #include "postalservice.hpp"
 #include "socketio.hpp"
@@ -27,6 +28,23 @@ sol::table require(sol::state &lua, std::string_view module) {
 
   return result.get<sol::table>();
 }
+
+class lua_loopable : public loopable {
+public:
+  explicit lua_loopable(sol::function function)
+      : _function(std::move(function)) {}
+
+  virtual ~lua_loopable() = default;
+
+  void loop(float_t delta) noexcept override {
+    UNUSED(delta);
+
+    _function();
+  }
+
+private:
+  sol::function _function;
+};
 
 void scriptengine::run() {
   sol::state lua;
@@ -352,4 +370,10 @@ void scriptengine::run() {
   const auto script = storage::io::read("scripts/main.lua");
 
   lua.script(std::string_view(reinterpret_cast<const char *>(script.data()), script.size()));
+
+  lua["setup"]();
+  const auto loop = lua["loop"].get<sol::function>();
+  const auto engine = lua["engine"].get<framework::engine *>();
+  engine->add_loopable(std::make_shared<lua_loopable>(std::move(loop)));
+  lua["run"]();
 }

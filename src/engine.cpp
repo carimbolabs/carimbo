@@ -10,7 +10,6 @@
 #include "statemanager.hpp"
 #include "window.hpp"
 #include "world.hpp"
-#include <ranges>
 
 using namespace framework;
 

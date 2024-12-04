@@ -34,16 +34,18 @@ void socketio::connect() {
     }
 
     const auto *self = static_cast<socketio *>(data);
-
     const auto message = std::string(reinterpret_cast<const char *>(event->data), event->numBytes - 1);
+    std::cout << "On Message "
+              << "'" << message << "'"
+              << " Size " << message.size() << std::endl;
 
-    static const std::string zero = "0";
-    if (message.starts_with(zero)) {
-      self->send(zero);
-    }
+    // static const std::string zero = "0";
+    // if (message.starts_with(zero)) {
+    //   self->send(zero);
+    // }
 
-    static const std::string ping = "2";
-    static const std::string pong = "3";
+    static const std::string ping = "P";
+    static const std::string pong = "Q";
     if (message == ping) {
       self->send(pong);
     }
@@ -74,7 +76,8 @@ void socketio::connect() {
     return EMSCRIPTEN_RESULT_SUCCESS;
   });
 
-  emscripten_websocket_set_onclose_callback(_socket, this, [](int, const EmscriptenWebSocketCloseEvent *, void *data) {
+  emscripten_websocket_set_onclose_callback(_socket, this, [](int, const EmscriptenWebSocketCloseEvent *event, void *data) {
+    UNUSED(event);
     const auto *self = static_cast<socketio *>(data);
     fmt::print("Disconnected from {}\n", self->_url);
     self->invoke("disconnect");
@@ -94,15 +97,17 @@ void socketio::disconnect() {
   }
 }
 
-void socketio::emit(const std::string &event, const std::string &data) {
-  send(fmt::format("42[\"{}\",\"{}\"]", event, data));
+void socketio::emit(const std::string &topic, const std::string &data) {
+  send(fmt::format("42[\"{}\",\"{}\"]", topic, data));
 }
 
-void socketio::on(const std::string &event, EventCallback callback) {
-  _callbacks[event].push_back(std::move(callback));
+void socketio::on(const std::string &topic, EventCallback callback) {
+  // send subscribe command
+  _callbacks[topic].push_back(std::move(callback));
 }
 
 void socketio::send(const std::string &message) const {
+  std::cout << "Send " << message << std::endl;
   if (_socket) {
     emscripten_websocket_send_utf8_text(_socket, message.c_str());
   }

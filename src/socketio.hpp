@@ -12,8 +12,8 @@ public:
 
   void connect();
   void disconnect();
-  void emit(const std::string &event, const std::string &data);
-  void on(const std::string &event, EventCallback callback);
+  void emit(const std::string &topic, const std::string &data);
+  void on(const std::string &topic, EventCallback callback);
 
 private:
   void send(const std::string &message) const;
