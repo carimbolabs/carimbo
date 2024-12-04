@@ -10,6 +10,7 @@
 #include "label.hpp"
 #include "point.hpp"
 #include "postalservice.hpp"
+#include "socketio.hpp"
 #include "soundmanager.hpp"
 #include "vector2d.hpp"
 #include "widget.hpp"
@@ -230,6 +231,19 @@ void scriptengine::run() {
       "Size", sol::constructors<geometry::size(), geometry::size(int32_t, int32_t), geometry::size(const geometry::size &)>(),
       "width", sol::property(&geometry::size::width, &geometry::size::set_width),
       "height", sol::property(&geometry::size::height, &geometry::size::set_height)
+  );
+
+  lua.new_usertype<network::socketio>(
+      "Socket",
+      sol::constructors<network::socketio(const std::string &)>(),
+      "connect", &network::socketio::connect,
+      "disconnect", &network::socketio::disconnect,
+      "emit", &network::socketio::emit,
+      "on", [](network::socketio &sio, const std::string &event, sol::function callback) {
+        sio.on(event, [callback](const std::string &data) {
+          callback(data);
+        });
+      }
   );
 
   lua.new_enum(
