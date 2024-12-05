@@ -5,6 +5,8 @@ using namespace network;
 using json = nlohmann::json;
 
 socketio::socketio() {
+  _queue.reserve(10);
+
   const auto url = fmt::format("ws://{}:3000", emscripten_run_script_string("window.location.hostname"));
 
   EmscriptenWebSocketCreateAttributes attrs = {
@@ -20,8 +22,17 @@ socketio::socketio() {
       this,
       [](int, const EmscriptenWebSocketOpenEvent *event, void *data) noexcept {
         UNUSED(event);
-        const auto *self = static_cast<socketio *>(data);
+        auto *self = static_cast<socketio *>(data);
+
+        self->_connected = true;
+
+        for (const auto &message : self->_queue) {
+          self->send(message);
+        }
+        self->_queue.clear();
+
         self->invoke("connect");
+
         return 0;
       }
   );
@@ -34,7 +45,7 @@ socketio::socketio() {
           return 0;
         }
 
-        const auto *self = static_cast<socketio *>(data);
+        auto *self = static_cast<socketio *>(data);
         const auto buffer = std::string(reinterpret_cast<const char *>(event->data), event->numBytes - 1);
         const auto j = json::parse(buffer, nullptr, false);
         if (j.is_discarded()) [[unlikely]] {
@@ -44,6 +55,15 @@ socketio::socketio() {
         const auto it = j.find("command");
         if (it != j.end() && it->get<std::string>() == "ping") {
           self->send(R"({"command": "pong"})");
+          return 0;
+        }
+
+        if (const auto &event = j.value("event", json::object()); !event.empty()) {
+          self->invoke(
+              event.at("topic").get_ref<const std::string &>(),
+              event.at("data").get_ref<const std::string &>()
+          );
+
           return 0;
         }
 
@@ -95,7 +115,12 @@ void socketio::on(const std::string &topic, std::function<void(const std::string
   _callbacks[topic].push_back(std::move(callback));
 }
 
-void socketio::send(const std::string &message) const {
+void socketio::send(const std::string &message) {
+  if (!_connected) {
+    _queue.emplace_back(message);
+    return;
+  }
+
   emscripten_websocket_send_utf8_text(_socket, message.c_str());
 }
 

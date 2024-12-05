@@ -12,9 +12,11 @@ public:
   void on(const std::string &topic, std::function<void(const std::string &)> callback);
 
 private:
-  void send(const std::string &message) const;
+  void send(const std::string &message);
   void invoke(const std::string &event, const std::string &data = "") const;
 
+  bool _connected{false};
+  std::vector<std::string> _queue;
   EMSCRIPTEN_WEBSOCKET_T _socket{0};
   std::unordered_map<std::string, std::vector<std::function<void(const std::string &)>>> _callbacks;
 };
