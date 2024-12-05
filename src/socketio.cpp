@@ -20,12 +20,9 @@ socketio::socketio() {
       this,
       [](int, const EmscriptenWebSocketOpenEvent *event, void *data) noexcept {
         UNUSED(event);
-
         const auto *self = static_cast<socketio *>(data);
-
         self->invoke("connect");
-
-        return EMSCRIPTEN_RESULT_SUCCESS;
+        return 0;
       }
   );
 
@@ -57,10 +54,11 @@ socketio::socketio() {
   emscripten_websocket_set_onerror_callback(
       _socket,
       this,
-      [](int, const EmscriptenWebSocketErrorEvent *, void *data) noexcept {
+      [](int, const EmscriptenWebSocketErrorEvent *event, void *data) noexcept {
+        UNUSED(event);
         const auto self = static_cast<socketio *>(data);
         self->invoke("error", "WebSocket error occurred");
-        return EMSCRIPTEN_RESULT_SUCCESS;
+        return 0;
       }
   );
 
@@ -71,7 +69,7 @@ socketio::socketio() {
         UNUSED(event);
         const auto *self = static_cast<socketio *>(data);
         self->invoke("disconnect");
-        return EMSCRIPTEN_RESULT_SUCCESS;
+        return 0;
       }
   );
 }
