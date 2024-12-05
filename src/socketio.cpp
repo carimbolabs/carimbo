@@ -75,11 +75,11 @@ socketio::socketio() {
 }
 
 socketio::~socketio() {
-  constexpr int close_code = 1000;
+  constexpr int code = 1000;
   constexpr const char *reason = "Client disconnecting";
 
   if (_socket) {
-    emscripten_websocket_close(_socket, close_code, reason);
+    emscripten_websocket_close(_socket, code, reason);
     emscripten_websocket_delete(_socket);
     _socket = 0;
     invoke("disconnect");
