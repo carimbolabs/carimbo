@@ -1,5 +1,4 @@
 #include "entitymanager.hpp"
-#include <algorithm>
 
 using namespace framework;
 
