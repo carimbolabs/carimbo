@@ -5,6 +5,7 @@
 #include "enginefactory.hpp"
 #include "entity.hpp"
 #include "entitymanager.hpp"
+#include "entityprops.hpp"
 #include "event.hpp"
 #include "io.hpp"
 #include "label.hpp"
@@ -46,6 +47,67 @@ private:
   sol::function _function;
 };
 
+auto _to_lua(const nlohmann::json &value, sol::state_view lua) -> sol::object {
+  switch (value.type()) {
+  case nlohmann::json::value_t::object: {
+    auto t = lua.create_table();
+    for (const auto &[k, v] : value.items()) {
+      t[k] = _to_lua(v, lua);
+    }
+    return t;
+  }
+  case nlohmann::json::value_t::array: {
+    auto t = lua.create_table();
+    for (size_t i = 0; i < value.size(); ++i) {
+      t[i + 1] = _to_lua(value[i], lua);
+    }
+    return t;
+  }
+  case nlohmann::json::value_t::string:
+    return sol::make_object(lua, value.get<std::string>());
+  case nlohmann::json::value_t::boolean:
+    return sol::make_object(lua, value.get<bool>());
+  case nlohmann::json::value_t::number_integer:
+    return sol::make_object(lua, value.get<int64_t>());
+  case nlohmann::json::value_t::number_unsigned:
+    return sol::make_object(lua, value.get<uint64_t>());
+  case nlohmann::json::value_t::number_float:
+    return sol::make_object(lua, value.get<double>());
+  default:
+    return sol::lua_nil;
+  }
+}
+
+auto _to_json(const sol::object &value) -> nlohmann::json {
+  switch (value.get_type()) {
+  case sol::type::table: {
+    const auto lua_table = value.as<sol::table>();
+    if (std::ranges::all_of(lua_table, [](const auto &pair) { return pair.first.get_type() == sol::type::number && pair.first.template as<size_t>() >= 1; })) {
+      nlohmann::json j = nlohmann::json::array();
+      for (const auto &pair : lua_table) {
+        j.push_back(_to_json(pair.second));
+      }
+      return j;
+    }
+    nlohmann::json j = nlohmann::json::object();
+    for (const auto &pair : lua_table) {
+      j[pair.first.as<std::string>()] = _to_json(pair.second);
+    }
+    return j;
+  }
+  case sol::type::string:
+    return value.as<std::string>();
+  case sol::type::boolean:
+    return value.as<bool>();
+  case sol::type::number: {
+    const auto num = value.as<double>();
+    return std::trunc(num) == num ? static_cast<int64_t>(num) : num;
+  }
+  default:
+    return nullptr;
+  }
+}
+
 void scriptengine::run() {
   sol::state lua;
 
@@ -58,79 +120,17 @@ void scriptengine::run() {
   lua["JSON"] = lua.create_table_with(
       "parse",
       [](const std::string &json_str, sol::this_state state) {
-        nlohmann::json parsed_json = nlohmann::json::parse(json_str);
+        auto j = nlohmann::json::parse(json_str);
         sol::state_view lua(state);
 
-        std::function<sol::object(const nlohmann::json &, sol::state_view)> to_lua = [&](const nlohmann::json &value, sol::state_view lua) -> sol::object {
-          switch (value.type()) {
-          case nlohmann::json::value_t::object: {
-            sol::table t = lua.create_table();
-            for (const auto &[k, v] : value.items())
-              t[k] = to_lua(v, lua);
-            return t;
-          }
-          case nlohmann::json::value_t::array: {
-            sol::table t = lua.create_table();
-            for (size_t i = 0; i < value.size(); ++i)
-              t[i + 1] = to_lua(value[i], lua);
-            return t;
-          }
-          case nlohmann::json::value_t::string:
-            return sol::make_object(lua, value.get<std::string>());
-          case nlohmann::json::value_t::boolean:
-            return sol::make_object(lua, value.get<bool>());
-          case nlohmann::json::value_t::number_integer:
-            return sol::make_object(lua, value.get<int64_t>());
-          case nlohmann::json::value_t::number_unsigned:
-            return sol::make_object(lua, value.get<uint64_t>());
-          case nlohmann::json::value_t::number_float:
-            return sol::make_object(lua, value.get<double>());
-          default:
-            return sol::lua_nil;
-          }
-        };
-
-        return to_lua(parsed_json, lua);
+        return _to_lua(j, lua);
       },
       "stringify",
       [](const sol::table &table) {
-        std::function<nlohmann::json(const sol::object &)> to_json = [&](const sol::object &value) -> nlohmann::json {
-          switch (value.get_type()) {
-          case sol::type::table: {
-            sol::table lua_table = value.as<sol::table>();
-            if (std::ranges::all_of(lua_table, [](const auto &pair) {
-                  return pair.first.get_type() == sol::type::number && pair.first.template as<size_t>() >= 1;
-                })) {
-              nlohmann::json j = nlohmann::json::array();
-              for (const auto &pair : lua_table)
-                j.push_back(to_json(pair.second));
-              return j;
-            }
-
-            nlohmann::json j = nlohmann::json::object();
-            for (const auto &pair : lua_table)
-              j[pair.first.as<std::string>()] = to_json(pair.second);
-            return j;
-          }
-          case sol::type::string:
-            return value.as<std::string>();
-          case sol::type::boolean:
-            return value.as<bool>();
-          case sol::type::number: {
-            double num = value.as<double>();
-            if (std::trunc(num) == num) {
-              return static_cast<int64_t>(num);
-            }
-            return num;
-          }
-          default:
-            return nullptr;
-          }
-        };
-
         nlohmann::json result;
-        for (const auto &pair : table)
-          result[pair.first.as<std::string>()] = to_json(pair.second);
+        for (const auto &pair : table) {
+          result[pair.first.as<std::string>()] = _to_json(pair.second);
+        }
         return result.dump();
       }
   );
@@ -254,12 +254,16 @@ void scriptengine::run() {
   lua.new_usertype<network::socketio>(
       "Socket",
       sol::constructors<network::socketio()>(),
-      "emit", &network::socketio::emit,
-      "on", [](network::socketio &sio, const std::string &event, sol::function callback) {
-        sio.on(event, [callback](const std::string &data) {
-          callback(data);
-        });
-      }
+      "emit", [](network::socketio &sio, const std::string &event, sol::table data, sol::this_state state) {
+          sol::state_view lua(state);
+          const auto j = _to_json(data);
+          sio.emit(event, j.dump()); },
+      "on", [](network::socketio &sio, const std::string &event, sol::function callback, sol::this_state state) {
+          sol::state_view lua(state);
+          sio.on(event, [callback, lua](const std::string &data) {
+              const auto j = nlohmann::json::parse(data);
+              callback(_to_lua(j, lua));
+          }); }
   );
 
   lua.new_enum(

@@ -61,7 +61,7 @@ socketio::socketio() {
         if (const auto &event = j.value("event", json::object()); !event.empty()) {
           self->invoke(
               event.at("topic").get_ref<const std::string &>(),
-              event.at("data").get_ref<const std::string &>()
+              event.at("data").dump()
           );
 
           return 0;

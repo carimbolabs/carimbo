@@ -13,7 +13,7 @@ public:
 
 private:
   void send(const std::string &message);
-  void invoke(const std::string &event, const std::string &data = "") const;
+  void invoke(const std::string &event, const std::string &data = "{}") const;
 
   bool _connected{false};
   std::vector<std::string> _queue;
