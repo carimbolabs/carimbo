@@ -56,9 +56,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s WEBSOCKET_SUBPROTOCOL=text"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
-    #"-s ASSERTIONS=2"
-    #"-s RUNTIME_DEBUG"
-    #"-s NO_DISABLE_EXCEPTION_CATCHING"
+    # "-s ASSERTIONS=2"
+    # "-s RUNTIME_DEBUG"
+    # "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
 
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)

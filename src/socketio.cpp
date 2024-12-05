@@ -2,16 +2,11 @@
 
 using namespace network;
 
-socketio::socketio(const std::string &url)
-    : _url(url), _socket(0) {}
+socketio::socketio() {
+  const auto url = fmt::format("ws://{}:3000", emscripten_run_script_string("window.location.hostname"));
 
-socketio::~socketio() {
-  disconnect();
-}
-
-void socketio::connect() {
   EmscriptenWebSocketCreateAttributes attrs = {
-      _url.c_str(),
+      url.c_str(),
       nullptr,
       true
   };
@@ -71,7 +66,6 @@ void socketio::connect() {
   emscripten_websocket_set_onerror_callback(_socket, this, [](int, const EmscriptenWebSocketErrorEvent *event, void *data) {
     UNUSED(event);
     const auto *self = static_cast<socketio *>(data);
-    fmt::print("Error occurred on WebSocket connected to {}\n", self->_url);
     self->invoke("error", "WebSocket error occurred");
     return EMSCRIPTEN_RESULT_SUCCESS;
   });
@@ -79,13 +73,12 @@ void socketio::connect() {
   emscripten_websocket_set_onclose_callback(_socket, this, [](int, const EmscriptenWebSocketCloseEvent *event, void *data) {
     UNUSED(event);
     const auto *self = static_cast<socketio *>(data);
-    fmt::print("Disconnected from {}\n", self->_url);
     self->invoke("disconnect");
     return EMSCRIPTEN_RESULT_SUCCESS;
   });
 }
 
-void socketio::disconnect() {
+socketio::~socketio() {
   constexpr int close_code = 1000;
   constexpr const char *reason = "Client disconnecting";
 
@@ -101,7 +94,7 @@ void socketio::emit(const std::string &topic, const std::string &data) {
   send(fmt::format("42[\"{}\",\"{}\"]", topic, data));
 }
 
-void socketio::on(const std::string &topic, EventCallback callback) {
+void socketio::on(const std::string &topic, std::function<void(const std::string &)> callback) {
   // send subscribe command
   _callbacks[topic].push_back(std::move(callback));
 }

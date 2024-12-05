@@ -5,22 +5,17 @@
 namespace network {
 class socketio {
 public:
-  using EventCallback = std::function<void(const std::string &)>;
-
-  explicit socketio(const std::string &url);
+  socketio();
   ~socketio();
 
-  void connect();
-  void disconnect();
   void emit(const std::string &topic, const std::string &data);
-  void on(const std::string &topic, EventCallback callback);
+  void on(const std::string &topic, std::function<void(const std::string &)> callback);
 
 private:
   void send(const std::string &message) const;
   void invoke(const std::string &event, const std::string &data = "") const;
 
-  std::string _url;
-  EMSCRIPTEN_WEBSOCKET_T _socket;
-  std::unordered_map<std::string, std::vector<EventCallback>> _callbacks;
+  EMSCRIPTEN_WEBSOCKET_T _socket{0};
+  std::unordered_map<std::string, std::vector<std::function<void(const std::string &)>>> _callbacks;
 };
 }

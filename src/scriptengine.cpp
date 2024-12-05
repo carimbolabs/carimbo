@@ -253,9 +253,7 @@ void scriptengine::run() {
 
   lua.new_usertype<network::socketio>(
       "Socket",
-      sol::constructors<network::socketio(const std::string &)>(),
-      "connect", &network::socketio::connect,
-      "disconnect", &network::socketio::disconnect,
+      sol::constructors<network::socketio()>(),
       "emit", &network::socketio::emit,
       "on", [](network::socketio &sio, const std::string &event, sol::function callback) {
         sio.on(event, [callback](const std::string &data) {
