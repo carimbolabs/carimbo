@@ -33,15 +33,24 @@ socketio::socketio() {
       _socket,
       this,
       [](int, const EmscriptenWebSocketMessageEvent *event, void *data) noexcept {
-        if (!event->isText) {
-          return EMSCRIPTEN_RESULT_SUCCESS;
+        if (!event->isText) [[unlikely]] {
+          return 0;
         }
 
         const auto *self = static_cast<socketio *>(data);
         const auto buffer = std::string(reinterpret_cast<const char *>(event->data), event->numBytes - 1);
-        const auto j = json::parse(buffer);
+        const auto j = json::parse(buffer, nullptr, false);
+        if (j.is_discarded()) [[unlikely]] {
+          return 0;
+        }
 
-        return EMSCRIPTEN_RESULT_SUCCESS;
+        const auto it = j.find("command");
+        if (it != j.end() && it->get<std::string>() == "ping") {
+          self->send(R"({"command": "pong"})");
+          return 0;
+        }
+
+        return 0;
       }
   );
 
