@@ -117,7 +117,7 @@ class vector2d;
 
 namespace network {
 class querybuilder;
-class socketio;
+class socket;
 }
 
 using namespace std::literals;

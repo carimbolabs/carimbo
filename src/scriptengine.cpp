@@ -12,15 +12,18 @@
 #include "loopable.hpp"
 #include "point.hpp"
 #include "postalservice.hpp"
-#include "socketio.hpp"
+#include "socket.hpp"
 #include "soundmanager.hpp"
 #include "vector2d.hpp"
 #include "widget.hpp"
 
+using namespace audio;
 using namespace framework;
+using namespace input;
 using namespace graphics;
 using namespace math;
 using namespace storage;
+using namespace network;
 
 sol::table require(sol::state &lua, std::string_view module) {
   const auto data = io::read(fmt::format("scripts/{}.lua", module));
@@ -135,10 +138,10 @@ void scriptengine::run() {
       }
   );
 
-  lua.new_usertype<audio::soundmanager>(
+  lua.new_usertype<soundmanager>(
       "SoundManager",
-      "play", &audio::soundmanager::play,
-      "stop", &audio::soundmanager::stop
+      "play", &soundmanager::play,
+      "stop", &soundmanager::stop
   );
 
   lua.new_enum(
@@ -251,18 +254,25 @@ void scriptengine::run() {
       "height", sol::property(&geometry::size::height, &geometry::size::set_height)
   );
 
-  lua.new_usertype<network::socketio>(
+  lua.new_usertype<socket>(
       "Socket",
-      sol::constructors<network::socketio()>(),
-      "emit", [](network::socketio &sio, const std::string &event, sol::table data, sol::this_state state) {
+      sol::constructors<socket()>(),
+      "emit", [](socket &sio, const std::string &event, sol::table data, sol::this_state state) {
           sol::state_view lua(state);
           const auto j = _to_json(data);
           sio.emit(event, j.dump()); },
-      "on", [](network::socketio &sio, const std::string &event, sol::function callback, sol::this_state state) {
+      "on", [](socket &sio, const std::string &event, sol::function callback, sol::this_state state) {
           sol::state_view lua(state);
           sio.on(event, [callback, lua](const std::string &data) {
               const auto j = nlohmann::json::parse(data);
               callback(_to_lua(j, lua));
+          }); },
+      "rpc", [](socket &sio, const std::string &method, sol::table arguments, sol::function callback, sol::this_state state) {
+          sol::state_view lua(state);
+          const auto args_json = _to_json(arguments);
+          sio.rpc(method, args_json.dump(), [callback, lua](const std::string &response) {
+            const auto j = nlohmann::json::parse(response);
+            callback(_to_lua(j, lua));
           }); }
   );
 
@@ -295,11 +305,11 @@ void scriptengine::run() {
 
   lua.new_enum(
       "KeyEvent",
-      "w", input::keyevent::w,
-      "a", input::keyevent::a,
-      "s", input::keyevent::s,
-      "d", input::keyevent::d,
-      "space", input::keyevent::space
+      "w", keyevent::w,
+      "a", keyevent::a,
+      "s", keyevent::s,
+      "d", keyevent::d,
+      "space", keyevent::space
   );
 
   lua.new_usertype<mail>(
@@ -319,29 +329,29 @@ void scriptengine::run() {
       "clear", &timermanager::clear
   );
 
-  lua.new_usertype<math::vector2d>(
-      "Vector2D", sol::constructors<math::vector2d(), math::vector2d(double_t, double_t)>(),
+  lua.new_usertype<vector2d>(
+      "Vector2D", sol::constructors<vector2d(), vector2d(double_t, double_t)>(),
 
-      "x", sol::property(&math::vector2d::x, &math::vector2d::set_x),
-      "y", sol::property(&math::vector2d::y, &math::vector2d::set_y),
-      "magnitude", &math::vector2d::magnitude,
-      "unit", &math::vector2d::unit,
-      "dot", &math::vector2d::dot,
+      "x", sol::property(&vector2d::x, &vector2d::set_x),
+      "y", sol::property(&vector2d::y, &vector2d::set_y),
+      "magnitude", &vector2d::magnitude,
+      "unit", &vector2d::unit,
+      "dot", &vector2d::dot,
 
-      sol::meta_function::addition, &math::vector2d::operator+,
-      sol::meta_function::subtraction, &math::vector2d::operator-,
+      sol::meta_function::addition, &vector2d::operator+,
+      sol::meta_function::subtraction, &vector2d::operator-,
 
-      "add_assign", &math::vector2d::operator+=,
-      "sub_assign", &math::vector2d::operator-=,
-      "mul_assign", &math::vector2d::operator*=,
-      "div_assign", &math::vector2d::operator/=,
+      "add_assign", &vector2d::operator+=,
+      "sub_assign", &vector2d::operator-=,
+      "mul_assign", &vector2d::operator*=,
+      "div_assign", &vector2d::operator/=,
 
-      sol::meta_function::equal_to, &math::vector2d::operator==,
+      sol::meta_function::equal_to, &vector2d::operator==,
 
-      "zero", &math::vector2d::zero,
-      "moving", &math::vector2d::moving,
-      "right", &math::vector2d::right,
-      "left", &math::vector2d::left
+      "zero", &vector2d::zero,
+      "moving", &vector2d::moving,
+      "right", &vector2d::right,
+      "left", &vector2d::left
   );
 
   lua.new_usertype<label>(
