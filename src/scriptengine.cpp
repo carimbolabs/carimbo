@@ -179,7 +179,8 @@ void scriptengine::run() {
 
   lua.new_usertype<resourcemanager>(
       "ResourceManager",
-      "busy", &resourcemanager::busy, "flush", &resourcemanager::flush,
+      "busy", &resourcemanager::busy,
+      "flush", &resourcemanager::flush,
       "prefetch", [](std::shared_ptr<resourcemanager> manager, sol::table table) {
         std::vector<std::string> filenames(table.size());
         std::ranges::transform(table, filenames.begin(), [](const auto &item) { return item.second.template as<std::string>(); });
@@ -314,7 +315,7 @@ void scriptengine::run() {
 
   lua.new_usertype<mail>(
       "Mail",
-      sol::constructors<mail(uint64_t, const std::string_view, const std::string_view)>()
+      sol::constructors<mail(std::shared_ptr<entity>, const std::string_view, const std::string_view)>()
   );
 
   lua.new_usertype<postalservice>(
@@ -374,10 +375,6 @@ void scriptengine::run() {
       "FontFactory",
       "get", &fontfactory::get
   );
-
-  lua.set_function("to_widget", [](std::shared_ptr<label> label) -> std::shared_ptr<widget> {
-    return std::static_pointer_cast<widget>(label);
-  });
 
   const auto script = storage::io::read("scripts/main.lua");
 

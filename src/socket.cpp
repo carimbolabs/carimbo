@@ -7,7 +7,7 @@ using json = nlohmann::json;
 socket::socket() noexcept {
   _queue.reserve(8);
 
-  const auto url = fmt::format("ws://{}:3000", emscripten_run_script_string("window.location.hostname"));
+  const auto url = fmt::format("http://{}:3000/socket", emscripten_run_script_string("window.location.hostname"));
 
   EmscriptenWebSocketCreateAttributes attrs = {
       url.c_str(),
@@ -125,7 +125,7 @@ void socket::on(const std::string &topic, std::function<void(const std::string &
 }
 
 void socket::rpc(const std::string &method, const std::string &arguments, std::function<void(const std::string &)> callback) noexcept {
-  send(fmt::format(R"({{"rpc": {{"request": {{"id": {}, "method": "{}", "arguments": {} }}}}}})", ++counter, method, arguments));
+  send(fmt::format(R"({{"rpc": {{"request": {{"id": {}, "method": "{}", "arguments": {}}}}}}})", ++counter, method, arguments));
   _callbacks[std::to_string(counter)].push_back(std::move(callback));
 }
 

@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include <fmt/base.h>
 
 using namespace framework;
 
@@ -15,6 +16,10 @@ uint64_t entity::id() const noexcept {
 
 std::string_view entity::kind() const noexcept {
   return _props.kind;
+}
+
+entityprops &entity::props() noexcept {
+  return _props;
 }
 
 const entityprops &entity::props() const noexcept {
@@ -91,6 +96,11 @@ void entity::draw() const noexcept {
   const auto &offset = animation_frame.offset;
   geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.size.scale());
+
+  if (!_props.spritesheet) {
+    // fmt::print("kind: {} action: {} frame: {}", kind(), _props.action, _props.frame);
+    return;
+  }
 
   _props.spritesheet->draw(
       source,

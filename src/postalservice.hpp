@@ -8,8 +8,8 @@ struct mail {
   std::string kind;
   std::string body;
 
-  mail(uint64_t to, std::string_view kind, std::string_view body)
-      : to(to), kind(kind), body(body) {}
+  mail(std::shared_ptr<entity> to, std::string_view kind, std::string_view body)
+      : to(to->id()), kind(kind), body(body) {}
 };
 
 class postalservice {

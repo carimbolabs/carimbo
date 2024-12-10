@@ -98,16 +98,31 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   return e;
 }
 
-void entitymanager::destroy(const std::weak_ptr<entity> entity) noexcept {
-  if (auto e = entity.lock()) {
-    _entities.remove(e);
+void entitymanager::destroy(const std::shared_ptr<entity> entity) noexcept {
+  if (!entity) {
+    return;
   }
+
+  auto &props = entity->props();
+
+  if (props.body) {
+    cpSpaceRemoveBody(_world->space().get(), props.body.get());
+    props.body.reset();
+  }
+
+  if (props.shape) {
+    cpSpaceRemoveShape(_world->space().get(), props.shape.get());
+    props.shape.reset();
+  }
+
+  _entities.remove(entity);
 }
 
 std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
   auto it = std::ranges::find_if(_entities, [id](const auto &entity) {
     return entity->id() == id;
   });
+
   return (it != _entities.end()) ? *it : nullptr;
 }
 

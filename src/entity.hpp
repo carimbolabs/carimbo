@@ -21,6 +21,7 @@ public:
   virtual void update(float_t delta) noexcept;
   virtual void draw() const noexcept;
 
+  entityprops &props() noexcept;
   const entityprops &props() const noexcept;
   void set_props(entityprops props) noexcept;
 
