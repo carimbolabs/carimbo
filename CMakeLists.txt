@@ -56,7 +56,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s WEBSOCKET_SUBPROTOCOL=text"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
-    "-s ASSERTIONS=1"
+    "-s ASSERTIONS=2"
     # "-s RUNTIME_DEBUG"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
