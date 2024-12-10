@@ -24,7 +24,6 @@ std::pair<std::vector<uint8_t>, geometry::size> _load_png(std::string_view filen
   }
 
   const auto size = geometry::size{static_cast<int32_t>(ihdr.width), static_cast<int32_t>(ihdr.height)};
-  ctx.reset();
 
   return std::make_pair(output, size);
 }

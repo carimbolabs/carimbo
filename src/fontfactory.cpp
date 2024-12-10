@@ -20,7 +20,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
 
     std::vector<uint8_t> output;
     geometry::size size;
-    std::tie(output, size) = _load_png(j["spritesheet"].get<std::string_view>());
+    std::tie(output, size) = _load_png(j["spritesheet"].get_ref<const std::string &>());
 
     auto surface = std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>{
         SDL_CreateRGBSurfaceWithFormatFrom(
