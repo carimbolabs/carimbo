@@ -10,8 +10,8 @@
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
 public:
-  explicit entity(entityprops &&props);
-  ~entity() noexcept = default;
+  explicit entity(entityprops &&props) noexcept;
+  ~entity() noexcept;
 
   static std::shared_ptr<entity> create(entityprops &&props);
 

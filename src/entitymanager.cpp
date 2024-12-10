@@ -13,7 +13,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto j = json::parse(buffer);
 
   auto spritesheet = j.contains("spritesheet")
-                         ? _resourcemanager->pixmappool()->get(j["spritesheet"].get<std::string_view>())
+                         ? _resourcemanager->pixmappool()->get(j["spritesheet"].get_ref<const std::string &>())
                          : nullptr;
 
   const auto size = j["size"].get<geometry::size>();
@@ -93,7 +93,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   };
 
   auto e = entity::create(std::move(props));
-  std::cout << "[entitymanager] spawn " << e->id() << " kind " << kind << std::endl;
+  fmt::println("[entitymanager] spawn {} kind {}", e->id(), kind);
   _entities.emplace_back(e);
   return e;
 }

@@ -7,10 +7,10 @@ using pixmap_ptr = std::shared_ptr<pixmap>;
 
 class pixmappool {
 public:
-  explicit pixmappool(const std::shared_ptr<renderer> &renderer) noexcept;
+  explicit pixmappool(const std::shared_ptr<renderer> renderer) noexcept;
   ~pixmappool() noexcept = default;
 
-  const std::shared_ptr<pixmap> get(std::string_view filename);
+  const std::shared_ptr<pixmap> get(const std::string &filename);
 
   void flush() noexcept;
 
@@ -18,6 +18,6 @@ public:
 
 private:
   std::shared_ptr<renderer> _renderer;
-  std::unordered_map<std::string_view, pixmap_ptr> _pool;
+  std::unordered_map<std::string, pixmap_ptr> _pool;
 };
 }

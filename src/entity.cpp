@@ -3,8 +3,12 @@
 
 using namespace framework;
 
-entity::entity(entityprops &&props)
+entity::entity(entityprops &&props) noexcept
     : _props(std::move(props)) {}
+
+entity::~entity() noexcept {
+  fmt::print("entity destroyed {}\n", kind());
+}
 
 std::shared_ptr<entity> entity::create(entityprops &&props) {
   return std::make_shared<entity>(std::move(props));
@@ -98,7 +102,6 @@ void entity::draw() const noexcept {
   destination.scale(_props.size.scale());
 
   if (!_props.spritesheet) {
-    // fmt::print("kind: {} action: {} frame: {}", kind(), _props.action, _props.frame);
     return;
   }
 

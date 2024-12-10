@@ -8,21 +8,11 @@ resourcemanager::resourcemanager(std::shared_ptr<graphics::renderer> renderer, s
       _pixmappool(std::make_shared<graphics::pixmappool>(_renderer)),
       _soundmanager(std::make_shared<audio::soundmanager>(_audiodevice)),
       _fontfactory(std::make_shared<graphics::fontfactory>(_renderer)) {
-  _handlers[".png"] = [this](const std::string &filename) {
-    _pixmappool->get(filename);
+  _handlers = {
+      {".png", [this](const std::string &filename) { _pixmappool->get(filename); }},
+      {".ogg", [this](const std::string &filename) { _soundmanager->get(filename); }},
+      {".json", [this](const std::string &filename) { _fontfactory->get(filename); }}
   };
-
-  _handlers[".ogg"] = [this](const std::string &filename) {
-    _soundmanager->get(filename);
-  };
-
-  _handlers[".json"] = [this](const std::string &filename) {
-    _fontfactory->get(filename);
-  };
-}
-
-bool resourcemanager::busy() const noexcept {
-  return !_filenames.empty();
 }
 
 void resourcemanager::flush() noexcept {
@@ -32,29 +22,20 @@ void resourcemanager::flush() noexcept {
 }
 
 void resourcemanager::prefetch(const std::vector<std::string> &filenames) noexcept {
-  _filenames.insert(_filenames.cend(), filenames.cbegin(), filenames.cend());
+  for (const auto &filename : filenames) {
+    if (const auto position = filename.rfind('.'); position != std::string::npos) {
+      const auto extension = filename.substr(position);
+      if (const auto it = _handlers.find(extension); it != _handlers.end()) {
+        it->second(filename);
+      }
+    }
+  }
 }
 
 void resourcemanager::update(float_t delta) noexcept {
-  UNUSED(delta);
-
   _pixmappool->update(delta);
   _soundmanager->update(delta);
   _fontfactory->update(delta);
-
-  if (_filenames.empty()) [[likely]] {
-    return;
-  }
-
-  auto filename = std::move(_filenames.front());
-  _filenames.pop_front();
-
-  if (auto position = filename.rfind('.'); position != std::string::npos) {
-    auto extension = filename.substr(position);
-    if (auto it = _handlers.find(extension); it != _handlers.end()) {
-      it->second(std::move(filename));
-    }
-  }
 }
 
 std::shared_ptr<graphics::renderer> resourcemanager::renderer() const noexcept {

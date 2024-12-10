@@ -4,7 +4,6 @@ using namespace graphics;
 
 pixmap::pixmap(const std::shared_ptr<renderer> &renderer, std::string_view filename)
     : _renderer(renderer), _size(0, 0) {
-
   std::vector<uint8_t> output;
   std::tie(output, _size) = _load_png(filename);
 

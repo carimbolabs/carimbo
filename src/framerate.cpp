@@ -2,7 +2,9 @@
 
 using namespace framework;
 
-uint64_t framerate::per_second() const noexcept { return _frames; }
+uint64_t framerate::per_second() const noexcept {
+  return _frames;
+}
 
 void framerate::loop(float_t delta) noexcept {
   UNUSED(delta);
@@ -13,7 +15,7 @@ void framerate::loop(float_t delta) noexcept {
   _start = now;
 
   if (_elapsed >= 1000) {
-    std::cout << std::fixed << std::setprecision(1) << (_frames / (_elapsed / 1000.0f)) << std::endl;
+    fmt::println("{:.1f}", (_frames / (_elapsed / 1000.0f)));
     _elapsed = 0;
     _frames = 0;
   }

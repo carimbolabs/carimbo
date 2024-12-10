@@ -2,14 +2,14 @@
 
 using namespace audio;
 
-soundmanager::soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept
+soundmanager::soundmanager(const std::shared_ptr<audiodevice> audiodevice) noexcept
     : _audiodevice(std::move(audiodevice)) {}
 
-std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
+std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept {
   auto [it, added] = _pool.insert_or_assign(filename, nullptr);
 
   if (added) [[unlikely]] {
-    std::cout << "[soundmanager] cache miss: " << filename << std::endl;
+    fmt::println("[soundmanager] cache miss {}", filename);
 
     assert(_audiodevice);
 
@@ -19,15 +19,13 @@ std::shared_ptr<soundfx> soundmanager::get(std::string_view filename) {
   return it->second;
 }
 
-void soundmanager::play(std::string_view filename) noexcept {
-  std::cout << "play " << filename << std::endl;
-
+void soundmanager::play(const std::string &filename) noexcept {
   if (const auto &sound = get(fmt::format("blobs/{}.ogg", filename)); sound) {
     sound->play();
   }
 }
 
-void soundmanager::stop(std::string_view filename) noexcept {
+void soundmanager::stop(const std::string &filename) noexcept {
   if (const auto &sound = get(filename); sound) {
     sound->stop();
   }

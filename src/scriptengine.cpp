@@ -179,11 +179,16 @@ void scriptengine::run() {
 
   lua.new_usertype<resourcemanager>(
       "ResourceManager",
-      "busy", &resourcemanager::busy,
       "flush", &resourcemanager::flush,
       "prefetch", [](std::shared_ptr<resourcemanager> manager, sol::table table) {
         std::vector<std::string> filenames(table.size());
-        std::ranges::transform(table, filenames.begin(), [](const auto &item) { return item.second.template as<std::string>(); });
+        std::ranges::transform(
+            table,
+            filenames.begin(),
+            [](const auto &item) {
+              return item.second.template as<std::string>();
+            }
+        );
         manager->prefetch(std::move(filenames));
       }
   );

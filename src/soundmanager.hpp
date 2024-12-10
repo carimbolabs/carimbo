@@ -6,18 +6,18 @@
 namespace audio {
 class soundmanager {
 public:
-  soundmanager(std::shared_ptr<audiodevice> audiodevice) noexcept;
+  soundmanager(const std::shared_ptr<audiodevice> audiodevice) noexcept;
   ~soundmanager() noexcept = default;
 
-  std::shared_ptr<soundfx> get(std::string_view filename);
-  void play(std::string_view filename) noexcept;
-  void stop(std::string_view filename) noexcept;
+  std::shared_ptr<soundfx> get(const std::string &filename) noexcept;
+  void play(const std::string &filename) noexcept;
+  void stop(const std::string &filename) noexcept;
   void flush() noexcept;
 
   void update(float_t delta) noexcept;
 
 private:
   std::shared_ptr<audiodevice> _audiodevice;
-  std::unordered_map<std::string_view, std::shared_ptr<soundfx>> _pool;
+  std::unordered_map<std::string, std::shared_ptr<soundfx>> _pool;
 };
 }

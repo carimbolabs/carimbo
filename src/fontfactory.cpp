@@ -4,14 +4,14 @@ using namespace graphics;
 
 using json = nlohmann::json;
 
-fontfactory::fontfactory(std::shared_ptr<graphics::renderer> renderer) noexcept
+fontfactory::fontfactory(const std::shared_ptr<graphics::renderer> renderer) noexcept
     : _renderer(std::move(renderer)) {}
 
-std::shared_ptr<font> fontfactory::get(std::string_view family) {
+std::shared_ptr<font> fontfactory::get(const std::string &family) {
   auto [it, added] = _pool.insert_or_assign(family, nullptr);
 
   if (added) [[unlikely]] {
-    std::cout << "[fontfactory] cache miss: " << family << '\n';
+    fmt::println("[fontfactory] cache miss {}", family);
 
     const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", family));
     const auto &j = json::parse(buffer);
@@ -35,9 +35,7 @@ std::shared_ptr<font> fontfactory::get(std::string_view family) {
     };
 
     if (!surface) [[unlikely]] {
-      throw std::runtime_error(
-          fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error: {}", SDL_GetError())
-      );
+      throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error: {}", SDL_GetError()));
     }
 
     const auto pixels = static_cast<uint32_t *>(surface->pixels);
