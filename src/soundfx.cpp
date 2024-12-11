@@ -74,7 +74,7 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
     : _audiodevice(std::move(audiodevice)) {
   std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{PHYSFS_openRead(filename.data()), PHYSFS_close};
   if (!fp) [[unlikely]] {
-    throw std::runtime_error(fmt::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+    throw std::runtime_error(std::format("[PHYSFS_openRead] error while opening file: {}, error: {}", filename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
   }
 
   std::unique_ptr<OggVorbis_File, decltype(&ov_clear)> vf{new OggVorbis_File, ov_clear};
@@ -106,7 +106,7 @@ soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view file
   do {
     offset = ov_read(vf.get(), reinterpret_cast<char *>(array.data()), length, bigendian, 2, 1, nullptr);
     if (offset < 0) [[unlikely]] {
-      throw std::runtime_error(fmt::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
+      throw std::runtime_error(std::format("[ov_read] error while reading file: {}, error: {}", filename, ov_strerror(offset)));
     }
     data.insert(data.end(), array.begin(), std::ranges::next(array.begin(), offset));
   } while (offset > 0);

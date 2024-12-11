@@ -9,7 +9,7 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept
   auto [it, added] = _pool.insert_or_assign(filename, nullptr);
 
   if (added) [[unlikely]] {
-    fmt::println("[soundmanager] cache miss {}", filename);
+    std::println("[soundmanager] cache miss {}", filename);
 
     assert(_audiodevice);
 
@@ -20,7 +20,7 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept
 }
 
 void soundmanager::play(const std::string &filename) noexcept {
-  if (const auto &sound = get(fmt::format("blobs/{}.ogg", filename)); sound) {
+  if (const auto &sound = get(std::format("blobs/{}.ogg", filename)); sound) {
     sound->play();
   }
 }

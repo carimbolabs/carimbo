@@ -8,7 +8,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenAL CONFIG REQUIRED)
 find_package(chipmunk2d CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
 find_package(PhysFS CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
@@ -53,6 +52,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s PTHREAD_POOL_SIZE=4"
     "-s INITIAL_MEMORY=128MB"
     "-l websocket.js"
+    "-s USE_SDL=2"
     "-s WEBSOCKET_SUBPROTOCOL=text"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debugging
@@ -72,7 +72,6 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
   chipmunk2d::chipmunk2d
-  fmt::fmt
   Ogg::ogg
   physfs-static
   SDL2::SDL2-static

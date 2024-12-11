@@ -24,7 +24,6 @@
 #include <SDL2/SDL.h>
 #include <chipmunk/chipmunk.h>
 #include <chipmunk/chipmunk_structs.h>
-#include <fmt/core.h>
 #include <nlohmann/json.hpp>
 #include <ogg/ogg.h>
 #include <physfs.h>
@@ -38,6 +37,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <format>
 #include <functional>
 #include <iostream>
 #include <iterator>

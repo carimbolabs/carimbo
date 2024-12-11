@@ -1,5 +1,4 @@
 #include "entity.hpp"
-#include <fmt/base.h>
 
 using namespace framework;
 
@@ -7,7 +6,7 @@ entity::entity(entityprops &&props) noexcept
     : _props(std::move(props)) {}
 
 entity::~entity() noexcept {
-  fmt::print("entity destroyed {}\n", kind());
+  std::println("entity of type '{}' destroyed", kind());
 }
 
 std::shared_ptr<entity> entity::create(entityprops &&props) {
