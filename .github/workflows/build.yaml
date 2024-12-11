@@ -28,6 +28,10 @@ jobs:
             os: windows-latest
 
     steps:
+      - name: Check GCC Version
+        if: matrix.config.name == 'Ubuntu'
+        run: gcc --version
+
       - name: Checkout
         uses: actions/checkout@v4
 
