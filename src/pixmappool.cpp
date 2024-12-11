@@ -9,7 +9,7 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
   auto [it, added] = _pool.insert_or_assign(filename, nullptr);
 
   if (added) [[unlikely]] {
-    std::println("[pixmappool] cache miss {}", filename);
+    fmt::print("[pixmappool] cache miss {}", filename);
 
     assert(_renderer);
 
@@ -20,10 +20,10 @@ const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
 }
 
 void pixmappool::flush() noexcept {
-  std::println("[pixmappool] actual size {}", _pool.size());
+  fmt::print("[pixmappool] actual size {}", _pool.size());
 
   const auto count = std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
-  std::println("[pixmappool] {} objects have been flushed", count);
+  fmt::print("[pixmappool] {} objects have been flushed", count);
 }
 
 void pixmappool::update(float_t delta) noexcept {

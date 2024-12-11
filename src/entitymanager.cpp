@@ -9,7 +9,7 @@ entitymanager::entitymanager(std::shared_ptr<world> world, std::shared_ptr<resou
       _resourcemanager(std::move(resourcemanager)) {}
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
-  const auto buffer = storage::io::read(std::format("entities/{}.json", kind));
+  const auto buffer = storage::io::read(fmt::format("entities/{}.json", kind));
   const auto j = json::parse(buffer);
 
   auto spritesheet = j.contains("spritesheet")
@@ -93,7 +93,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   };
 
   auto e = entity::create(std::move(props));
-  std::println("[entitymanager] spawn {} kind {}", e->id(), kind);
+  fmt::print("[entitymanager] spawn {} kind {}", e->id(), kind);
   _entities.emplace_back(e);
   return e;
 }

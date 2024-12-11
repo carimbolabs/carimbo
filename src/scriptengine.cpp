@@ -26,7 +26,7 @@ using namespace storage;
 using namespace network;
 
 sol::table require(sol::state &lua, std::string_view module) {
-  const auto data = io::read(std::format("scripts/{}.lua", module));
+  const auto data = io::read(fmt::format("scripts/{}.lua", module));
   const auto script = std::string(data.begin(), data.end());
   const auto result = lua.script(script);
 

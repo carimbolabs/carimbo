@@ -11,9 +11,9 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
   auto [it, added] = _pool.insert_or_assign(family, nullptr);
 
   if (added) [[unlikely]] {
-    std::println("[fontfactory] cache miss {}", family);
+    fmt::print("[fontfactory] cache miss {}", family);
 
-    const auto &buffer = storage::io::read(std::format("fonts/{}.json", family));
+    const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", family));
     const auto &j = json::parse(buffer);
     const auto &alphabet = j["alphabet"].get<std::string>();
     const auto spacing = j["spacing"].get<int16_t>();
@@ -35,7 +35,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
     };
 
     if (!surface) [[unlikely]] {
-      throw std::runtime_error(std::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error: {}", SDL_GetError()));
+      throw std::runtime_error(fmt::format("[SDL_CreateRGBSurfaceWithFormatFrom] Error: {}", SDL_GetError()));
     }
 
     const auto pixels = static_cast<uint32_t *>(surface->pixels);
@@ -50,7 +50,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
       }
 
       if (x >= size.width()) [[unlikely]] {
-        throw std::runtime_error(std::format("Error: Missing glyph for '{}'", letter));
+        throw std::runtime_error(fmt::format("Error: Missing glyph for '{}'", letter));
       }
 
       width = 0;
