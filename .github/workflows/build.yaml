@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Check GCC Version
-        if: matrix.config.name == 'Ubuntu'
+        if: matrix.config.name == 'WebAssembly'
         run: gcc --version
 
       - name: Checkout
