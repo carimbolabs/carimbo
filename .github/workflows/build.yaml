@@ -28,10 +28,6 @@ jobs:
             os: windows-latest
 
     steps:
-      - name: Check GCC Version
-        if: matrix.config.name == 'WebAssembly'
-        run: gcc --version
-
       - name: Checkout
         uses: actions/checkout@v4
 

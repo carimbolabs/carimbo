@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenAL CONFIG REQUIRED)
 find_package(chipmunk2d CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
 find_package(PhysFS CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
@@ -73,6 +74,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
   chipmunk2d::chipmunk2d
+  fmt::fmt
   Ogg::ogg
   physfs-static
   SDL2::SDL2-static
