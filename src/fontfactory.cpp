@@ -11,7 +11,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
   auto [it, added] = _pool.insert_or_assign(family, nullptr);
 
   if (added) [[unlikely]] {
-    fmt::print("[fontfactory] cache miss {}", family);
+    fmt::println("[fontfactory] cache miss {}", family);
 
     const auto &buffer = storage::io::read(fmt::format("fonts/{}.json", family));
     const auto &j = json::parse(buffer);

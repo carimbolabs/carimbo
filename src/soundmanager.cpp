@@ -9,7 +9,7 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept
   auto [it, added] = _pool.insert_or_assign(filename, nullptr);
 
   if (added) [[unlikely]] {
-    fmt::print("[soundmanager] cache miss {}", filename);
+    fmt::println("[soundmanager] cache miss {}", filename);
 
     assert(_audiodevice);
 

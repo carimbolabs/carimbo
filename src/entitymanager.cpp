@@ -93,7 +93,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   };
 
   auto e = entity::create(std::move(props));
-  fmt::print("[entitymanager] spawn {} kind {}", e->id(), kind);
+  fmt::println("[entitymanager] spawn {} kind {}", e->id(), kind);
   _entities.emplace_back(e);
   return e;
 }

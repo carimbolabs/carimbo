@@ -7,8 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SDL2_DIR "${CMAKE_BINARY_DIR}")
-
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   find_package(Boost CONFIG REQUIRED)
 endif()
@@ -28,23 +26,26 @@ file(GLOB HEADER_FILES "src/*.hpp")
 file(GLOB SOURCE_FILES "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${HEADER_FILES})
+
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+else()
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic)
+endif()
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /Od /Zi)
+    target_compile_options(${PROJECT_NAME} PRIVATE /Od /Zi)
+  else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -O0 -g)
   endif()
-  if (NOT MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -O0 -g)
-  endif()
-endif()
-
-if (CMAKE_BUILD_TYPE MATCHES "Release")
+elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /O2 /GL)
-  endif()
-  if (NOT MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE /O2 /GL)
+  else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -O3 -flto)
   endif()
 endif()
 
@@ -62,13 +63,12 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s ASSERTIONS=2"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -pedantic -O3 -flto)
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
 endif()
 
 option(SANDBOX "Use sandbox" OFF)
 if(SANDBOX)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE -DSANDBOX)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE SANDBOX)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -84,6 +84,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   vorbis::vorbis
 )
 
-if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-  target_link_libraries(${PROJECT_NAME} PRIVATE boost::boost OpenAL::OpenAL)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+  target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost OpenAL::OpenAL)
 endif()
