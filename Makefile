@@ -1,0 +1,27 @@
+.PHONY: help build clean configure watch
+.SILENT:
+
+SHELL := bash -eou pipefail
+
+ifeq ($(shell command -v docker-compose;),)
+	COMPOSE := docker compose
+else
+	COMPOSE := docker-compose
+endif
+
+help:
+	awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+clean: ## Clean
+	unalias rm 2>/dev/null || true
+	rm -rf build 2>/dev/null
+
+build: ## Build
+	cmake --build build --parallel 8
+
+configure: clean ## Configure
+	conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=20 --settings build_type=Release
+	cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DSDL2_DIR=generators -DCMAKE_BUILD_TYPE=Release -DSANDBOX=OFF
+
+watch: configure ## Watch
+	while true; do ls src/*.{cpp,hpp} 2>/dev/null | entr -d cmake --build build --parallel 8; done

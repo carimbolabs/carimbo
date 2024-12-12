@@ -18,6 +18,8 @@ Conan & pre-commit hooks
 ```shell
 uv pip install -r requirements.txt
 pre-commit install
+conan profile detect --force
+conan remote update conancenter --url https://center2.conan.io
 conan install . --output-folder=build --build=missing --settings compiler.cppstd=20 --settings build_type=Release
 ```
 
