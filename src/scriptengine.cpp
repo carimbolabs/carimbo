@@ -184,6 +184,37 @@ void scriptengine::run() {
     }
   };
 
+  struct action {
+    entity &e;
+
+    void set(const std::string &name) {
+      e.set_action(name);
+    }
+
+    void unset() {
+      e.unset_action();
+    }
+  };
+
+  lua.new_usertype<action>(
+      "Action",
+      "set", &action::set,
+      "unset", &action::unset
+  );
+
+  struct placement {
+    entity &e;
+
+    void set(int32_t x, int32_t y) {
+      e.set_placement(x, y);
+    }
+  };
+
+  lua.new_usertype<placement>(
+      "Placement",
+      "set", &placement::set
+  );
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
@@ -197,16 +228,8 @@ void scriptengine::run() {
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,
-      "action", sol::property([](entity &e, sol::optional<std::string> action) {
-        if (!action) {
-          e.unset_action();
-          return;
-        }
-        e.set_action(*action);
-      }),
-      "placement", sol::table::create_with("set", [](entity &e, int32_t x, int32_t y) {
-        e.set_placement(x, y);
-      }),
+      "action", sol::property([](entity &e) { return action{e}; }),
+      "placement", sol::property([](entity &e) { return placement{e}; }),
       "kv", sol::property([](entity &e) { return kvproxy{e}; })
   );
 
