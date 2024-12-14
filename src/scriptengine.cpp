@@ -197,9 +197,16 @@ void scriptengine::run() {
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
       "set_flip", &entity::set_flip,
-      "set_action", &entity::set_action,
-      "unset_action", &entity::unset_action,
-      "set_placement", &entity::set_placement,
+      "action", sol::property([](entity &e, sol::optional<std::string> action) {
+        if (!action) {
+          e.unset_action();
+          return;
+        }
+        e.set_action(*action);
+      }),
+      "placement", sol::table::create_with("set", [](entity &e, int32_t x, int32_t y) {
+        e.set_placement(x, y);
+      }),
       "kv", sol::property([](entity &e) { return kvproxy{e}; })
   );
 
