@@ -47,12 +47,16 @@ public:
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 
+  void set_kv(const std::string &key, const std::variant<std::string, int64_t, double_t, float_t> &value) noexcept;
+  std::optional<std::variant<std::string, int64_t, double_t, float_t>> get_kv(const std::string &key) const noexcept;
+
   void on_email(const std::string &message);
 
 private:
   friend class entitymanager;
 
   entityprops _props;
+  std::unordered_map<std::string, std::variant<std::string, int64_t, double_t, float_t>> _kv;
   std::function<void(std::shared_ptr<entity>)> _onupdate;
   std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;

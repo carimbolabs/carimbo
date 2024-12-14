@@ -80,9 +80,11 @@ void entity::update(float_t delta) noexcept {
     }
   }
 
-  _props.angle = cpBodyGetAngle(_props.body.get());
+  const auto body = _props.body.get();
+  _props.angle = cpBodyGetAngle(body);
 
-  const auto position = cpBodyGetPosition(_props.body.get());
+  const auto position = cpBodyGetPosition(body);
+  fmt::println("update: Chipmunk position ({}, {}), entity position ({}, {})", position.x, position.y, _props.position.x(), _props.position.y());
   _props.position.set(
       static_cast<int32_t>(std::round(position.x)),
       static_cast<int32_t>(std::round(position.y))
@@ -118,7 +120,13 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::set_placement(int32_t x, int32_t y) noexcept {
-  cpBodySetPosition(_props.body.get(), {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
+  const auto body = _props.body.get();
+  cpBodySetVelocity(body, cpvzero);
+  cpBodySetForce(body, cpvzero);
+  cpBodySetPosition(body, {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
+
+  auto pos = cpBodyGetPosition(body);
+  fmt::println("set_placement: ({}, {}), internal Chipmunk position: ({}, {})", x, y, pos.x, pos.y);
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {
@@ -161,6 +169,19 @@ geometry::size entity::size() const noexcept {
 
 bool entity::visible() const noexcept {
   return _props.visible;
+}
+
+void entity::set_kv(const std::string &key, const std::variant<std::string, int64_t, double_t, float_t> &value) noexcept {
+  _kv[key] = value;
+}
+
+std::optional<std::variant<std::string, int64_t, double_t, float_t>> entity::get_kv(const std::string &key) const noexcept {
+  auto it = _kv.find(key);
+  if (it == _kv.end()) {
+    return std::nullopt;
+  }
+
+  return it->second;
 }
 
 void entity::on_email(const std::string &message) {

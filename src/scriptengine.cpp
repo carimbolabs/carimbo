@@ -153,6 +153,37 @@ void scriptengine::run() {
       "none", anchor::none
   );
 
+  struct kvproxy {
+    entity &e;
+
+    sol::object get(const std::string &key, sol::this_state lua_state) {
+      auto result = e.get_kv(key);
+      if (result.has_value()) {
+        return std::visit(
+            [&lua_state](auto &&arg) -> sol::object {
+              return sol::make_object(lua_state, arg);
+            },
+            result.value()
+        );
+      }
+      return sol::nil;
+    }
+
+    void set(const std::string &key, sol::object value) {
+      if (value.is<std::string>()) {
+        e.set_kv(key, value.as<std::string>());
+      } else if (value.is<int64_t>()) {
+        e.set_kv(key, value.as<int64_t>());
+      } else if (value.is<double>()) {
+        e.set_kv(key, value.as<double>());
+      } else if (value.is<float>()) {
+        e.set_kv(key, value.as<float>());
+      } else {
+        throw std::runtime_error(fmt::format("Unsupported type for key: {}", key));
+      }
+    }
+  };
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
@@ -168,8 +199,11 @@ void scriptengine::run() {
       "set_flip", &entity::set_flip,
       "set_action", &entity::set_action,
       "unset_action", &entity::unset_action,
-      "set_placement", &entity::set_placement
+      "set_placement", &entity::set_placement,
+      "kv", sol::property([](entity &e) { return kvproxy{e}; })
   );
+
+  lua.new_usertype<kvproxy>("KvProxy", sol::meta_function::index, &kvproxy::get, sol::meta_function::new_index, &kvproxy::set);
 
   lua.new_usertype<entitymanager>(
       "EntityManager",
@@ -362,13 +396,10 @@ void scriptengine::run() {
 
   lua.new_usertype<label>(
       "Label",
-      sol::factories([] {
-        return std::make_shared<label>();
-      }),
+      sol::constructors<label()>(),
       sol::base_classes, sol::bases<widget>(),
-      "set_font", &label::set_font,
-      "set_placement", &label::set_placement,
-      "set", sol::overload(&label::set, &label::set_with_placement)
+      "font", sol::property(&label::set_font),
+      "set", sol::overload([](label &self, std::string_view text) { self.set(text); }, [](label &self, std::string_view text, int32_t x, int32_t y) { self.set_with_placement(text, x, y); })
   );
 
   lua.new_usertype<widget>(
