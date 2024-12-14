@@ -6,17 +6,18 @@ pixmappool::pixmappool(const std::shared_ptr<renderer> renderer) noexcept
     : _renderer(std::move(renderer)) {}
 
 const std::shared_ptr<pixmap> pixmappool::get(const std::string &filename) {
-  auto [it, added] = _pool.insert_or_assign(filename, nullptr);
-
-  if (added) [[unlikely]] {
-    fmt::println("[pixmappool] cache miss {}", filename);
-
-    assert(_renderer);
-
-    it->second = std::make_shared<pixmap>(_renderer, filename);
+  if (auto it = _pool.find(filename); it != _pool.end()) [[likely]] {
+    return it->second;
   }
 
-  return it->second;
+  fmt::println("[pixmappool] cache miss {}", filename);
+
+  assert(_renderer);
+
+  auto ptr = std::make_shared<pixmap>(_renderer, filename);
+  _pool.emplace(filename, ptr);
+
+  return ptr;
 }
 
 void pixmappool::flush() noexcept {

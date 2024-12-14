@@ -102,9 +102,9 @@ void entity::draw() const noexcept {
   geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.size.scale());
 
-  if (!_props.spritesheet) {
-    return;
-  }
+  // if (!_props.spritesheet) {
+  //   return;
+  // }
 
   _props.spritesheet->draw(
       source,
