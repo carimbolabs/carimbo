@@ -84,7 +84,6 @@ void entity::update(float_t delta) noexcept {
   _props.angle = cpBodyGetAngle(body);
 
   const auto position = cpBodyGetPosition(body);
-  fmt::println("update: Chipmunk position ({}, {}), entity position ({}, {})", position.x, position.y, _props.position.x(), _props.position.y());
   _props.position.set(
       static_cast<int32_t>(std::round(position.x)),
       static_cast<int32_t>(std::round(position.y))
@@ -124,9 +123,6 @@ void entity::set_placement(int32_t x, int32_t y) noexcept {
   cpBodySetVelocity(body, cpvzero);
   cpBodySetForce(body, cpvzero);
   cpBodySetPosition(body, {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
-
-  auto pos = cpBodyGetPosition(body);
-  fmt::println("set_placement: ({}, {}), internal Chipmunk position: ({}, {})", x, y, pos.x, pos.y);
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {

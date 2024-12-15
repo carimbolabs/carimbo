@@ -18,6 +18,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
   const auto &j = json::parse(buffer);
   const auto &alphabet = j["alphabet"].get<std::string>();
   const auto spacing = j["spacing"].get<int16_t>();
+  const auto scale = j["scale"].get<float_t>();
 
   std::vector<uint8_t> output;
   geometry::size size;
@@ -43,7 +44,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
   const auto separator = color(pixels[0], surface->format);
 
   glyphmap map;
-  int x = 0, y = 0, width = 0, height = 0;
+  auto x = 0, y = 0, width = 0, height = 0;
 
   for (const char letter : alphabet) {
     while (x < size.width() && color(pixels[y * size.width() + x], surface->format) == separator) {
@@ -73,7 +74,8 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
   auto ptr = std::make_shared<font>(
       std::move(map),
       std::make_shared<pixmap>(_renderer, std::move(surface)),
-      spacing
+      spacing,
+      scale
   );
 
   _pool.emplace(family, ptr);
