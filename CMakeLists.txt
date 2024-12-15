@@ -62,7 +62,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     "-s WEBSOCKET_SUBPROTOCOL=text"
     "-s EXPORTED_RUNTIME_METHODS=['callMain']"
     # Debug
-    "-s ASSERTIONS=2"
+    "-s ASSERTIONS=1"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
   )
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
