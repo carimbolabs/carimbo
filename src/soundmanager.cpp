@@ -10,7 +10,7 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept
     return it->second;
   }
 
-  fmt::println("[soundmanager] cache miss {}", filename);
+  std::cout << "[soundmanager] cache miss " << filename << std::endl;
 
   assert(_audiodevice);
 
@@ -21,7 +21,7 @@ std::shared_ptr<soundfx> soundmanager::get(const std::string &filename) noexcept
 }
 
 void soundmanager::play(const std::string &filename) noexcept {
-  if (const auto &sound = get(fmt::format("blobs/{}.ogg", filename)); sound) {
+  if (const auto &sound = get("blobs/" + filename + ".ogg"); sound) {
     sound->play();
   }
 }

@@ -7,8 +7,7 @@ using json = nlohmann::json;
 socket::socket() noexcept {
   _queue.reserve(8);
 
-  const auto url = fmt::format("http://{}:3000/socket", emscripten_run_script_string("window.location.hostname"));
-
+  const auto url = "http://" + std::string(emscripten_run_script_string("window.location.hostname")) + ":3000/socket";
   EmscriptenWebSocketCreateAttributes attrs = {
       url.c_str(),
       nullptr,
@@ -116,16 +115,25 @@ socket::~socket() noexcept {
 }
 
 void socket::emit(const std::string &topic, const std::string &data) noexcept {
-  send(fmt::format(R"({{"event": {{"topic": "{}", "data": {}}}}})", topic, data));
+  std::ostringstream oss;
+  oss << R"({"event": {"topic": ")" << topic << R"(", "data": )" << data << R"(}})";
+  send(oss.str());
 }
 
 void socket::on(const std::string &topic, std::function<void(const std::string &)> callback) noexcept {
-  send(fmt::format(R"({{"subscribe": "{}"}})", topic));
+  std::ostringstream oss;
+  oss << R"({"subscribe": ")" << topic << R"("})";
+  send(oss.str());
   _callbacks[topic].push_back(std::move(callback));
 }
 
 void socket::rpc(const std::string &method, const std::string &arguments, std::function<void(const std::string &)> callback) noexcept {
-  send(fmt::format(R"({{"rpc": {{"request": {{"id": {}, "method": "{}", "arguments": {}}}}}}})", ++counter, method, arguments));
+  std::ostringstream oss;
+  oss << R"({"rpc": {"request": {"id": )" << ++counter
+      << R"(, "method": ")" << method
+      << R"(", "arguments": )" << arguments << R"(}}})";
+  send(oss.str());
+
   _callbacks[std::to_string(counter)].push_back(std::move(callback));
 }
 

@@ -6,7 +6,9 @@ window::window(std::string_view title, int32_t width, int32_t height, bool fulls
     : _width(width), _height(height),
       _window(SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0)), SDL_Deleter()) {
   if (_window == nullptr) [[unlikely]] {
-    throw std::runtime_error(fmt::format("[SDL_CreateWindow] failed to create window: {}", SDL_GetError()));
+    std::ostringstream oss;
+    oss << "[SDL_CreateWindow] failed to create window: " << SDL_GetError();
+    throw std::runtime_error(oss.str());
   }
 }
 

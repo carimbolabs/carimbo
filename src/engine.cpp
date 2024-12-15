@@ -134,10 +134,6 @@ void engine::prefetch(const std::vector<std::string> &filenames) noexcept {
   _resourcemanager->prefetch(filenames);
 }
 
-void engine::set_scene(const std::string_view name) noexcept {
-  _scenemanager->set(name);
-}
-
 #ifdef EMSCRIPTEN
 template <class T>
 inline void run(void *arg) noexcept {

@@ -43,7 +43,6 @@ public:
   bool is_keydown(const input::keyevent &event) const noexcept;
   void prefetch(const std::vector<std::string> &filenames) noexcept;
   void run() noexcept;
-  void set_scene(const std::string_view name) noexcept;
   void _loop() noexcept;
 
 protected:

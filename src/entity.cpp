@@ -6,7 +6,7 @@ entity::entity(entityprops &&props) noexcept
     : _props(std::move(props)) {}
 
 entity::~entity() noexcept {
-  fmt::println("entity of type '{}' destroyed", kind());
+  std::cout << "entity of type '" << kind() << "' destroyed" << std::endl;
 }
 
 std::shared_ptr<entity> entity::create(entityprops &&props) {

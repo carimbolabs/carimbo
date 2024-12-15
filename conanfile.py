@@ -9,7 +9,6 @@ class MeuProjetoConan(ConanFile):
 
     def requirements(self):
         self.requires("chipmunk2d/7.0.3")
-        self.requires("fmt/11.0.2")
         self.requires("libspng/0.7.4")
         self.requires("nlohmann_json/3.11.3")
         self.requires("ogg/1.3.5")

@@ -25,8 +25,8 @@ using namespace math;
 using namespace storage;
 using namespace network;
 
-sol::table require(sol::state &lua, std::string_view module) {
-  const auto data = io::read(fmt::format("scripts/{}.lua", module));
+sol::table require(sol::state &lua, const std::string &module) {
+  const auto data = io::read("scripts/" + module + ".lua");
   const auto script = std::string(data.begin(), data.end());
   const auto result = lua.script(script);
 
@@ -116,7 +116,7 @@ void scriptengine::run() {
 
   lua.open_libraries();
 
-  lua["require"] = [&lua](std::string_view module) {
+  lua["require"] = [&lua](const std::string &module) {
     return require(lua, module);
   };
 
@@ -179,7 +179,9 @@ void scriptengine::run() {
       } else if (value.is<float>()) {
         e.set_kv(key, value.as<float>());
       } else {
-        throw std::runtime_error(fmt::format("Unsupported type for key: {}", key));
+        std::ostringstream oss;
+        oss << "Unsupported type for key: " << key;
+        throw std::runtime_error(oss.str());
       }
     }
   };
