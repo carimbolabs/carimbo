@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common.hpp"
-#include "flip.hpp"
 #include "pixmap.hpp"
 #include "point.hpp"
 #include "rect.hpp"
+#include "reflection.hpp"
 #include "size.hpp"
 
 namespace framework {
@@ -55,7 +55,7 @@ struct entityprops {
   geometry::size size{};
   std::string kind{};
   std::string action{};
-  graphics::flip flip{graphics::flip::none};
+  graphics::reflection reflection{graphics::reflection::none};
   std::shared_ptr<graphics::pixmap> spritesheet{};
   std::map<std::string, std::vector<keyframe>> animations{};
 };

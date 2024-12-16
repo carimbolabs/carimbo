@@ -3,9 +3,8 @@
 #include "common.hpp"
 #include "entitymanager.hpp"
 #include "entityprops.hpp"
-#include "flip.hpp"
+#include "reflection.hpp"
 #include "vector2d.hpp"
-#include <string_view>
 
 namespace framework {
 class entity : public std::enable_shared_from_this<entity> {
@@ -39,7 +38,7 @@ public:
 
   void set_pixmap(std::string_view filename);
   void play_sound(std::string_view filename);
-  void set_flip(graphics::flip flip) noexcept;
+  void set_reflection(graphics::reflection reflection) noexcept;
   void set_action(std::string_view action);
   void unset_action();
 

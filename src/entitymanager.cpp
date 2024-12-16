@@ -77,7 +77,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       size,
       kind,
       "",
-      graphics::flip::none,
+      graphics::reflection::none,
       std::move(spritesheet),
       std::move(animations),
   };

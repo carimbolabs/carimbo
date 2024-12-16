@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "rect.hpp"
+#include "reflection.hpp"
 #include "renderer.hpp"
 #include "size.hpp"
 
@@ -21,7 +22,7 @@ public:
       const geometry::rect &source,
       const geometry::rect &destination,
       double_t angle = 0.0f,
-      flip flip = flip::none,
+      reflection reflection = reflection::none,
       uint8_t alpha = 255
   ) const noexcept;
 

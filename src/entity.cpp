@@ -112,7 +112,7 @@ void entity::draw() const noexcept {
       source,
       destination,
       _props.angle,
-      _props.flip,
+      _props.reflection,
       _props.alpha
   );
 }
@@ -141,8 +141,8 @@ void entity::set_onmail(const std::function<void(std::shared_ptr<entity>, const 
   _onmail = fn;
 }
 
-void entity::set_flip(graphics::flip flip) noexcept {
-  _props.flip = flip;
+void entity::set_reflection(graphics::reflection reflection) noexcept {
+  _props.reflection = reflection;
 }
 
 void entity::set_action(std::string_view action) {

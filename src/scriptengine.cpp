@@ -186,11 +186,32 @@ void scriptengine::run() {
     }
   };
 
-  struct action {
+  lua.new_enum(
+      "Reflection",
+      "none", reflection::none,
+      "horizontal", reflection::horizontal,
+      "vertical", reflection::vertical,
+      "both", reflection::both
+  );
+
+  struct reflectionproxy {
     entity &e;
 
-    void set(const std::string &name) {
-      e.set_action(name);
+    void set(reflection value) {
+      e.set_reflection(value);
+    }
+  };
+
+  lua.new_usertype<reflectionproxy>(
+      "ReflectionProxy",
+      "set", &reflectionproxy::set
+  );
+
+  struct actionproxy {
+    entity &e;
+
+    void set(const std::string &value) {
+      e.set_action(value);
     }
 
     void unset() {
@@ -198,13 +219,13 @@ void scriptengine::run() {
     }
   };
 
-  lua.new_usertype<action>(
-      "Action",
-      "set", &action::set,
-      "unset", &action::unset
+  lua.new_usertype<actionproxy>(
+      "ActionProxy",
+      "set", &actionproxy::set,
+      "unset", &actionproxy::unset
   );
 
-  struct placement {
+  struct placementproxy {
     entity &e;
 
     void set(int32_t x, int32_t y) {
@@ -212,9 +233,9 @@ void scriptengine::run() {
     }
   };
 
-  lua.new_usertype<placement>(
-      "Placement",
-      "set", &placement::set
+  lua.new_usertype<placementproxy>(
+      "PlacementProxy",
+      "set", &placementproxy::set
   );
 
   lua.new_usertype<entity>(
@@ -229,9 +250,9 @@ void scriptengine::run() {
       "on_update", &entity::set_onupdate,
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
-      "set_flip", &entity::set_flip,
-      "action", sol::property([](entity &e) { return action{e}; }),
-      "placement", sol::property([](entity &e) { return placement{e}; }),
+      "reflection", sol::property([](entity &e) { return reflectionproxy{e}; }),
+      "action", sol::property([](entity &e) { return actionproxy{e}; }),
+      "placement", sol::property([](entity &e) { return placementproxy{e}; }),
       "kv", sol::property([](entity &e) { return kvproxy{e}; })
   );
 
@@ -346,14 +367,6 @@ void scriptengine::run() {
             const auto j = nlohmann::json::parse(response);
             callback(_to_lua(j, lua));
           }); }
-  );
-
-  lua.new_enum(
-      "Flip",
-      "none", flip::none,
-      "horizontal", flip::horizontal,
-      "vertical", flip::vertical,
-      "both", flip::both
   );
 
   lua.new_usertype<color>(
