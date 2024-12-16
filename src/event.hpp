@@ -26,7 +26,7 @@ enum class joystickevent : int32_t {
 
 class mailevent {
 public:
-  mailevent(uint64_t to, std::string_view body) noexcept
+  mailevent(uint64_t to, const std::string &body) noexcept
       : to(to), body(body) {}
 
   uint64_t to;

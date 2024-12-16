@@ -10,11 +10,11 @@ void label::set_placement(const geometry::point &position) noexcept {
   _position = position;
 }
 
-void label::set(std::string_view text) noexcept {
+void label::set(const std::string &text) noexcept {
   _text = text;
 }
 
-void label::set_with_placement(std::string_view text, int32_t x, int32_t y) noexcept {
+void label::set_with_placement(const std::string &text, int32_t x, int32_t y) noexcept {
   _text = text;
   _position = {x, y};
 }

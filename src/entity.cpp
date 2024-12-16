@@ -138,7 +138,7 @@ void entity::set_reflection(graphics::reflection reflection) noexcept {
   _props.reflection = reflection;
 }
 
-void entity::set_action(std::string_view action) {
+void entity::set_action(const std::string &action) {
   if (_props.action != action) {
     _props.action.assign(action);
     _props.frame = 0;
@@ -152,7 +152,7 @@ void entity::unset_action() {
   _props.last_frame = SDL_GetTicks();
 }
 
-std::string_view entity::action() const noexcept {
+std::string entity::action() const noexcept {
   return _props.action;
 }
 

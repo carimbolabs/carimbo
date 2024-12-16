@@ -5,7 +5,7 @@
 namespace audio {
 class soundfx {
 public:
-  soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view filename);
+  soundfx(std::shared_ptr<audiodevice> audiodevice, const std::string &filename);
   ~soundfx() noexcept;
 
   void play() const noexcept;

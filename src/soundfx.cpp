@@ -70,9 +70,9 @@ const char *ov_strerror(int code) {
   }
 }
 
-soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, std::string_view filename)
+soundfx::soundfx(std::shared_ptr<audiodevice> audiodevice, const std::string &filename)
     : _audiodevice(std::move(audiodevice)) {
-  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{PHYSFS_openRead(filename.data()), PHYSFS_close};
+  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> fp{PHYSFS_openRead(filename.c_str()), PHYSFS_close};
   if (!fp) [[unlikely]] {
     std::ostringstream oss;
     oss << "[PHYSFS_openRead] error while opening file: " << filename

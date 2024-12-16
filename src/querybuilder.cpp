@@ -2,7 +2,7 @@
 
 using namespace network;
 
-static std::string encode(std::string_view value) {
+static std::string encode(const std::string &value) {
   std::string encoded;
   encoded.reserve(value.size());
   for (char c : value) {

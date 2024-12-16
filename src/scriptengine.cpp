@@ -444,7 +444,7 @@ void scriptengine::run() {
 
   lua.new_usertype<mail>(
       "Mail",
-      sol::constructors<mail(std::shared_ptr<entity>, const std::string_view, const std::string_view)>()
+      sol::constructors<mail(std::shared_ptr<entity>, const std::string &, const std::string &)>()
   );
 
   lua.new_usertype<postalservice>(
@@ -491,7 +491,7 @@ void scriptengine::run() {
       sol::constructors<label()>(),
       sol::base_classes, sol::bases<widget>(),
       "font", sol::property(&label::set_font),
-      "set", sol::overload([](label &self, std::string_view text) { self.set(text); }, [](label &self, std::string_view text, int32_t x, int32_t y) { self.set_with_placement(text, x, y); })
+      "set", sol::overload([](label &self, const std::string &text) { self.set(text); }, [](label &self, const std::string &text, int32_t x, int32_t y) { self.set_with_placement(text, x, y); })
   );
 
   lua.new_usertype<widget>(

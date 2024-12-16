@@ -38,10 +38,10 @@ public:
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept;
 
   void set_reflection(graphics::reflection reflection) noexcept;
-  void set_action(std::string_view action);
+  void set_action(const std::string &action);
   void unset_action();
 
-  std::string_view action() const noexcept;
+  std::string action() const noexcept;
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 
