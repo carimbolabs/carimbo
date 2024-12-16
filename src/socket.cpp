@@ -4,32 +4,32 @@ using namespace network;
 
 using json = nlohmann::json;
 
-EM_BOOL websocket_on_open(int, const EmscriptenWebSocketOpenEvent *event, void *userData) {
-  auto *self = static_cast<socket *>(userData);
+EM_BOOL websocket_on_open(int, const EmscriptenWebSocketOpenEvent *event, void *data) {
+  auto *self = static_cast<socket *>(data);
   if (!self) return EM_FALSE;
 
   self->handle_open(event);
   return EM_FALSE;
 }
 
-EM_BOOL websocket_on_message(int, const EmscriptenWebSocketMessageEvent *event, void *userData) {
-  auto *self = static_cast<socket *>(userData);
+EM_BOOL websocket_on_message(int, const EmscriptenWebSocketMessageEvent *event, void *data) {
+  auto *self = static_cast<socket *>(data);
   if (!self) return EM_FALSE;
 
   self->handle_message(event);
   return EM_FALSE;
 }
 
-EM_BOOL websocket_on_error(int, const EmscriptenWebSocketErrorEvent *event, void *userData) {
-  auto *self = static_cast<socket *>(userData);
+EM_BOOL websocket_on_error(int, const EmscriptenWebSocketErrorEvent *event, void *data) {
+  auto *self = static_cast<socket *>(data);
   if (!self) return EM_FALSE;
 
   self->handle_error(event);
   return EM_FALSE;
 }
 
-EM_BOOL websocket_on_close(int, const EmscriptenWebSocketCloseEvent *event, void *userData) {
-  auto *self = static_cast<socket *>(userData);
+EM_BOOL websocket_on_close(int, const EmscriptenWebSocketCloseEvent *event, void *data) {
+  auto *self = static_cast<socket *>(data);
   if (!self) return EM_FALSE;
 
   self->handle_close(event);
@@ -37,7 +37,6 @@ EM_BOOL websocket_on_close(int, const EmscriptenWebSocketCloseEvent *event, void
 }
 
 socket::socket() noexcept {
-  std::cout << "socket::socket()" << std::endl;
   _queue.reserve(8);
 
   const auto url = "http://" + std::string(emscripten_run_script_string("window.location.hostname")) + ":3000/socket";
@@ -47,7 +46,6 @@ socket::socket() noexcept {
       true
   };
 
-  _socket = emscripten_websocket_new(&attrs);
   _socket = emscripten_websocket_new(&attrs);
   if (_socket <= 0) {
     invoke("error", "Failed to create WebSocket");
