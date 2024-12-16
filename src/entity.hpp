@@ -27,8 +27,9 @@ public:
   int32_t x() const noexcept;
   int32_t y() const noexcept;
 
-  void move(float_t x_velocity, float_t y_velocity);
-  math::vector2d get_velocity() const noexcept;
+  void move(float_t x_velocity, float_t y_velocity) noexcept;
+  void set_velocity(const math::vector2d &velocity) noexcept;
+  math::vector2d velocity() const noexcept;
 
   void set_placement(int32_t x, int32_t y) noexcept;
 
@@ -36,8 +37,6 @@ public:
   void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept;
 
-  void set_pixmap(std::string_view filename);
-  void play_sound(std::string_view filename);
   void set_reflection(graphics::reflection reflection) noexcept;
   void set_action(std::string_view action);
   void unset_action();

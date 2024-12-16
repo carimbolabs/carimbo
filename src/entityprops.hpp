@@ -6,6 +6,7 @@
 #include "rect.hpp"
 #include "reflection.hpp"
 #include "size.hpp"
+#include "vector2d.hpp"
 
 namespace framework {
 
@@ -53,6 +54,7 @@ struct entityprops {
   geometry::point position{};
   geometry::point pivot{};
   geometry::size size{};
+  math::vector2d velocity{};
   std::string kind{};
   std::string action{};
   graphics::reflection reflection{graphics::reflection::none};

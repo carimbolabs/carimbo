@@ -37,16 +37,20 @@ int32_t entity::y() const noexcept {
   return _props.position.y();
 }
 
-void entity::move(float_t x_velocity, float_t y_velocity) {
+void entity::move(float_t x_velocity, float_t y_velocity) noexcept {
   UNUSED(x_velocity);
   UNUSED(y_velocity);
   // cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
 }
 
-math::vector2d entity::get_velocity() const noexcept {
+void entity::set_velocity(const math::vector2d &velocity) noexcept {
+  _props.velocity = velocity;
+}
+
+math::vector2d entity::velocity() const noexcept {
   // cpVect velocity = cpBodyGetVelocity(_props.body.get());
   // return {velocity.x, velocity.y};
-  return {0, 0};
+  return _props.velocity;
 }
 
 void entity::update(float_t delta) noexcept {

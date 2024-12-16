@@ -75,6 +75,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       {},
       {},
       size,
+      {},
       kind,
       "",
       graphics::reflection::none,

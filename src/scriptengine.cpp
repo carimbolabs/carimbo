@@ -200,11 +200,16 @@ void scriptengine::run() {
     void set(reflection value) {
       e.set_reflection(value);
     }
+
+    void unset() {
+      e.set_reflection(reflection::none);
+    }
   };
 
   lua.new_usertype<reflectionproxy>(
       "ReflectionProxy",
-      "set", &reflectionproxy::set
+      "set", &reflectionproxy::set,
+      "unset", &reflectionproxy::unset
   );
 
   struct actionproxy {
@@ -238,6 +243,46 @@ void scriptengine::run() {
       "set", &placementproxy::set
   );
 
+  struct velocityproxy {
+    entity &e;
+
+    void set(int32_t x, int32_t y) {
+      e.set_velocity({x, y});
+    }
+
+    vector2d get() {
+      return e.velocity();
+    }
+
+    double get_x() const {
+      return e.velocity().x();
+    }
+
+    void set_x(double x) {
+      auto velocity = e.velocity();
+      velocity.set_x(x);
+      e.set_velocity(velocity);
+    }
+
+    double get_y() const {
+      return e.velocity().y();
+    }
+
+    void set_y(double y) {
+      auto velocity = e.velocity();
+      velocity.set_y(y);
+      e.set_velocity(velocity);
+    }
+  };
+
+  lua.new_usertype<velocityproxy>(
+      "VelocityProxy",
+      "set", &velocityproxy::set,
+      "get", &velocityproxy::get,
+      "x", sol::property(&velocityproxy::get_x, &velocityproxy::set_x),
+      "y", sol::property(&velocityproxy::get_y, &velocityproxy::set_y)
+  );
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
@@ -246,13 +291,13 @@ void scriptengine::run() {
       "visible", sol::property(&entity::visible),
       "size", sol::property(&entity::size),
       "move", &entity::move,
-      "velocity", sol::property(&entity::get_velocity),
       "on_update", &entity::set_onupdate,
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
       "reflection", sol::property([](entity &e) { return reflectionproxy{e}; }),
       "action", sol::property([](entity &e) { return actionproxy{e}; }),
       "placement", sol::property([](entity &e) { return placementproxy{e}; }),
+      "velocity", sol::property([](entity &e) { return velocityproxy{e}; }),
       "kv", sol::property([](entity &e) { return kvproxy{e}; })
   );
 
@@ -419,6 +464,8 @@ void scriptengine::run() {
 
       "x", sol::property(&vector2d::x, &vector2d::set_x),
       "y", sol::property(&vector2d::y, &vector2d::set_y),
+      "set", &vector2d::set,
+
       "magnitude", &vector2d::magnitude,
       "unit", &vector2d::unit,
       "dot", &vector2d::dot,
