@@ -122,9 +122,7 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::set_placement(int32_t x, int32_t y) noexcept {
-  UNUSED(x);
-  UNUSED(y);
-
+  _props.position.set(x, y);
   // const auto body = _props.body.get();
   // cpBodySetVelocity(body, cpvzero);
   // cpBodySetForce(body, cpvzero);
