@@ -85,6 +85,11 @@ jobs:
         if: matrix.config.name == 'WebAssembly'
         run: conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=20 --settings build_type=Release
 
+      - name: Sol2 Workaround for WebAssembly
+        if: matrix.config.name == 'WebAssembly'
+        run: |
+          sed -i 's/this->construct(/this->emplace(/g' /home/runner/.conan2/p/sol2*/p/include/sol/optional_implementation.hpp
+
       - name: Configure
         run: cmake .. -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=Release
         working-directory: build
