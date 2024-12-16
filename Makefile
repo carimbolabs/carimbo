@@ -1,7 +1,6 @@
-.PHONY: help build clean configure watch
-.SILENT:
+.PHONY: help build clean configure
 
-SHELL := bash -eou pipefail
+SHELL := bash -eoux pipefail
 
 ifeq ($(shell command -v docker-compose;),)
 	COMPOSE := docker compose
@@ -20,9 +19,6 @@ build: ## Build
 	cmake --build build --parallel 8
 
 configure: clean ## Configure
-  conan remote update conancenter --url https://center2.conan.io
+	conan remote update conancenter --url https://center2.conan.io
 	conan install . --output-folder=build --build=missing --profile=webassembly --settings compiler.cppstd=20 --settings build_type=Release
 	cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DSDL2_DIR=generators -DCMAKE_BUILD_TYPE=Release -DSANDBOX=OFF
-
-watch: configure ## Watch
-	while true; do ls src/*.{cpp,hpp} 2>/dev/null | entr -d cmake --build build --parallel 8; done

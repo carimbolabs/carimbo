@@ -38,12 +38,15 @@ int32_t entity::y() const noexcept {
 }
 
 void entity::move(float_t x_velocity, float_t y_velocity) {
-  cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
+  UNUSED(x_velocity);
+  UNUSED(y_velocity);
+  // cpBodySetVelocity(_props.body.get(), {x_velocity, y_velocity});
 }
 
 math::vector2d entity::get_velocity() const noexcept {
-  cpVect velocity = cpBodyGetVelocity(_props.body.get());
-  return {velocity.x, velocity.y};
+  // cpVect velocity = cpBodyGetVelocity(_props.body.get());
+  // return {velocity.x, velocity.y};
+  return {0, 0};
 }
 
 void entity::update(float_t delta) noexcept {
@@ -80,14 +83,14 @@ void entity::update(float_t delta) noexcept {
     }
   }
 
-  const auto body = _props.body.get();
-  _props.angle = cpBodyGetAngle(body);
+  // const auto body = _props.body.get();
+  // _props.angle = cpBodyGetAngle(body);
 
-  const auto position = cpBodyGetPosition(body);
-  _props.position.set(
-      static_cast<int32_t>(std::round(position.x)),
-      static_cast<int32_t>(std::round(position.y))
-  );
+  // const auto position = cpBodyGetPosition(body);
+  // _props.position.set(
+  //     static_cast<int32_t>(std::round(position.x)),
+  //     static_cast<int32_t>(std::round(position.y))
+  // );
 }
 
 void entity::draw() const noexcept {
@@ -119,10 +122,13 @@ void entity::set_props(entityprops props) noexcept {
 }
 
 void entity::set_placement(int32_t x, int32_t y) noexcept {
-  const auto body = _props.body.get();
-  cpBodySetVelocity(body, cpvzero);
-  cpBodySetForce(body, cpvzero);
-  cpBodySetPosition(body, {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
+  UNUSED(x);
+  UNUSED(y);
+
+  // const auto body = _props.body.get();
+  // cpBodySetVelocity(body, cpvzero);
+  // cpBodySetForce(body, cpvzero);
+  // cpBodySetPosition(body, {static_cast<cpFloat>(x), static_cast<cpFloat>(y)});
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {

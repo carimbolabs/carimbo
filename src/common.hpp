@@ -22,8 +22,6 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <SDL2/SDL.h>
-#include <chipmunk/chipmunk.h>
-#include <chipmunk/chipmunk_structs.h>
 #include <nlohmann/json.hpp>
 #include <ogg/ogg.h>
 #include <physfs.h>

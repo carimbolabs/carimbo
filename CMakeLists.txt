@@ -13,7 +13,6 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
   find_package(Boost CONFIG REQUIRED)
 endif()
 
-find_package(chipmunk2d CONFIG REQUIRED)
 find_package(Ogg CONFIG REQUIRED)
 find_package(PhysFS CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
@@ -63,8 +62,6 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     # Debug
     "-s ASSERTIONS=1"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
-    # ???
-    "-s ERROR_ON_UNDEFINED_SYMBOLS=0"
   )
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
 endif()
@@ -75,14 +72,13 @@ if(SANDBOX)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-  chipmunk2d::chipmunk2d
-  Ogg::ogg
   physfs-static
   SDL2::SDL2-static
   SDL2::SDL2main
   spng::spng_static
   sol2::sol2
   nlohmann_json::nlohmann_json
+  Ogg::ogg
   vorbis::vorbis
 )
 
