@@ -63,6 +63,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     # Debug
     "-s ASSERTIONS=1"
     "-s NO_DISABLE_EXCEPTION_CATCHING"
+    # ???
+    "-s ERROR_ON_UNDEFINED_SYMBOLS=0"
   )
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
 endif()
