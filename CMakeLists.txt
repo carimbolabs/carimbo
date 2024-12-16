@@ -46,7 +46,7 @@ elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /O2 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -O2 -fomit-frame-pointer -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -O3 -flto)
   endif()
 endif()
 
