@@ -17,7 +17,6 @@ int32_t vector2d::y() const noexcept {
 }
 
 void vector2d::set_x(int32_t x) noexcept {
-  std::cout << "set_x " << x << std::endl;
   _x = x;
 }
 
@@ -26,7 +25,6 @@ void vector2d::set_y(int32_t y) noexcept {
 }
 
 void vector2d::set(int32_t x, int32_t y) noexcept {
-  std::cout << "set " << x << " " << y << std::endl;
   _x = x;
   _y = y;
 }
