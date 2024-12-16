@@ -12,6 +12,11 @@ public:
   void on(const std::string &topic, std::function<void(const std::string &)> callback) noexcept;
   void rpc(const std::string &method, const std::string &arguments, std::function<void(const std::string &)> callback) noexcept;
 
+  void handle_open(const EmscriptenWebSocketOpenEvent *event);
+  void handle_message(const EmscriptenWebSocketMessageEvent *event);
+  void handle_error(const EmscriptenWebSocketErrorEvent *event);
+  void handle_close(const EmscriptenWebSocketCloseEvent *event);
+
 private:
   void send(const std::string &message) noexcept;
   void invoke(const std::string &event, const std::string &data = "{}") const noexcept;

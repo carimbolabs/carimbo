@@ -4,7 +4,40 @@ using namespace network;
 
 using json = nlohmann::json;
 
+EM_BOOL websocket_on_open(int, const EmscriptenWebSocketOpenEvent *event, void *userData) {
+  auto *self = static_cast<socket *>(userData);
+  if (!self) return EM_FALSE;
+
+  self->handle_open(event);
+  return EM_FALSE;
+}
+
+EM_BOOL websocket_on_message(int, const EmscriptenWebSocketMessageEvent *event, void *userData) {
+  auto *self = static_cast<socket *>(userData);
+  if (!self) return EM_FALSE;
+
+  self->handle_message(event);
+  return EM_FALSE;
+}
+
+EM_BOOL websocket_on_error(int, const EmscriptenWebSocketErrorEvent *event, void *userData) {
+  auto *self = static_cast<socket *>(userData);
+  if (!self) return EM_FALSE;
+
+  self->handle_error(event);
+  return EM_FALSE;
+}
+
+EM_BOOL websocket_on_close(int, const EmscriptenWebSocketCloseEvent *event, void *userData) {
+  auto *self = static_cast<socket *>(userData);
+  if (!self) return EM_FALSE;
+
+  self->handle_close(event);
+  return EM_FALSE;
+}
+
 socket::socket() noexcept {
+  std::cout << "socket::socket()" << std::endl;
   _queue.reserve(8);
 
   const auto url = "http://" + std::string(emscripten_run_script_string("window.location.hostname")) + ":3000/socket";
@@ -15,91 +48,16 @@ socket::socket() noexcept {
   };
 
   _socket = emscripten_websocket_new(&attrs);
+  _socket = emscripten_websocket_new(&attrs);
+  if (_socket <= 0) {
+    invoke("error", "Failed to create WebSocket");
+    return;
+  }
 
-  emscripten_websocket_set_onopen_callback(
-      _socket,
-      this,
-      [](int, const EmscriptenWebSocketOpenEvent *event, void *data) noexcept -> bool {
-        UNUSED(event);
-        auto *self = static_cast<socket *>(data);
-
-        self->_connected = true;
-
-        for (const auto &message : self->_queue) {
-          self->send(message);
-        }
-        self->_queue.clear();
-
-        self->invoke("connect");
-
-        return false;
-      }
-  );
-
-  emscripten_websocket_set_onmessage_callback(
-      _socket,
-      this,
-      [](int, const EmscriptenWebSocketMessageEvent *event, void *data) noexcept -> bool {
-        if (!event->isText) [[unlikely]] {
-          return false;
-        }
-
-        auto *self = static_cast<socket *>(data);
-        const auto buffer = std::string(reinterpret_cast<const char *>(event->data), event->numBytes - 1);
-        const auto j = json::parse(buffer, nullptr, false);
-        if (j.is_discarded()) [[unlikely]] {
-          return false;
-        }
-
-        if (const auto &command = j.value("command", std::string{}); command == "ping") {
-          self->send(R"({"command": "pong"})");
-          return false;
-        }
-
-        if (const auto &event = j.value("event", json::object()); !event.empty()) {
-          self->invoke(
-              event.at("topic").get_ref<const std::string &>(),
-              event.at("data").dump()
-          );
-
-          return false;
-        }
-
-        if (const auto &rpc = j.value("rpc", json::object()); !rpc.empty() && rpc.contains("response")) {
-          const auto response = rpc.at("response");
-          self->invoke(
-              std::to_string(response.at("id").get<uint64_t>()),
-              response.at("result").dump()
-          );
-
-          return false;
-        }
-
-        return false;
-      }
-  );
-
-  emscripten_websocket_set_onerror_callback(
-      _socket,
-      this,
-      [](int, const EmscriptenWebSocketErrorEvent *event, void *data) noexcept -> bool {
-        UNUSED(event);
-        const auto self = static_cast<socket *>(data);
-        self->invoke("error", "WebSocket error occurred");
-        return false;
-      }
-  );
-
-  emscripten_websocket_set_onclose_callback(
-      _socket,
-      this,
-      [](int, const EmscriptenWebSocketCloseEvent *event, void *data) noexcept -> bool {
-        UNUSED(event);
-        const auto *self = static_cast<socket *>(data);
-        self->invoke("disconnect");
-        return false;
-      }
-  );
+  emscripten_websocket_set_onopen_callback(_socket, this, websocket_on_open);
+  emscripten_websocket_set_onmessage_callback(_socket, this, websocket_on_message);
+  emscripten_websocket_set_onerror_callback(_socket, this, websocket_on_error);
+  emscripten_websocket_set_onclose_callback(_socket, this, websocket_on_close);
 }
 
 socket::~socket() noexcept {
@@ -110,7 +68,6 @@ socket::~socket() noexcept {
     emscripten_websocket_close(_socket, code, reason);
     emscripten_websocket_delete(_socket);
     _socket = 0;
-    invoke("disconnect");
   }
 }
 
@@ -135,6 +92,60 @@ void socket::rpc(const std::string &method, const std::string &arguments, std::f
   send(oss.str());
 
   _callbacks[std::to_string(counter)].push_back(std::move(callback));
+}
+
+void socket::handle_open(const EmscriptenWebSocketOpenEvent *event) {
+  UNUSED(event);
+  _connected = true;
+
+  for (const auto &message : _queue) {
+    send(message);
+  }
+  _queue.clear();
+}
+
+void socket::handle_message(const EmscriptenWebSocketMessageEvent *event) {
+  if (!event->isText) {
+    return;
+  }
+
+  std::string buffer(reinterpret_cast<const char *>(event->data), event->numBytes);
+  auto j = json::parse(buffer, nullptr, false);
+  if (j.is_discarded()) {
+    return;
+  }
+
+  if (j.value("command", "") == "ping") {
+    send(R"({"command": "pong"})");
+    return;
+  }
+
+  if (auto event = j.value("event", json::object()); !event.empty()) {
+    invoke(
+        event.at("topic").get_ref<const std::string &>(),
+        event.at("data").dump()
+    );
+
+    return;
+  }
+
+  if (auto rpc = j.value("rpc", json::object()); !rpc.empty() && rpc.contains("response")) {
+    auto response = rpc.at("response");
+    invoke(
+        std::to_string(response.at("id").get<uint64_t>()),
+        response.at("result").dump()
+    );
+    return;
+  }
+}
+
+void socket::handle_error(const EmscriptenWebSocketErrorEvent *event) {
+  UNUSED(event);
+  invoke("error", "WebSocket error occurred");
+}
+
+void socket::handle_close(const EmscriptenWebSocketCloseEvent *event) {
+  UNUSED(event);
 }
 
 void socket::send(const std::string &message) noexcept {
