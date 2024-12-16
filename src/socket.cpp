@@ -19,7 +19,7 @@ socket::socket() noexcept {
   emscripten_websocket_set_onopen_callback(
       _socket,
       this,
-      [](int, const EmscriptenWebSocketOpenEvent *event, void *data) noexcept {
+      [](int, const EmscriptenWebSocketOpenEvent *event, void *data) noexcept -> bool {
         UNUSED(event);
         auto *self = static_cast<socket *>(data);
 
@@ -32,28 +32,28 @@ socket::socket() noexcept {
 
         self->invoke("connect");
 
-        return 0;
+        return false;
       }
   );
 
   emscripten_websocket_set_onmessage_callback(
       _socket,
       this,
-      [](int, const EmscriptenWebSocketMessageEvent *event, void *data) noexcept {
+      [](int, const EmscriptenWebSocketMessageEvent *event, void *data) noexcept -> bool {
         if (!event->isText) [[unlikely]] {
-          return 0;
+          return false;
         }
 
         auto *self = static_cast<socket *>(data);
         const auto buffer = std::string(reinterpret_cast<const char *>(event->data), event->numBytes - 1);
         const auto j = json::parse(buffer, nullptr, false);
         if (j.is_discarded()) [[unlikely]] {
-          return 0;
+          return false;
         }
 
         if (const auto &command = j.value("command", std::string{}); command == "ping") {
           self->send(R"({"command": "pong"})");
-          return 0;
+          return false;
         }
 
         if (const auto &event = j.value("event", json::object()); !event.empty()) {
@@ -62,7 +62,7 @@ socket::socket() noexcept {
               event.at("data").dump()
           );
 
-          return 0;
+          return false;
         }
 
         if (const auto &rpc = j.value("rpc", json::object()); !rpc.empty() && rpc.contains("response")) {
@@ -72,32 +72,32 @@ socket::socket() noexcept {
               response.at("result").dump()
           );
 
-          return 0;
+          return false;
         }
 
-        return 0;
+        return false;
       }
   );
 
   emscripten_websocket_set_onerror_callback(
       _socket,
       this,
-      [](int, const EmscriptenWebSocketErrorEvent *event, void *data) noexcept {
+      [](int, const EmscriptenWebSocketErrorEvent *event, void *data) noexcept -> bool {
         UNUSED(event);
         const auto self = static_cast<socket *>(data);
         self->invoke("error", "WebSocket error occurred");
-        return 0;
+        return false;
       }
   );
 
   emscripten_websocket_set_onclose_callback(
       _socket,
       this,
-      [](int, const EmscriptenWebSocketCloseEvent *event, void *data) noexcept {
+      [](int, const EmscriptenWebSocketCloseEvent *event, void *data) noexcept -> bool {
         UNUSED(event);
         const auto *self = static_cast<socket *>(data);
         self->invoke("disconnect");
-        return 0;
+        return false;
       }
   );
 }

@@ -46,7 +46,6 @@
 #include <map>
 #include <memory>
 #include <mutex>
-#include <optional>
 #include <random>
 #include <ranges>
 #include <sstream>
