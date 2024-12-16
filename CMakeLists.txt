@@ -66,6 +66,11 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
   target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
 endif()
 
+option(LOCAL "Use local environment" OFF)
+if(LOCAL)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE LOCAL)
+endif()
+
 option(SANDBOX "Use sandbox" OFF)
 if(SANDBOX)
   target_compile_definitions(${PROJECT_NAME} PRIVATE SANDBOX)

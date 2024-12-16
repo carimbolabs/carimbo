@@ -1,4 +1,4 @@
-std::pair<std::vector<uint8_t>, geometry::size> _load_png(std::string_view filename) {
+std::pair<std::vector<uint8_t>, geometry::size> _load_png(const std::string &filename) {
   const auto buffer = storage::io::read(filename);
 
   auto ctx = std::unique_ptr<spng_ctx, decltype(&spng_ctx_free)>(spng_ctx_new(0), spng_ctx_free);

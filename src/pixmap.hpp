@@ -12,11 +12,9 @@ typedef std::unique_ptr<SDL_Texture, SDL_Deleter> texture_ptr;
 class pixmap {
 public:
   pixmap() = default;
-  pixmap(const std::shared_ptr<renderer> &renderer, std::string_view filename);
+  pixmap(const std::shared_ptr<renderer> &renderer, const std::string &filename);
   pixmap(const std::shared_ptr<renderer> &renderer, std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface);
   ~pixmap() = default;
-
-  void apply_effects(const std::vector<effect> &effects);
 
   void draw(
       const geometry::rect &source,

@@ -117,5 +117,3 @@ namespace network {
 class querybuilder;
 class socket;
 }
-
-using namespace std::literals;

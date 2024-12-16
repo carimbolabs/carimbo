@@ -18,10 +18,9 @@ application::application(int argc, char **argv) {
 int application::run() {
   try {
 #if SANDBOX
-    storage::filesystem::mount("../../sandbox"sv, "/"sv);
-    storage::filesystem::mount("../../megarick"sv, "/"sv);
+    storage::filesystem::mount("../../sandbox", "/");
 #else
-    storage::filesystem::mount("bundle.7z"sv, "/"sv);
+    storage::filesystem::mount("bundle.7z", "/");
 #endif
 
     auto se = scriptengine();

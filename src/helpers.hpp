@@ -11,4 +11,4 @@ constexpr void UNUSED(const T &x) {
 
 constexpr int MINIMAL_USE_COUNT = 1;
 
-std::pair<std::vector<uint8_t>, geometry::size> _load_png(std::string_view filename);
+std::pair<std::vector<uint8_t>, geometry::size> _load_png(const std::string &filename);

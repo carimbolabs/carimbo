@@ -5,7 +5,7 @@
 namespace storage {
 class filesystem {
 public:
-  static void mount(std::string_view filename, std::string_view mountpoint) noexcept(false);
+  static void mount(const std::string &filename, const std::string &mountpoint);
 
 private:
   filesystem() = delete;

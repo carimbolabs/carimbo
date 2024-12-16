@@ -39,10 +39,11 @@ EM_BOOL websocket_on_close(int, const EmscriptenWebSocketCloseEvent *event, void
 socket::socket() noexcept {
   _queue.reserve(8);
 
+  const std::string url =
 #ifdef LOCAL
-  const auto url = "http://localhost:3000/socket";
+      "http://localhost:3000/socket";
 #else
-  const auto url = "https://" + std::string(emscripten_run_script_string("window.location.hostname")) + "/socket";
+      "https://" + std::string(emscripten_run_script_string("window.location.hostname")) + "/socket";
 #endif
   EmscriptenWebSocketCreateAttributes attrs = {
       url.c_str(),

@@ -2,8 +2,8 @@
 
 using namespace storage;
 
-std::vector<uint8_t> io::read(std::string_view filename) noexcept(false) {
-  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> ptr(PHYSFS_openRead(filename.data()), PHYSFS_close);
+std::vector<uint8_t> io::read(const std::string &filename) noexcept(false) {
+  std::unique_ptr<PHYSFS_File, decltype(&PHYSFS_close)> ptr(PHYSFS_openRead(filename.c_str()), PHYSFS_close);
   if (!ptr) [[unlikely]] {
     std::ostringstream oss;
     oss << "[PHYSFS_openRead] error while opening file: " << filename
