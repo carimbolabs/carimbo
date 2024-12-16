@@ -27,43 +27,12 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
             f["rect"].get<geometry::rect>(),
             f["duration"].get<uint64_t>(),
             f.value("singleshoot", false),
-            j.value("offset", geometry::point{})
+            f.value("offset", geometry::point{})
         );
       }
     }
     animations.emplace(key, std::move(keyframes));
   }
-
-  // const auto type = j["physics"]["type"].get<bodytype>();
-
-  // body_ptr body{nullptr, cpBodyFree};
-  // switch (type) {
-  // case bodytype::stationary:
-  //   body = body_ptr(cpBodyNewStatic(), cpBodyFree);
-  //   break;
-  // case bodytype::kinematic:
-  //   body = body_ptr(cpBodyNewKinematic(), cpBodyFree);
-  //   break;
-  // case bodytype::dynamic:
-  //   body = body_ptr(
-  //       cpBodyNew(1.0, cpMomentForBox(1.0, size.width(), size.height())),
-  //       cpBodyFree
-  //   );
-  //   break;
-  // }
-
-  // auto shape = shape_ptr(
-  //     cpPolyShapeNew(body.get(), std::size(vertices), vertices, cpTransformIdentity, 0.0),
-  //     cpShapeFree
-  // );
-
-  // const auto &physics = j["physics"];
-  // cpShapeSetCollisionType(shape.get(), physics["collision"].get<collision>().type);
-  // cpShapeSetFriction(shape.get(), physics.value("friction", 0.5f));
-  // cpShapeSetElasticity(shape.get(), physics.value("elasticity", 0.3f));
-
-  // cpSpaceAddShape(_world->space().get(), shape.get());
-  // cpSpaceAddBody(_world->space().get(), body.get());
 
   entityprops props{
       _counter++,

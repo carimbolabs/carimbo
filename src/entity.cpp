@@ -17,7 +17,7 @@ uint64_t entity::id() const noexcept {
   return _props.id;
 }
 
-std::string_view entity::kind() const noexcept {
+std::string entity::kind() const noexcept {
   return _props.kind;
 }
 
@@ -95,15 +95,11 @@ void entity::draw() const noexcept {
     return;
   }
 
-  const auto &animation_frame = _props.animations.at(_props.action)[_props.frame];
-  const auto &source = animation_frame.frame;
-  const auto &offset = animation_frame.offset;
+  const auto &animation = _props.animations.at(_props.action)[_props.frame];
+  const auto &source = animation.frame;
+  const auto &offset = animation.offset;
   geometry::rect destination{_props.position + offset, source.size()};
   destination.scale(_props.size.scale());
-
-  // if (!_props.spritesheet) {
-  //   return;
-  // }
 
   _props.spritesheet->draw(
       source,
@@ -168,11 +164,11 @@ bool entity::visible() const noexcept {
   return _props.visible;
 }
 
-void entity::set_kv(const std::string &key, const std::variant<std::string, int64_t, double_t, float_t> &value) noexcept {
+void entity::set_kv(const std::string &key, const std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t> &value) noexcept {
   _kv[key] = value;
 }
 
-std::optional<std::variant<std::string, int64_t, double_t, float_t>> entity::get_kv(const std::string &key) const noexcept {
+std::optional<std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> entity::get_kv(const std::string &key) const noexcept {
   auto it = _kv.find(key);
   if (it == _kv.end()) {
     return std::nullopt;

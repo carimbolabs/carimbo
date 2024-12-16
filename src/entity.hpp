@@ -15,7 +15,7 @@ public:
   static std::shared_ptr<entity> create(entityprops &&props);
 
   uint64_t id() const noexcept;
-  std::string_view kind() const noexcept;
+  std::string kind() const noexcept;
 
   virtual void update(float_t delta) noexcept;
   virtual void draw() const noexcept;
@@ -45,8 +45,8 @@ public:
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 
-  void set_kv(const std::string &key, const std::variant<std::string, int64_t, double_t, float_t> &value) noexcept;
-  std::optional<std::variant<std::string, int64_t, double_t, float_t>> get_kv(const std::string &key) const noexcept;
+  void set_kv(const std::string &key, const std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t> &value) noexcept;
+  std::optional<std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> get_kv(const std::string &key) const noexcept;
 
   void on_email(const std::string &message);
 
@@ -54,7 +54,7 @@ private:
   friend class entitymanager;
 
   entityprops _props;
-  std::unordered_map<std::string, std::variant<std::string, int64_t, double_t, float_t>> _kv;
+  std::unordered_map<std::string, std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> _kv;
   std::function<void(std::shared_ptr<entity>)> _onupdate;
   std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;
