@@ -48,8 +48,6 @@ void entity::set_velocity(const math::vector2d &velocity) noexcept {
 }
 
 math::vector2d entity::velocity() const noexcept {
-  // cpVect velocity = cpBodyGetVelocity(_props.body.get());
-  // return {velocity.x, velocity.y};
   return _props.velocity;
 }
 
@@ -87,14 +85,9 @@ void entity::update(float_t delta) noexcept {
     }
   }
 
-  // const auto body = _props.body.get();
-  // _props.angle = cpBodyGetAngle(body);
-
-  // const auto position = cpBodyGetPosition(body);
-  // _props.position.set(
-  //     static_cast<int32_t>(std::round(position.x)),
-  //     static_cast<int32_t>(std::round(position.y))
-  // );
+  const auto x = static_cast<int32_t>(_props.position.x() + _props.velocity.x() * delta);
+  const auto y = static_cast<int32_t>(_props.position.y() + _props.velocity.y() * delta);
+  _props.position.set(x, y);
 }
 
 void entity::draw() const noexcept {
