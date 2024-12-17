@@ -33,7 +33,10 @@ void soundmanager::stop(const std::string &filename) noexcept {
 }
 
 void soundmanager::flush() noexcept {
-  std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
+  std::cout << "[soundmanager] actual size " << _pool.size() << std::endl;
+
+  const auto count = std::erase_if(_pool, [](const auto &pair) { return pair.second.use_count() == MINIMAL_USE_COUNT; });
+  std::cout << "[soundmanager] " << count << " objects have been flushed" << std::endl;
 }
 
 void soundmanager::update(float_t delta) noexcept {
