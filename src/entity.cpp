@@ -99,7 +99,7 @@ void entity::draw() const noexcept {
   const auto &source = animation.frame;
   const auto &offset = animation.offset;
   geometry::rect destination{_props.position + offset, source.size()};
-  destination.scale(_props.size.scale());
+  destination.scale(_props.size.scale()); // TODO calc this on spawn
 
   _props.spritesheet->draw(
       source,
@@ -164,21 +164,16 @@ bool entity::visible() const noexcept {
   return _props.visible;
 }
 
-void entity::set_kv(const std::string &key, const std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t> &value) noexcept {
-  _kv[key] = value;
-}
-
-std::optional<std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> entity::get_kv(const std::string &key) const noexcept {
-  auto it = _kv.find(key);
-  if (it == _kv.end()) {
-    return std::nullopt;
-  }
-
-  return it->second;
-}
-
 void entity::on_email(const std::string &message) {
   if (_onmail) {
     _onmail(shared_from_this(), message);
   }
+}
+
+const memory::kv &entity::kv() const noexcept {
+  return _kv;
+}
+
+memory::kv &entity::kv() noexcept {
+  return _kv;
 }

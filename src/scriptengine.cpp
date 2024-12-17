@@ -8,6 +8,7 @@
 #include "entityprops.hpp"
 #include "event.hpp"
 #include "io.hpp"
+#include "kv.hpp"
 #include "label.hpp"
 #include "loopable.hpp"
 #include "point.hpp"
@@ -153,39 +154,6 @@ void scriptengine::run() {
       "none", anchor::none
   );
 
-  struct kvproxy {
-    entity &e;
-
-    sol::object get(const std::string &key, sol::this_state lua_state) {
-      auto result = e.get_kv(key);
-      if (result.has_value()) {
-        return std::visit(
-            [&lua_state](auto &&arg) -> sol::object {
-              return sol::make_object(lua_state, arg);
-            },
-            result.value()
-        );
-      }
-      return sol::nil;
-    }
-
-    void set(const std::string &key, sol::object value) {
-      if (value.is<std::string>()) {
-        e.set_kv(key, value.as<std::string>());
-      } else if (value.is<int64_t>()) {
-        e.set_kv(key, value.as<int64_t>());
-      } else if (value.is<double>()) {
-        e.set_kv(key, value.as<double>());
-      } else if (value.is<float>()) {
-        e.set_kv(key, value.as<float>());
-      } else {
-        std::ostringstream oss;
-        oss << "Unsupported type for key: " << key;
-        throw std::runtime_error(oss.str());
-      }
-    }
-  };
-
   lua.new_enum(
       "Reflection",
       "none", reflection::none,
@@ -283,6 +251,13 @@ void scriptengine::run() {
       "y", sol::property(&velocityproxy::get_y, &velocityproxy::set_y)
   );
 
+  lua.new_usertype<kv>(
+      "KeyValue",
+      "get", [](kv &self, const std::string &key, sol::this_state state) { return self.get(key, state); },
+      "set", [](kv &self, const std::string &key, const sol::object &new_value, sol::this_state state) { self.set(key, new_value, state); },
+      "subscribe", [](kv &self, const std::string &key, const sol::function &callback, sol::this_state state) { self.subscribe(key, callback, state); }
+  );
+
   lua.new_usertype<entity>(
       "Entity",
       "id", sol::property(&entity::id),
@@ -294,14 +269,12 @@ void scriptengine::run() {
       "on_update", &entity::set_onupdate,
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
-      "reflection", sol::property([](entity &e) { return reflectionproxy{e}; }),
-      "action", sol::property([](entity &e) { return actionproxy{e}; }),
-      "placement", sol::property([](entity &e) { return placementproxy{e}; }),
-      "velocity", sol::property([](entity &e) { return velocityproxy{e}; }),
-      "kv", sol::property([](entity &e) { return kvproxy{e}; })
+      "reflection", sol::property([](entity &e) -> reflectionproxy { return reflectionproxy{e}; }),
+      "action", sol::property([](entity &e) -> actionproxy { return actionproxy{e}; }),
+      "placement", sol::property([](entity &e) -> placementproxy { return placementproxy{e}; }),
+      "velocity", sol::property([](entity &e) -> velocityproxy { return velocityproxy{e}; }),
+      "kv", sol::property([](entity &e) -> kv & { return e.kv(); })
   );
-
-  lua.new_usertype<kvproxy>("KvProxy", sol::meta_function::index, &kvproxy::get, sol::meta_function::new_index, &kvproxy::set);
 
   lua.new_usertype<entitymanager>(
       "EntityManager",

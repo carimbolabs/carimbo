@@ -3,6 +3,7 @@
 #include "common.hpp"
 #include "entitymanager.hpp"
 #include "entityprops.hpp"
+#include "kv.hpp"
 #include "reflection.hpp"
 #include "vector2d.hpp"
 
@@ -45,16 +46,16 @@ public:
   geometry::size size() const noexcept;
   bool visible() const noexcept;
 
-  void set_kv(const std::string &key, const std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t> &value) noexcept;
-  std::optional<std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> get_kv(const std::string &key) const noexcept;
-
   void on_email(const std::string &message);
+
+  const memory::kv &kv() const noexcept;
+  memory::kv &kv() noexcept;
 
 private:
   friend class entitymanager;
 
   entityprops _props;
-  std::unordered_map<std::string, std::variant<bool, std::string, int64_t, uint64_t, double_t, float_t>> _kv;
+  memory::kv _kv;
   std::function<void(std::shared_ptr<entity>)> _onupdate;
   std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;
