@@ -170,10 +170,10 @@ void entity::on_email(const std::string &message) {
   }
 }
 
-const memory::kv &entity::kv() const noexcept {
-  return _kv;
-}
-
 memory::kv &entity::kv() noexcept {
   return _kv;
 }
+
+// memory::kv &entity::kv() noexcept {
+//   return _kv;
+// }

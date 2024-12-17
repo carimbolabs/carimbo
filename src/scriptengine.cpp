@@ -25,6 +25,7 @@ using namespace graphics;
 using namespace math;
 using namespace storage;
 using namespace network;
+using namespace memory;
 
 sol::table require(sol::state &lua, const std::string &module) {
   const auto data = io::read("scripts/" + module + ".lua");

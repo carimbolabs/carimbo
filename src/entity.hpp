@@ -48,7 +48,6 @@ public:
 
   void on_email(const std::string &message);
 
-  const memory::kv &kv() const noexcept;
   memory::kv &kv() noexcept;
 
 private:

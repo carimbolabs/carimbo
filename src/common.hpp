@@ -113,6 +113,10 @@ namespace math {
 class vector2d;
 }
 
+namespace memory {
+class kv;
+}
+
 namespace network {
 class querybuilder;
 class socket;
