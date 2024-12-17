@@ -8,6 +8,7 @@ scenemanager::scenemanager(std::shared_ptr<graphics::pixmappool> pixmappool) noe
     : _pixmappool(std::move(pixmappool)) {}
 
 void scenemanager::set(const std::string &name) noexcept {
+  _background.reset();
   const auto buffer = storage::io::read("scenes/" + name + ".json");
   const auto j = json::parse(buffer);
   _background = _pixmappool->get(j["background"].get<std::string>());
