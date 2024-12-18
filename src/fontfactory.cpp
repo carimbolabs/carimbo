@@ -38,7 +38,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
 
   if (!surface) [[unlikely]] {
     std::ostringstream oss;
-    oss << "[SDL_CreateRGBSurfaceWithFormatFrom] Error: " << SDL_GetError();
+    oss << "[SDL_CreateRGBSurfaceWithFormatFrom] error: " << SDL_GetError();
     throw std::runtime_error(oss.str());
   }
 
@@ -55,7 +55,7 @@ std::shared_ptr<font> fontfactory::get(const std::string &family) {
 
     if (x >= size.width()) [[unlikely]] {
       std::ostringstream oss;
-      oss << "Error: Missing glyph for '" << letter << "'";
+      oss << "Error: missing glyph for '" << letter << "'";
       throw std::runtime_error(oss.str());
     }
 
