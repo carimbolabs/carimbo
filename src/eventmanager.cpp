@@ -36,14 +36,12 @@ void eventmanager::update(float_t delta) {
       break;
 
     case SDL_KEYDOWN:
-      std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
       for (const auto &receiver : _receivers) {
         receiver->on_keydown(keyevent(event.key.keysym.sym));
       }
       break;
 
     case SDL_KEYUP:
-      std::cout << "SDL_KEYUP " << event.key.keysym.sym << std::endl;
       for (const auto &receiver : _receivers) {
         receiver->on_keyup(keyevent(event.key.keysym.sym));
       }
