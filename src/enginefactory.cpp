@@ -27,6 +27,11 @@ enginefactory &enginefactory::with_height(int32_t height) noexcept {
   return *this;
 }
 
+enginefactory &enginefactory::with_scale(float_t scale) noexcept {
+  _scale = scale;
+  return *this;
+}
+
 enginefactory &enginefactory::with_gravity(float_t gravity) noexcept {
   _gravity = gravity;
   return *this;
@@ -42,7 +47,7 @@ std::shared_ptr<engine> enginefactory::create() const noexcept {
   const auto engine = std::make_shared<framework::engine>();
   const auto eventmanager = std::make_shared<input::eventmanager>();
   const auto window = std::make_shared<graphics::window>(_title, _width, _height, _fullscreen);
-  const auto renderer = window->create_renderer();
+  const auto renderer = window->create_renderer(_scale);
   const auto resourcemanager = std::make_shared<framework::resourcemanager>(renderer, audiodevice);
   const auto overlay = std::make_shared<graphics::overlay>(renderer);
   const auto scenemanager = std::make_shared<framework::scenemanager>(resourcemanager->pixmappool());

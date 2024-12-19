@@ -16,8 +16,10 @@ window::operator SDL_Window *() noexcept {
   return _window.get();
 }
 
-std::shared_ptr<renderer> window::create_renderer() const noexcept {
-  return std::make_shared<renderer>(_window.get());
+std::shared_ptr<renderer> window::create_renderer(float_t scale) const noexcept {
+  const auto ptr = std::make_shared<renderer>(_window.get());
+  SDL_RenderSetScale(*ptr, scale, scale);
+  return ptr;
 }
 
 int32_t window::width() const noexcept {

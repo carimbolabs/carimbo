@@ -344,6 +344,7 @@ void scriptengine::run() {
       "with_title", &enginefactory::with_title,
       "with_width", &enginefactory::with_width,
       "with_height", &enginefactory::with_height,
+      "with_scale", &enginefactory::with_scale,
       "with_gravity", &enginefactory::with_gravity,
       "with_fullscreen", &enginefactory::with_fullscreen,
       "create", &enginefactory::create
