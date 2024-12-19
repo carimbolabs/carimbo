@@ -1,4 +1,5 @@
 #include "eventmanager.hpp"
+#include <SDL_keycode.h>
 
 using namespace input;
 
@@ -17,10 +18,10 @@ void eventmanager::update(float_t delta) {
   UNUSED(delta);
 
   static constexpr std::array<std::pair<Uint8, SDL_Keycode>, 6> mapping = {{
-      {SDL_CONTROLLER_BUTTON_DPAD_UP, SDLK_w},
-      {SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDLK_a},
-      {SDL_CONTROLLER_BUTTON_DPAD_DOWN, SDLK_s},
-      {SDL_CONTROLLER_BUTTON_DPAD_RIGHT, SDLK_d},
+      {SDL_CONTROLLER_BUTTON_DPAD_UP, SDLK_UP},
+      {SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDLK_LEFT},
+      {SDL_CONTROLLER_BUTTON_DPAD_DOWN, SDLK_DOWN},
+      {SDL_CONTROLLER_BUTTON_DPAD_RIGHT, SDLK_RIGHT},
       {SDL_CONTROLLER_BUTTON_A, SDLK_SPACE},
       {SDL_CONTROLLER_BUTTON_B, SDLK_SPACE},
   }};
@@ -35,12 +36,14 @@ void eventmanager::update(float_t delta) {
       break;
 
     case SDL_KEYDOWN:
+      std::cout << "SDL_KEYDOWN " << event.key.keysym.sym << std::endl;
       for (const auto &receiver : _receivers) {
         receiver->on_keydown(keyevent(event.key.keysym.sym));
       }
       break;
 
     case SDL_KEYUP:
+      std::cout << "SDL_KEYUP " << event.key.keysym.sym << std::endl;
       for (const auto &receiver : _receivers) {
         receiver->on_keyup(keyevent(event.key.keysym.sym));
       }

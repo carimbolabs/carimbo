@@ -8,10 +8,10 @@ enum eventtype : Uint32 {
 };
 
 enum class keyevent : int32_t {
-  w = SDLK_w,
-  a = SDLK_a,
-  s = SDLK_s,
-  d = SDLK_d,
+  up = SDLK_UP,
+  left = SDLK_LEFT,
+  down = SDLK_DOWN,
+  right = SDLK_RIGHT,
   space = SDLK_SPACE,
 };
 

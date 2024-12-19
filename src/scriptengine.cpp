@@ -409,10 +409,10 @@ void scriptengine::run() {
 
   lua.new_enum(
       "KeyEvent",
-      "w", keyevent::w,
-      "a", keyevent::a,
-      "s", keyevent::s,
-      "d", keyevent::d,
+      "up", keyevent::up,
+      "left", keyevent::left,
+      "down", keyevent::down,
+      "right", keyevent::right,
       "space", keyevent::space
   );
 
