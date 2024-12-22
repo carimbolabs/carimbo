@@ -45,25 +45,41 @@ elseif (CMAKE_BUILD_TYPE MATCHES "Release")
   if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /O2 /GL)
   else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -O3 -flto)
+    target_compile_options(${PROJECT_NAME} PRIVATE -O2 -flto)
   endif()
 endif()
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+if (${CMAKE_SYSTEM_NAME} MATCHES Emscripten)
   set(EMSCRIPTEN_OPTIONS
-    "-s EVAL_CTORS=1"
-    "-s WASM_BIGINT=1"
-    "-s ALLOW_MEMORY_GROWTH=1"
-    "-s INITIAL_MEMORY=128MB"
-    "-l websocket.js"
-    "-s USE_SDL=2"
-    "-s WEBSOCKET_SUBPROTOCOL=text"
-    "-s EXPORTED_RUNTIME_METHODS=['callMain']"
-    # Debug
-    "-s ASSERTIONS=1"
-    "-s NO_DISABLE_EXCEPTION_CATCHING"
+    -sEVAL_CTORS=1
+    -sWASM_BIGINT=1
+    -sALLOW_MEMORY_GROWTH=1
+    -sINITIAL_MEMORY=128MB
+    -lwebsocket.js
+    -sUSE_SDL=2
+    -sWEBSOCKET_SUBPROTOCOL=text
+    -sEXPORTED_RUNTIME_METHODS=['callMain']
   )
-  target_link_libraries(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
+
+  if (ENABLE_PROFILING)
+    list(APPEND EMSCRIPTEN_OPTIONS
+      -O0
+      -g
+      -gsource-map
+      -sDEMANGLE_SUPPORT=1
+      -sASSERTIONS=1
+      -sNO_DISABLE_EXCEPTION_CATCHING
+      --profiling-funcs
+      -sSAFE_HEAP=0
+      -sSTACK_OVERFLOW_CHECK=2
+    )
+  else()
+    list(APPEND EMSCRIPTEN_OPTIONS
+      -O2
+    )
+  endif()
+
+  target_link_options(${PROJECT_NAME} PRIVATE ${EMSCRIPTEN_OPTIONS})
 endif()
 
 option(LOCAL "Use local environment" OFF)

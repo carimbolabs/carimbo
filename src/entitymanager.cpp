@@ -1,5 +1,6 @@
 #include "entitymanager.hpp"
 #include "common.hpp"
+#include <ostream>
 
 using namespace framework;
 
@@ -86,8 +87,9 @@ void entitymanager::update(float_t delta) noexcept {
   }
 
   for (const auto &entity1 : _entities) {
-    if (entity1->_collisionmapping.empty()) [[unlikely]]
+    if (entity1->_collisionmapping.empty()) [[likely]] {
       continue;
+    }
 
     const auto &pos1 = entity1->position();
     const auto &size1 = entity1->size().resized();
