@@ -21,7 +21,6 @@ public:
   std::shared_ptr<audio::soundmanager> soundmanager() const noexcept;
   std::shared_ptr<graphics::window> window() const noexcept;
   std::shared_ptr<graphics::renderer> renderer() const noexcept;
-  std::shared_ptr<framework::world> world() const noexcept;
 
   int32_t height() const noexcept;
   int32_t width() const noexcept;
@@ -36,7 +35,6 @@ public:
   void set_statemanager(std::shared_ptr<framework::statemanager> statemanager) noexcept;
   void set_window(std::shared_ptr<graphics::window> window) noexcept;
   void set_renderer(std::shared_ptr<graphics::renderer> renderer) noexcept;
-  void set_world(std::shared_ptr<framework::world> world) noexcept;
 
   void add_loopable(std::shared_ptr<loopable> loopable) noexcept;
   void flush() const noexcept;
@@ -63,7 +61,6 @@ private:
   std::shared_ptr<framework::statemanager> _statemanager;
   std::shared_ptr<graphics::renderer> _renderer;
   std::shared_ptr<graphics::window> _window;
-  std::shared_ptr<framework::world> _world;
   std::shared_ptr<graphics::fontfactory> _fontfactory;
 };
 }

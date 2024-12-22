@@ -1,12 +1,13 @@
 #include "entitymanager.hpp"
+#include "common.hpp"
 
 using namespace framework;
 
 using json = nlohmann::json;
 
-entitymanager::entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager) noexcept
-    : _world(std::move(world)),
-      _resourcemanager(std::move(resourcemanager)) {}
+entitymanager::entitymanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept
+    : _resourcemanager{std::move(resourcemanager)} {
+}
 
 std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read((std::ostringstream() << "entities/" << kind << ".json").str());
@@ -63,18 +64,6 @@ void entitymanager::destroy(const std::shared_ptr<entity> entity) noexcept {
     return;
   }
 
-  // auto &props = entity->props();
-
-  // if (props.body) {
-  //   cpSpaceRemoveBody(_world->space().get(), props.body.get());
-  //   props.body.reset();
-  // }
-
-  // if (props.shape) {
-  //   cpSpaceRemoveShape(_world->space().get(), props.shape.get());
-  //   props.shape.reset();
-  // }
-
   _entities.remove(entity);
 }
 
@@ -89,6 +78,41 @@ std::shared_ptr<entity> entitymanager::find(uint64_t id) const noexcept {
 void entitymanager::update(float_t delta) noexcept {
   for (const auto &entity : _entities) {
     entity->update(delta);
+  }
+
+  std::unordered_map<std::string, std::vector<std::shared_ptr<entity>>> mapping;
+  for (const auto &entity : _entities) {
+    mapping[entity->kind()].emplace_back(entity);
+  }
+
+  for (const auto &entity1 : _entities) {
+    if (entity1->_collisionmapping.empty()) [[unlikely]]
+      continue;
+
+    const auto &pos1 = entity1->position();
+    const auto &size1 = entity1->size().resized();
+
+    for (const auto &[kind, callback] : entity1->_collisionmapping) {
+      if (auto it = mapping.find(kind); it != mapping.end()) [[likely]] {
+        const auto &mapping = it->second;
+
+        for (const auto &entity2 : mapping) {
+          if (entity1 == entity2) [[unlikely]]
+            continue;
+
+          const auto &pos2 = entity2->position();
+          const auto &size2 = entity2->size().resized();
+
+          if (pos1.x() < pos2.x() + size2.width() &&
+              pos1.x() + size1.width() > pos2.x() &&
+              pos1.y() < pos2.y() + size2.height() &&
+              pos1.y() + size1.height() > pos2.y()) [[likely]] {
+
+            callback(entity1, entity2->id());
+          }
+        }
+      }
+    }
   }
 }
 

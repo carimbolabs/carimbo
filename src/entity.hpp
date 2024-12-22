@@ -25,6 +25,7 @@ public:
   const entityprops &props() const noexcept;
   void set_props(entityprops props) noexcept;
 
+  geometry::point position() const noexcept;
   int32_t x() const noexcept;
   int32_t y() const noexcept;
 
@@ -37,6 +38,7 @@ public:
   void set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
   void set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept;
   void set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept;
+  void set_oncollision(const std::string &kind, const std::function<void(std::shared_ptr<entity>, uint64_t)> &fn) noexcept;
 
   void set_reflection(graphics::reflection reflection) noexcept;
   void set_action(const std::string &action);
@@ -58,5 +60,6 @@ private:
   std::function<void(std::shared_ptr<entity>)> _onupdate;
   std::function<void(std::shared_ptr<entity>)> _onanimationfinished;
   std::function<void(std::shared_ptr<entity>, const std::string &)> _onmail;
+  std::unordered_map<std::string, std::function<void(std::shared_ptr<entity>, uint64_t)>> _collisionmapping;
 };
 }

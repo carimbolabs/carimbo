@@ -29,6 +29,10 @@ const entityprops &entity::props() const noexcept {
   return _props;
 }
 
+geometry::point entity::position() const noexcept {
+  return _props.position;
+}
+
 int32_t entity::x() const noexcept {
   return _props.position.x();
 }
@@ -99,7 +103,8 @@ void entity::draw() const noexcept {
   const auto &source = animation.frame;
   const auto &offset = animation.offset;
   geometry::rect destination{_props.position + offset, source.size()};
-  destination.scale(_props.size.scale()); // TODO calc this on spawn
+
+  destination.scale(_props.size.scale());
 
   _props.spritesheet->draw(
       source,
@@ -123,15 +128,19 @@ void entity::set_placement(int32_t x, int32_t y) noexcept {
 }
 
 void entity::set_onupdate(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {
-  _onupdate = fn;
+  _onupdate = std::move(fn);
 }
 
 void entity::set_onanimationfinished(const std::function<void(std::shared_ptr<entity>)> &fn) noexcept {
-  _onanimationfinished = fn;
+  _onanimationfinished = std::move(fn);
 }
 
 void entity::set_onmail(const std::function<void(std::shared_ptr<entity>, const std::string &)> &fn) noexcept {
-  _onmail = fn;
+  _onmail = std::move(fn);
+}
+
+void entity::set_oncollision(const std::string &kind, const std::function<void(std::shared_ptr<entity>, uint64_t)> &fn) noexcept {
+  _collisionmapping[kind] = std::move(fn);
 }
 
 void entity::set_reflection(graphics::reflection reflection) noexcept {
@@ -173,7 +182,3 @@ void entity::on_email(const std::string &message) {
 memory::kv &entity::kv() noexcept {
   return _kv;
 }
-
-// memory::kv &entity::kv() noexcept {
-//   return _kv;
-// }

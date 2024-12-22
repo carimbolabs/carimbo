@@ -3,12 +3,11 @@
 #include "common.hpp"
 #include "event.hpp"
 #include "eventreceiver.hpp"
-#include "world.hpp"
 
 namespace framework {
 class entitymanager : public input::eventreceiver {
 public:
-  entitymanager(std::shared_ptr<world> world, std::shared_ptr<resourcemanager> resourcemanager) noexcept;
+  explicit entitymanager(std::shared_ptr<resourcemanager> resourcemanager) noexcept;
   ~entitymanager() = default;
 
   std::shared_ptr<entity> spawn(const std::string &kind);
@@ -25,7 +24,6 @@ protected:
   virtual void on_mail(const input::mailevent &event) noexcept override;
 
 private:
-  std::shared_ptr<world> _world;
   std::shared_ptr<resourcemanager> _resourcemanager;
   std::list<std::shared_ptr<entity>> _entities;
   std::atomic<uint64_t> _counter{0};

@@ -24,28 +24,3 @@ void from_json(const nlohmann::json &j, rect &r) noexcept {
   r._size = geometry::size{j.at("width").get<int>(), j.at("height").get<int>()};
 }
 }
-
-namespace framework {
-void from_json(const nlohmann::json &j, collision &c) {
-  const auto type = j.at("type").get<std::string>();
-
-  if (type == "bullet") {
-    const auto from = j.at("from").get<std::string>();
-    if (from == "player") {
-      c.type = playerbullet;
-    } else if (from == "enemy") {
-      c.type = enemybullet;
-    } else [[unlikely]] {
-      throw std::invalid_argument("[collision] Invalid 'from' value for bullet");
-    }
-  } else if (type == "player") {
-    c.type = player;
-  } else if (type == "enemy") {
-    c.type = enemy;
-  } else if (type == "wall") {
-    c.type = wall;
-  } else {
-    throw std::invalid_argument("[collision] Invalid 'type' value");
-  }
-}
-}

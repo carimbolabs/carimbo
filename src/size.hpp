@@ -26,7 +26,7 @@ public:
   friend void from_json(const nlohmann::json &j, size &s) noexcept;
 
 private:
-  float_t _scale{0.0};
+  float_t _scale{.0};
   int32_t _width{0};
   int32_t _height{0};
 };

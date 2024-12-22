@@ -62,10 +62,6 @@ std::shared_ptr<graphics::renderer> engine::renderer() const noexcept {
   return _renderer;
 }
 
-std::shared_ptr<framework::world> engine::world() const noexcept {
-  return _world;
-}
-
 int32_t engine::height() const noexcept {
   return _window->height();
 }
@@ -114,10 +110,6 @@ void engine::set_renderer(std::shared_ptr<graphics::renderer> renderer) noexcept
   _renderer = std::move(renderer);
 }
 
-void engine::set_world(std::shared_ptr<framework::world> world) noexcept {
-  _world = std::move(world);
-}
-
 void engine::add_loopable(std::shared_ptr<loopable> loopable) noexcept {
   _loopables.emplace_back(std::move(loopable));
 }
@@ -161,7 +153,6 @@ void engine::_loop() noexcept {
   _resourcemanager->update(delta);
   _scenemanager->update(delta);
   _eventmanager->update(delta);
-  _world->update(delta);
   _overlay->update(delta);
   _entitymanager->update(delta);
 
@@ -172,7 +163,6 @@ void engine::_loop() noexcept {
   _renderer->begin();
   _scenemanager->draw();
   _entitymanager->draw();
-  _world->draw();
   _overlay->draw();
   _renderer->end();
 }

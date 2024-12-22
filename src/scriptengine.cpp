@@ -270,6 +270,7 @@ void scriptengine::run() {
       "on_update", &entity::set_onupdate,
       "on_animationfinished", &entity::set_onanimationfinished,
       "on_mail", &entity::set_onmail,
+      "on_collision", &entity::set_oncollision,
       "reflection", sol::property([](entity &e) -> reflectionproxy { return reflectionproxy{e}; }),
       "action", sol::property([](entity &e) -> actionproxy { return actionproxy{e}; }),
       "placement", sol::property([](entity &e) -> placementproxy { return placementproxy{e}; }),
