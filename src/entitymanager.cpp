@@ -14,11 +14,12 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
   const auto buffer = storage::io::read((std::ostringstream() << "entities/" << kind << ".json").str());
   const auto j = json::parse(buffer);
 
+  const auto size = j["size"].get<geometry::size>();
+  const auto scale = j["scale"].get<float_t>();
+
   auto spritesheet = j.contains("spritesheet")
                          ? _resourcemanager->pixmappool()->get(j["spritesheet"].get_ref<const std::string &>())
                          : nullptr;
-
-  const auto size = j["size"].get<geometry::size>();
 
   std::map<std::string, std::vector<keyframe>> animations;
   for (const auto &[key, frames] : j["animations"].items()) {
@@ -46,6 +47,7 @@ std::shared_ptr<entity> entitymanager::spawn(const std::string &kind) {
       {},
       {},
       size,
+      scale,
       {},
       kind,
       "",
@@ -92,7 +94,7 @@ void entitymanager::update(float_t delta) noexcept {
     }
 
     const auto &pos1 = entity1->position();
-    const auto &size1 = entity1->size().resized();
+    const auto &size1 = entity1->size() * entity1->props().scale;
 
     for (const auto &[kind, callback] : entity1->_collisionmapping) {
       if (auto it = mapping.find(kind); it != mapping.end()) [[likely]] {
@@ -103,7 +105,7 @@ void entitymanager::update(float_t delta) noexcept {
             continue;
 
           const auto &pos2 = entity2->position();
-          const auto &size2 = entity2->size().resized();
+          const auto &size2 = entity2->size() * entity2->props().scale;
 
           if (pos1.x() < pos2.x() + size2.width() &&
               pos1.x() + size1.width() > pos2.x() &&

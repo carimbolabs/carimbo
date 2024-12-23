@@ -18,6 +18,6 @@ private:
   glyphmap _glyphs{};
   std::shared_ptr<pixmap> _pixmap{};
   int16_t _spacing{0};
-  float_t _scale{1.};
+  float_t _scale{1.0f};
 };
 }

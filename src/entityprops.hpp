@@ -31,6 +31,7 @@ struct entityprops {
   geometry::point position{};
   geometry::point pivot{};
   geometry::size size{};
+  float_t scale{1.0f};
   math::vector2d velocity{};
   std::string kind{};
   std::string action{};

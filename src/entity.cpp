@@ -104,7 +104,7 @@ void entity::draw() const noexcept {
   const auto &offset = animation.offset;
   geometry::rect destination{_props.position + offset, source.size()};
 
-  destination.scale(_props.size.scale());
+  destination.scale(_props.scale);
 
   _props.spritesheet->draw(
       source,

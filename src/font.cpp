@@ -11,9 +11,8 @@ void font::draw(const std::string &text, const geometry::point &position) const 
   for (const auto &character : text) {
     const auto &glyph = _glyphs.at(character);
     auto size = glyph.size();
-    size.set_scale(_scale);
 
-    _pixmap->draw(glyph, {cursor, size.resized()});
+    _pixmap->draw(glyph, {cursor, size * _scale});
 
     cursor += std::make_pair('x', size.width() + _spacing);
   }
