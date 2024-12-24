@@ -123,6 +123,11 @@ void socket::handle_message(const EmscriptenWebSocketMessageEvent *event) {
     return;
   }
 
+  if (j.value("command", "") == "reload") {
+    emscripten_run_script_string("window.location.reload()");
+    return;
+  }
+
   if (auto event = j.value("event", json::object()); !event.empty()) {
     invoke(
         event.at("topic").get_ref<const std::string &>(),
