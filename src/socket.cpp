@@ -94,7 +94,7 @@ void socket::rpc(const std::string &method, const std::string &arguments, std::f
       << R"(", "arguments": )" << arguments << R"(}}})";
   send(oss.str());
 
-  _callbacks[std::to_string(counter)].push_back(std::move(callback));
+  _callbacks[method].push_back(std::move(callback));
 }
 
 void socket::handle_open(const EmscriptenWebSocketOpenEvent *event) {
@@ -139,12 +139,17 @@ void socket::handle_message(const EmscriptenWebSocketMessageEvent *event) {
 
   if (auto rpc = j.value("rpc", json::object()); !rpc.empty() && rpc.contains("response")) {
     auto response = rpc.at("response");
-    if (response.contains(result)) {
+    if (response.contains("result")) {
       invoke(
           std::to_string(response.at("id").get<uint64_t>()),
           response.at("result").dump()
       );
+
+      // return;
     }
+
+    // TODO handle error
+    // TODO remove callback from _callbacks
     return;
   }
 }
