@@ -139,10 +139,12 @@ void socket::handle_message(const EmscriptenWebSocketMessageEvent *event) {
 
   if (auto rpc = j.value("rpc", json::object()); !rpc.empty() && rpc.contains("response")) {
     auto response = rpc.at("response");
-    invoke(
-        std::to_string(response.at("id").get<uint64_t>()),
-        response.at("result").dump()
-    );
+    if (response.contains(result)) {
+      invoke(
+          std::to_string(response.at("id").get<uint64_t>()),
+          response.at("result").dump()
+      );
+    }
     return;
   }
 }
